@@ -1,15 +1,20 @@
 import streamlit as st
-import openai 
+import openai
+
+client = openai.OpenAI(api_key=st.secrets["openai"]["api_key"])
 
 st.set_page_config(
     page_title="Grundwissen über Künstliche Intelligenz (KI)"
 )
+
 st.markdown("<h4>Grundwissen über Künstliche Intelligenz (KI)</h4>",unsafe_allow_html=True)
 st.markdown("""
             Auf dieser Seite erfährst du einiges spannendes über KI, mach dich bereit. 
             Wir erforschen gemeinsam KI und frischen entweder bereits vorhandenes Wissen 
             auf oder lernen was neues
             """)
+st.divider()
+
 with st.expander("Was ist KI",icon=":material/double_arrow:"):
      st.markdown("""
                     Stellt euch ein Labyrinth mit Sackgassen und mit vielen unterschiedlichen Wegen vor,
@@ -76,5 +81,35 @@ with st.expander("Was kann KI",icon=":material/double_arrow:"):
                       usw...
                """)
 
+#Speichern der Prompts:
+if "result2" not in st.session_state:
+    st.session_state.result2 = {}
+
 #Fragen die du selbst über KI-beantworten haben willst
 
+# Fragen direkt auf der Seite speichern
+if "2_seite_prompt" not in st.session_state:
+    st.session_state.seiten_fragen = ""
+
+# Eingabe und Button
+frage = st.text_input("Falls du noch mehr Wissen möchtest frag die KI")
+if st.button("Fragen") and frage:
+    # Antwort holen
+    antwort = client.chat.completions.create(
+        model="gpt-3.5-turbo",
+        messages=[{"role": "user", "content": frage}]
+    )
+    
+    # Antwort zeigen
+    st.write("Antwort:")
+    speichern=st.write(antwort.choices[0].message.content)
+    #Frage zu dem Speicher hinzufügen
+    st.session_state.result2["speichern"]=speichern
+  
+    
+    # Frage zum Gesamttext hinzufügen
+    st.session_state.seiten_fragen += "- " + frage + "\n"
+
+# Alle Fragen anzeigen
+st.write("Deine Fragen:")
+st.text(st.session_state.seiten_fragen)

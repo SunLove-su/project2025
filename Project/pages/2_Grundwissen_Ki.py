@@ -1,4 +1,5 @@
 import streamlit as st
+import openai 
 
 st.set_page_config(
     page_title="Grundwissen über Künstliche Intelligenz (KI)"
@@ -9,7 +10,7 @@ st.markdown("""
             Wir erforschen gemeinsam KI und frischen entweder bereits vorhandenes Wissen 
             auf oder lernen was neues
             """)
-with st.expander("Was ist KI"):
+with st.expander("Was ist KI",icon=":material/double_arrow:"):
      st.markdown("""
                     Stellt euch ein Labyrinth mit Sackgassen und mit vielen unterschiedlichen Wegen vor,
                     bei dem nur einer führt zum Ausgang.
@@ -33,7 +34,7 @@ with st.expander("Was ist KI"):
                     und Entscheidungen die wir treffen nachzuahmen."""
      )
 
-with st.expander("Wie funktioniert KI"):
+with st.expander("Wie funktioniert KI",icon=":material/double_arrow:"):
      st.markdown("""
                  Wir haben mit dem Labyrinth gesehen, dass die KI:
                  1. viele Daten braucht: 1.000.000 ist die KI die unterschiedlichen Labyrithen durchgegangen
@@ -45,7 +46,7 @@ with st.expander("Wie funktioniert KI"):
                 """)
 
 
-with st.expander("KI-Begriffe"):
+with st.expander("KI-Begriffe",icon=":material/double_arrow:"):
      st.markdown("""
                 - Algorithmus: Schritt für Schritt Anleitung, wie das Computer-Programm, dem ich sagen musste gehe zwei Schritte nach vorne, einen nach links."
                 - Machine Learning: Ist die KI, die 1.000.000 mal durch die Labyrithen muss, sich die Muster und Merkmale merkt"
@@ -60,18 +61,20 @@ with st.expander("KI-Begriffe"):
                                                        Durch das Trainig wird ihr zusammenspiel besser, sodass sie in der Lage sind Titel zu holen oder
                                                        bei der KI komplexe Aufgaben zu lösen
                    - Deep Learning: Ist ein vielschichtigeres Netz, mit mehreren Ebenen.
-                                    Beispiel es sind jetzt viel mehr Spieler zwischen den Positionen auf dem Feld, z. B. zwischen dem Torwart und dem
-                                    Mittelspieler
-                                    Die einzelnen Spieler in den 
-                 
-                 
-                                                      
-               "3. erlerntes anwendet: die KI begeht ein Labyrinth, die sie noch nie gegangen ist und gelangt an den Ausgang" \
-               "4. fehler macht: die KI verläuft sich, geht den falschen Weg und steckt in einer Sackgasse fest ")
-
-                """)
-with st.expander("Was kann KI"):
-     st.write("")
+                                    Beispiel es sind jetzt viel mehr Spieler zwischen den Positionen auf dem Feld, sodass ein tieferes Netz entsteht.
+                                    Die Spieler jeder Ebene haben bestimmte Aufgaben. Die erste Reihe sucht die freien Räume, die zweite erkennt die Lücken in
+                                    der Abwehr und die dritte Reihe machen den Laufweg, bevor die letzte Reihe den Torschuss macht.
+                    - Prompt: Anweisungen die wir der KI gesprochen oder via Text""")
+with st.expander("Was kann KI",icon=":material/double_arrow:"):
+     st.markdown("""
+                    KI kann unterschiedliche Aufgaben ausführen:
+                    - Bilder erkennen und erstellen: KI kann die Motive auf den Bildern erkennen, mit Text lässt sich auch ein Bild erzeugen, z. B. DALL E
+                    - Text erkennen und erstellen: KI erkennt Texte auch wenn sie nicht richtig geschrieben sind und kann auch Texte schreiben, z. B. ChatGPT
+                    - Sprache verstehen und antworten: KI versteht deine Worte und Antwortet dir, z. B. Alexa und Siri
+                    - Übersetzen verstehen und erzeugen: KI versteht andere Sprachen und kann auch Text in andere Sprachen übersetzen
+                    - Muster erkennen: KI erkennt Muster die uns ggfls. nicht auffalen, z. B. bei Krankheiten oder zur Gefahrenabwehr
+                      usw...
+               """)
 
 #Fragen die du selbst über KI-beantworten haben willst
 

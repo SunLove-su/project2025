@@ -41,4 +41,4 @@ col1, col2 = st.columns([8,2])
 with col2:
 
     if st.button("Start"):
-        st.switch_page("Grundwissen über Künstliche Intelligenz (KI)")
+        st.switch_page("pages/2_grundwissen_ki.py")

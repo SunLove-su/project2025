@@ -4,29 +4,27 @@ st.set_page_config(
     page_title="Grundwissen über Künstliche Intelligenz (KI)"
 )
 st.markdown("<h4>Grundwissen über Künstliche Intelligenz (KI)</h4>",unsafe_allow_html=True)
-st.write("Auf dieser Seite erfährst du einiges spannendes über KI, mach dich bereit." \
-"Wir erforschen gemeinsam KI und frischen entweder bereits vorhandes Wissen auf oder lernen" \
-"was neues.")
+st.markdown("""
+            Auf dieser Seite erfährst du einiges spannendes über KI, mach dich bereit. 
+            Wir erforschen gemeinsam KI und frischen entweder bereits vorhandenes Wissen 
+            auf oder lernen was neues
+            """)
 with st.expander("Was ist KI"):
-     st.write("Stellt euch ein Labyrinth vor mit Sackgassen und mit vielen unterschiedlichen Wegen bei dem nur einer führt" \
-     "zum Ausgang." \
-     "Vor der KI musste ich einem Computerprogramm genaue Angaben geben" \
-     "Gehe zwei Schritte nach vorne, einen nach links, drei nach vorne. Gibt es Hindernisse wie eine Mauer" \
-     "dann bleibt das Programm stehen, da es dazu keine Angeben erhalten hat." \
-     "Beim Programmieren muss jede Möglichkeit, jedes Hinderniss und jeder Schritt beschrieben sein, ansonsten bleibt " \
-     "das Programm an der Stelle mit dem Hinterniss stehen" \
-     "" \
+     st.markdown("""
+                    Stellt euch ein Labyrinth mit vielen Wegen und Sackgassen vor.
 
-     
-     "Mit KI ist es anders. Die KI geht 1.000.000 in unterschiedliche Labyrinthe und merkt sich," \
-     "wie ein Hindernis aussieht, dass sie nicht weiter kann und merkt sich den besten Weg zum Ausgang." \
-     "Anhand von Mustern hat die KI gelernt, dass wenn links eine Wand ist, sie rechts weiter gehen kann."
-     "oder das bei 3 Wegen der mittlere meistens zum Ziel geführt hat." \
-     "Bei Labyrithen die die KI noch nie gegangen ist, kann es passieren dass sie sich verläuft, den falschen Weg geht und in einer Sackgasse endet")
-      
-     "Während Du und ich beim ersten Mal in einem Labyrinth im Gegensatz zur KI, wissen, wie wir aus einer Sackgasse kommen, und uns den Ausgang" \
-     "ersuchen, braucht eien KI 1.000.0000 Übungen. Mit diesen Übungen versucht sie unsere Intelligenz, die Kombinationen, Schlussfolgerungen und"
-     "Entscheidungen die wir treffen nachzuahmen."
+                    Vor der KI musste ich einem Computerprogramm exakte Anweisungen
+                    geben: "Gehe einen Schritte nach vorne, dann zwei nach links, dann
+                    einen nach rechts." Trifft es auf eine Mauer, bleibt das Programm stehen,
+                    weil es keine Anweisung für diesen Fall hat. Jede Situation muss vorprogrammiert sein.
+
+                    KI funktioniert anders: Sie geht durch tausende Labyrinthe und lernt daraus.
+                    Sie merkt sich Muster: "Bei einer Wand links gehe rechts" oder "Bei drei Wegen
+                    führt meist der mittlere zum Ziel". Trifft die KI auf ein völlig unbekanntes Labyrinth,
+                    kann sie dennoch in Sackgassen enden.
+
+                    **Der Unterschied: Wir Menschen können schon beim ersten Labyrinth intuitiv Probleme lösen. KI braucht Millionen Übungen, um unsere Fähigkeit zum Kombinieren und Entscheiden nachzuahmen.""", unsafe_allow_html=True
+     )
 
 with st.expander("Wie funktioniert KI"):
      st.write("Wir haben mit dem Labyrinth gesehen, dass die KI:" \

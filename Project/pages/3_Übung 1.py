@@ -17,20 +17,19 @@ st.markdown("""
             """)
 st.divider()
 
-#Erstelle mir einen Satz von einem schönen Sommertag, wo ich mir ein Erdbeereis hole.
+#Erstelle mir einen Satz mit einem schönen Sommertag und Erdbeereis. Der Satz soll keine ausschweifende Beschreibungen enthalten
 st.markdown("""
                Ich möchte, dass ChatGPT mir einen Satz erzeugt, in dem es um einen schönen Sommertag geht
-               in der die Sonne scheint und ich mir ein Erdbeereis holen gehe
+               in der die Sonne scheint und ich ein Erdbeereis esse. 
             """)
 
 satzanzeigen_button=st.button("Satz anzeigen", key="satzanzeigenlassen")
-#An diesem warmen Sommertag, als die Sonne sanft über den Horizont schien und die Luft nach frischen Blumen duftete,
-#schlenderte ich zum Eismann und gönnte mir ein cremiges Erdbeereis, das auf meiner Zunge zerging.
+#An einem schönen Sommertag genieße ich ein kühles Erdbeereis.
 #
 if satzanzeigen_button:
     st.write(
-        """An diesem warmen Sommertag, als die Sonne sanft über den Horizont schien und die Luft nach frischen Blumen duftete,
-           schlenderte ich zum Eismann und gönnte mir ein cremiges Erdbeereis, das auf meiner Zunge zerging.
+        """
+            An einem schönen Sommertag genieße ich ein kühles Erdbeereis.
         """)
 
 st.divider()
@@ -49,7 +48,7 @@ if st.button("Satz erstellen") and satz:
         model="gpt-3.5-turbo",
 
         messages=[
-                  {"role": "system", "content": "Du gibst einfache kurze Antworten aus ohne ausschweifende Beschreibungen."},
+                  {"role": "system", "content": "Du gibst Antworten aus ohne ausschweifende Beschreibungen."},
                   {"role": "user", "content": satz}
                  ]
     )
@@ -93,4 +92,10 @@ with col2:
 
     if st.button("weiter"):
         st.switch_page("pages/4_Datei.py")
+
+# st.markdown("""
+#             In der ersten Übung hast du gerlernt, dass
+#             - bei jedem Prompt ein neuer Text generiert wir
+#             - dass es schwer ist den generierten Text von einer Maschine zu unterscheiden.
+#             """)
 

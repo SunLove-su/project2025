@@ -45,11 +45,12 @@ st.markdown(
     """Jetzt bist du an der Reihe, bitte beschreibe das Bild, dass DALL E für dich generieren soll.
         """)
 #Speichern der Prompts:
-if "alle_saetze" not in st.session_state:
-     st.session_state.alle_saetze = []
+if "alle_eingaben" not in st.session_state:
+     st.session_state.alle_eingaben = []
 
 # Eingabe und Button
-beschreibung = st.text_input("Bitte beschreibe, wie dein Bild generiert werden soll",placeholder="z. B. Erstelle mir ein Bild von einer jungen Frau mit braunen Haaren in einem Kleid im Disney-Stil")
+eingabe = st.text_input("Bitte beschreibe, wie dein Bild generiert werden soll",placeholder="z. B. Erstelle mir ein Bild von einer jungen Frau mit braunen Haaren in einem Kleid im Disney-Stil")
+beschreibung=(f"{eingabe} stelle immer nur eine Person oder Tier dar.")
 if st.button("Bild erstellen") and beschreibung:
     with st.spinner(text="Generiere Bild, bitte warten..."):
     # Antwort holen
@@ -66,6 +67,9 @@ if st.button("Bild erstellen") and beschreibung:
         # Bild anzeigen
     generiertesBild = antwort.data[0].url
     st.image(generiertesBild)
+    st.session_state.alle_eingaben.append(eingabe)
+   
+    st.session_state.alle_eingaben
   
     st.divider()
 
@@ -76,7 +80,7 @@ if st.button("Bild erstellen") and beschreibung:
                     """)
     st.divider()
 #Speichern der Prompts:
-    if "antworten_uebung5" not in st.session_state:
+if "antworten_uebung5" not in st.session_state:
         st.session_state.antworten_uebung5 = {}
 datenschutz=st.radio("Würdest du von dir ein Bild im Disney-Stil generieren lassen, indem du ein Bild von dir hochlädst?",
     ["Ja, ich würde ein Bild von mir hochladen",
@@ -99,7 +103,7 @@ urheberrecht=st.radio("Findest du es in Orndung, dass Bilder im Stil von bekannt
                                    ], index=None
                         )
 if urheberrecht is not None:
-        st.write("Deine Antwort ist:", )
+        st.write("Deine Antwort ist:",urheberrecht)
         st.session_state.antworten_uebung5["urheberrecht"]=urheberrecht
         st.session_state.antworten_uebung5
     

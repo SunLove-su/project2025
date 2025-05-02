@@ -15,7 +15,7 @@ st.markdown("""
             """)
 st.divider()
 
-with st.expander("Was ist KI",icon=":material/double_arrow:"):
+with st.expander("Was ist KI?",icon=":material/double_arrow:"):
      st.markdown("""
                     Stellt euch ein Labyrinth mit Sackgassen und mit vielen unterschiedlichen Wegen vor,
                     bei dem nur einer führt zum Ausgang.
@@ -39,7 +39,7 @@ with st.expander("Was ist KI",icon=":material/double_arrow:"):
                     und Entscheidungen die wir treffen nachzuahmen."""
      )
 
-with st.expander("Wie funktioniert KI",icon=":material/double_arrow:"):
+with st.expander("Wie funktioniert KI?",icon=":material/double_arrow:"):
      st.markdown("""
                  Wir haben mit dem Labyrinth gesehen, dass die KI:
                  1. viele Daten braucht: 1.000.000 ist die KI die unterschiedlichen Labyrithen durchgegangen
@@ -69,8 +69,10 @@ with st.expander("KI-Begriffe",icon=":material/double_arrow:"):
                                     Beispiel es sind jetzt viel mehr Spieler zwischen den Positionen auf dem Feld, sodass ein tieferes Netz entsteht.
                                     Die Spieler jeder Ebene haben bestimmte Aufgaben. Die erste Reihe sucht die freien Räume, die zweite erkennt die Lücken in
                                     der Abwehr und die dritte Reihe machen den Laufweg, bevor die letzte Reihe den Torschuss macht.
-                    - Prompt: Anweisungen die wir der KI gesprochen oder via Text""")
-with st.expander("Was kann KI",icon=":material/double_arrow:"):
+                    - Prompt: Anweisungen die wir der KI gesprochen oder via Text
+                    - Generative KI (Gen-KI): KI-Anwendungen, die durch das gelernte neue Inhalte generieren können
+                    """)
+with st.expander("Was kann KI?",icon=":material/double_arrow:"):
      st.markdown("""
                     KI kann unterschiedliche Aufgaben ausführen:
                     - Bilder erkennen und erstellen: KI kann die Motive auf den Bildern erkennen, mit Text lässt sich auch ein Bild erzeugen, z. B. DALL E
@@ -82,14 +84,8 @@ with st.expander("Was kann KI",icon=":material/double_arrow:"):
                """)
 
 #Speichern der Prompts:
-if "result2" not in st.session_state:
-    st.session_state.result2 = {}
-
-#Fragen die du selbst über KI-beantworten haben willst
-
-# Fragen direkt auf der Seite speichern
-if "2_seite_prompt" not in st.session_state:
-    st.session_state.seiten_fragen = ""
+if "alle_fragen" not in st.session_state:
+    st.session_state.alle_fragen = []
 
 # Eingabe und Button
 frage = st.text_input("Falls du noch mehr Wissen möchtest frag die KI")
@@ -102,14 +98,14 @@ if st.button("Fragen") and frage:
     
     # Antwort zeigen
     st.write("Antwort:")
-    speichern=st.write(antwort.choices[0].message.content)
-    #Frage zu dem Speicher hinzufügen
-    st.session_state.result2["speichern"]=speichern
+    antwort_text=antwort.choices[0].message.content
+    st.write(antwort_text)
   
-    
-    # Frage zum Gesamttext hinzufügen
-    st.session_state.seiten_fragen += "- " + frage + "\n"
 
-# Alle Fragen anzeigen
-st.write("Deine Fragen:")
-st.text(st.session_state.seiten_fragen)
+    # Alle Fragen anzeigen
+    st.write("Deine Fragen:")
+    st.write(frage)
+    st.session_state.alle_fragen.append(frage)
+   
+    st.session_state.alle_fragen 
+

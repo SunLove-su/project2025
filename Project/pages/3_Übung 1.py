@@ -44,7 +44,8 @@ if "alle_saetze" not in st.session_state:
 satz = st.text_input("Dein Satz bitte",placeholder="z. B. Erstelle mir einen Satz mit schönen Sommertag und Erdbeereis")
 if st.button("Satz erstellen") and satz:
     # Antwort holen
-    antwort = client.chat.completions.create(
+    with st.spinner(text="Erstelle Text, bitte warten..."):
+        antwort = client.chat.completions.create(
         model="gpt-3.5-turbo",
 
         messages=[
@@ -91,7 +92,7 @@ col1, col2 = st.columns([8,2])
 with col2:
 
     if st.button("weiter"):
-        st.switch_page("pages/4_Datei.py")
+        st.switch_page("pages/4_Übung 2.py")
 
 # st.markdown("""
 #             In der ersten Übung hast du gerlernt, dass

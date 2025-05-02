@@ -90,8 +90,10 @@ if "alle_fragen" not in st.session_state:
 # Eingabe und Button
 frage = st.text_input("Falls du noch mehr Wissen möchtest frag die KI")
 if st.button("Fragen") and frage:
-    # Antwort holen
-    antwort = client.chat.completions.create(
+    # Antwort generieren
+    
+    with st.spinner(text="Erstelle Text, bitte warten..."):
+        antwort = client.chat.completions.create(
         model="gpt-3.5-turbo",
         messages=[{"role": "user", "content": frage}]
     )
@@ -109,11 +111,11 @@ if st.button("Fragen") and frage:
    
     st.session_state.alle_fragen 
 
-    
+
 st.divider()
 st.markdown("Um fortzufahren, klicke auf \"weiter\" ")
 col1, col2 = st.columns([8,2])
 with col2:
 
     if st.button("weiter"):
-        st.switch_page("pages/3_Datei.py")
+        st.switch_page("pages/3_Übung 1.py")

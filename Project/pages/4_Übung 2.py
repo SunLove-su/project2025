@@ -11,14 +11,16 @@ st.markdown("<h4>2. Übung</h4>",unsafe_allow_html=True)
 st.markdown("""
             In dieser Übung nutzen wir den Satz mit dem schönen Sommertag und dem Erdbeereis aus Übung 1 weiter.
             Diesmal untersuchen wir den Satz etwas genauer.
-            Wir machen eine Aufgabe aus unserer Grundschulzeit. Wir haben damals gelernt was Vokale sind (a,e,i,o,u).
+            Wir machen eine Aufgabe aus unserer Grundschulzeit. Wir haben damals gelernt was Vokale sind (a,e,i,o,u,ä,ö,ü).
             """)
 st.divider()
 beispielsatz="An einem schönen Sommertag genieße ich ein kühles Erdbeereis."
 st.markdown(beispielsatz)
 
 if st.button("ChatGPT nach Vokalen fragen"):
-    antwort = client.chat.completions.create(
+    # Lösung generieren
+    with st.spinner(text="Erstelle Text, bitte warten..."):
+        antwort = client.chat.completions.create(
         model="gpt-3.5-turbo",
 
         messages=[

@@ -36,6 +36,8 @@ st.divider()
 #st.button hat seine eigenen Positionen, die können nur mit CSS-Hijacking geändert werden
 # d.h. entsprechendes Element untersuchen mit den Entwickler-Modus und den entsprechenden div-container raussuchen
 # bei Änderungen der Streamlit version kann es aber zu veränderungen kommen, die Hichaking version ist nicht offiziell
+
+st.divider()
 st.markdown("Um mit dem Schulmodul zu beginnen, klicke auf \"Start\" ")
 col1, col2 = st.columns([8,2])
 with col2:

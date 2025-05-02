@@ -109,3 +109,11 @@ if st.button("Fragen") and frage:
    
     st.session_state.alle_fragen 
 
+    
+st.divider()
+st.markdown("Um fortzufahren, klicke auf \"weiter\" ")
+col1, col2 = st.columns([8,2])
+with col2:
+
+    if st.button("weiter"):
+        st.switch_page("pages/3_Datei.py")

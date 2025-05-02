@@ -22,8 +22,8 @@ if st.button("ChatGPT nach Vokalen fragen"):
         model="gpt-3.5-turbo",
 
         messages=[
-                  {"role": "system", "content": "Zähle die Vokale für den Satz und gebe sie so aus, dass ich sie gut lesen kann."},
-                  {"role": "user", "content": f"Zähle die Vokale für den Satz {beispielsatz} und gebe die Vokale untereinander aus mit : und der Anzahl"}
+ #                 {"role": "system", "content": "Zähle die Vokale für den Satz und gebe sie so aus, dass ich sie gut lesen kann."},
+                  {"role": "user", "content": f"Zähle die Vokale für den Satz {beispielsatz} in dem format kleinbuchstabe : zahl und gebe die Vokale untereinander aus mit : und der Anzahl. Ohne einen Kommentar danach"}
                  ]  )
     
     # Antwort zeigen
@@ -32,6 +32,21 @@ if st.button("ChatGPT nach Vokalen fragen"):
     st.write(antwort_text)
 
 st.write("Jetzt zählen wir selbst nach:")
+if st.button("Vokale selbst zählen"):
+    satzklein = beispielsatz.lower()
+    vokale ="aeiouäöü"
+
+    for vokal in vokale:
+        anzahl=satzklein.count(vokal)
+        if anzahl >0:
+            st.write(f"Buchstabe {vokal} : {anzahl}")
+    st.markdown("""
+                    Wie du siehst macht die KI-Anwendung auch Fehler. Sie kann gut Texte erzeugen, Fragen beantworten
+                    aber nicht alles ist richtig! Sie kann sich auch vertun, deshalb ist es wichtig, dass Ergebnis immer zu prüfen!
+
+    
+                """)
+
 
 
 

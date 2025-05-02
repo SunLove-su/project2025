@@ -3,9 +3,9 @@ import openai
 
 client = openai.OpenAI(api_key=st.secrets["openai"]["api_key"])
 
-# st.set_page_config(
-#     page_title="4. Übung"
-# )
+st.set_page_config(
+    page_title="4. Übung"
+)
 st.markdown("<h4>4. Übung</h4>",unsafe_allow_html=True)
 
 st.markdown("""

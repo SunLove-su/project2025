@@ -3,9 +3,9 @@ import openai
 
 client = openai.OpenAI(api_key=st.secrets["openai"]["api_key"])
 
-# st.set_page_config(
-#     page_title="1. Übung"
-# )
+st.set_page_config(
+    page_title="1. Übung"
+)
 st.markdown("<h4>1. Übung</h4>",unsafe_allow_html=True)
 st.markdown("""
             Beginnen wir mit der ersten Übung.
@@ -58,15 +58,22 @@ if st.button("Satz erstellen") and satz:
     st.write("Antwort:")
     antwort_text=antwort.choices[0].message.content
     st.write(antwort_text)
-  
+    # Alle Sätze anzeigen
+    st.write("Dein Satz:")
+    st.write(satz)
+    st.session_state.alle_saetze.append(satz)
+    
+    st.session_state.alle_saetze 
+    
     st.divider()
     st.markdown("""
                 Siehst du, du hast einen komplett anderen Satz erhalten!
                 Frage nochmal nach.
 
                  """)
-    
-    satzvoneinemmenschen=st.radio("Ist es wahrscheinlich, dass ein Mensch den Satz auch so schreiben würde?",
+if "antworten_uebung1" not in st.session_state:
+        st.session_state.antworten_uebung1 = {}
+satzvoneinemmenschen=st.radio("Ist es wahrscheinlich, dass ein Mensch den Satz auch so schreiben würde?",
                                   ["Ja, sehr wahrscheinlich",
                                    "Ja, wahrscheinlich",
                                    "Neutral",
@@ -75,16 +82,16 @@ if st.button("Satz erstellen") and satz:
                                    "Keine Angabe"
                                    ], index=None
     )
+if satzvoneinemmenschen is not None:
+        st.write("Deine Antwort ist:",satzvoneinemmenschen)
+        st.session_state.antworten_uebung1["satzvoneinemmenschen"]=satzvoneinemmenschen
+        st.session_state.antworten_uebung1
+
 
 #                Mein Satz oben ändert sich nicht, weil ich die Anfrage einmal an ChatGPT gestellt habe
 #                und sie fest als Beispiel in unsere Übung aufgenommen habe.
 
-    # Alle Sätze anzeigen
-    st.write("Dein Satz:")
-    st.write(satz)
-    st.session_state.alle_saetze.append(satz)
-   
-    st.session_state.alle_saetze 
+
     
 st.divider()
 st.markdown("Um fortzufahren, klicke auf \"weiter\" ")

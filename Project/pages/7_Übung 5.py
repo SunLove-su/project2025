@@ -3,10 +3,10 @@ import openai
 
 client = openai.OpenAI(api_key=st.secrets["openai"]["api_key"])
 
-# st.set_page_config(
-#     page_title="4. Übung"
-# )
-st.markdown("<h4>4. Übung</h4>",unsafe_allow_html=True)
+st.set_page_config(
+    page_title="5. Übung"
+ )
+st.markdown("<h4>5. Übung</h4>",unsafe_allow_html=True)
 
 st.markdown("""
             In der Übung zuvor haben wir die Person gesehen, die das Eis isst.
@@ -113,4 +113,4 @@ col1, col2 = st.columns([8,2])
 with col2:
 
     if st.button("weiter"):
-        st.switch_page("pages/7_Übung 5.py")
+        st.switch_page("pages/8_Abschlussumfrage.py")

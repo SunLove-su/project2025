@@ -3,9 +3,9 @@ import openai
 
 client = openai.OpenAI(api_key=st.secrets["openai"]["api_key"])
 
-# st.set_page_config(
-#     page_title="1. Übung"
-# )
+st.set_page_config(
+    page_title="2. Übung"
+)
 st.markdown("<h4>2. Übung</h4>",unsafe_allow_html=True)
 
 st.markdown("""
@@ -25,7 +25,7 @@ if st.button("ChatGPT nach Vokalen fragen"):
 
         messages=[
  #                 {"role": "system", "content": "Zähle die Vokale für den Satz und gebe sie so aus, dass ich sie gut lesen kann."},
-                  {"role": "user", "content": f"Zähle die Vokale für den Satz {beispielsatz} in dem format kleinbuchstabe : zahl und gebe die Vokale untereinander aus mit : und der Anzahl. Ohne einen Kommentar danach"}
+                  {"role": "user", "content": f"Vokale zählen {beispielsatz} in jeder Zeile jeweils ein Vokal. In dem Format Buchstabe Kleinbuchstabe : zahl Leerzeile dann nächster Vokal am Ende die Summe der Vokale. Ohne einen Kommentar danach"}
                  ]  )
     
     # Antwort zeigen
@@ -37,11 +37,14 @@ st.write("Jetzt zählen wir selbst nach:")
 if st.button("Vokale selbst zählen"):
     satzklein = beispielsatz.lower()
     vokale ="aeiouäöü"
+    gesamtvokale = 0
 
     for vokal in vokale:
         anzahl=satzklein.count(vokal)
         if anzahl >0:
-            st.write(f"Buchstabe {vokal} : {anzahl}")
+            st.write(f"{vokal} : {anzahl},")
+            gesamtvokale=gesamtvokale+anzahl
+    st.write(f"Gesamt: {gesamtvokale}")
     st.markdown("""
                     Wie du siehst macht die KI-Anwendung auch Fehler. Sie kann gut Texte erzeugen, Fragen beantworten
                     aber nicht alles ist richtig! Sie kann sich auch vertun, deshalb ist es wichtig, dass Ergebnis immer zu prüfen!

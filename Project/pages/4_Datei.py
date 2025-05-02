@@ -1,8 +1,21 @@
 import streamlit as st
+import openai
 
-st.set_page_config(
-    page_title="Sensibilisierungs Modul für KI-generierte Inhalte"
-)
+client = openai.OpenAI(api_key=st.secrets["openai"]["api_key"])
+
+# st.set_page_config(
+#     page_title="1. Übung"
+# )
+st.markdown("<h4>1. Übung</h4>",unsafe_allow_html=True)
+st.markdown("""
+            Beginnen wir mit der ersten Übung.
+            Auf der Seite davor haben wir gelernt, was KI ist und was eine KI kann.
+            Jetzt verwenden wir eine KI-Anwendung, eine generative KI, die dir vielleicht bekannt vorkommt
+            ChatGPT.
+            Bei ChatGPT handelt es sich um ein Large Language Modell (LLM).
+            Mit ChatGPT können z. B. Texte erzeugt, Übersetzungen gestellt und Informationen eingeholt werden usw.
+            """)
+st.divider()
 
 #Idee Schüler sollen in einem Prompt die KI bitten einen Text zu schreiben, eine spannende
 #Geschichte erfinden. Dabei werden die Schüler gebeten, zu überlegen, was sie sich als Ergebnis

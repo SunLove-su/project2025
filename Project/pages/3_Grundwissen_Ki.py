@@ -129,7 +129,7 @@ if st.button("Fragen") and frage:
         })
    
     st.session_state.antworten_grundwissen 
-
+st.write("")
 #Überprüfungsfrage: Sicherstellung, dass die Textbausteine gelesen wurden
 st.divider()
 ueberpruefungsfrage=st.radio("Welche Aussage über KI trifft zu?",

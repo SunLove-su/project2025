@@ -84,8 +84,8 @@ with st.expander("Was kann KI?",icon=":material/double_arrow:"):
                """)
 
 #Speichern der Prompts:
-if "alle_fragen" not in st.session_state:
-    st.session_state.alle_fragen = []
+if "antworten_grundwissen" not in st.session_state:
+    st.session_state.antworten_grundwissen = []
 
 # Eingabe und Button
 frage = st.text_input("Falls du noch mehr Wissen möchtest frag die KI")
@@ -107,9 +107,9 @@ if st.button("Fragen") and frage:
     # Alle Fragen anzeigen
     st.write("Deine Fragen:")
     st.write(frage)
-    st.session_state.alle_fragen.append(frage)
+    st.session_state.antworten_grundwissen.append(frage)
    
-    st.session_state.alle_fragen 
+    st.session_state.antworten_grundwissen 
 
 
 st.divider()
@@ -118,4 +118,4 @@ col1, col2 = st.columns([8,2])
 with col2:
 
     if st.button("weiter"):
-        st.switch_page("pages/3_Übung 1.py")
+        st.switch_page("pages/4_Übung 1.py")

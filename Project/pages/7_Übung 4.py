@@ -112,4 +112,4 @@ col1, col2 = st.columns([8,2])
 with col2:
 
     if st.button("weiter"):
-        st.switch_page("pages/7_Übung 5.py")
+        st.switch_page("pages/8_Übung 5.py")

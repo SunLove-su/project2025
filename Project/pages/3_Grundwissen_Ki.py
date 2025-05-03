@@ -75,38 +75,42 @@ if "antworten_grundwissen" not in st.session_state:
 #Speichern der Anzahl der Prompts ohne Session.State-Befehl wird durch neu eingeben einer Frage wieder 0 gesetzt
 if "anzahleingaben_grundwissen" not in st.session_state:
     st.session_state.anzahleingaben_grundwissen = 0
-# Eingabe und Button
-#
-frage = st.text_input("Falls du noch mehr Wissen möchtest frag die KI", placeholder="In diesem Feld kannst du deine Fragen stellen (auch mehrfach).")
 
-if st.button("Fragen") and frage:
-    # Antwort generieren
-    
+#st.text_input hat Bugs
+# Eingabe und Button
+with st.form("frage_formular", clear_on_submit=True):
+    frage = st.text_input("Falls du noch mehr Wissen möchtest, frag die KI", 
+                          placeholder="In diesem Feld kannst du deine Fragen stellen (auch mehrfach).")
+    senden = st.form_submit_button("Fragen")
+
+# Antwort generierung erst wenn Button geklickt und Eingabe vorhanden
+if senden and frage:
+
     with st.spinner(text="Erstelle Text, bitte warten..."):
         antwort = client.chat.completions.create(
-        model="gpt-3.5-turbo",
-        messages=[{"role": "user", "content": frage}]
-    )
-    st.session_state.anzahleingaben_grundwissen=st.session_state.anzahleingaben_grundwissen+1
-    anzahleingaben=st.session_state.anzahleingaben_grundwissen
-    # Antwort zeigen
+            model="gpt-3.5-turbo",
+            messages=[{"role": "user", "content": frage}]
+        )
+        antwort_text = antwort.choices[0].message.content
+
+    # Prompt-Zähler aktualisieren
+    st.session_state.anzahleingaben_grundwissen += 1
+    anzahleingaben = st.session_state.anzahleingaben_grundwissen
+
+    # Antwort anzeigen
     st.write("Antwort:")
-    antwort_text=antwort.choices[0].message.content
     st.write(antwort_text)
 
-
-    # Alle Fragen anzeigen
-    st.write("Deine Fragen:")
+    # Frage anzeigen
+    st.write("Deine Frage:")
     st.write(frage)
 
-    #Speichern der Fragen, Antworten und Eingaben
+    # Frage + Antwort speichern
     st.session_state.antworten_grundwissen.append({
-        "Frage":frage,
-        "Antwort":antwort_text,
-        "Anzahl Prompts":anzahleingaben
-        })
-    st.session_state.frage_input = ""
-    st.session_state.antworten_grundwissen 
+        "Frage": frage,
+        "Antwort": antwort_text,
+        "Anzahl Prompts": anzahleingaben
+    })
 st.write("")
 #Überprüfungsfrage: Sicherstellung, dass die Textbausteine gelesen wurden
 st.divider()

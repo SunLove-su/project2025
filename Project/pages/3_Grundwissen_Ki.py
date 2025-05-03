@@ -50,6 +50,16 @@ with st.expander("Wie funktioniert KI?",icon=":material/double_arrow:"):
                  4. fehler macht: die KI verläuft sich, geht den falschen Weg und steckt in einer Sackgasse fest 
                 """)
 
+with st.expander("Welche Risiken hat KI",icon=":material/double_arrow:"):
+     st.markdown("""
+                 Wir haben mit dem Labyrinth gesehen, dass die KI:
+                 1. viele Daten braucht: 1.000.000 ist die KI die unterschiedlichen Labyrithen durchgegangen
+                 2. sich Muster merkt: wenn links eine Wand ist, sie rechts weiter geht und das bei 3 Wegen der
+                    mittlere meistens ins Ziel führt 
+                 3. erlerntes anwendet und daraus vorhersagen trifft: die KI begeht ein Labyrinth, die sie noch nie gegangen ist und gelangt
+                    an den Ausgang
+                 4. fehler macht: die KI verläuft sich, geht den falschen Weg und steckt in einer Sackgasse fest 
+                """)
 
 with st.expander("KI-Begriffe",icon=":material/double_arrow:"):
      st.markdown("""
@@ -86,7 +96,9 @@ with st.expander("Was kann KI?",icon=":material/double_arrow:"):
 #Speichern der Prompts:
 if "antworten_grundwissen" not in st.session_state:
     st.session_state.antworten_grundwissen = []
-
+#Speichern der Anzahl der Prompts ohne Session.State-Befehl wird durch neu eingeben einer Frage wieder 0 gesetzt
+if "anzahleingaben_grundwissen" not in st.session_state:
+    st.session_state.anzahleingaben_grundwissen = 0
 # Eingabe und Button
 frage = st.text_input("Falls du noch mehr Wissen möchtest frag die KI")
 if st.button("Fragen") and frage:
@@ -97,19 +109,39 @@ if st.button("Fragen") and frage:
         model="gpt-3.5-turbo",
         messages=[{"role": "user", "content": frage}]
     )
-    
+    st.session_state.anzahleingaben_grundwissen=st.session_state.anzahleingaben_grundwissen+1
+    anzahleingaben=st.session_state.anzahleingaben_grundwissen
     # Antwort zeigen
     st.write("Antwort:")
     antwort_text=antwort.choices[0].message.content
     st.write(antwort_text)
-  
+
 
     # Alle Fragen anzeigen
     st.write("Deine Fragen:")
     st.write(frage)
-    st.session_state.antworten_grundwissen.append(frage)
+
+    #Speichern der Fragen, Antworten und Eingaben
+    st.session_state.antworten_grundwissen.append({
+        "Frage":frage,
+        "Antwort":antwort_text,
+        "Anzahl Prompts":anzahleingaben
+        })
    
     st.session_state.antworten_grundwissen 
+
+#Überprüfungsfrage: Sicherstellung, dass die Textbausteine gelesen wurden
+st.divider()
+ueberpruefungsfrage=st.radio("Welche Aussage über KI trifft zu?",
+                            ("KI braucht Schritt für Schritt-Anweisungen",
+                             "KI kann jede Aufgabe lösen und macht keine Fehler",
+                             "KI braucht sehr viele Daten um zu lernen und macht trotzdem Fehler",
+                             "Keine der Dargestellten Fragen ist richtig"),
+                             index=None,
+
+)
+richtigeAntwort="KI braucht sehr viele Daten um zu lernen und macht trotzdem Fehler"
+
 
 
 st.divider()
@@ -118,4 +150,10 @@ col1, col2 = st.columns([8,2])
 with col2:
 
     if st.button("weiter"):
-        st.switch_page("pages/4_Übung 1.py")
+        if ueberpruefungsfrage is not None:
+            if ueberpruefungsfrage==richtigeAntwort:
+               st.switch_page("pages/4_Übung 1.py")
+            else:
+                st.error("Die Antwort ist falsch. Bitte lies nochmal den Baustein Grundlagen")
+        else:
+            st.error("Bitte beantworte die Frage, um fortzufahren")

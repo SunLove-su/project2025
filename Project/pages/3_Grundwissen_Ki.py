@@ -9,78 +9,54 @@ st.set_page_config(
 
 st.markdown("<h4>Grundwissen über Künstliche Intelligenz (KI)</h4>",unsafe_allow_html=True)
 st.markdown("""
-            Auf dieser Seite erfährst du einiges spannendes über KI, mach dich bereit. 
-            Wir erforschen gemeinsam KI und frischen entweder bereits vorhandenes Wissen 
-            auf oder lernen was neues
+            Auf dieser Seite lernen wir etwas über die Grundlagen der KI.
+            Es sind neue oder schon für dich bekannte Informationen.
             """)
 st.divider()
 
 with st.expander("Was ist KI?",icon=":material/double_arrow:"):
      st.markdown("""
-                    Stellt euch ein Labyrinth mit Sackgassen und mit vielen unterschiedlichen Wegen vor,
-                    bei dem nur einer führt zum Ausgang.
-                 
-                    Vor der KI musste ich einem Computerprogramm genaue Angaben geben Gehe zwei Schritte
-                    nach vorne, einen nach links, drei nach vorne. Gibt es Hindernisse wie eine Mauer dann
-                    bleibt das Programm stehen, da es dazu keine Angeben erhalten hat. Beim Programmieren
-                    muss jede Möglichkeit, jedes Hinderniss und jeder Schritt beschrieben sein,
-                    ansonsten bleibt das Programm an der Stelle mit dem Hinterniss stehen.
-                 
-                    Mit KI ist es anders. Die KI geht 1.000.000 in unterschiedliche Labyrinthe und merkt sich,
-                    wie ein Hindernis aussieht, dass sie nicht weiter kann und merkt sich den besten Weg zum
-                    Ausgang.Anhand von Mustern hat die KI gelernt, dass wenn links eine Wand ist, sie rechts
-                    weiter gehen kann.oder das bei 3 Wegen der mittlere meistens zum Ziel geführt hat. Bei
-                    Labyrithen die die KI noch nie gegangen ist, kann es passieren dass sie sich verläuft,
-                    den falschen Weg geht und in einer Sackgasse endet
+                    Stell dir ein Computer Fußballspiel vor:
+                    - Bei normaler Programmierung bekommt der Computer genaue Befehle, z. B. "Steuer den Fußballspieler nach vorne, vorne rechts liegt der Ball. Lass ihn aufs
+                      Tor schießen." Wird eine Möglichkeit nicht in einem Befehl erfasst, z. B. der Ball liegt an einer anderen Position, bleibt das Programm stehen.
+                      
+                    - Bei der KI ist es anders. Sie analysiert mehr als 1.000.000 unterschiedliche Fußballspiele und erfasst dabei Muster und Merkmale.
+                      Liegt der Ball an einer anderen Stelle, trifft sie eine Entscheidung und steuert den Spieler dorthin.
+                    
+                    - Bei neuen Situationen, z. B. wenn der Ball im Zuschauerblock landet, kann sie falsche Entscheidungen treffen und den Spieler dorthin leiten.
+                    
+                    - Während du das Spielprinzip meist nach ein, zwei Versuchen verstehst, braucht die KI dafür tausende Spiele.
+                     Sie lernt durch Auswertung der bereitgestellten Daten und kann dadurch selbst Entscheidungen treffen. Damit ahmt sie die Intelligenz eines Menschen nach.
+                    
 
-                    Während Du und ich beim ersten Mal in einem Labyrinth im Gegensatz zur KI wissen, wie wir
-                    aus einer Sackgasse kommen und uns den Ausgang ersuchen, braucht eien KI 1.000.0000 Übungen.
-                    Mit diesen Übungen versucht sie unsere Intelligenz, die Kombinationen, Schlussfolgerungen
-                    und Entscheidungen die wir treffen nachzuahmen."""
+                      """
      )
 
 with st.expander("Wie funktioniert KI?",icon=":material/double_arrow:"):
      st.markdown("""
-                 Wir haben mit dem Labyrinth gesehen, dass die KI:
-                 1. viele Daten braucht: 1.000.000 ist die KI die unterschiedlichen Labyrithen durchgegangen
-                 2. sich Muster merkt: wenn links eine Wand ist, sie rechts weiter geht und das bei 3 Wegen der
-                    mittlere meistens ins Ziel führt 
-                 3. erlerntes anwendet und daraus vorhersagen trifft: die KI begeht ein Labyrinth, die sie noch nie gegangen ist und gelangt
-                    an den Ausgang
-                 4. fehler macht: die KI verläuft sich, geht den falschen Weg und steckt in einer Sackgasse fest 
-                """)
-
-with st.expander("Welche Risiken hat KI",icon=":material/double_arrow:"):
-     st.markdown("""
-                 Wir haben mit dem Labyrinth gesehen, dass die KI:
-                 1. viele Daten braucht: 1.000.000 ist die KI die unterschiedlichen Labyrithen durchgegangen
-                 2. sich Muster merkt: wenn links eine Wand ist, sie rechts weiter geht und das bei 3 Wegen der
-                    mittlere meistens ins Ziel führt 
-                 3. erlerntes anwendet und daraus vorhersagen trifft: die KI begeht ein Labyrinth, die sie noch nie gegangen ist und gelangt
-                    an den Ausgang
-                 4. fehler macht: die KI verläuft sich, geht den falschen Weg und steckt in einer Sackgasse fest 
+                 Beim Fußballspiel haben wir gesehen, dass die KI:
+                 1. Viele Daten braucht, um Erfahrungen aus vielen unterschiedlichen Fußballspielen zu sammeln
+                 2. Muster erkennt, sodass der Spieler dem Ball im Feld hinterher läuft.
+                 3. Erlerntes anwendet und daraus Entscheidungen trifft, z. B. der Spieler läuft zum Ball, obwohl er vorne links liegt
+                 4. Fehler machen kann und z. B. der Spieler zum Zuschauerblock läuft
                 """)
 
 with st.expander("KI-Begriffe",icon=":material/double_arrow:"):
      st.markdown("""
-                - Algorithmus: Schritt für Schritt Anleitung, wie das Computer-Programm, dem ich sagen musste gehe zwei Schritte nach vorne, einen nach links."
-                - Machine Learning: Ist die KI, die 1.000.000 mal durch die Labyrithen muss, sich die Muster und Merkmale merkt"
-                   - Überwachtes Lernen: Ich begleite die KI bei einigen Labyrinthen und zeige ihr den richtigen Weg.
-                   - Unüberwachtes Lernen: Die geht die 1.000.000 mal alleine durch die Labyrinthe und merkt sich die Muster
-                   - Künstliche Neuronale Netze (KNN): Sollen den Aufbau und die Funktionsweise eines Gehirns nachahmen.
-                                                       Beispiel Fußballspiel: Der linke Torwart schießt den Ball, einem freien Verteidiger,
-                                                       dieser zum Mittelfeldspieler, dann zum Stürmer. Jeder Spieler entscheidet zu wem er den
-                                                       Ball spielt.
-                                                       Die Spieler stellen Neuronen dar, die den Ball also die Informationen erhalten, verarbeiten und weitergeben.
-                                                       Als Gesamtbild stellt es ein Netz dar. 
-                                                       Durch das Trainig wird ihr zusammenspiel besser, sodass sie in der Lage sind Titel zu holen oder
-                                                       bei der KI komplexe Aufgaben zu lösen
-                   - Deep Learning: Ist ein vielschichtigeres Netz, mit mehreren Ebenen.
-                                    Beispiel es sind jetzt viel mehr Spieler zwischen den Positionen auf dem Feld, sodass ein tieferes Netz entsteht.
-                                    Die Spieler jeder Ebene haben bestimmte Aufgaben. Die erste Reihe sucht die freien Räume, die zweite erkennt die Lücken in
-                                    der Abwehr und die dritte Reihe machen den Laufweg, bevor die letzte Reihe den Torschuss macht.
-                    - Prompt: Anweisungen die wir der KI gesprochen oder via Text
-                    - Generative KI (Gen-KI): KI-Anwendungen, die durch das gelernte neue Inhalte generieren können
+                - Algorithmus: Schritt-für-Schritt Anleitung z. B. wie bei einem Computerprogramm
+                - Machine Learning: Teilbereich der KI, der viele Daten nutzt, um Muster zu erkennen.
+                   - Überwachtes Lernen: Unterstützung der KI, indem Daten mit Erklärungen und Informationen zur Verfügung gestellt werden.
+                   - Unüberwachtes Lernen: Keine Unterstützung, die KI analysiert die Daten ohne zusätzliche Informationen.
+                   - Künstliche Neuronale Netze (KNN): Ahmen den Aufbau und die Funktionsweise eines Gehirns nach.
+                                                       Beispiel: Jeder Spieler ist ein Neuron, der Ball ist eine Information.                                                    
+                                                       Der linke Torwart schießt den Ball zum Verteidiger, dieser zum Mittelfeldspieler, dieser zum Stürmer.
+                                                       Jeder Spieler entscheidet, zu wem er den Ball spielt. 
+                                                       Die Spieler und ihre Möglichkeiten den Ball zu spielen stellen ein Netz dar und mit dem Training werden sie besser.
+                                                    
+                   - Deep Learning: Komplexeres Netz, mit mehreren Spielerebenen auf dem Feld und bestimmten Aufgaben:
+                                    Erste Reihe erkennt Ballposition, zweite findet freie Räume, dritte plant Laufwege und letzte macht den Torschuss.
+                - Prompt: Befehle bzw. Eingaben, die wir schriftlich oder gesprochen der  KI-Anwendung übergeben
+                - Generative KI (Gen-KI): KI-Anwendungen, die durch das gelernte neue Inhalte erzeugen
                     """)
 with st.expander("Was kann KI?",icon=":material/double_arrow:"):
      st.markdown("""
@@ -100,7 +76,9 @@ if "antworten_grundwissen" not in st.session_state:
 if "anzahleingaben_grundwissen" not in st.session_state:
     st.session_state.anzahleingaben_grundwissen = 0
 # Eingabe und Button
-frage = st.text_input("Falls du noch mehr Wissen möchtest frag die KI")
+#
+frage = st.text_input("Falls du noch mehr Wissen möchtest frag die KI", placeholder="In diesem Feld kannst du deine Fragen stellen (auch mehrfach).")
+
 if st.button("Fragen") and frage:
     # Antwort generieren
     
@@ -127,7 +105,7 @@ if st.button("Fragen") and frage:
         "Antwort":antwort_text,
         "Anzahl Prompts":anzahleingaben
         })
-   
+    st.session_state.frage_input = ""
     st.session_state.antworten_grundwissen 
 st.write("")
 #Überprüfungsfrage: Sicherstellung, dass die Textbausteine gelesen wurden

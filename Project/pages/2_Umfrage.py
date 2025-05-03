@@ -1,7 +1,7 @@
 import streamlit as st
 
 st.set_page_config(
-    page_title="Umfrage"
+    page_title="Einstiegsumfrage"
  )
 st.markdown("<h4>Einstiegsumfrage</h4>",unsafe_allow_html=True)
 

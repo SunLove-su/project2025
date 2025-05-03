@@ -61,11 +61,10 @@ with st.expander("KI-Begriffe",icon=":material/double_arrow:"):
 with st.expander("Was kann KI?",icon=":material/double_arrow:"):
      st.markdown("""
                     KI kann unterschiedliche Aufgaben ausführen:
-                    - Bilder erkennen und erstellen: KI kann die Motive auf den Bildern erkennen, mit Text lässt sich auch ein Bild erzeugen, z. B. DALL E
-                    - Text erkennen und erstellen: KI erkennt Texte auch wenn sie nicht richtig geschrieben sind und kann auch Texte schreiben, z. B. ChatGPT
-                    - Sprache verstehen und antworten: KI versteht deine Worte und Antwortet dir, z. B. Alexa und Siri
-                    - Übersetzen verstehen und erzeugen: KI versteht andere Sprachen und kann auch Text in andere Sprachen übersetzen
-                    - Muster erkennen: KI erkennt Muster die uns ggfls. nicht auffalen, z. B. bei Krankheiten oder zur Gefahrenabwehr
+                    - Bilder erkennen/erstellen: KI generiert Bilder nach deinen Vorgaben im Prompt, z. B. DALL E, Midjourney etc.
+                    - Text erkennen/erstellen/übersetzen: KI antwortet auf deine Prompts, generiert Texte und übersetzt Texte, z. B. ChatGPT, Perplecity
+                    - Sprache verstehen/antworten: KI versteht empfängt deine Sprache und antwortet, z. B. Alexa und Siri
+                    - Muster/Merkmale erkennen: KI analysiert Muster und unterstützt bei Diagnosen oder Vorhersagen, z. B. bei Krankheiten oder zur Gefahrenabwehr
                       usw...
                """)
 
@@ -79,10 +78,11 @@ if "anzahleingaben_grundwissen" not in st.session_state:
 #st.text_input hat Bugs
 # Eingabe und Button
 with st.form("frage_formular", clear_on_submit=True):
-    frage = st.text_input("Falls du noch mehr Wissen möchtest, frag die KI", 
-                          placeholder="In diesem Feld kannst du deine Fragen stellen (auch mehrfach).")
+    frage = st.text_input("Falls du noch mehr Wissen möchtest, frag die KI! (Bitte den Button zum Absenden nutzen)", 
+                          placeholder="Du kannst mehere Fragen stellen,")
     senden = st.form_submit_button("Fragen")
 
+    st.markdown("Wenn du keine Fragen mehr hast, scrolle bitte weiter nach unten")
 # Antwort generierung erst wenn Button geklickt und Eingabe vorhanden
 if senden and frage:
 

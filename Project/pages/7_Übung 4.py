@@ -113,4 +113,8 @@ col1, col2 = st.columns([8,2])
 with col2:
 
     if st.button("weiter"):
-        st.switch_page("pages/8_Abschlussumfrage.py")
+        unbeantwortet = (datenschutz is None or urheberrecht is None)
+        if unbeantwortet:
+            st. error("Bitte beantworte alle Fragen, um fortzufahren.")
+        else: 
+            st.switch_page("pages/8_Abschlussumfrage.py")

@@ -36,7 +36,6 @@ wissen_gewonnen = st.multiselect(
                                 ("Wie echt KI-generierte Bilder aussehen können",
                                 "Wie ich Stereotype in KI-Antworten erkenne", 
                                 "Wie die KI-generierten Darstellungen mich beeinflussen",
-                                "Wie ich Fake News erkennen kann", 
                                 "Wie ich keine persönlichen Daten in die KI übergebe",
                                 "Wie Urheberrechtliche Daten angeblich verwendet werden",
                                 "Keine Angabe"),
@@ -91,22 +90,13 @@ if verbesserung:
     st.session_state.antworten_abschlussumfrage["verbesserung"] = verbesserung
 
 #############################################
-#Ausgabe einer Fehlermeldung, wenn nicht alle Felder ausgefüllt sind
-unbeantwortet = False
 #############################################
 #############################################
-# Initialisiere den Überprüfungszustand
-if 'button_clicked' not in st.session_state:
-    st.session_state.button_clicked = False
-st.session_state
-unbeantwortet = len(st.session_state.antworten_abschlussumfrage) < 4  # Anpassung an die Anzahl der Fragen in der Post-Umfrage
 
-st.markdown("Um das Modul abzuschließen, klicke auf \"Abschließen\" ")
-col1, col2 = st.columns([8,2])
-with col2:
-    if st.button("Abschließen"):
-        st.session_state.button_clicked = True
-        if unbeantwortet:
-             st.error("Bitte fülle alle Pflichtfelder aus!")
-        else:
-            st.success("Vielen Dank für deine Teilnahme!")
+if st.button("weiter"):
+    unbeantwortet = (aufmerksamkeit is None or wissen_gewonnen is None or 
+                     erkennungsfaehigkeit_verbessert is None or modul_bewertung is None)
+    if unbeantwortet:
+        st. error("Bitte beantworte alle Fragen, um fortzufahren.")
+    else: 
+        st.switch_page("pages/9_Abschluss.py")

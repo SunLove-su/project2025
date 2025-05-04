@@ -93,7 +93,7 @@ if verbesserung:
 #############################################
 #############################################
 
-if st.button("weiter"):
+if st.button("Abschluss"):
     unbeantwortet = (aufmerksamkeit is None or wissen_gewonnen is None or 
                      erkennungsfaehigkeit_verbessert is None or modul_bewertung is None)
     if unbeantwortet:

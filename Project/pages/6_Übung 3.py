@@ -6,41 +6,39 @@ client = openai.OpenAI(api_key=st.secrets["openai"]["api_key"])
 st.set_page_config(
     page_title="4. Übung"
 )
+#Speichern:
+if "alle_antworten_uebung3" not in st.session_state:
+     st.session_state.alle_antworten_uebung3 = {}
 st.markdown("<h4>4. Übung</h4>",unsafe_allow_html=True)
 
 st.markdown("""
             In der Übung zuvor haben wir die Person gesehen, die das Eis isst.
-            Bei dem Bild handelt es sich um ein Ki-generiertes Bild von der Seite "https://thispersondoesnotexist.com/", dass sehr echt aussieht.
-            KI-generierte Bilder können sehr real und echt aussehen.
-
-            Für KI-generierte Bilder wird der Deep Learning Algorithmus Generative Adversarial Networks GAN verwendet.
+            Bei dem Bild handelt es sich um ein KI-generiertes Bild von der Seite "https://thispersondoesnotexist.com/", dass sehr echt aussieht.
+            
+            Für KI-generierte Bilder wird der Deep Learning Algorithmus Generative Adversarial Networks (GAN) verwendet.
 
             """)
         
 st.divider()
 st.markdown("""
-                Ich möchte jetzt über die Person auf dem Bild etwas herausfinden und sie kennenlernen.
-                Du hilfst mir dabei! 
-                Wir befragen die KI, wir fragen nach den Hobbies und den Geschenken die sich die Person wünscht.
-
+                Ich möchte der Person auf dem Bild ein Geschenk kaufen und du hilfst mir dabei.
+                Was wäre passend für einen 18-jährigen Mann?            
             """)
-        
+with st.form("frage_formular3_1", clear_on_submit=True):     
+    geschenkempfehlung = st.text_input("Deine Geschenkideen:")
+    speichern = st.form_submit_button("speichern")
+if geschenkempfehlung:
+    st.session_state.alle_antworten_uebung3["geschenkempfehlung"] = geschenkempfehlung
+    st.write(f"Deine Antwort ist: {geschenkempfehlung}")
 st.markdown(
     """
-       Bitte die KI Bilder zu generieren, z. B.
-       - welche Hobbies hat der Jugendliche ca. 18 Jahre alt?
-       - welche Geschenke wünscht sich der Jungendliche ca. 18 Jahre alt?
+       Bitte die KI weitere Geschenkideen zu generieren, z. B. was kann ich einen 18 Jährigen schenken
 
         """)
-#Speichern der Prompts:
-if "alle_saetze" not in st.session_state:
-     st.session_state.alle_saetze = []
-
-
-
-with st.form("frage_formular", clear_on_submit=True):
-    frage = st.text_input("Deine Frage bitte",placeholder="z. B. Welche Hobbies hat ein Jugendlicher ca. 18 Jahre alt")
-    senden = st.form_submit_button("Fragen")
+antwort_text = None
+with st.form("frage_formular3_2", clear_on_submit=True):
+    frage = st.text_input("Deine Frage bitte",placeholder="z. B. Was kann ich einem 18 Jährigen schenken")
+    senden = st.form_submit_button("fragen")
     # Antwort generierung erst wenn Button geklickt und Eingabe vorhanden
     if senden and frage:
         with st.spinner(text="Erstelle Text, bitte warten..."):
@@ -48,7 +46,7 @@ with st.form("frage_formular", clear_on_submit=True):
             model="gpt-3.5-turbo",
 
             messages=[
-                    {"role": "system", "content": "Du gibst Antworten nur stereotypisch sind"},
+                    {"role": "system", "content": "Du gibst kurze Antworten, die nur stereotypisch sind"},
                     {"role": "user", "content": frage}
                     ]
         )
@@ -59,18 +57,23 @@ with st.form("frage_formular", clear_on_submit=True):
         st.write(antwort_text)
     
 
+if geschenkempfehlung is None or antwort_text:
+    st.markdown(f"""
+                    ***Antworten:***\n
+                    ***Deine Vorschläge:*** {geschenkempfehlung},\n
+                    ***KI:*** {antwort_text} 
+                """)     
+
 #Speichern der Prompts:
 if "antworten_uebung4" not in st.session_state:
         st.session_state.antworten_uebung4 = {}
-stereotyp=st.radio("Sind das typische Geschenke und Hobbies von einem Jugendlichem?",
-    ("Ja, das sind typische Geschenke und Hobbies",
+stereotyp=st.radio("Sind das typische Geschenke für einen Jugendlichen?",
+    ("Ja, das sind typische Geschenke",
      "Neutral",
-     "Nein, das sind keine typischen Geschenke und Hobbies",
+     "Nein, das sind keine typischen Geschenke",
      "Keine Angabe"
     ), index=None
     )
-                  
-#Ausgabe der Antwort 
 
 if stereotyp is not None:
     st.write("Deine Antwort ist:", stereotyp)
@@ -86,7 +89,7 @@ col1, col2 = st.columns([8,2])
 with col2:
 
     if st.button("weiter"):
-        unbeantwortet = (stereotyp is None)
+        unbeantwortet = (stereotyp is None or geschenkempfehlung is None)
         if unbeantwortet:
             st. error("Bitte beantworte alle Fragen, um fortzufahren.")
         else: 

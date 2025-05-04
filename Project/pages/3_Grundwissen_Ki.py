@@ -79,39 +79,40 @@ if "anzahleingaben_grundwissen" not in st.session_state:
 # Eingabe und Button
 with st.form("frage_formular", clear_on_submit=True):
     frage = st.text_input("Falls du noch mehr Wissen möchtest, frag die KI!", 
-                          placeholder="Du kannst mehere Fragen stellen,")
+                          placeholder="Du kannst mehrere Fragen stellen")
     senden = st.form_submit_button("Fragen")
 
     st.markdown("Wenn du keine Fragen mehr hast, scrolle bitte weiter nach unten")
 # Antwort generierung erst wenn Button geklickt und Eingabe vorhanden
-if senden and frage:
+    if senden and frage:
 
-    with st.spinner(text="Erstelle Text, bitte warten..."):
-        antwort = client.chat.completions.create(
-            model="gpt-3.5-turbo",
-            messages=[{"role": "user", "content": frage}]
-        )
-        antwort_text = antwort.choices[0].message.content
+        with st.spinner(text="Erstelle Text, bitte warten..."):
+            antwort = client.chat.completions.create(
+                model="gpt-3.5-turbo",
+                messages=[{"role": "user", "content": frage}]
+            )
+            antwort_text = antwort.choices[0].message.content
 
-    # Prompt-Zähler aktualisieren
-    st.session_state.anzahleingaben_grundwissen += 1
-    anzahleingaben = st.session_state.anzahleingaben_grundwissen
+        # Prompt-Zähler aktualisieren
+        st.session_state.anzahleingaben_grundwissen += 1
+        anzahleingaben = st.session_state.anzahleingaben_grundwissen
+        # Frage anzeigen
+        st.write("Deine Frage:")
+        st.write(frage)
 
-    # Antwort anzeigen
-    st.write("Antwort:")
-    st.write(antwort_text)
 
-    # Frage anzeigen
-    st.write("Deine Frage:")
-    st.write(frage)
+        # Antwort anzeigen
+        st.write("Antwort:")
+        st.write(antwort_text)
 
-    # Frage + Antwort speichern
-    st.session_state.antworten_grundwissen.append({
-        "Frage": frage,
-        "Antwort": antwort_text,
-        "Anzahl Prompts": anzahleingaben
-    })
-st.write("")
+    
+        # Frage + Antwort speichern
+        st.session_state.antworten_grundwissen.append({
+            "Frage": frage,
+            "Antwort": antwort_text,
+            "Anzahl Prompts": anzahleingaben
+        })
+    st.write("")
 #Überprüfungsfrage: Sicherstellung, dass die Textbausteine gelesen wurden
 st.divider()
 ueberpruefungsfrage=st.radio("Welche Aussage über KI trifft zu?",

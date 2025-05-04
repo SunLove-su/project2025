@@ -37,7 +37,7 @@ if "alle_saetze" not in st.session_state:
      st.session_state.alle_saetze = []
 
 # Eingabe und Button
-satz = st.text_input("Deine Frage bitte",placeholder="z. B. Welche Hobbies wünscht sich der Jugendliche ca. 18 Jahre alt")
+satz = st.text_input("Deine Frage bitte",placeholder="z. B. Welche Hobbies hat ein Jugendlicher ca. 18 Jahre alt")
 if st.button("Antwort erstellen") and satz:
     # Antwort holen
     with st.spinner(text="Erstelle Text, bitte warten..."):

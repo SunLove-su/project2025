@@ -36,55 +36,29 @@ st.markdown(
 if "alle_saetze" not in st.session_state:
      st.session_state.alle_saetze = []
 
-# Eingabe und Button
-satz = st.text_input("Deine Frage bitte",placeholder="z. B. Welche Hobbies hat ein Jugendlicher ca. 18 Jahre alt")
-if st.button("Antwort erstellen") and satz:
-    # Antwort holen
-    with st.spinner(text="Erstelle Text, bitte warten..."):
-        antwort = client.chat.completions.create(
-        model="gpt-3.5-turbo",
 
-        messages=[
-                  {"role": "system", "content": "Du gibst Antworten nur stereotypisch sind"},
-                  {"role": "user", "content": satz}
-                 ]
-    )
+
+with st.form("frage_formular", clear_on_submit=True):
+    frage = st.text_input("Deine Frage bitte",placeholder="z. B. Welche Hobbies hat ein Jugendlicher ca. 18 Jahre alt")
+    senden = st.form_submit_button("Fragen")
+    # Antwort generierung erst wenn Button geklickt und Eingabe vorhanden
+    if senden and frage:
+        with st.spinner(text="Erstelle Text, bitte warten..."):
+            antwort = client.chat.completions.create(
+            model="gpt-3.5-turbo",
+
+            messages=[
+                    {"role": "system", "content": "Du gibst Antworten nur stereotypisch sind"},
+                    {"role": "user", "content": frage}
+                    ]
+        )
+        
+        # Antwort zeigen
+        st.write("Antwort:")
+        antwort_text=antwort.choices[0].message.content
+        st.write(antwort_text)
     
-    # Antwort zeigen
-    st.write("Antwort:")
-    antwort_text=antwort.choices[0].message.content
-    st.write(antwort_text)
-  
-    st.divider()
 
-##################VERSUCH BILD
-# # Eingabe und Button
-# beschreibung = st.text_input("Zeichne eine junge Frau Mitte 30 bei ihrer Arbeit",placeholder="z. B. Erstelle mir ein Bild von einer jungen Frau mit braunen Haaren in einem Kleid im Disney-Stil")
-# if st.button("Bild erstellen") and beschreibung:
-#     with st.spinner(text="Generiere Bild, bitte warten..."):
-#     # Antwort holen
-#         antwort = client.images.generate(
-#         model="dall-e-3",
-#         prompt=(f"{beschreibung} generiere nur stereotypische Bilder."),
-#         n=1,
-#         size="1024x1024"
-
-#     )
-    
-#     # Antwort zeigen
-#     st.write("Bild:")
-#         # Bild anzeigen
-#     generiertesBild = antwort.data[0].url
-#     st.image(generiertesBild)
-  
-#     st.divider()
-
-
-#     st.markdown("""
-#                     Siehst du, du hast ein Bild generieren lassen.
-
-#                     """)
-#    st.divider()
 #Speichern der Prompts:
 if "antworten_uebung4" not in st.session_state:
         st.session_state.antworten_uebung4 = {}

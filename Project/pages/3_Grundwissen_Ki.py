@@ -78,7 +78,7 @@ if "anzahleingaben_grundwissen" not in st.session_state:
 #st.text_input hat Bugs
 # Eingabe und Button
 with st.form("frage_formular", clear_on_submit=True):
-    frage = st.text_input("Falls du noch mehr Wissen möchtest, frag die KI! (Bitte den Button zum Absenden nutzen)", 
+    frage = st.text_input("Falls du noch mehr Wissen möchtest, frag die KI!", 
                           placeholder="Du kannst mehere Fragen stellen,")
     senden = st.form_submit_button("Fragen")
 

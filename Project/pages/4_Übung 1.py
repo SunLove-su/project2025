@@ -150,35 +150,38 @@ with st.form("frage_formular", clear_on_submit=True):
     senden = st.form_submit_button("Fragen")
 
     st.markdown("Wenn du fertig bist, dann scrolle bitte weiter nach unten")
-# Antwort generierung erst wenn Button geklickt und Eingabe vorhanden
-if senden and frage:
+    # Antwort generierung erst wenn Button geklickt und Eingabe vorhanden
+    if senden and frage:
 
-    with st.spinner(text="Erstelle Text, bitte warten..."):
-        antwort = client.chat.completions.create(
-            model="gpt-3.5-turbo",
-            messages=[{"role": "user", "content": frage}]
-        )
-        antwort_text = antwort.choices[0].message.content
+        with st.spinner(text="Erstelle Text, bitte warten..."):
+            antwort = client.chat.completions.create(
+                model="gpt-3.5-turbo",
+                messages=[{"role": "user", "content": frage}]
+            )
+            antwort_text = antwort.choices[0].message.content
 
-    # Prompt-Zähler aktualisieren
-    st.session_state.anzahleingaben_uebung1 += 1
-    anzahleingaben = st.session_state.anzahleingaben_uebung1
+        # Prompt-Zähler aktualisieren
+        st.session_state.anzahleingaben_uebung1 += 1
+        anzahleingaben = st.session_state.anzahleingaben_uebung1
 
-    # Antwort anzeigen
-    st.write("Antwort:")
-    st.write(antwort_text)
 
-    # Frage anzeigen
-    st.write("Deine Frage:")
-    st.write(frage)
+        # Frage anzeigen
+        st.write("Deine Frage:")
+        st.write(frage)
+        
+        # Antwort anzeigen
+        st.write("Antwort:")
+        st.write(antwort_text)
 
-    # Frage + Antwort speichern
-    st.session_state.antworten_uebung1antwortenzufragen.append({
-        "Frage": frage,
-        "Antwort": antwort_text,
-        "Anzahl Prompts": anzahleingaben
-    })
-    st.session_state.antworten_uebung1antwortenzufragen
+
+
+        # Frage + Antwort speichern
+        st.session_state.antworten_uebung1antwortenzufragen.append({
+            "Frage": frage,
+            "Antwort": antwort_text,
+            "Anzahl Prompts": anzahleingaben
+        })
+        st.session_state.antworten_uebung1antwortenzufragen
 st.write("")
 fragevertrauen="Glaubst du, dass diese Antwort richtig ist?"
 antwortvertrauen = st.radio("Glaubst du, dass diese Antwort richtig ist?",

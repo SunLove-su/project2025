@@ -90,11 +90,33 @@ st.divider()
 st.markdown("""
             In dieser Übung nutzen wir den Satz: ***"An einem schönen Sommertag genieße ich ein kühles Erdbeereis."***
             Diesmal untersuchen wir den Satz etwas genauer.
-            Wir machen eine Aufgabe aus unserer Grundschulzeit. Wir haben damals gelernt was Vokale sind (a,e,i,o,u,ä,ö,ü).
+            Wir machen eine Aufgabe aus unserer Grundschulzeit. Wir haben damals gelernt was Vokale sind (a ,e ,i ,o ,u ,ä ,ö  und ü).
             """)
 
-beispielsatz="An einem schönen Sommertag genieße ich ein kühles Erdbeereis."
+beispielsatz = "An einem schönen Sommertag genieße ich ein kühles Erdbeereis."
 st.markdown(beispielsatz)
+
+if st.button("Vokale selbst zählen"):
+    satzklein = beispielsatz.lower()
+    vokale ="aeiouäöü"
+    ausgabe = ""
+    gesamtvokale = 0
+        
+    for vokal in vokale:
+        anzahl = satzklein.count(vokal)
+        if anzahl > 0:
+            ausgabe += f"{vokal}: {anzahl} "
+            gesamtvokale += anzahl
+    
+    # Die gesamte Ausgabe in einer Zeile anzeigen
+    ausgabe += f"Gesamt: {gesamtvokale}"
+    st.write(f"Selbstgezählte Antwort: {ausgabe}")
+    st.session_state.selbstgezaehlteantwort=ausgabe
+
+# Variable für ChatGPT-Antwort im Session State speichern
+if "vokal_antwort_chatgpt" not in st.session_state:
+    st.session_state.vokal_antwort_chatgpt = ""
+antwort_text=""
 if st.button("ChatGPT nach Vokalen fragen"):
     # Lösung generieren
     with st.spinner(text="Erstelle Text, bitte warten..."):
@@ -102,29 +124,29 @@ if st.button("ChatGPT nach Vokalen fragen"):
         model="gpt-3.5-turbo",
         messages=[
  #                 {"role": "system", "content": "Zähle die Vokale für den Satz und gebe sie so aus, dass ich sie gut lesen kann."},
-                  {"role": "user", "content": f"Vokale zählen {beispielsatz} in jeder Zeile jeweils ein Vokal. In dem Format Buchstabe Kleinbuchstabe : zahl Leerzeile dann nächster Vokal am Ende die Summe der Vokale. Ohne einen Kommentar danach"}
+                  {"role": "user", "content": f"Vokale zählen {beispielsatz}. In dem Format Buchstabe Kleinbuchstabe : zahl dann nächster Vokal am Ende die Gesamzahl der Vokale. Alles in einer Zeile. Ohne einen Kommentar danach"}
                  ]  )
    
     # Antwort zeigen
-    st.write("Antwort:")
     antwort_text=antwort.choices[0].message.content
-    st.write(antwort_text)
-st.write("Jetzt zählen wir selbst nach:")
-if st.button("Vokale selbst zählen"):
-    satzklein = beispielsatz.lower()
-    vokale ="aeiouäöü"
-    gesamtvokale = 0
-    for vokal in vokale:
-        anzahl=satzklein.count(vokal)
-        if anzahl >0:
-            st.write(f"{vokal} : {anzahl},")
-            gesamtvokale=gesamtvokale+anzahl
-    st.write(f"Gesamt: {gesamtvokale}")
-    st.markdown("""
-                    Wie du siehst macht die KI-Anwendung auch Fehler. Sie kann gut Texte erzeugen, Fragen beantworten
-                    aber nicht alles ist richtig! Sie kann sich auch vertun, deshalb ist es wichtig, dass Ergebnis immer zu prüfen!
+    st.write(f"Antwort: {antwort_text}")
+    st.session_state.vokal_antwort_chatgpt = antwort_text
+
+    
    
-                """)
+    with st.expander("***VERGLEICH DER ERGEBNISSE:***",icon=":material/double_arrow:"):
+        if st.session_state.vokal_antwort_chatgpt:
+            st.markdown(f"""
+                        ***Selbstgezählte Antwort:*** {st.session_state.selbstgezaehlteantwort}\n
+                        ***ChatGPT´s Antwort:*** {st.session_state.vokal_antwort_chatgpt}
+                    """)
+            st.markdown("""
+                        Wie du siehst macht die KI-Anwendung auch Fehler. Sie kann gut Texte erzeugen, Fragen beantworten
+                        aber nicht alles ist richtig! Sie kann sich auch vertun, deshalb ist es wichtig, dass Ergebnis immer zu prüfen!
+                        """)
+        else:
+            st.info("Bitte klicke zuerst auf 'ChatGPT nach Vokalen fragen', um die Ergebnisse vergleichen zu können.")
+
 
 
 st.divider()

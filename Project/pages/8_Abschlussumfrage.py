@@ -35,7 +35,7 @@ wissen_gewonnen = st.multiselect(
                                 "Was hast du im Modul gelernt?",
                                 ("Wie echt KI-generierte Bilder aussehen können",
                                 "Wie ich Stereotype in KI-Antworten erkenne", 
-                                "Wie die KI-generierten Darstellungen mich beeinflussen",
+                                "Was KI ist",
                                 "Wie ich keine persönlichen Daten in die KI übergebe",
                                 "Wie Urheberrechtliche Daten angeblich verwendet werden",
                                 "Keine Angabe"),

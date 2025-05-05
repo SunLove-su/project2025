@@ -27,9 +27,9 @@ st.markdown("""
 with st.form("frage_formular3_1", clear_on_submit=True):     
     geschenkempfehlung = st.text_input("Deine Geschenkideen:")
     speichern = st.form_submit_button("speichern")
-if geschenkempfehlung:
-    st.session_state.alle_antworten_uebung3["geschenkempfehlung"] = geschenkempfehlung
-    st.write(f"Deine Antwort ist: {geschenkempfehlung}")
+    if geschenkempfehlung:
+        st.session_state.alle_antworten_uebung3["geschenkempfehlung"] = geschenkempfehlung
+        st.write(f"Deine Antwort ist: {geschenkempfehlung}")
 st.markdown(
     """
        Bitte die KI weitere Geschenkideen zu generieren, z. B. was kann ich einen 18 Jährigen schenken
@@ -38,7 +38,7 @@ st.markdown(
 antwort_text = None
 with st.form("frage_formular3_2", clear_on_submit=True):
     frage = st.text_input("Deine Frage bitte",placeholder="z. B. Was kann ich einem 18 Jährigen schenken")
-    senden = st.form_submit_button("fragen")
+    senden = st.form_submit_button("senden")
     # Antwort generierung erst wenn Button geklickt und Eingabe vorhanden
     if senden and frage:
         with st.spinner(text="Erstelle Text, bitte warten..."):

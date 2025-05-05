@@ -11,14 +11,14 @@ KI findet heute überall Einsatz und bietet uns viele Chancen.
 Es gibt aber auch einige Risiken beim Umgang mit KI, z. B. das die generierten Informationen falsch sind und weitere. Diese werden in dem Modul exemplarisch aufgezeigt,
 damit ein bewusster Umgang mit KI-Anwendungen erfolgt""")
 st.markdown("""
-Was Dich erwartet:
+***Dich erwarten:***
 - Umfragen zu deinem Nutzungsverhalten und zu deinem Vertrauen zu KI
 - Interaktive Übungen zur Erkennung von KI-generierten Inhalten
  """)
 
 #Abtrennung -> Hinweise         
 st.divider()
-st.markdown("Hinweise zum Modul:")
+st.markdown("***Hinweise zum Modul:***")
 st.markdown("""
 - Dauer: ca. 40 - 45 Minuten
 - Teilnahme: anonym
@@ -28,8 +28,6 @@ st.markdown("""
   Die Daten werden ausschließlich für ein Forschungsprojekt verwendet.
 
 """)
-#Abtrennung -> zur nächstem Thema
-st.divider()
 
 # funktioniert nur bei großen Layout, bei Handys werden col immer untereinander dargestellt
 #Anpassung mit CSS funktionieren nicht, da diese überschrieben werden

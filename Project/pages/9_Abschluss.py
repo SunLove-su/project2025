@@ -5,7 +5,7 @@ import uuid
 st.set_page_config(
     page_title="Abschluss"
  )
-st.markdown("<h4>Abschlus</h4>",unsafe_allow_html=True)
+st.markdown("<h4>Abschluss</h4>",unsafe_allow_html=True)
 
 st.markdown("""
             Vielen Dank für deine Teilnahme!

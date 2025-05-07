@@ -7,7 +7,7 @@ st.markdown("<h4>Einstiegsumfrage</h4>",unsafe_allow_html=True)
 
 st.markdown("""
             Die Umfrage erfasst deine persönliche Erfahrung und Einschätzung
-            mit Künstlicher Intelligenz.
+            von KI.
             Die Antworten werden nur im Rahmen dieser Arbeit ausgewertet.           
            """)
 st.divider()
@@ -35,7 +35,7 @@ if alter is not None:
     st.session_state.antworten_einstiegsumfrage
 
 # Frage Geschlecht:
-geschlecht = st.radio("Welches Geschlecht hast du?",
+geschlecht = st.radio("Welchem Geschlecht fühlst du dich zugehörig?",
                                   ("Weiblich",
                                    "Männlich",
                                    "Divers",

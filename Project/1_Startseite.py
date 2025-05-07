@@ -2,30 +2,30 @@ import streamlit as st
 
 
 st.set_page_config(
-    page_title="Schulmodul zur Sensibilisierung von KI-generierten Inhalten"
+    page_title="Lerneinheit zur Sensibilisierung von KI-generierten Inhalten"
 )
 
-st.markdown("<h4>Willkommen zum Schulmodul zur Sensibilisierung KI-generierter Inhalte</h4>", unsafe_allow_html=True)
-st.markdown("""Dieses Modul soll die Risiken von KI-generierten Inhalten aufzeigen und auf diese sensibilisieren.
-KI findet heute überall Einsatz und bietet uns viele Chancen.
-Es gibt aber auch einige Risiken beim Umgang mit KI, z. B. das die generierten Informationen falsch sind und weitere. Diese werden in dem Modul exemplarisch aufgezeigt,
-damit ein bewusster Umgang mit KI-Anwendungen erfolgt""")
+st.markdown("<h4>Willkommen zum Lerneinheit zur Sensibilisierung KI-generierter Inhalte</h4>", unsafe_allow_html=True)
+st.markdown("""Diese Lerneinheit soll die Risiken von KI-generierten Inhalten aufzeigen und dich für diese sensibilisieren.
+Künstliche Intelligenz (KI) findet heute überall Einsatz und bietet uns viele Chancen.
+Es gibt aber auch einige Risiken beim Umgang mit KI, z. B. das die generierten Informationen falsch sind u.a. Diese werden in der Lerneinheit exemplarisch aufgezeigt,
+damit du bewusster mit KI-Anwendungen umgehen kannst!""")
 st.markdown("""
 ***Dich erwarten:***
-- Umfragen zu deinem Nutzungsverhalten und zu deinem Vertrauen zu KI
+- Umfragen zu deinem Nutzungsverhalten im privaten und schulischen Umfeld und zu deinem Vertrauen in KI
 - Interaktive Übungen zur Erkennung von KI-generierten Inhalten
  """)
 
 #Abtrennung -> Hinweise         
 st.divider()
-st.markdown("***Hinweise zum Modul:***")
+st.markdown("***Hinweise zur Lerneinheit:***")
 st.markdown("""
 - Dauer: ca. 40 - 45 Minuten
 - Teilnahme: anonym
 - Freiwilligkeit: freiwillige Teilnahme
 - Datenschutz: Demografische Daten (Alter, Geschlecht) werden vertraulich behandelt.
   Es wird sichergestellt, dass eine Zurückverfolgung auf die teilnehmende Person nicht erfolgt.
-  Die Daten werden ausschließlich für ein Forschungsprojekt verwendet.
+  Die Daten werden ausschließlich für mein Forschungsprojekt verwendet.
 
 """)
 
@@ -36,7 +36,7 @@ st.markdown("""
 # bei Änderungen der Streamlit version kann es aber zu veränderungen kommen, die Hichaking version ist nicht offiziell
 
 st.divider()
-st.markdown("Um mit dem Schulmodul zu beginnen, klicke auf \"Start\" ")
+st.markdown("Um mit der Lerneinheit zu beginnen, klicke auf \"Start\" ")
 col1, col2 = st.columns([8,2])
 with col2:
 

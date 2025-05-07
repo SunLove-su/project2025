@@ -9,28 +9,25 @@ st.set_page_config(
 st.markdown("<h4>1. Übung</h4>",unsafe_allow_html=True)
 
 st.markdown("""
-            Beginnen wir mit der ersten Übung!
+            Beginne mit der ersten Übung :)
 
-            Auf vorherigen Seite haben wir gelernt, was KI ist und was sie kann. 
-            Zudem hast du die erste Interaktion mit einer KI-Anwendung mit der Eingabe deiner Frage gehabt.
-            Die KI-Anewndung war ein texgenerierendes System mit Methoden des Deep Learnings,
-            das auf große Sprachmodelle Large Language Models (LLM) trainiert ist.
-        
-            Diese KI-Anwendung ist ChatGPT.
+            Auf der vorherigen Seite hast du gelernt, was KI ist und was sie kann. 
+            Zudem hast du den ersten Kontakt mit einer KI-Anwendung mit der Eingabe deiner Frage gehabt.
+            Die KI-Anwendung war ein texgenerierendes System mit Methoden des Deep Learnings,
+            das auf große Sprachmodelle Large Language Models (LLM) trainiert ist.  Diese KI-Anwendung ist ChatGPT.
             """)
 
 
 
-st.markdown("Jetzt überprüfen wir, was ChatGPT kann und ob die Anwendung fleißig ihre Daten analysiert hat.")
+st.markdown("Jetzt kannst du, was ChatGPT kann und ob die Anwendung ihre Daten analysiert hat.")
 st.markdown("""
-                Wir stellen ChatGPT einige Aufgaben und schauen uns die Antworten an.
+                Du stellst ChatGPT einige Aufgaben und schaust dir Antworten an.
                
             """)
 st.divider()
 st.markdown("""
-                    Dafür soll ChatGPT mich unterstützen einige Aufgaben für mich erledigen, d. h.:
-                    - einen Text
-                    - mir diesen dann übersetzen
+                    Dafür soll ChatGPT dich unterstützen und für dich ein paar Aufgaben erledigen, d. h.:
+                    - einen kurzen Text schreiben
                     - die Vokale zählen
                     - eine aktuelle Frage beantworten
                     - eine Matheaufgabe lösen
@@ -44,7 +41,7 @@ if "antworten_uebung1" not in st.session_state:
     st.session_state.antworten_uebung1 = {}
 st.markdown("""
             ***Prompt für ChatGPT:***
-            "Schreibe mir einen zwei Sätze über einen Sommertag mit Erdbeereis."
+            "Schreibe mir einen oder zwei Sätze über einen Sommertag mit Erdbeereis."
         """)
 
 st.markdown("""
@@ -54,7 +51,7 @@ st.markdown("""
                 ein kleiner, kühler Moment des Glücks an diesem warmen Sommertag."
             """)
 textdeutsch="Die Sonne brannte vom wolkenlosen Himmel, während das süße Erdbeereis langsam in meiner Hand schmolz. Jeder Löffel war ein kleiner, kühler Moment des Glücks an diesem warmen Sommertag"
-textecht=st.radio("Würdest du 1-2 Sätze über einen Sommertag auch so schreiben?",
+textecht=st.radio("Würdest du die 1-2 Sätze über einen Sommertag auch so schreiben?",
                  ("Ja, sehr wahrscheinlich",
                   "Ja, eher wahrscheinlich",
                  "Nein, eher unwahrscheinlich",
@@ -69,28 +66,13 @@ if textecht:
     st.session_state.fragen_uebung1["textdeutsch"]=textdeutsch
     st.session_state.antworten_uebung1["textecht"]=textecht
 
-st.divider()
-st.markdown("""
-            Aufgabe übersetzen des Textes:
-
-        """)
-st.markdown("""
-            ***Prompt für ChatGPT:***
-            "Übersetze mir den Text ins Englische."
-        """)
-
-st.markdown("""
-                ***ChatGPT Antwort:***
-                "The sun blazed in the cloudless sky as the sweet strawberry ice cream slowly melted in my hand.
-                 Every spoonful was a small, cool moment of happiness on this warm summer day."
-            """)
 
 st.divider()
 # Vokale zählen Teil integrieren
 st.markdown("""
-            In dieser Übung nutzen wir den Satz: ***"An einem schönen Sommertag genieße ich ein kühles Erdbeereis."***
-            Diesmal untersuchen wir den Satz etwas genauer.
-            Wir machen eine Aufgabe aus unserer Grundschulzeit. Wir haben damals gelernt was Vokale sind (a ,e ,i ,o ,u ,ä ,ö  und ü).
+            In der nächsten Übung nutzt du den Satz: ***"An einem schönen Sommertag genieße ich ein kühles Erdbeereis."***
+            Diesmal sollst du den Satz etwas genauer untersuchen.
+            Zähle die Anzahl von mindestens 2 Vokalen (a ,e ,i ,o ,u ,ä ,ö  und ü).
             """)
 
 beispielsatz = "An einem schönen Sommertag genieße ich ein kühles Erdbeereis."
@@ -161,11 +143,10 @@ if "anzahleingaben_uebung1" not in st.session_state:
 #st.text_input hat Bugs
 # Eingabe und Button
 textzuaufgaben=st.markdown("""
-                Jetzt unterstützt du mich dabei frag bitte nach:
-                1. Wer der aktuelle Präsident der USA ist
-                2. Wie die Lösung von 482 * 739 ist
-                3. Bei Interesse kannst du selbst Aufgaben in ChatGPT testen
-
+                Suche die eine der beiden hier angegebenen Fragen aus, die ChatGPT dir beantworten soll und gibt diese in das untenstehende leere
+                Textfeld ein.
+                1. Wer ist der aktuelle Präsident der USA ist
+                2. Wie das Ergebnis der Aufgabe 482 * 739
             """)
 with st.form("frage_formular", clear_on_submit=True):
     frage = st.text_input("Stelle die Fragen hier")
@@ -187,6 +168,52 @@ with st.form("frage_formular", clear_on_submit=True):
         anzahleingaben = st.session_state.anzahleingaben_uebung1
 
 
+
+        # Frage anzeigen
+        st.write("Deine Frage:")
+        st.write(frage)
+        
+        # Antwort anzeigen
+        st.write("Antwort:")
+        st.write(antwort_text)
+
+
+
+        # Frage + Antwort speichern
+        st.session_state.antworten_uebung1antwortenzufragen.append({
+            "Frage": frage,
+            "Antwort": antwort_text,
+            "Anzahl Prompts": anzahleingaben
+        })
+        st.session_state.antworten_uebung1antwortenzufragen
+
+
+# Eingabe und Button
+textzuaufgaben=st.markdown("""
+                Jetzt bist du dran!
+                Stelle ChatGPT eine Frage, die dich interessiert
+            """)
+with st.form("frage_formular2", clear_on_submit=True):
+    frage = st.text_input("Stelle die Fragen hier")
+    senden = st.form_submit_button("Fragen")
+
+    st.markdown("Wenn du fertig bist, dann scrolle bitte weiter nach unten")
+    # Antwort generierung erst wenn Button geklickt und Eingabe vorhanden
+    if senden and frage:
+
+        with st.spinner(text="Erstelle Text, bitte warten..."):
+            antwort = client.chat.completions.create(
+                model="gpt-3.5-turbo",
+                messages=[{"role": "user", "content": frage}]
+            )
+            antwort_text = antwort.choices[0].message.content
+
+        # Prompt-Zähler aktualisieren
+        st.session_state.anzahleingaben_uebung1 += 1
+        anzahleingaben = st.session_state.anzahleingaben_uebung1
+        
+
+
         # Frage anzeigen
         st.write("Deine Frage:")
         st.write(frage)
@@ -205,8 +232,12 @@ with st.form("frage_formular", clear_on_submit=True):
         })
         st.session_state.antworten_uebung1antwortenzufragen
 st.write("")
-fragevertrauen="Glaubst du, dass diese Antwort richtig ist?"
-antwortvertrauen = st.radio("Glaubst du, dass diese Antwort richtig ist?",
+
+
+
+
+fragevertrauen="Glaubst du, dass diese Antworten richtig ist?"
+antwortvertrauen = st.radio("Glaubst du, dass diese Antworent richtig ist?",
         ("Ja, die Antworten waren richtig",
          "Ja, die Antworten sind wahrscheinlich richtig",
          "Ich bin unsicher",

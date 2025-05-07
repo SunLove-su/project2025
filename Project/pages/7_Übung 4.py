@@ -4,26 +4,26 @@ import openai
 client = openai.OpenAI(api_key=st.secrets["openai"]["api_key"])
 
 st.set_page_config(
-    page_title="5. Übung"
+    page_title="4. Übung"
  )
-st.markdown("<h4>5. Übung</h4>",unsafe_allow_html=True)
+st.markdown("<h4>4. Übung</h4>",unsafe_allow_html=True)
 
 st.markdown("""
-            In der vorigen Übung haben wir gesehen, dass in den Ausgaben der KI mit den Geschenkideen
-            Stereotype ausgegeben wurden. Das kann ab und zu geschehen, da die KI mit vielen Daten trainiert wurde
-            und in diesen diese Stereotype enthalten sind.
+            In der vorigen Übung hast du gesehen, dass in den Ausgaben der KI mit den Berufen
+            Vorurteile ausgegeben wurden. Das kann ab und zu geschehen, da die KI mit vielen Daten trainiert wurde
+            und in diesen diese Vorurteile enthalten sind.
 
-            Jetzt erstellen wir selbst Bilder mit der KI-Anwendung DALL E.
+            Jetzt erstellst du selbst Bilder mit der KI-Anwendung DALL E.
 
             """)
         
 st.divider()
 
 st.markdown("""
-               Ich möchte am Trend teilnehmen und mir ein Bild generieren lassen.
-               Anstatt ein eigenes Bild hoachzuladen, beschreibe ich das Bild mit Hilfe des Prompts.
+               Mit KI-Anwendungen erstellen zur Zeit Nutzer von sich Bilder in unterschiedlichen bekannten Stilen, z. B. sich als Anime oder Disneyfigur.
+               Anstatt ein ein persönliches Bild hochzuladen, wird das Bild mithilfe eines Prompts erzeugt.
 
-                "Erstelle mir ein Bild von Cinderella im Disney-Stil mit kurzen Haaren, einem Business-Outfit und einem Kaffee in der Hand."
+                "***Prompt:*** Erstelle mir ein Bild von Cinderella im Disney-Stil mit kurzen Haaren, einem Business-Outfit und einem Kaffee in der Hand."
             """)
             
             
@@ -45,7 +45,8 @@ if "alle_eingaben" not in st.session_state:
 # Eingabe und Button
 with st.form("frage_formular4", clear_on_submit=True):
     st.markdown(
-    """Jetzt bist du an der Reihe, bitte beschreibe das Bild, dass DALL E für dich generieren soll.
+    """Jetzt bist du wieder dran! Du kannst dir nun ein Bild mithilfe der KI erstellen lassen. Anstatt ein Bild hochzuladen, beschreibe das Bild,
+     was du erstellen lassen möchtest.
         """)
     eingabe = st.text_input("Bitte beschreibe, wie dein Bild generiert werden soll",placeholder="z. B. Erstelle mir ein Bild von einer jungen Frau mit braunen Haaren in einem Kleid im Disney-Stil")
     beschreibung=(f"Stelle nur eine Person/Tier darf{eingabe}")
@@ -81,7 +82,7 @@ with st.form("frage_formular4", clear_on_submit=True):
 #Speichern der Prompts:
 if "antworten_uebung5" not in st.session_state:
         st.session_state.antworten_uebung5 = {}
-datenschutz=st.radio("Würdest du von dir ein Bild im Disney-Stil generieren lassen, indem du ein Bild von dir hochlädst?",
+datenschutz=st.radio("Würdest du von dir ein Bild generieren lassen, indem du ein Bild von dir hochlädst?",
     ["Ja, ich würde ein Bild von mir hochladen",
      "Neutral",
      "Nein, ich würde kein Bild von mir hochladen",

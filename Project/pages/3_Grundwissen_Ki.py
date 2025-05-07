@@ -9,7 +9,7 @@ st.set_page_config(
 
 st.markdown("<h4>Grundwissen über Künstliche Intelligenz (KI)</h4>",unsafe_allow_html=True)
 st.markdown("""
-            Auf dieser Seite lernen wir etwas über die Grundlagen der KI.
+            Auf dieser Seite lernst du etwas über die Grundlagen der KI.
             Es sind neue oder schon für dich bekannte Informationen.
             """)
 st.divider()
@@ -34,14 +34,14 @@ with st.expander("Was ist KI?",icon=":material/double_arrow:"):
 
 with st.expander("Wie funktioniert KI?",icon=":material/double_arrow:"):
      st.markdown("""
-                 Beim Fußballspiel haben wir gesehen, dass die KI:
+                 Beim Fußballspiel hast du gesehen, dass die KI:
                  1. Viele Daten braucht, um Erfahrungen aus vielen unterschiedlichen Fußballspielen zu sammeln
                  2. Muster erkennt, sodass der Spieler dem Ball im Feld hinterher läuft.
                  3. Erlerntes anwendet und daraus Entscheidungen trifft, z. B. der Spieler läuft zum Ball, obwohl er vorne links liegt
                  4. Fehler machen kann und z. B. der Spieler zum Zuschauerblock läuft
                 """)
 
-with st.expander("KI-Begriffe",icon=":material/double_arrow:"):
+with st.expander("Definition KI-Begriffe",icon=":material/double_arrow:"):
      st.markdown("""
                 - Algorithmus: Schritt-für-Schritt Anleitung z. B. wie bei einem Computerprogramm
                 - Machine Learning: Teilbereich der KI, der viele Daten nutzt, um Muster zu erkennen.
@@ -54,16 +54,16 @@ with st.expander("KI-Begriffe",icon=":material/double_arrow:"):
                                                        Die Spieler und ihre Möglichkeiten den Ball zu spielen stellen ein Netz dar und mit dem Training werden sie besser.
                                                     
                    - Deep Learning: Komplexeres Netz, mit mehreren Spielerebenen auf dem Feld und bestimmten Aufgaben:
-                                    Erste Reihe erkennt Ballposition, zweite findet freie Räume, dritte plant Laufwege und letzte macht den Torschuss.
-                - Prompt: Befehle bzw. Eingaben, die wir schriftlich oder gesprochen der  KI-Anwendung übergeben
-                - Generative KI (Gen-KI): KI-Anwendungen, die durch das gelernte neue Inhalte erzeugen
+                                    Erste Reihe erkennt Ballposition, zweite findet freie Räume, dritte plant Laufwege und die letzte macht den Torschuss.
+                - Prompt: Befehle bzw. Eingaben, die du schriftlich oder gesprochen der  KI-Anwendung übergeben
+                - Generative KI (Gen-KI): KI-Anwendungen, die durch das Gelernte neue Inhalte erzeugen
                     """)
 with st.expander("Was kann KI?",icon=":material/double_arrow:"):
      st.markdown("""
                     KI kann unterschiedliche Aufgaben ausführen:
                     - Bilder erkennen/erstellen: KI generiert Bilder nach deinen Vorgaben im Prompt, z. B. DALL E, Midjourney etc.
-                    - Text erkennen/erstellen/übersetzen: KI antwortet auf deine Prompts, generiert Texte und übersetzt Texte, z. B. ChatGPT, Perplecity
-                    - Sprache verstehen/antworten: KI versteht empfängt deine Sprache und antwortet, z. B. Alexa und Siri
+                    - Text erkennen/erstellen/übersetzen: KI antwortet auf deine Prompts, generiert Texte und übersetzt Texte, z. B. ChatGPT, Perplexity
+                    - Sprache verstehen/antworten: KI empfängt und versteht deine  Sprache und antwortet, z. B. Alexa und Siri
                     - Muster/Merkmale erkennen: KI analysiert Muster und unterstützt bei Diagnosen oder Vorhersagen, z. B. bei Krankheiten oder zur Gefahrenabwehr
                       usw...
                """)
@@ -115,6 +115,7 @@ with st.form("frage_formular", clear_on_submit=True):
     st.write("")
 #Überprüfungsfrage: Sicherstellung, dass die Textbausteine gelesen wurden
 st.divider()
+st.write ("Nachdem du jetzt ein paar Informationen über KI erhalten hast, beantworte bitte die folgende Frage:")
 ueberpruefungsfrage=st.radio("Welche Aussage über KI trifft zu?",
                             ("KI braucht Schritt für Schritt-Anweisungen",
                              "KI kann jede Aufgabe lösen und macht keine Fehler",

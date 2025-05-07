@@ -13,7 +13,7 @@ st.markdown("<h4>3. Übung</h4>",unsafe_allow_html=True)
 
 st.markdown("""
             In der Übung zuvor hast du die Person gesehen, die das Eis isst.
-            Bei dem Bild handelt es sich um ein KI-generiertes Bild von der Seite "https://thispersondoesnotexist.com/", dass sehr echt aussieht.
+            Bei dem Bild handelt es sich um ein KI-generiertes Bild von der Seite "thispersondoesnotexist.com", dass sehr echt aussieht.
             
             Für KI-generierte Bilder wird der Deep Learning Algorithmus Generative Adversarial Networks (GAN) verwendet.
 

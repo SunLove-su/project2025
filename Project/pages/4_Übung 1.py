@@ -65,9 +65,12 @@ if textecht:
     st.markdown("Die Sätze klingen gut und menschlich– aber sie wurden von einer KI geschrieben")
     st.session_state.fragen_uebung1["textdeutsch"]=textdeutsch
     st.session_state.antworten_uebung1["textecht"]=textecht
-
+st.session_state.fragen_uebung1
+st.session_state.antworten_uebung1
 
 st.divider()
+if "selbstgezaehlteantwort" not in st.session_state:
+    st.session_state.selbstgezaehlteantwort = ""
 # Vokale zählen Teil integrieren
 st.markdown("""
             In der nächsten Übung nutzt du den Satz: ***"An einem schönen Sommertag genieße ich ein kühles Erdbeereis."***
@@ -95,7 +98,7 @@ if st.button("Vokale selbst zählen"):
     st.write(f"Selbstgezählte Antwort: {ausgabe}")
     st.session_state.selbstgezaehlteantwort=ausgabe
 
-# Variable für ChatGPT-Antwort im Session State speichern
+# Speichern der generierten Ausgaben als Variable 
 if "vokal_antwort_chatgpt" not in st.session_state:
     st.session_state.vokal_antwort_chatgpt = ""
 antwort_text=""
@@ -129,16 +132,23 @@ if st.button("ChatGPT nach Vokalen fragen"):
         else:
             st.info("Bitte klicke zuerst auf 'ChatGPT nach Vokalen fragen', um die Ergebnisse vergleichen zu können.")
 
+            st.session_state.vokal_antwort_chatgpt
 
 
 st.divider()
 
 #Speichern der Prompts:
-if "antworten_uebung1antwortenzufragen" not in st.session_state:
-    st.session_state.antworten_uebung1antwortenzufragen= []
+if "antworten_uebung1antwortenzufragen_vorgegeben" not in st.session_state:
+    st.session_state.antworten_uebung1antwortenzufragen_vorgegeben= []
+if "anzahleingaben_uebung1_vorgegeben" not in st.session_state:
+    st.session_state.anzahleingaben_uebung1_vorgegeben = 0
+if "anzahleingaben_uebung1_eigene" not in st.session_state:
+    st.session_state.anzahleingaben_uebung1_eigene = 0
+#Speichern der Prompts:
+if "antworten_uebung1antwortenzufragen_eigene" not in st.session_state:
+    st.session_state.antworten_uebung1antwortenzufragen_eigene= []
 #Speichern der Anzahl der Prompts ohne Session.State-Befehl wird durch neu eingeben einer Frage wieder 0 gesetzt
-if "anzahleingaben_uebung1" not in st.session_state:
-    st.session_state.anzahleingaben_uebung1 = 0
+
 
 #st.text_input hat Bugs
 # Eingabe und Button
@@ -148,8 +158,8 @@ textzuaufgaben=st.markdown("""
                 1. Wer ist der aktuelle Präsident der USA ist
                 2. Wie das Ergebnis der Aufgabe 482 * 739
             """)
-with st.form("frage_formular", clear_on_submit=True):
-    frage = st.text_input("Stelle die Fragen hier")
+with st.form("frage_formular_vorgegeben", clear_on_submit=True):
+    frage = st.text_input("Stelle eine der oben vorgegebenen Fragen")
     senden = st.form_submit_button("Fragen")
 
     st.markdown("Wenn du fertig bist, dann scrolle bitte weiter nach unten")
@@ -164,8 +174,8 @@ with st.form("frage_formular", clear_on_submit=True):
             antwort_text = antwort.choices[0].message.content
 
         # Prompt-Zähler aktualisieren
-        st.session_state.anzahleingaben_uebung1 += 1
-        anzahleingaben = st.session_state.anzahleingaben_uebung1
+        st.session_state.anzahleingaben_uebung1_vorgegeben+= 1
+        anzahleingaben_vorgegeben = st.session_state.anzahleingaben_uebung1_vorgegeben
 
 
 
@@ -180,12 +190,12 @@ with st.form("frage_formular", clear_on_submit=True):
 
 
         # Frage + Antwort speichern
-        st.session_state.antworten_uebung1antwortenzufragen.append({
+        st.session_state.antworten_uebung1antwortenzufragen_vorgegeben.append({
             "Frage": frage,
             "Antwort": antwort_text,
-            "Anzahl Prompts": anzahleingaben
+            "Anzahl Prompts": anzahleingaben_vorgegeben
         })
-        st.session_state.antworten_uebung1antwortenzufragen
+        st.session_state.antworten_uebung1antwortenzufragen_vorgegeben
 
 
 # Eingabe und Button
@@ -193,44 +203,44 @@ textzuaufgaben=st.markdown("""
                 Jetzt bist du dran!
                 Stelle ChatGPT eine Frage, die dich interessiert
             """)
-with st.form("frage_formular2", clear_on_submit=True):
-    frage = st.text_input("Stelle die Fragen hier")
+with st.form("frage_formular_eigene", clear_on_submit=True):
+    frage_eigene = st.text_input("Stelle hier deine eigenen Fragen")
     senden = st.form_submit_button("Fragen")
 
     st.markdown("Wenn du fertig bist, dann scrolle bitte weiter nach unten")
     # Antwort generierung erst wenn Button geklickt und Eingabe vorhanden
-    if senden and frage:
+    if senden and frage_eigene:
 
         with st.spinner(text="Erstelle Text, bitte warten..."):
             antwort = client.chat.completions.create(
                 model="gpt-3.5-turbo",
-                messages=[{"role": "user", "content": frage}]
+                messages=[{"role": "user", "content": frage_eigene}]
             )
-            antwort_text = antwort.choices[0].message.content
+            antwort_text_eigene= antwort.choices[0].message.content
 
         # Prompt-Zähler aktualisieren
-        st.session_state.anzahleingaben_uebung1 += 1
-        anzahleingaben = st.session_state.anzahleingaben_uebung1
+        st.session_state.anzahleingaben_uebung1_eigene += 1
+        anzahleingaben_eigene = st.session_state.anzahleingaben_uebung1_eigene
         
 
 
         # Frage anzeigen
         st.write("Deine Frage:")
-        st.write(frage)
+        st.write(frage_eigene)
         
         # Antwort anzeigen
         st.write("Antwort:")
-        st.write(antwort_text)
+        st.write(antwort_text_eigene)
 
 
 
         # Frage + Antwort speichern
-        st.session_state.antworten_uebung1antwortenzufragen.append({
-            "Frage": frage,
-            "Antwort": antwort_text,
-            "Anzahl Prompts": anzahleingaben
+        st.session_state.antworten_uebung1antwortenzufragen_eigene.append({
+            "Frage": frage_eigene,
+            "Antwort": antwort_text_eigene,
+            "Anzahl Prompts": anzahleingaben_eigene
         })
-        st.session_state.antworten_uebung1antwortenzufragen
+        st.session_state.antworten_uebung1antwortenzufragen_eigene
 st.write("")
 
 
@@ -255,10 +265,32 @@ if antwortvertrauen:
     st.session_state.fragen_uebung1
     st.session_state.antworten_uebung1
 
-
+st.session_state.uebung1 = {
+    ####Auswertefrage
+    # Textübung
+    "textdeutsch": st.session_state.fragen_uebung1.get("textdeutsch", ""),
+    "textecht": st.session_state.antworten_uebung1.get("textecht", ""),
     
-
+    #######Vokale zählen
+    # Vokalzählen
+    "selbstgezaehlt": st.session_state.get("selbstgezaehlteantwort", ""),
+    "vokal_antwort_chatgpt": st.session_state.get("vokal_antwort_chatgpt", ""),
     
+    ####Interaktion Schüler:innen mit ChatGPT
+    # Vorgegebene Fragen
+    "vorgegebene_fragen": st.session_state.get("antworten_uebung1antwortenzufragen_vorgegeben", []),
+    "anzahl_vorgegebene": st.session_state.get("anzahleingaben_uebung1_vorgegeben", 0),
+    
+    # Eigene Fragen
+    "eigene_fragen": st.session_state.get("antworten_uebung1antwortenzufragen_eigene", []),
+    "anzahl_eigene": st.session_state.get("anzahleingaben_uebung1_eigene", 0),
+    
+    #########Frage beantworten
+    # Vertrauensfrage
+    "fragevertrauen": st.session_state.fragen_uebung1.get("fragevertrauen", ""),
+    "antwortvertrauen": st.session_state.antworten_uebung1.get("antwortvertrauen", "")
+}
+st.session_state.uebung1
 st.divider()
 
 st.markdown("Um fortzufahren, klicke auf \"weiter\" ")

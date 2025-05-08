@@ -12,13 +12,22 @@ st.markdown("""
            """)
 st.divider()
 
+if "fragen_einstiegsumfrage" not in st.session_state:
+    st.session_state.fragen_einstiegsumfrage ={}
 if "antworten_einstiegsumfrage" not in st.session_state:
-        st.session_state.antworten_einstiegsumfrage = {}
+    st.session_state.antworten_einstiegsumfrage = {}
+if "einstiegsumfrage" not in st.session_state:
+    st.session_state.einstiegsumfrage ={}
+
+fragen   = st.session_state.fragen_einstiegsumfrage    
+antworten = st.session_state.antworten_einstiegsumfrage
+
 # Demografische Daten
 
 #Frage Alter: Wie alt bist du
 #Alter der Jugendlichen in den Studien Vodafone(2024) = 14-20, Sinus (2024) = 14-17
-alter = st.radio ("Wie alt bist du?",
+fragealter = "Wie alt bist du?"
+alter = st.radio (fragealter,
                                 ("unter 15",
                                 "15-16",
                                 "16-17",
@@ -30,12 +39,23 @@ alter = st.radio ("Wie alt bist du?",
                                 index=None
 )
 if alter is not None:
-    st.session_state.antworten_einstiegsumfrage["alter"]=alter
-    st.write(f"Deine Antwort ist {alter}")
-    st.session_state.antworten_einstiegsumfrage
+    # st.session_state.antworten_einstiegsumfrage["alter"]=alter
+    # st.write(f"Deine Antwort ist {alter}")
+    # st.session_state.fragen_einstiegsumfrage["fragealter"]=fragealter
+    # st.session_state.
+     fragen["alter"]   = fragealter 
+     antworten["alter"] = alter
+     st.session_state.einstiegsumfrage["alter"] = {
+    "Frage":   fragealter,
+    "Antwort": alter
+     }
+
+     st.session_state.einstiegsumfrage
+   
 
 # Frage Geschlecht:
-geschlecht = st.radio("Welchem Geschlecht fühlst du dich zugehörig?",
+fragegeschlecht = "Welchem Geschlecht fühlst du dich zugehörig?"
+geschlecht = st.radio(fragegeschlecht,
                                   ("Weiblich",
                                    "Männlich",
                                    "Divers",
@@ -44,16 +64,20 @@ geschlecht = st.radio("Welchem Geschlecht fühlst du dich zugehörig?",
                                    index=None
 )
 if geschlecht is not None:
-    st.session_state.antworten_einstiegsumfrage["geschlecht"]=geschlecht
-    st.write(f"Du bist {geschlecht}")
-    st.session_state.antworten_einstiegsumfrage
-
+ fragen["geschlecht"] = fragegeschlecht
+ antworten["geschlecht"]=geschlecht
+ st.session_state.einstiegsumfrage["geschlecht"]={
+    "Frage": fragegeschlecht,
+    "Antwort": geschlecht,
+ }
+st.session_state.einstiegsumfrage
 st.divider()
 
 #########################
 # Nutzunghäufigkeit (Vodafone2024) S. 11 , Gerlich Studie 2025
+fragehaeufigkeitkinutzung = "Wie oft nutzt du KI-Tools?"
 haeufigkeitkinutzung = st.radio(
-                                "Wie oft nutzt du KI-Tools?",
+                                fragehaeufigkeitkinutzung,
                                 ("Täglich",
                                 "Wöchentlich",
                                 "Monatlich",
@@ -63,13 +87,21 @@ haeufigkeitkinutzung = st.radio(
                                  index=None,
 )
 if haeufigkeitkinutzung is not None:
-    st.session_state.antworten_einstiegsumfrage["haeufigkeitkinutzung"]=haeufigkeitkinutzung
+    fragen[fragehaeufigkeitkinutzung]=fragehaeufigkeitkinutzung
+    antworten[haeufigkeitkinutzung]=haeufigkeitkinutzung
+    st.session_state.einstiegsumfrage["haeufigkeitkinutzung"]={
+
+    "Frage": fragehaeufigkeitkinutzung,
+    "Antwort": haeufigkeitkinutzung,
+    }
     st.write(f"Du nutzt KI: {haeufigkeitkinutzung}")
-    st.session_state.antworten_einstiegsumfrage
+   
 
 st.divider()
+
+fragevertrauenkiinhalte = "Für wie vertrauenswürdig hältst du KI-generierte Inhalte?"
 vertrauenkiinhalten = st.radio(
-                               "Für wie vertrauenswürdig hältst du KI-generierte Inhalte?",
+                               fragevertrauenkiinhalte,
                                 ("Sehr vertrauenswürdig",
                                 "Eher vertrauenswürdig",
                                 "Neutral",
@@ -80,22 +112,28 @@ vertrauenkiinhalten = st.radio(
 )
 
 if vertrauenkiinhalten is not None:
-    st.session_state.antworten_einstiegsumfrage["vertrauenkiinhalten"]=vertrauenkiinhalten
+    fragen[fragevertrauenkiinhalte]=fragevertrauenkiinhalte
+    antworten[vertrauenkiinhalten]=vertrauenkiinhalten
+    st.session_state.einstiegsumfrage["vertrauenkiinhalten"]={
+
+    "Frage": fragevertrauenkiinhalte,
+    "Antwort": vertrauenkiinhalten,
+    }
     st.write(f"Du hälst KI für: {vertrauenkiinhalten}")
-    st.session_state.antworten_einstiegsumfrage
+    
 
 
 
 st.divider()
-st.markdown("Um forzufahren, klicke auf \"weiter\" ")
+st.markdown("Um fortzufahren, klicke auf \"Weiter\" ")
 col1, col2 = st.columns([8,2])
 with col2:
 
-    if st.button("weiter"):
+    if st.button("Weiter"):
         unbeantwortet =(alter is None or geschlecht is None or
                         haeufigkeitkinutzung is None or vertrauenkiinhalten is None
                        )
         if unbeantwortet:
-            st. error("Bitte beantworte alle Fragen, um fortzufahren.")
+            st.error("Bitte beantworte alle Fragen, um fortzufahren.")
         else: 
             st.switch_page("pages/3_Grundwissen_Ki.py")

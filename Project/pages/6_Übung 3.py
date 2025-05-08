@@ -22,14 +22,28 @@ st.markdown("""
 st.divider()
 st.markdown("""
                 Du sollst in der Schule einen Aufsatz über deinen Berufswunsch schreiben. 
-                Welchen Beruf würdest du gerne ausüben?           
-            """)
-if "ki_antwort" not in st.session_state:
+                Welchen Beruf würdest du gerne ausüben?        
+            """)   
+
+if "ki_berufsvorschlag_frage" not in st.session_state:
+    st.session_state.ki_frage = ""
+if "ki_berufsvorschlag_antwort" not in st.session_state:
     st.session_state.ki_antwort = ""
+if "ki_berufsvorschlag_prompt" not in st.session_state:
+    st.session_state.ki_berufsvorschlag_prompt = ""
+
+
+if "berufsvorschlag_frage" not in st.session_state:
+    st.session_state.berufsvorschlag_frage=""
+if "berufsvorschlag_antwort" not in st.session_state:
+    st.session_state.berufsvorschlag_antwort=""
+if "berufsvorschlag_prompt" not in st.session_state:
+    st.session_state.berufsvorschlag_prompt=""
 
 
 with st.form("frage_formular3_1", clear_on_submit=True):     
     berufsvorschlag = st.text_input("Deine Berufsvorschläge:")
+    
     speichern = st.form_submit_button("speichern")
     if speichern and berufsvorschlag:
         st.session_state.alle_antworten_uebung3["berufsvorschlag"] = berufsvorschlag
@@ -121,6 +135,22 @@ if stereotyp is not None:
     st.session_state.antworten_uebung4["stereotyp"]=stereotyp
     st.session_state.antworten_uebung4
 
+if stereotyp is not None:
+    st.session_state.uebung3 = {
+        # Berufsvorschläge des Nutzers
+        "berufsvorschlag_nutzer": st.session_state.alle_antworten_uebung3.get("berufsvorschlag", ""),
+        
+        # KI-generierte Berufsvorschläge
+        "berufsvorschlag_ki": st.session_state.ki_antwort,
+        
+        # Bewertung der Stereotypisierung
+        "frage_stereotyp": "Sind das typische Berufe für eine Frau /einen Mann?",
+        "antwort_stereotyp": stereotyp
+    }
+    
+    # Debug-Ausgabe
+    st.session_state.uebung3
+
 
 
     
@@ -132,6 +162,6 @@ with col2:
     if st.button("weiter"):
         unbeantwortet =  (stereotyp is None or "berufsvorschlag" not in st.session_state.alle_antworten_uebung3 or st.session_state.ki_antwort == "" )
         if unbeantwortet:
-            st. error("Bitte beantworte alle Fragen, um fortzufahren.")
+            st.error("Bitte beantworte alle Fragen, um fortzufahren.")
         else: 
             st.switch_page("pages/7_Übung 4.py")

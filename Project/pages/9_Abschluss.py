@@ -29,11 +29,11 @@ else:
 doc_ref = db.collection(u'users').document(user_id)
 #Hinterher alle Umfrageergenisse
 doc_ref.set({
-    "Einstiegstumfrage":st.session_state.get("antworten_einstiegsumfrage"),
-    "Antworten_Grundwissen_KI":st.session_state.get("antworten_grundwissen_ki"),
-    "Uebung1":st.session_state.uebung1,
-    "Uebung2":st.session_state.uebung2,
-    
+    "Einstiegstumfrage":st.session_state.get("einstiegsumfrage"),
+    # "Antworten_Grundwissen_KI":st.session_state.get("antworten_grundwissen_ki"),
+    # "Uebung1":st.session_state.uebung1,
+    # "Uebung2":st.session_state.uebung2,
+
 
     "Abschlussumfrage":st.session_state.get("antworten_abschlussumfrage")
     

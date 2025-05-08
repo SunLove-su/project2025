@@ -13,6 +13,13 @@ if "fragen_uebung2" not in st.session_state:
 if "antworten_uebung2" not in st.session_state:
     st.session_state.antworten_uebung2 = {}
 
+
+if "uebung2" not in st.session_state:
+    st.session_state.uebung2 ={}
+
+fragen   = st.session_state.fragen_uebung2   
+antworten = st.session_state.antworten_uebung2
+
 frage_personecht = "Glaubst du die Person auf dem Bild ist echt?"
 
 st.write("Hat die Person auf dem Foto an dem schönen Sommertag ein Erdbeereis gegessen?")
@@ -33,13 +40,13 @@ st.session_state.fragen_uebung2["frage_personecht"] = frage_personecht
 
 if personecht is not None:
     st.write("Deine Antwort ist:", personecht)
-    st.session_state.antworten_uebung2["personecht"]=personecht
-    st.session_state.antworten_uebung2
+    fragen["personecht"]   = frage_personecht 
+    antworten["personecht"] = personecht
+    st.session_state.uebung2["personecht"] = {
+    "Frage":   frage_personecht,
+    "Antwort": personecht
+     }
 
-    st.session_state.uebung2 = {
-            "frage_personecht": frage_personecht,
-            "antwort_personecht": personecht
-        }
     st.session_state.uebung2
 
 st.divider()

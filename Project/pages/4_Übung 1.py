@@ -35,10 +35,19 @@ st.markdown("""
 
 
 st.markdown("")
+
 if "fragen_uebung1" not in st.session_state:
     st.session_state.fragen_uebung1 = {}
 if "antworten_uebung1" not in st.session_state:
     st.session_state.antworten_uebung1 = {}
+if "uebung1" not in st.session_state:
+    st.session_state.uebung1 ={}
+
+fragen   = st.session_state.fragen_uebung1    
+antworten = st.session_state.antworten_uebung1
+
+
+
 st.markdown("""
             ***Prompt für ChatGPT:***
             "Schreibe mir einen oder zwei Sätze über einen Sommertag mit Erdbeereis."
@@ -51,7 +60,8 @@ st.markdown("""
                 ein kleiner, kühler Moment des Glücks an diesem warmen Sommertag."
             """)
 textdeutsch="Die Sonne brannte vom wolkenlosen Himmel, während das süße Erdbeereis langsam in meiner Hand schmolz. Jeder Löffel war ein kleiner, kühler Moment des Glücks an diesem warmen Sommertag"
-textecht=st.radio("Würdest du die 1-2 Sätze über einen Sommertag auch so schreiben?",
+fragetextecht = "Würdest du die 1-2 Sätze über einen Sommertag auch so schreiben?"
+textecht=st.radio(fragetextecht,
                  ("Ja, sehr wahrscheinlich",
                   "Ja, eher wahrscheinlich",
                  "Nein, eher unwahrscheinlich",
@@ -63,10 +73,16 @@ textecht=st.radio("Würdest du die 1-2 Sätze über einen Sommertag auch so schr
             )
 if textecht:
     st.markdown("Die Sätze klingen gut und menschlich– aber sie wurden von einer KI geschrieben")
-    st.session_state.fragen_uebung1["textdeutsch"]=textdeutsch
-    st.session_state.antworten_uebung1["textecht"]=textecht
-st.session_state.fragen_uebung1
-st.session_state.antworten_uebung1
+    fragen["textecht"]=fragetextecht
+    antworten["textecht"]=textecht
+    st.session_state.uebung1["textecht"] = {
+    "Frage":   fragetextecht,
+    "Antwort": textecht
+     }
+
+    st.session_state.uebung1
+
+
 
 st.divider()
 if "selbstgezaehlteantwort" not in st.session_state:
@@ -247,7 +263,7 @@ st.write("")
 
 
 fragevertrauen="Glaubst du, dass diese Antworten richtig ist?"
-antwortvertrauen = st.radio("Glaubst du, dass diese Antworent richtig ist?",
+antwortvertrauen = st.radio(fragevertrauen,
         ("Ja, die Antworten waren richtig",
          "Ja, die Antworten sind wahrscheinlich richtig",
          "Ich bin unsicher",
@@ -262,35 +278,37 @@ if antwortvertrauen:
     st.write(f"Deine Antwort ist: {antwortvertrauen}")
     st.session_state.fragen_uebung1["fragevertrauen"]=fragevertrauen
     st.session_state.antworten_uebung1["antwortvertrauen"]=antwortvertrauen
-    st.session_state.fragen_uebung1
-    st.session_state.antworten_uebung1
+    st.session_state.uebung1["antwortvertrauen"] = {
+    "Frage":   fragevertrauen,
+    "Antwort": antwortvertrauen
+     }
 
-st.session_state.uebung1 = {
-    ####Auswertefrage
-    # Textübung
-    "textdeutsch": st.session_state.fragen_uebung1.get("textdeutsch", ""),
-    "textecht": st.session_state.antworten_uebung1.get("textecht", ""),
+# st.session_state.uebung1 = {
+#     ####Auswertefrage
+#     # Textübung
+#     "textdeutsch": st.session_state.fragen_uebung1.get("textdeutsch", ""),
+#     "textecht": st.session_state.antworten_uebung1.get("textecht", ""),
     
-    #######Vokale zählen
-    # Vokalzählen
-    "selbstgezaehlt": st.session_state.get("selbstgezaehlteantwort", ""),
-    "vokal_antwort_chatgpt": st.session_state.get("vokal_antwort_chatgpt", ""),
+#     #######Vokale zählen
+#     # Vokalzählen
+#     "selbstgezaehlt": st.session_state.get("selbstgezaehlteantwort", ""),
+#     "vokal_antwort_chatgpt": st.session_state.get("vokal_antwort_chatgpt", ""),
     
-    ####Interaktion Schüler:innen mit ChatGPT
-    # Vorgegebene Fragen
-    "vorgegebene_fragen": st.session_state.get("antworten_uebung1antwortenzufragen_vorgegeben", []),
-    "anzahl_vorgegebene": st.session_state.get("anzahleingaben_uebung1_vorgegeben", 0),
+#     ####Interaktion Schüler:innen mit ChatGPT
+#     # Vorgegebene Fragen
+#     "vorgegebene_fragen": st.session_state.get("antworten_uebung1antwortenzufragen_vorgegeben", []),
+#     "anzahl_vorgegebene": st.session_state.get("anzahleingaben_uebung1_vorgegeben", 0),
     
-    # Eigene Fragen
-    "eigene_fragen": st.session_state.get("antworten_uebung1antwortenzufragen_eigene", []),
-    "anzahl_eigene": st.session_state.get("anzahleingaben_uebung1_eigene", 0),
+#     # Eigene Fragen
+#     "eigene_fragen": st.session_state.get("antworten_uebung1antwortenzufragen_eigene", []),
+#     "anzahl_eigene": st.session_state.get("anzahleingaben_uebung1_eigene", 0),
     
-    #########Frage beantworten
-    # Vertrauensfrage
-    "fragevertrauen": st.session_state.fragen_uebung1.get("fragevertrauen", ""),
-    "antwortvertrauen": st.session_state.antworten_uebung1.get("antwortvertrauen", "")
-}
-st.session_state.uebung1
+#     #########Frage beantworten
+#     # Vertrauensfrage
+#     "fragevertrauen": st.session_state.fragen_uebung1.get("fragevertrauen", ""),
+#     "antwortvertrauen": st.session_state.antworten_uebung1.get("antwortvertrauen", "")
+# }
+# st.session_state.uebung1
 st.divider()
 
 st.markdown("Um fortzufahren, klicke auf \"weiter\" ")

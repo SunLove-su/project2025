@@ -35,7 +35,7 @@ doc_ref.set({
     # "Uebung2":st.session_state.uebung2,
 
 
-    "Abschlussumfrage":st.session_state.get("antworten_abschlussumfrage")
+    "Abschlussumfrage":st.session_state.get("abschlussumfrage")
     
 
 })

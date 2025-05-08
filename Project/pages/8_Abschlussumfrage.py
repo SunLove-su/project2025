@@ -9,11 +9,19 @@ st.markdown("""
             In den Übungen die du durchgegangen bist hast du einiges gelernt.
             Zum Abschluss gibt es noch ein paar Fragen die du bitte beantworten sollst und dann bist du schon fertig
             """)
+if "fragen_abschlussumfrage" not in st.session_state:
+    st.session_state.fragen_abschlussumfrage ={}
 if "antworten_abschlussumfrage" not in st.session_state:
-        st.session_state.antworten_abschlussumfrage = {}
+    st.session_state.antworten_abschlussumfrage = {}
+if "abschlussumfrage" not in st.session_state:
+        st.session_state.abschlussumfrage = {}
+
+fragen = st.session_state.fragen_abschlussumfrage
+antworten = st.session_state.antworten_abschlussumfrage
 # ATTENTION FRAGE
+frageaufmerksamkeit ="Wähle die Antwort mit der Zahl 2"
 aufmerksamkeit = st.radio (
-                                "Wähle die Antwort mit der Zahl 2",
+                                frageaufmerksamkeit,
                                 ("1",
                                 "9",
                                 "2",
@@ -23,16 +31,20 @@ aufmerksamkeit = st.radio (
 #Ausgabe der Antwort
 if aufmerksamkeit is not None:
     st.write("Deine Antwort ist:", aufmerksamkeit)
-    st.session_state.antworten_abschlussumfrage["aufmerksamkeit"] = aufmerksamkeit
-
+    fragen["frageaufmerksamkeit"] = frageaufmerksamkeit 
+    antworten["aufmerksamkeit"] = aufmerksamkeit
+    st.session_state.abschlussumfrage["aufmerksamkeit"] = {
+    "Frage":   frageaufmerksamkeit,
+    "Antwort": aufmerksamkeit
+     }
 
 st.divider()
 
 #########################
 # INFORMATIONEN ÜBER GELERNTES
-
+fragewissengewonnen = "Was hast du in dieser Lerneinheit gelernt?"
 wissen_gewonnen = st.multiselect(
-                                "Was hast du in dieser Lerneinheit gelernt?",
+                                fragewissengewonnen,
                                 ("Wie echt KI-generierte Bilder aussehen können",
                                 "Wie ich Stereotype in KI-Antworten erkenne", 
                                 "Was KI ist",
@@ -46,14 +58,21 @@ if wissen_gewonnen:
     antwort_wissen = ", ".join(wissen_gewonnen)
     #Ausgabe der Antwort
     st.write("Deine Antwort ist:", antwort_wissen)
-    st.session_state.antworten_abschlussumfrage["antwort_wissen"] = antwort_wissen
+
+    fragen["wissen_gewonnen"]=fragewissengewonnen
+    antworten["wissen_gewonnen"]=antwort_wissen
+    st.session_state.abschlussumfrage["wissen_gewonnen"]={
+        "frage":fragewissengewonnen,
+        "antwort":antwort_wissen
+    }
 
 st.divider()
 
 
 # DIREKTE FRAGE ZUR VERBESSERUNG DER ERKENNUNGSFÄHIGKEIT
+frageerkennungsfaehigkeit_verbessert = "Hat sich deine Fähigkeit, KI-Inhalte zu erkennen, durch die Lerneinheit verbessert?"
 erkennungsfaehigkeit_verbessert = st.radio(
-                       "Hat sich deine Fähigkeit, KI-Inhalte zu erkennen, durch die Lerneinheit verbessert?",
+                       frageerkennungsfaehigkeit_verbessert,
                        ("Ja, deutlich verbessert",
                         "Ja, etwas verbessert",
                         "Keine Veränderung",
@@ -63,14 +82,20 @@ erkennungsfaehigkeit_verbessert = st.radio(
 # Ausgabe der Antwort
 if erkennungsfaehigkeit_verbessert is not None:
    st.write("Deine Antwort ist:", erkennungsfaehigkeit_verbessert)
-   st.session_state.antworten_abschlussumfrage["erkennungsfaehigkeit_verbessert"] = erkennungsfaehigkeit_verbessert
+   fragen["erkennunsgfaehigkeit_verbessert"] = erkennungsfaehigkeit_verbessert 
+   antworten["erkennungsfaehigkeit_verbessert"] = erkennungsfaehigkeit_verbessert
+   st.session_state.abschlussumfrage["erkennungsfaehigkeit_verbessert"] = {
+   "Frage":   frageerkennungsfaehigkeit_verbessert,
+   "Antwort": erkennungsfaehigkeit_verbessert
+    }
 
 st.divider()
 ##############################
 
 # KI generierte Inhalte hinterfragen?
+fragehinterfragen = "Wirst du KI-generierte Inhalte in Zukunft mehr hinterfragen?"
 hinterfragen = st.radio (
-                                "Wirst du KI-generierte Inhalte in Zukunft mehr hinterfragen?",
+                                fragehinterfragen,
                                 ("Ja, ich werde die Inhalte mehr hinterfragen",
                                 "Neutral",
                                 "Nein, ich werde die Inhalte nicht mehr hinterfragen"),
@@ -79,16 +104,22 @@ hinterfragen = st.radio (
 #Ausgabe der Antwort
 if aufmerksamkeit is not None:
     st.write("Deine Antwort ist:", aufmerksamkeit)
-    st.session_state.antworten_abschlussumfrage["aufmerksamkeit"] = aufmerksamkeit
+    
+    fragen["fragehinterfragen"] = fragehinterfragen 
+    antworten["hinterfragen"] = hinterfragen
+    st.session_state.abschlussumfrage["hinterfragen"] = {
+    "Frage":   fragehinterfragen,
+    "Antwort": hinterfragen
+    }
 
 
 
 
 #########################
 # FEEDBACK ZUM MODUL
-
+fragemodul = "Wie hilfreich fandest du diese Lerneinheit?"
 modul_bewertung = st.radio(
-                        "Wie hilfreich fandest du diese Lerneinheit?",
+                         fragemodul,
                         ("Sehr hilfreich",
                         "Hilfreich",
                         "Neutral",
@@ -99,11 +130,25 @@ modul_bewertung = st.radio(
 #Ausgabe der Antwort
 if modul_bewertung is not None:
     st.write("Deine Antwort ist:", modul_bewertung)
-    st.session_state.antworten_abschlussumfrage["modul_bewertung"] = modul_bewertung
 
-verbesserung = st.text_area("Was kann an der Lerneinheit verbessert werden? (optional)", height=100)
+   
+    fragen["fragemodul"] = fragemodul 
+    antworten["modul_bewertung"] = modul_bewertung
+    st.session_state.abschlussumfrage["modul_bewertung"] = {
+    "Frage":   fragemodul,
+    "Antwort": modul_bewertung
+    }
+
+frageverbesserung = "Was kann an der Lerneinheit verbessert werden? (optional)"
+verbesserung = st.text_area(frageverbesserung, height=100)
 if verbesserung:
-    st.session_state.antworten_abschlussumfrage["verbesserung"] = verbesserung
+   
+    fragen["frageverbesserung"] = frageverbesserung 
+    antworten["verbesserung"] = verbesserung
+    st.session_state.abschlussumfrage["verbesserung"] = {
+    "Frage":   frageverbesserung,
+    "Antwort": verbesserung
+    }
 
 #############################################
 #############################################

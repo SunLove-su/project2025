@@ -32,6 +32,8 @@ doc_ref.set({
     "Einstiegstumfrage":st.session_state.get("antworten_einstiegsumfrage"),
     "Antworten_Grundwissen_KI":st.session_state.get("antworten_grundwissen_ki"),
     "Uebung1":st.session_state.uebung1,
+    "Uebung2":st.session_state.uebung2,
+    
 
     "Abschlussumfrage":st.session_state.get("antworten_abschlussumfrage")
     

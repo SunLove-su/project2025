@@ -31,8 +31,10 @@ doc_ref = db.collection(u'users').document(user_id)
 doc_ref.set({
     "Einstiegstumfrage":st.session_state.get("antworten_einstiegsumfrage"),
     "Antworten_Grundwissen_KI":st.session_state.get("antworten_grundwissen_ki"),
+    "Uebung1":st.session_state.uebung1,
 
     "Abschlussumfrage":st.session_state.get("antworten_abschlussumfrage")
+    
 
 })
     

@@ -33,6 +33,8 @@ doc_ref.set({
     "Antworten_Grundwissen_KI":st.session_state.get("antworten_grundwissen_ki"),
     "Uebung1":st.session_state.get("uebung1"),
     "Uebung2":st.session_state.get("uebung2"),
+    "Uebung3":st.session_state.get("uebung3"),
+    "Uebung4":st.session_state.get("uebung4"),
 
 
     "Abschlussumfrage":st.session_state.get("abschlussumfrage")

@@ -119,9 +119,7 @@ with st.form("frage_formular3_3", clear_on_submit=True):
         st.write(f"**KI-Vorschläge:** {antwort_text}")    
 
 
-#Speichern der Prompts:
-if "antworten_uebung4" not in st.session_state:
-        st.session_state.antworten_uebung4 = {}
+
 stereotyp=st.radio("Sind das typische Berufe für eine Frau /einen Mann?",
     ("Ja, das sind typische Berufe für eine Frau / einen Mann",
      "Neutral",
@@ -132,21 +130,22 @@ stereotyp=st.radio("Sind das typische Berufe für eine Frau /einen Mann?",
 
 if stereotyp is not None:
     st.write("Deine Antwort ist:", stereotyp)
-    st.session_state.antworten_uebung4["stereotyp"]=stereotyp
-    st.session_state.antworten_uebung4
+
 
 if stereotyp is not None:
     st.session_state.uebung3 = {
-        # Berufsvorschläge des Nutzers
-        "berufsvorschlag_nutzer": st.session_state.alle_antworten_uebung3.get("berufsvorschlag", ""),
+# Berufsvorschläge des Nutzers
+        "berufsvorschlag_nutzer": st.session_state.alle_antworten_uebung3["berufsvorschlag"] if "berufsvorschlag" in st.session_state.alle_antworten_uebung3 else "",
         
         # KI-generierte Berufsvorschläge
         "berufsvorschlag_ki": st.session_state.ki_antwort,
         
-        # Bewertung der Stereotypisierung
-        "frage_stereotyp": "Sind das typische Berufe für eine Frau /einen Mann?",
-        "antwort_stereotyp": stereotyp
-    }
+        # Bewertung der Stereotypisierung - im Format wie bei anderen Übungen
+        "stereotyp": {
+            "Frage": "Sind das typische Berufe für eine Frau /einen Mann?",
+            "Antwort": stereotyp
+        }
+    }   
     
     # Debug-Ausgabe
     st.session_state.uebung3

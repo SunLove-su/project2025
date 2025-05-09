@@ -112,7 +112,8 @@ if st.button("Vokale selbst zählen"):
     # Die gesamte Ausgabe in einer Zeile anzeigen
     ausgabe += f"Gesamt: {gesamtvokale}"
     st.write(f"Selbstgezählte Antwort: {ausgabe}")
-    st.session_state.selbstgezaehlteantwort=ausgabe
+    st.session_state.uebung1["selbstgezaehlt"]=ausgabe
+    st.session_state.selbstgezaehlteantwort = ausgabe
 
 # Speichern der generierten Ausgaben als Variable 
 if "vokal_antwort_chatgpt" not in st.session_state:
@@ -138,7 +139,7 @@ if st.button("ChatGPT nach Vokalen fragen"):
     with st.expander("***VERGLEICH DER ERGEBNISSE:***",icon=":material/double_arrow:"):
         if st.session_state.vokal_antwort_chatgpt:
             st.markdown(f"""
-                        ***Selbstgezählte Antwort:*** {st.session_state.selbstgezaehlteantwort}\n
+                        ***Selbstgezählte Antwort:*** {st.session_state.uebung1["selbstgezaehlt"]}\n
                         ***ChatGPT´s Antwort:*** {st.session_state.vokal_antwort_chatgpt}
                     """)
             st.markdown("""
@@ -148,7 +149,7 @@ if st.button("ChatGPT nach Vokalen fragen"):
         else:
             st.info("Bitte klicke zuerst auf 'ChatGPT nach Vokalen fragen', um die Ergebnisse vergleichen zu können.")
 
-            st.session_state.vokal_antwort_chatgpt
+            st.session_state.uebung1["vokal_antwort_chatgpt"]=antwort_text
 
 
 st.divider()
@@ -212,7 +213,7 @@ with st.form("frage_formular_vorgegeben", clear_on_submit=True):
             "Anzahl Prompts": anzahleingaben_vorgegeben
         })
         st.session_state.antworten_uebung1antwortenzufragen_vorgegeben
-
+        st.session_state.uebung1["vorgegebene_fragen"] = st.session_state.antworten_uebung1antwortenzufragen_vorgegeben
 
 # Eingabe und Button
 textzuaufgaben=st.markdown("""
@@ -257,7 +258,11 @@ with st.form("frage_formular_eigene", clear_on_submit=True):
             "Anzahl Prompts": anzahleingaben_eigene
         })
         st.session_state.antworten_uebung1antwortenzufragen_eigene
+        st.session_state.uebung1["eigene_fragen"]= st.session_state.antworten_uebung1antwortenzufragen_eigene
+
+
 st.write("")
+
 
 
 
@@ -276,39 +281,12 @@ antwortvertrauen = st.radio(fragevertrauen,
 
 if antwortvertrauen:
     st.write(f"Deine Antwort ist: {antwortvertrauen}")
-    st.session_state.fragen_uebung1["fragevertrauen"]=fragevertrauen
-    st.session_state.antworten_uebung1["antwortvertrauen"]=antwortvertrauen
     st.session_state.uebung1["antwortvertrauen"] = {
     "Frage":   fragevertrauen,
     "Antwort": antwortvertrauen
      }
 
-# st.session_state.uebung1 = {
-#     ####Auswertefrage
-#     # Textübung
-#     "textdeutsch": st.session_state.fragen_uebung1.get("textdeutsch", ""),
-#     "textecht": st.session_state.antworten_uebung1.get("textecht", ""),
-    
-#     #######Vokale zählen
-#     # Vokalzählen
-#     "selbstgezaehlt": st.session_state.get("selbstgezaehlteantwort", ""),
-#     "vokal_antwort_chatgpt": st.session_state.get("vokal_antwort_chatgpt", ""),
-    
-#     ####Interaktion Schüler:innen mit ChatGPT
-#     # Vorgegebene Fragen
-#     "vorgegebene_fragen": st.session_state.get("antworten_uebung1antwortenzufragen_vorgegeben", []),
-#     "anzahl_vorgegebene": st.session_state.get("anzahleingaben_uebung1_vorgegeben", 0),
-    
-#     # Eigene Fragen
-#     "eigene_fragen": st.session_state.get("antworten_uebung1antwortenzufragen_eigene", []),
-#     "anzahl_eigene": st.session_state.get("anzahleingaben_uebung1_eigene", 0),
-    
-#     #########Frage beantworten
-#     # Vertrauensfrage
-#     "fragevertrauen": st.session_state.fragen_uebung1.get("fragevertrauen", ""),
-#     "antwortvertrauen": st.session_state.antworten_uebung1.get("antwortvertrauen", "")
-# }
-# st.session_state.uebung1
+
 st.divider()
 
 st.markdown("Um fortzufahren, klicke auf \"weiter\" ")

@@ -70,7 +70,9 @@ with st.expander("Was kann KI?",icon=":material/double_arrow:"):
 
 #Speichern der Prompts:
 if "antworten_grundwissen_ki" not in st.session_state:
-    st.session_state.antworten_grundwissen_ki = []
+    st.session_state.antworten_grundwissen_ki = {
+        "fragen_antworten_ki" : []
+    }
 #Speichern der Anzahl der Prompts ohne Session.State-Befehl wird durch neu eingeben einer Frage wieder 0 gesetzt
 if "anzahleingaben_grundwissen" not in st.session_state:
     st.session_state.anzahleingaben_grundwissen = 0
@@ -106,8 +108,8 @@ with st.form("frage_formular", clear_on_submit=True):
         st.write(antwort_text)
 
     
-        # Frage + Antwort speichern
-        st.session_state.antworten_grundwissen_ki.append({
+        # Frage und  Antwort speichern
+        st.session_state.antworten_grundwissen_ki["fragen_antworten_ki"].append({
             "Frage": frage,
             "Antwort": antwort_text,
             "Anzahl Prompts": anzahleingaben

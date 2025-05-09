@@ -39,8 +39,14 @@ st.image("Cinderella.png",width=200)
 st.divider()
 
 #Speichern der Prompts:
-if "alle_eingaben" not in st.session_state:
-     st.session_state.alle_eingaben = []
+
+if "uebung4" not in st.session_state:
+    st.session_state.uebung4 ={
+    
+        "prompt":{"antworten":[]},
+        "datenschutz":{},
+        "urheberrecht":{}
+    }
 
 # Eingabe und Button
 with st.form("frage_formular4", clear_on_submit=True):
@@ -68,9 +74,9 @@ with st.form("frage_formular4", clear_on_submit=True):
             # Bild anzeigen
         generiertesBild = antwort.data[0].url
         st.image(generiertesBild, width=200)
-        st.session_state.alle_eingaben.append(eingabe)
+        st.session_state.uebung4["prompt"]["antworten"].append(eingabe)
 
-        st.session_state.alle_eingaben
+    
 
 
 
@@ -80,22 +86,23 @@ with st.form("frage_formular4", clear_on_submit=True):
 
                     """)
 #Speichern der Prompts:
-if "antworten_uebung5" not in st.session_state:
-        st.session_state.antworten_uebung5 = {}
-datenschutz=st.radio("Würdest du von dir ein Bild generieren lassen, indem du ein Bild von dir hochlädst?",
+fragedatenschutz = "Würdest du von dir ein Bild generieren lassen, indem du ein Bild von dir hochlädst?"
+datenschutz=st.radio(fragedatenschutz,
     ["Ja, ich würde ein Bild von mir hochladen",
      "Neutral",
      "Nein, ich würde kein Bild von mir hochladen",
      "Keine Angabe"
     ], index=None
     )
-        #Ausgabe der Antwort 
-
+ #Ausgabe der Antwort
 if datenschutz is not None:
-        st.write("Deine Antwort ist:", datenschutz)
-        st.session_state.antworten_uebung5["datenschutz"]=datenschutz
-        st.session_state.antworten_uebung5
-urheberrecht=st.radio("Findest du es in Orndung, dass Bilder im Stil von bekannten Firmen und Künstlern innerhalb von Minuten generiert werden, obwohl diese Jahre lang daran arbeiten?",
+    st.write("Deine Antwort ist:",datenschutz)
+    st.session_state.uebung4["datenschutz"] = {
+        "Frage" : fragedatenschutz,
+        "Antwort": datenschutz
+    }
+frageurheberrecht="Findest du es in Orndung, dass Bilder im Stil von bekannten Firmen und Künstlern innerhalb von Minuten generiert werden, obwohl diese Jahre lang daran arbeiten?"
+urheberrecht=st.radio(frageurheberrecht,
                                   ["Ja, ich finde es in Ordnung",
                                    "Neutral",
                                    "Nein, ich finde es nicht in Ordnung",
@@ -104,8 +111,11 @@ urheberrecht=st.radio("Findest du es in Orndung, dass Bilder im Stil von bekannt
                         )
 if urheberrecht is not None:
         st.write("Deine Antwort ist:",urheberrecht)
-        st.session_state.antworten_uebung5["urheberrecht"]=urheberrecht
-        st.session_state.antworten_uebung5
+        st.session_state.uebung4["urheberrecht"]={
+            "Frage": frageurheberrecht,
+            "Antwort": urheberrecht
+
+        }
     
 st.divider()
 st.markdown("Um fortzufahren, klicke auf \"weiter\" ")

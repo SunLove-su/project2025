@@ -62,8 +62,8 @@ if wissen_gewonnen:
     fragen["wissen_gewonnen"]=fragewissengewonnen
     antworten["wissen_gewonnen"]=antwort_wissen
     st.session_state.abschlussumfrage["wissen_gewonnen"]={
-        "frage":fragewissengewonnen,
-        "antwort":antwort_wissen
+        "Frage":fragewissengewonnen,
+        "Antwort":antwort_wissen
     }
 
 st.divider()
@@ -102,8 +102,8 @@ hinterfragen = st.radio (
                                 index=None
 )
 #Ausgabe der Antwort
-if aufmerksamkeit is not None:
-    st.write("Deine Antwort ist:", aufmerksamkeit)
+if hinterfragen is not None:
+    st.write("Deine Antwort ist:", hinterfragen)
     
     fragen["fragehinterfragen"] = fragehinterfragen 
     antworten["hinterfragen"] = hinterfragen

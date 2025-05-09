@@ -1,5 +1,8 @@
 import streamlit as st
+import datetime
 
+#datetime.datetime.now()
+#st.session_state 
 
 st.set_page_config(
     page_title="Lerneinheit zur Sensibilisierung von KI-generierten Inhalten"

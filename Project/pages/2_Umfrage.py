@@ -39,16 +39,13 @@ alter = st.radio (fragealter,
                                 index=None
 )
 if alter is not None:
-    # st.session_state.antworten_einstiegsumfrage["alter"]=alter
-    # st.write(f"Deine Antwort ist {alter}")
-    # st.session_state.fragen_einstiegsumfrage["fragealter"]=fragealter
-    # st.session_state.
-     fragen["alter"]   = fragealter 
+     fragen["alter"] = fragealter 
      antworten["alter"] = alter
      st.session_state.einstiegsumfrage["alter"] = {
     "Frage":   fragealter,
     "Antwort": alter
      }
+     st.write(f"Du bist: {alter} Jahre alt.")
 
      st.session_state.einstiegsumfrage
    
@@ -70,6 +67,7 @@ if geschlecht is not None:
     "Frage": fragegeschlecht,
     "Antwort": geschlecht,
  }
+st.write(f"Du fühlst dich dem {geschlecht} zugehörig.")
 st.session_state.einstiegsumfrage
 st.divider()
 
@@ -87,8 +85,8 @@ haeufigkeitkinutzung = st.radio(
                                  index=None,
 )
 if haeufigkeitkinutzung is not None:
-    fragen[fragehaeufigkeitkinutzung]=fragehaeufigkeitkinutzung
-    antworten[haeufigkeitkinutzung]=haeufigkeitkinutzung
+    fragen["haeufigkeitkinutzung"]=fragehaeufigkeitkinutzung
+    antworten["haeufigkeitkinutzung"]=haeufigkeitkinutzung
     st.session_state.einstiegsumfrage["haeufigkeitkinutzung"]={
 
     "Frage": fragehaeufigkeitkinutzung,
@@ -112,14 +110,35 @@ vertrauenkiinhalten = st.radio(
 )
 
 if vertrauenkiinhalten is not None:
-    fragen[fragevertrauenkiinhalte]=fragevertrauenkiinhalte
-    antworten[vertrauenkiinhalten]=vertrauenkiinhalten
+    fragen["vertrauenkiinhalten"]=fragevertrauenkiinhalte
+    antworten["vertrauenkiinhalten"]=vertrauenkiinhalten
+    st.write(f"Du hälst KI-generierte Inhalte für {vertrauenkiinhalten}")
     st.session_state.einstiegsumfrage["vertrauenkiinhalten"]={
 
     "Frage": fragevertrauenkiinhalte,
     "Antwort": vertrauenkiinhalten,
     }
-    st.write(f"Du hälst KI für: {vertrauenkiinhalten}")
+
+frageprüfungvorher = "Wie genau prüfst du KI-generierte Inhalte, bevor du ihnen vertraust?"
+prüfungvorher = st.radio(
+                frageprüfungvorher,
+                ("Sehr genau - ich prüfe alle Fakten",
+                 "Eher genau - ich hinterfrage wichtige Behauptungen",
+                 "Mittel - manchmal prüfe ich nach",
+                 "Eher oberflächlich - selten prüfe ich nach",
+                 "Gar nicht - ich vertraue den Inhalten",
+                 "Keine Angabe"),
+                index=None
+)
+
+if prüfungvorher is not None:
+    fragen["prüfungvorher"] = frageprüfungvorher
+    antworten["prüfungvorher"] = prüfungvorher
+    st.session_state.einstiegsumfrage["prüfungvorher"] = {
+        "Frage": frageprüfungvorher,
+        "Antwort": prüfungvorher
+    }
+    st.write(f"Dein Prüfverhalten: {prüfungvorher}")
     
 
 
@@ -132,7 +151,7 @@ with col2:
     if st.button("Weiter"):
         unbeantwortet =(alter is None or geschlecht is None or
                         haeufigkeitkinutzung is None or vertrauenkiinhalten is None
-                       )
+                        or  prüfungvorher is None  )
         if unbeantwortet:
             st.error("Bitte beantworte alle Fragen, um fortzufahren.")
         else: 

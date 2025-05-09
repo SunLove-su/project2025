@@ -2,6 +2,8 @@ import streamlit as st
 from google.cloud import firestore
 import json
 import uuid
+import datetime
+
 st.set_page_config(
     page_title="Abschluss"
  )
@@ -20,7 +22,7 @@ user_id = f"{uuid.uuid4()}"
 if "user_id" in st.session_state:
     user_id=st.session_state.user_id
 else:
-    user_id = f"{uuid.uuid4()}"
+    user_id = f"{datetime.datetime.now().isoformat()[:19]}-{uuid.uuid4()}"
     st.session_state["user_id"]=user_id
 
     
@@ -35,8 +37,8 @@ doc_ref.set({
     "Uebung2":st.session_state.get("uebung2"),
     "Uebung3":st.session_state.get("uebung3"),
     "Uebung4":st.session_state.get("uebung4"),
-
-
+   
+#endzeit
     "Abschlussumfrage":st.session_state.get("abschlussumfrage")
     
 

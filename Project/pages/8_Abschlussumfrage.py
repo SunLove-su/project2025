@@ -112,8 +112,77 @@ if hinterfragen is not None:
     "Antwort": hinterfragen
     }
 
+frageprüfverhalten_nachher = "Wie genau wirst du KI-generierte Inhalte in Zukunft prüfen?"
+prüfverhalten_nachher = st.radio(
+    frageprüfverhalten_nachher,
+    [
+        "Sehr genau - ich werde alle Fakten prüfen",
+        "Eher genau - ich werde wichtige Behauptungen hinterfragen",
+        "Mittel - ich werde manchmal nachprüfen",
+        "Eher oberflächlich - ich werde selten nachprüfen",
+        "Gar nicht - ich werde den Inhalten vertrauen",
+        "Keine Angabe"
+    ],
+    index=None
+)
 
+if prüfverhalten_nachher is not None:
+    st.write("Deine Antwort ist:", prüfverhalten_nachher)
+    fragen["frageprüfverhalten_nachher"] = frageprüfverhalten_nachher
+    antworten["prüfverhalten_nachher"] = prüfverhalten_nachher
+    st.session_state.abschlussumfrage["prüfverhalten_nachher"] = {
+        "Frage": frageprüfverhalten_nachher,
+        "Antwort": prüfverhalten_nachher
+    }
 
+frageprüfstrategien = "Welche Strategien wirst du in Zukunft nutzen, um KI-generierte Inhalte kritisch zu bewerten?"
+prüfstrategien = st.multiselect(
+    frageprüfstrategien,
+    [
+        "Mehrere Quellen vergleichen",
+        "Nach typischen KI-Formulierungen suchen",
+        "Angaben mit seriösen Quellen gegenprüfen",
+        "Auf Stereotypen und Vorurteile achten",
+        "Bei Bildern auf unnatürliche Details achten",
+        "Die Authentizität des Erstellers überprüfen",
+        "Nach Quellenangaben suchen",
+        "Keine besonderen Strategien",
+        "Sonstiges"
+    ],
+    placeholder="Wähle alle Strategien aus, die du verwenden würdest"
+)
+
+if prüfstrategien:
+    antwort_prüfstrategien = ", ".join(prüfstrategien)
+    st.write("Deine Antwort ist:", antwort_prüfstrategien)
+    fragen["frageprüfstrategien"] = frageprüfstrategien
+    antworten["prüfstrategien"] = antwort_prüfstrategien
+    st.session_state.abschlussumfrage["prüfstrategien"] = {
+        "Frage": frageprüfstrategien,
+        "Antwort": antwort_prüfstrategien
+    }
+fragevertrauensveränderung = "Hat sich dein Vertrauen in KI-generierte Inhalte durch die Lerneinheit verändert?"
+vertrauensveränderung = st.radio(
+    fragevertrauensveränderung,
+    [
+        "Ja, ich vertraue KI-Inhalten jetzt mehr",
+        "Ja, ich vertraue KI-Inhalten jetzt weniger",
+        "Nein, mein Vertrauen ist unverändert",
+        "Keine Angabe"
+    ],
+    index=None
+)
+
+if vertrauensveränderung is not None:
+    st.write("Deine Antwort ist:", vertrauensveränderung)
+    fragen["fragevertrauensveränderung"] = fragevertrauensveränderung
+    antworten["vertrauensveränderung"] = vertrauensveränderung
+    st.session_state.abschlussumfrage["vertrauensveränderung"] = {
+        "Frage": fragevertrauensveränderung,
+        "Antwort": vertrauensveränderung
+    }
+
+st.divider()
 
 #########################
 # FEEDBACK ZUM MODUL
@@ -156,7 +225,9 @@ if verbesserung:
 
 if st.button("Abschluss"):
     unbeantwortet = (aufmerksamkeit is None or wissen_gewonnen is None or 
-                     erkennungsfaehigkeit_verbessert is None or modul_bewertung is None)
+                     erkennungsfaehigkeit_verbessert is None or modul_bewertung is None or
+                     prüfverhalten_nachher is None or prüfstrategien is None or
+                     vertrauensveränderung is None)
     if unbeantwortet:
         st. error("Bitte beantworte alle Fragen, um fortzufahren.")
     else: 

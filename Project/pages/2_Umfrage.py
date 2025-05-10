@@ -143,6 +143,7 @@ if prüfungvorher is not None:
 
 
 
+
 st.divider()
 st.markdown("Um fortzufahren, klicke auf \"Weiter\" ")
 col1, col2 = st.columns([8,2])

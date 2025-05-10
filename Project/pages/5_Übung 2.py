@@ -24,7 +24,10 @@ frage_personecht = "Glaubst du die Person auf dem Bild ist echt?"
 
 st.write("Hat die Person auf dem Foto an dem schönen Sommertag ein Erdbeereis gegessen?")
 # st.image("https://thispersondoesnotexist.com/",width=200)
-st.image("ErdbeereisMann.png", width=200)
+try:
+    st.image("ErdbeereisMann.png", width=200)
+except FileNotFoundError:
+    st.error("Das Bild konnte nicht gefunden werden, die Übung kannst du trotzdem fortsetzen")
 personecht=st.radio(frage_personecht,
                     ["Ja, ich glaube die Person auf dem Bild ist echt",
                      "Ich bin mir nicht sicher",

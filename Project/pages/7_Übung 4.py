@@ -26,8 +26,10 @@ st.markdown("""
                 "***Prompt:*** Erstelle mir ein Bild von Cinderella im Disney-Stil mit kurzen Haaren, einem Business-Outfit und einem Kaffee in der Hand."
             """)
             
-            
-st.image("Cinderella.png",width=200)
+try:         
+    st.image("Cinderella.png",width=200)
+except FileNotFoundError:
+    st.error("Das Bild ist nicht verfügbar, bitte mach weiter mit der Übung.")
 
 # bildanzeigen_button=st.button("Zeige mir das Bild", key="bildanzeigenlassen")
 # #Erstelle mir ein Bild von Cinderella im Disney-Stil mit kurzen Haaren, einem Business-Outfit und einem Kaffee in der Hand.
@@ -58,24 +60,36 @@ with st.form("frage_formular4", clear_on_submit=True):
     beschreibung=(f"Stelle nur eine Person/Tier darf{eingabe}")
     senden = st.form_submit_button("erstellen")
     # Antwort generierung erst wenn Button geklickt und Eingabe vorhanden
-    if senden and eingabe:
-        with st.spinner(text="Generiere Bild, bitte warten..."):
-        # Antwort holen
-            antwort = client.images.generate(
-            model="dall-e-3",
-            prompt=beschreibung,
-            n=1,
-            size="1024x1024"
+    try:
+        if senden and eingabe:
+            with st.spinner(text="Generiere Bild, bitte warten..."):
+            # Antwort holen
+                antwort = client.images.generate(
+                model="dall-e-3",
+                prompt=beschreibung,
+                n=1,
+                size="1024x1024"
 
-        )
+            )
 
-        # Antwort zeigen
-        st.write("Bild:")
-            # Bild anzeigen
-        generiertesBild = antwort.data[0].url
-        st.image(generiertesBild, width=200)
-        st.session_state.uebung4["prompt"]["antworten"].append(eingabe)
-
+            # Antwort zeigen
+            st.write("Bild:")
+                # Bild anzeigen
+            generiertesBild = antwort.data[0].url
+            st.image(generiertesBild, width=200)
+            st.session_state.uebung4["prompt"]["antworten"].append(eingabe)
+    except openai.APIStatusError:
+        st.error("OpenAI ist gerade nicht erreichbar versuch es erneut")
+    except openai.APIConnectionError:
+        st.error("OpenAI ist gerade nicht erreichbar versuch es erneut")
+    except openai.RateLimitError:
+        st.error("Zu viele Anfragen auf einmal, bitte warte und versuche es erneut.")
+    except openai.BadRequestError as e:
+        st.error(f"Eingabefehler: {e}")
+    except openai.APITimeoutError:
+        st.error("OpenAI ist gerade nicht erreichbar versuch es erneut")
+    except Exception as e :
+        st.error(e)
     
 
 

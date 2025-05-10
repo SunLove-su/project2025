@@ -1,11 +1,14 @@
 import streamlit as st
 import openai
 
-client = openai.OpenAI(api_key=st.secrets["openai"]["api_key"])
 
 st.set_page_config(
     page_title="Grundwissen über Künstliche Intelligenz (KI)"
 )
+try: 
+    client = openai.OpenAI(api_key=st.secrets["openai"]["api_key"])
+except KeyError:
+    st.error("Kein API Key für OpenAI vorhanden. Abfragen über OpenAI nicht möglich")
 
 st.markdown("<h4>Grundwissen über Künstliche Intelligenz (KI)</h4>",unsafe_allow_html=True)
 st.markdown("""

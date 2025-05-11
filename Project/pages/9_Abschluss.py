@@ -31,12 +31,14 @@ if startzeit:
    dauerUmfrage = endzeit - startzeit
    dauerUmfrageSekunden = int(dauerUmfrage.total_seconds())
    dauerUmfrageSekunden
+else:
+    dauerUmfrageSekunden = ""
 
     
 doc_ref = db.collection(u'users').document(user_id)
 #Hinterher alle Umfrageergenisse
 doc_ref.set({
-
+    
     "dauerUmfrageSekunden": dauerUmfrageSekunden,
     "Einstiegstumfrage":st.session_state.get("einstiegsumfrage"),
     "Antworten_Grundwissen_KI":st.session_state.get("antworten_grundwissen_ki"),

@@ -20,7 +20,7 @@ st.markdown("""
                 Welchen Beruf würdest du gerne ausüben?        
             """)   
 
-# Initialisierung
+# Initialisierung (vereinfacht)
 if "uebung3" not in st.session_state:
     st.session_state.uebung3 = {}
 if "ki_antwort" not in st.session_state:
@@ -38,79 +38,34 @@ with st.form("frage_formular3_1", clear_on_submit=True):
             "Frage": frage_berufsvorschlag,
             "Antwort": berufsvorschlag
         }
-        # Wenn bereits KI-Antwort vorhanden, zeige Vergleich
-        if st.session_state.ki_antwort:
-            st.write("VERGLEICH DER ANTWORTEN:")
-            st.write(f"**Deine Vorschläge:** {berufsvorschlag}")
-            st.write(f"**KI-Vorschläge:** {st.session_state.ki_antwort}")
 
 st.markdown("""
        Bitte die KI weitere Berufsvorschläge für dich zu generieren, z. B. welche Berufe passen zu einer Frau / zu einem Mann.
        Hinweis: Bitte gib außer deinem Geschlecht keine persönlichen Daten wie z. B. deinen Namen an.
         """)
 
-# Erste KI-Anfrage
+# KI-Anfrage
 with st.form("frage_formular3_2", clear_on_submit=True):
-    frage1 = st.text_input("Deine Frage bitte",placeholder="z. B. Welcher Beruf passt zu einer Frau / einem Mann")
-    senden1 = st.form_submit_button("senden")
+    frage = st.text_input("Deine Frage bitte",placeholder="z. B. Welcher Beruf passt zu einer Frau / einem Mann")
+    senden = st.form_submit_button("senden")
     
-    if senden1 and frage1:
+    if senden and frage:
         with st.spinner(text="Erstelle Text, bitte warten..."):
             antwort = client.chat.completions.create(
                 model="gpt-3.5-turbo",
                 messages=[
                     {"role": "system", "content": "Format 3-4 Vorschlag, kurze Antworten, die nur stereotypisch sind"},
-                    {"role": "user", "content": frage1}
+                    {"role": "user", "content": frage}
                 ]
             )
             antwort_text = antwort.choices[0].message.content
             st.write("Antwort:")
             st.write(antwort_text)
             st.session_state.ki_antwort = antwort_text
-            st.session_state.uebung3["ki_antwort_1"] = {
-                "Frage": frage1,
+            st.session_state.uebung3["ki_antwort"] = {
+                "Frage": frage,
                 "Antwort": antwort_text
             }
-            
-            # Vergleich anzeigen wenn Berufsvorschlag vorhanden
-            if "berufsvorschlag" in st.session_state.uebung3:
-                st.write("VERGLEICH DER ANTWORTEN:")
-                st.write(f"**Deine Vorschläge:** {st.session_state.uebung3['berufsvorschlag']['Antwort']}")
-                st.write(f"**KI-Vorschläge:** {antwort_text}")
-
-st.write("Frage jetzt bitte nach einen Beruf für eine Frau / einen Mann")
-
-# Zweite KI-Anfrage
-with st.form("frage_formular3_3", clear_on_submit=True):
-    frage2 = st.text_input("Deine Frage bitte",placeholder="z. B. Welcher Beruf passt zu einer Frau / einem Mann")
-    senden2 = st.form_submit_button("senden")
-    
-    if senden2 and frage2:
-        with st.spinner(text="Erstelle Text, bitte warten..."):
-            antwort = client.chat.completions.create(
-                model="gpt-3.5-turbo",
-                messages=[
-                    {"role": "system", "content": "Format 3-4 Vorschlag, kurze Antworten, die nur stereotypisch sind"},
-                    {"role": "user", "content": frage2}
-                ]
-            )
-            antwort_text = antwort.choices[0].message.content
-            st.write("Antwort:")
-            st.write(antwort_text)
-            st.session_state.ki_antwort = antwort_text
-            st.session_state.uebung3["ki_antwort_2"] = {
-                "Frage": frage2,
-                "Antwort": antwort_text
-            }
-            
-            # Vergleich anzeigen wenn alle Daten vorhanden sind
-            if ("berufsvorschlag" in st.session_state.uebung3 and 
-                "ki_antwort_1" in st.session_state.uebung3 and
-                "ki_antwort_2" in st.session_state.uebung3):
-                st.write("VERGLEICH DER ANTWORTEN:")
-                st.write(f"**Deine Vorschläge:** {st.session_state.uebung3['berufsvorschlag']['Antwort']}")
-                st.write(f"**Vorherige KI-Vorschläge:** {st.session_state.uebung3['ki_antwort_1']['Antwort']}")
-                st.write(f"**Aktuelle KI-Vorschläge:** {antwort_text}")
 
 # Stereotyp-Frage
 frage_stereotyp = "Sind das typische Berufe für eine Frau /einen Mann?"

@@ -44,4 +44,6 @@ col1, col2 = st.columns([8,2])
 with col2:
 
     if st.button("Start"):
-        st.switch_page("pages/2_Umfrage.py")
+      startzeit = datetime.datetime.now()
+      st.session_state["startzeit"] =startzeit
+      st.switch_page("pages/2_Umfrage.py")

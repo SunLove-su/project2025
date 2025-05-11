@@ -25,12 +25,19 @@ else:
     user_id = f"{datetime.datetime.now().isoformat()[:19]}-{uuid.uuid4()}"
     st.session_state["user_id"]=user_id
 
-    
-    
+endzeit = datetime.datetime.now()
+startzeit = st.session_state.get("startzeit")
+if startzeit:
+   dauerUmfrage = endzeit - startzeit
+   dauerUmfrageSekunden = int(dauerUmfrage.total_seconds())
+   dauerUmfrageSekunden
+
     
 doc_ref = db.collection(u'users').document(user_id)
 #Hinterher alle Umfrageergenisse
 doc_ref.set({
+
+    "dauerUmfrageSekunden": dauerUmfrageSekunden,
     "Einstiegstumfrage":st.session_state.get("einstiegsumfrage"),
     "Antworten_Grundwissen_KI":st.session_state.get("antworten_grundwissen_ki"),
     "Uebung1":st.session_state.get("uebung1"),

@@ -279,6 +279,8 @@ if st.button("Abschluss"):
                         "Abschlussumfrage":st.session_state.get("abschlussumfrage")
             })
                 st.success("Daten erfolgreich gespeichert!")
+            except Exception as error:
+                st.error("Es gab ein Problem mit der Speicherung der Daten")
 
         except KeyError as error:
             st.error("Problem mit der Datenbankkonfiguration. Bitte melde dich, wenn du die Fehlermeldung bekommst.")
@@ -289,10 +291,6 @@ if st.button("Abschluss"):
         except TimeoutError as error:
             st.error("Problem mit der Verbindung zur Datenbank. Bitte melde dich, wenn du die Fehlermeldung bekommst.")
 
-        except Exception as error:
-            st.error("Die Speicherung hat nicht funktioniert, melde dich bitte.")       
-
-            
         except Exception as error:
                 st.error("Es ist ein Fehler mit der Datenbank aufgetreten. Bitte melde dich, wenn du die Fehlermeldung siehst.")
                 

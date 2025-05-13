@@ -71,6 +71,8 @@ st.markdown("""
 
 
 st.markdown("")
+st.divider()
+st.divider()
 
 if "uebung1" not in st.session_state:
     st.session_state.uebung1 ={}
@@ -240,19 +242,19 @@ with st.expander("Vorgegebene Fragen", expanded=True):
                         )
                         antwort_text = antwort.choices[0].message.content
 
-                    # Prompt-Zähler aktualisieren
-                    st.session_state.anzahleingaben_uebung1_vorgegeben+= 1
-                    anzahleingaben_vorgegeben = st.session_state.anzahleingaben_uebung1_vorgegeben
+                        # Prompt-Zähler aktualisieren
+                        st.session_state.anzahleingaben_uebung1_vorgegeben+= 1
+                        anzahleingaben_vorgegeben = st.session_state.anzahleingaben_uebung1_vorgegeben
 
 
 
-                    # Frage anzeigen
-                    st.write("Deine Frage:")
-                    st.write(frage)
-                    
-                    # Antwort anzeigen
-                    st.write("Antwort:")
-                    st.write(antwort_text)
+                        # Frage anzeigen
+                        st.write("Deine Frage:")
+                        st.write(frage)
+                        
+                        # Antwort anzeigen
+                        st.write("Antwort:")
+                        st.write(antwort_text)
 
 
 

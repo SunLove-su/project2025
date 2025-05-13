@@ -176,11 +176,12 @@ if st.button("ChatGPT nach Vokalen fragen"):
 
 st.divider()
 
-tab1 = st.tabs(["Vorgegebene Fragen"])[0]
+#tab1 = st.tabs(["Vorgegebene Fragen"])[0]
 
 #st.text_input hat Bugs
 # Eingabe und Button
-with tab1:
+#with tab1:
+with st.expander("Vorgegebene Fragen", expanded=True):
     textzuaufgaben=st.markdown("""
                 Suche die eine der beiden hier angegebenen Fragen aus, die ChatGPT dir beantworten soll und gibt diese in das untenstehende leere
                 Textfeld ein.
@@ -246,59 +247,60 @@ with tab1:
                                 Stelle ChatGPT eine Frage, die dich interessiert
         
                 """)
-    tab2 = st.tabs(["Eigene Fragen"])[0]
-    with tab2:
-        with st.form("frage_formular_eigene", clear_on_submit=True):
-            frage_eigene = st.text_input("Stelle hier deine eigenen Fragen")
-            senden = st.form_submit_button("Fragen")
+    #tab2 = st.tabs(["Eigene Fragen"])[0]
+    #with tab2:
+with st.expander("Eigene Fragen", expanded=True):
+    with st.form("frage_formular_eigene", clear_on_submit=True):
+        frage_eigene = st.text_input("Stelle hier deine eigenen Fragen")
+        senden = st.form_submit_button("Fragen")
 
-            st.markdown("Wenn du fertig bist, dann scrolle bitte weiter nach unten")
-            # Antwort generierung erst wenn Button geklickt und Eingabe vorhanden
-            if senden and frage_eigene:
-                try:
+        st.markdown("Wenn du fertig bist, dann scrolle bitte weiter nach unten")
+        # Antwort generierung erst wenn Button geklickt und Eingabe vorhanden
+        if senden and frage_eigene:
+            try:
 
-                    with st.spinner(text="Erstelle Text, bitte warten..."):
-                        antwort = client.chat.completions.create(
-                            model="gpt-3.5-turbo",
-                            messages=[{"role": "user", "content": frage_eigene}]
-                        )
-                        antwort_text_eigene= antwort.choices[0].message.content
+                with st.spinner(text="Erstelle Text, bitte warten..."):
+                    antwort = client.chat.completions.create(
+                        model="gpt-3.5-turbo",
+                        messages=[{"role": "user", "content": frage_eigene}]
+                    )
+                    antwort_text_eigene= antwort.choices[0].message.content
 
-                    # Prompt-Zähler aktualisieren
-                    st.session_state.anzahleingaben_uebung1_eigene += 1
-                    anzahleingaben_eigene = st.session_state.anzahleingaben_uebung1_eigene
-                    
-
-
-                    # Frage anzeigen
-                    st.write("Deine Frage:")
-                    st.write(frage_eigene)
-                    
-                    # Antwort anzeigen
-                    st.write("Antwort:")
-                    st.write(antwort_text_eigene)
+                # Prompt-Zähler aktualisieren
+                st.session_state.anzahleingaben_uebung1_eigene += 1
+                anzahleingaben_eigene = st.session_state.anzahleingaben_uebung1_eigene
+                
 
 
+                # Frage anzeigen
+                st.write("Deine Frage:")
+                st.write(frage_eigene)
+                
+                # Antwort anzeigen
+                st.write("Antwort:")
+                st.write(antwort_text_eigene)
 
-                    # Eigene Fragen & KI-Antworten speichern
-                    if "eigene_fragen" not in st.session_state.uebung1:
-                        st.session_state.uebung1["eigene_fragen"] = []
-                    
-                    st.session_state.uebung1["eigene_fragen"].append({
-                        "Bereich": "Übung1",
-                        "Typ": "Eigene Frage - KI-Interaktion",
-                        "Frage": frage_eigene,
-                        "Antwort": antwort_text_eigene,
-                        "Anzahl Prompts": anzahleingaben_eigene
-                    })
-                except openai.APIStatusError:
-                    st.error("OpenAI verarbeitet die Anfrage nicht, bitte versuche es erneut.")
-                except openai.APIConnectionError:
-                    st.error("Verbindungsproblem mit OpenAI. Bitte versuche es später noch einmal.")
-                except openai.RateLimitError:
-                    st.error("Zu viele Anfragen. Bitte warte einen Moment und versuche es dann erneut.")
-                except Exception as e:
-                    st.error(f"Ein Fehler ist aufgetreten: {e}")
+
+
+                # Eigene Fragen & KI-Antworten speichern
+                if "eigene_fragen" not in st.session_state.uebung1:
+                    st.session_state.uebung1["eigene_fragen"] = []
+                
+                st.session_state.uebung1["eigene_fragen"].append({
+                    "Bereich": "Übung1",
+                    "Typ": "Eigene Frage - KI-Interaktion",
+                    "Frage": frage_eigene,
+                    "Antwort": antwort_text_eigene,
+                    "Anzahl Prompts": anzahleingaben_eigene
+                })
+            except openai.APIStatusError:
+                st.error("OpenAI verarbeitet die Anfrage nicht, bitte versuche es erneut.")
+            except openai.APIConnectionError:
+                st.error("Verbindungsproblem mit OpenAI. Bitte versuche es später noch einmal.")
+            except openai.RateLimitError:
+                st.error("Zu viele Anfragen. Bitte warte einen Moment und versuche es dann erneut.")
+            except Exception as e:
+                st.error(f"Ein Fehler ist aufgetreten: {e}")
 
 st.write("")
 

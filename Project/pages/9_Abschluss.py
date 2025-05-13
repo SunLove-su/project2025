@@ -110,7 +110,7 @@ try:
     response = supabase.table("umfrage_antworten").insert(supabase_data).execute()
    
 except Exception as error:
-    st.error(f"Es ist ein Fehler aufgetreten")
+    st.error("Es ist ein Fehler aufgetreten")
 
 st.write("Supabase-Ergebnis:", response)
     

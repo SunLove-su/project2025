@@ -42,6 +42,18 @@ def login():
 if not st.session_state.get("logged_in"):
     login()
 
+# st.markdown("""
+#     <style>
+#         .reportview-container {
+#             margin-top: -2em;
+#         }
+#         #MainMenu {visibility: hidden;}
+#         .stAppDeployButton {display:none; visibility: hidden;}
+#         footer {visibility: hidden;}
+#         #stDecoration {display:none;}
+#     </style>
+# """, unsafe_allow_html=True)
+
 st.markdown("<h4>Willkommen zum Lerneinheit zur Sensibilisierung KI-generierter Inhalte</h4>", unsafe_allow_html=True)
 st.markdown("""Diese Lerneinheit soll die Risiken von KI-generierten Inhalten aufzeigen und dich für diese sensibilisieren.
 Künstliche Intelligenz (KI) findet heute überall Einsatz und bietet uns viele Chancen.

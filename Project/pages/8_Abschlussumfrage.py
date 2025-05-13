@@ -37,7 +37,7 @@ if aufmerksamkeit is not None:
     "Frage":  frageaufmerksamkeit,
     "Antwort": aufmerksamkeit
      }
-     st.write("Deine Antwort ist:", aufmerksamkeit)
+    st.write("Deine Antwort ist:", aufmerksamkeit)
 
 st.divider()
 
@@ -89,7 +89,7 @@ if erkennungsfaehigkeit_verbessert is not None:
    "Frage":   frageerkennungsfaehigkeit_verbessert,
    "Antwort": erkennungsfaehigkeit_verbessert
     }
-    st.write("Deine Antwort ist:", erkennungsfaehigkeit_verbessert)
+   st.write("Deine Antwort ist:", erkennungsfaehigkeit_verbessert)
 
 st.divider()
 ##############################
@@ -114,7 +114,7 @@ if hinterfragen is not None:
     "Frage":   fragehinterfragen,
     "Antwort": hinterfragen
     }
-   st.write("Deine Antwort ist:", hinterfragen)
+    st.write("Deine Antwort ist:", hinterfragen)
 
 frageprüfverhalten_nachher = "Wie genau wirst du KI-generierte Inhalte in Zukunft prüfen?"
 prüfverhalten_nachher = st.radio(

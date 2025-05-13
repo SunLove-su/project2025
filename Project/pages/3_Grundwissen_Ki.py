@@ -89,6 +89,7 @@ with tab1:
 
         st.markdown("Wenn du keine Fragen mehr hast, scrolle bitte weiter nach unten")
     # Antwort generierung erst wenn Button geklickt und Eingabe vorhanden
+    try:
         if senden and frage:
 
             with st.spinner(text="Erstelle Text, bitte warten..."):
@@ -120,6 +121,14 @@ with tab1:
                 "Anzahl Prompts": anzahleingaben
             })
             st.session_state.grundwissen_ki
+    except openai.APIStatusError:
+        st.error("OpenAI verarbeitet die Anfrage nicht, bitte versuche es erneut.")
+    except openai.APIConnectionError:
+        st.error("Verbindungsproblem mit OpenAI. Bitte versuche es später noch einmal.")
+    except openai.RateLimitError:
+        st.error("Zu viele Anfragen. Bitte warte einen Moment und versuche es dann erneut.")
+    except Exception as e:
+        st.error(f"Ein Fehler ist aufgetreten: {e}")
     st.write("")
 #Überprüfungsfrage: Sicherstellung, dass die Textbausteine gelesen wurden
 st.divider()

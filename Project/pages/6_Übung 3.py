@@ -63,30 +63,39 @@ with tab1:
         senden1 = st.form_submit_button("senden")
         
         if senden1 and frage1:
-            with st.spinner(text="Erstelle Text, bitte warten..."):
-                antwort = client.chat.completions.create(
-                    model="gpt-3.5-turbo",
-                    messages=[
-                        {"role": "system", "content": "Format 3-4 Vorschlag, kurze Antworten, die nur stereotypisch sind"},
-                        {"role": "user", "content": frage1}
-                    ]
-                )
-                antwort_text = antwort.choices[0].message.content
-                st.write("Antwort:")
-                st.write(antwort_text)
-                st.session_state.ki_antwort = antwort_text
-                st.session_state.uebung3["ki_antwort_1"] = {
-                    "Bereich": "Übung3",
-                    "Typ": "Berufsvorschlag eigenes Geschlecht-KI-Interaktion 1",
-                    "Frage": frage1,
-                    "Antwort": antwort_text
-                }
-                
-                # # Vergleich anzeigen wenn Berufsvorschlag vorhanden
-                # if "berufsvorschlag" in st.session_state.uebung3:
-                #     st.write("VERGLEICH DER ANTWORTEN:")
-                #     st.write(f"**Deine Vorschläge:** {st.session_state.uebung3['berufsvorschlag']['Antwort']}")
-                #     st.write(f"**KI-Vorschläge:** {antwort_text}")
+            try:
+                with st.spinner(text="Erstelle Text, bitte warten..."):
+                    antwort = client.chat.completions.create(
+                        model="gpt-3.5-turbo",
+                        messages=[
+                            {"role": "system", "content": "Format 3-4 Vorschlag, kurze Antworten, die nur stereotypisch sind"},
+                            {"role": "user", "content": frage1}
+                        ]
+                    )
+                    antwort_text = antwort.choices[0].message.content
+                    st.write("Antwort:")
+                    st.write(antwort_text)
+                    st.session_state.ki_antwort = antwort_text
+                    st.session_state.uebung3["ki_antwort_1"] = {
+                        "Bereich": "Übung3",
+                        "Typ": "Berufsvorschlag eigenes Geschlecht-KI-Interaktion 1",
+                        "Frage": frage1,
+                        "Antwort": antwort_text
+                    }
+                    
+                    # # Vergleich anzeigen wenn Berufsvorschlag vorhanden
+                    # if "berufsvorschlag" in st.session_state.uebung3:
+                    #     st.write("VERGLEICH DER ANTWORTEN:")
+                    #     st.write(f"**Deine Vorschläge:** {st.session_state.uebung3['berufsvorschlag']['Antwort']}")
+                    #     st.write(f"**KI-Vorschläge:** {antwort_text}")
+            except openai.APIStatusError:
+                st.error("OpenAI verarbeitet die Anfrage nicht, bitte versuche es erneut.")
+            except openai.APIConnectionError:
+                st.error("Verbindungsproblem mit OpenAI. Bitte versuche es später noch einmal.")
+            except openai.RateLimitError:
+                st.error("Zu viele Anfragen. Bitte warte einen Moment und versuche es dann erneut.")
+            except Exception as e:
+                st.error(f"Ein Fehler ist aufgetreten: {e}")
 
 
     st.markdown("""
@@ -97,24 +106,33 @@ with tab1:
         senden2 = st.form_submit_button("senden")
         
         if senden2 and frage2:
-            with st.spinner(text="Erstelle Text, bitte warten..."):
-                antwort = client.chat.completions.create(
-                    model="gpt-3.5-turbo",
-                    messages=[
-                        {"role": "system", "content": "Format 3-4 Vorschlag, kurze Antworten, die nur stereotypisch sind"},
-                        {"role": "user", "content": frage2}
-                    ]
-                )
-                antwort_text = antwort.choices[0].message.content
-                st.write("Antwort:")
-                st.write(antwort_text)
-                st.session_state.ki_antwort = antwort_text
-                st.session_state.uebung3["ki_antwort_2"] = {
-                    "Bereich":"Übung3",
-                    "Typ":"Berufsvorschlag anderes Geschlecht - KI-Interaktion 2",
-                    "Frage": frage2,
-                    "Antwort": antwort_text
-                }
+            try:
+                with st.spinner(text="Erstelle Text, bitte warten..."):
+                    antwort = client.chat.completions.create(
+                        model="gpt-3.5-turbo",
+                        messages=[
+                            {"role": "system", "content": "Format 3-4 Vorschlag, kurze Antworten, die nur stereotypisch sind"},
+                            {"role": "user", "content": frage2}
+                        ]
+                    )
+                    antwort_text = antwort.choices[0].message.content
+                    st.write("Antwort:")
+                    st.write(antwort_text)
+                    st.session_state.ki_antwort = antwort_text
+                    st.session_state.uebung3["ki_antwort_2"] = {
+                        "Bereich":"Übung3",
+                        "Typ":"Berufsvorschlag anderes Geschlecht - KI-Interaktion 2",
+                        "Frage": frage2,
+                        "Antwort": antwort_text
+                    }
+            except openai.APIStatusError:
+                st.error("OpenAI verarbeitet die Anfrage nicht, bitte versuche es erneut.")
+            except openai.APIConnectionError:
+                st.error("Verbindungsproblem mit OpenAI. Bitte versuche es später noch einmal.")
+            except openai.RateLimitError:
+                st.error("Zu viele Anfragen. Bitte warte einen Moment und versuche es dann erneut.")
+            except Exception as e:
+                st.error(f"Ein Fehler ist aufgetreten: {e}")
 tab2 = st.tabs(["Vergleich der Eingabe und der KI-Ausgaben"])[0]               
 with tab2:               
     # Vergleich anzeigen wenn alle Daten vorhanden sind

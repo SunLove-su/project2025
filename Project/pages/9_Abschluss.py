@@ -3,6 +3,7 @@ from google.cloud import firestore
 import json
 import uuid
 import datetime
+from supabase import create_client
 
 st.set_page_config(
     page_title="Abschluss"
@@ -18,10 +19,11 @@ st.markdown("""
             2. Prüfe und Hinterfrage die Ergebnisse der KI immer, die Ergebnisse können fehlerhaft sein.
             3. Achte auf potenzielle Vorurteile in KI-Antworten
             4. Beachte den Urheberrechte bei der Nutzung von KI
-            5. Informiere dich über Entwicklungen und Änderungen
+            5. Informiere dich über Entwicklungen und Änderungen\n\n
             ***Die Seite kannst du jetzt gerne schließen***
+
             
-            """)
+            """,unsafe_allow_html=True)
 googlecredentials = json.loads(st.secrets["firestore"]["google_api_key"])
 db=firestore.Client.from_service_account_info(googlecredentials)
 user_id = f"{uuid.uuid4()}"
@@ -40,22 +42,40 @@ if startzeit:
 else:
     dauerUmfrageSekunden = ""
 
-    
-doc_ref = db.collection(u'users').document(user_id)
-#Hinterher alle Umfrageergenisse
-doc_ref.set({
-    
-    "dauerUmfrageSekunden": dauerUmfrageSekunden,
-    "Einstiegstumfrage":st.session_state.get("einstiegsumfrage"),
-    "Grundwissen_KI":st.session_state.get("grundwissen_ki"),
-    "Uebung1":st.session_state.get("uebung1"),
-    "Uebung2":st.session_state.get("uebung2"),
-    "Uebung3":st.session_state.get("uebung3"),
-    "Uebung4":st.session_state.get("uebung4"),
-   
-#endzeit
-    "Abschlussumfrage":st.session_state.get("abschlussumfrage")
-    
 
-})
+user_data = {
+    "dauerUmfrageSekunden": dauerUmfrageSekunden,
+    "Einstiegstumfrage": st.session_state.get("einstiegsumfrage"),
+    "Grundwissen_KI": st.session_state.get("grundwissen_ki"),
+    "Uebung1": st.session_state.get("uebung1"),
+    "Uebung2": st.session_state.get("uebung2"),
+    "Uebung3": st.session_state.get("uebung3"),
+    "Uebung4": st.session_state.get("uebung4"),
+    "Abschlussumfrage": st.session_state.get("abschlussumfrage")
+}
+
+doc_ref = db.collection(u'users').document(user_id)
+doc_ref.set(user_data)
+
+
+try:
+    # Supabase-Client erstellen
+    supabase_url = st.secrets["supabase"]["url"]
+    supabase_key = st.secrets["supabase"]["key"]
+    supabase = create_client(supabase_url, supabase_key)
+   
+    # Daten für Supabase vorbereiten
+    supabase_data = {
+        "user_id": user_id,
+        "data": user_data
+    }
+   
+    
+    # Tabelle in Supabase erstellt mit dem Namen "umfrage_antworten"
+    response = supabase.table("umfrage_antworten").insert(supabase_data).execute()
+   
+except Exception as error:
+    st.error(f"Es ist ein Fehler aufgetreten")
+
+st.write("Supabase-Ergebnis:", response)
     

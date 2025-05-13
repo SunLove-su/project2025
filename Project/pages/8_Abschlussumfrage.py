@@ -240,48 +240,62 @@ if st.button("Abschluss"):
     if unbeantwortet:
         st. error("Bitte beantworte alle Fragen, um fortzufahren.")
     else:
-        
-        googlecredentials = json.loads(st.secrets["firestore"]["google_api_key"])
-        db=firestore.Client.from_service_account_info(googlecredentials)
-        user_id = f"{uuid.uuid4()}"
-        if "user_id" in st.session_state:
-            user_id=st.session_state.user_id
-        else:
-            user_id = f"{datetime.datetime.now().isoformat()[:19]}-{uuid.uuid4()}"
-            st.session_state["user_id"]=user_id
+    
+        try:
+            
+            googlecredentials = json.loads(st.secrets["firestore"]["google_api_key"])
+            db=firestore.Client.from_service_account_info(googlecredentials)
+            user_id = f"{uuid.uuid4()}"
+            if "user_id" in st.session_state:
+                user_id=st.session_state.user_id
+            else:
+                user_id = f"{datetime.datetime.now().isoformat()[:19]}-{uuid.uuid4()}"
+                st.session_state["user_id"]=user_id
 
-        endzeit = datetime.datetime.now()
-        startzeit = st.session_state.get("startzeit")
-        if startzeit:
-            dauerUmfrage = endzeit - startzeit
-            dauerUmfrageSekunden = int(dauerUmfrage.total_seconds())
-            dauerUmfrageSekunden
-        else:
-            dauerUmfrageSekunden = ""
+            endzeit = datetime.datetime.now()
+            startzeit = st.session_state.get("startzeit")
+            if startzeit:
+                dauerUmfrage = endzeit - startzeit
+                dauerUmfrageSekunden = int(dauerUmfrage.total_seconds())
+                dauerUmfrageSekunden
+            else:
+                dauerUmfrageSekunden = ""
+
+                
+            doc_ref = db.collection(u'users').document(user_id)
+            #Hinterher alle Umfrageergenisse
+            try: 
+                doc_ref.set({
+                        
+                        "dauerUmfrageSekunden": dauerUmfrageSekunden,
+                        "Einstiegstumfrage":st.session_state.get("einstiegsumfrage"),
+                        "Grundwissen_KI":st.session_state.get("grundwissen_ki"),
+                        "Uebung1":st.session_state.get("uebung1"),
+                        "Uebung2":st.session_state.get("uebung2"),
+                        "Uebung3":st.session_state.get("uebung3"),
+                        "Uebung4":st.session_state.get("uebung4"),
+                    
+                    #endzeit
+                        "Abschlussumfrage":st.session_state.get("abschlussumfrage")
+            })
+                st.success("Daten erfolgreich gespeichert!")
+
+        except KeyError as error:
+            st.error("Problem mit der Datenbankkonfiguration. Bitte melde dich, wenn du die Fehlermeldung bekommst.")
+        
+        except ConnectionError as error:
+            st.error("Problem mit der Verbindung zur Datenbank. Bittel melde dich, wenn du die Fehlermeldung bekommst.")
+
+        except TimeoutError as error:
+            st.error("Problem mit der Verbindung zur Datenbank. Bitte melde dich, wenn du die Fehlermeldung bekommst.")
+
+        except Exception as error:
+            st.error("Die Speicherung hat nicht funktioniert, melde dich bitte.")       
 
             
-        doc_ref = db.collection(u'users').document(user_id)
-        #Hinterher alle Umfrageergenisse
-        try: 
-            doc_ref.set({
-                    
-                    "dauerUmfrageSekunden": dauerUmfrageSekunden,
-                    "Einstiegstumfrage":st.session_state.get("einstiegsumfrage"),
-                    "Antworten_Grundwissen_KI":st.session_state.get("antworten_grundwissen_ki"),
-                    "Uebung1":st.session_state.get("uebung1"),
-                    "Uebung2":st.session_state.get("uebung2"),
-                    "Uebung3":st.session_state.get("uebung3"),
-                    "Uebung4":st.session_state.get("uebung4"),
-                
-                #endzeit
-                    "Abschlussumfrage":st.session_state.get("abschlussumfrage")
-        
-                
-
-        })
         except Exception as error:
-                st.write("Es ist bei der Speicherung ein Fehler aufgetreten.")
-        
+                st.error("Es ist ein Fehler mit der Datenbank aufgetreten. Bitte melde dich, wenn du die Fehlermeldung siehst.")
+                
     
         st.switch_page("pages/9_Abschluss.py")
 

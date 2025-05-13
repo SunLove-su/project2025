@@ -90,6 +90,29 @@ if kiwissen is not None:
     
     }
 
+frage_erkennungsfaehigkeit = "Wie gut kannst du erkennen, ob ein Text oder Bild von einer KI stammt?"
+erkennungsfaehigkeit = st.radio(
+    frage_erkennungsfaehigkeit,
+    [
+        "Sehr gut",
+        "Gut", 
+        "Mittelmäßig",
+        "Nicht so gut",
+        "Gar nicht gut",
+        "Keine Angabe"
+    ],
+    index=None
+)
+
+if erkennungsfaehigkeit is not None:
+    st.session_state.einstiegsumfrage["erkennungsfaehigkeit"] = {
+        "Bereich": "Einstiegsumfrage",
+        "Typ": "Erkennungsfähigkeit",
+        "Frage": frage_erkennungsfaehigkeit,
+        "Antwort": erkennungsfaehigkeit
+    }
+    st.write("Deine Antwort ist:", erkennungsfaehigkeit)
+
 #########################
 # Nutzunghäufigkeit (Vodafone2024) S. 11 , Gerlich Studie 2025
 fragehaeufigkeitkinutzung = "Wie oft nutzt du KI-Tools?"
@@ -176,8 +199,8 @@ with col2:
 
     if st.button("Weiter"):
         unbeantwortet =(alter is None or geschlecht is None or kiwissen is None or
-                        haeufigkeitkinutzung is None or vertrauenkiinhalten is None
-                        or  pruefungvorher is None  )
+                        erkennungsfaehigkeit is None or haeufigkeitkinutzung is None or
+                        vertrauenkiinhalten is None or  pruefungvorher is None  )
         if unbeantwortet:
             st.error("Bitte beantworte alle Fragen, um fortzufahren.")
         else: 

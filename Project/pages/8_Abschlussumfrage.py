@@ -146,12 +146,10 @@ frageprüfstrategien = "Welche Strategien wirst du in Zukunft nutzen, um KI-gene
 prüfstrategien = st.multiselect(
     frageprüfstrategien,
     [
-        "Mehrere Quellen vergleichen",
-        "Nach typischen KI-Formulierungen suchen",
-        "Angaben mit seriösen Quellen gegenprüfen",
+        "Auf KI-Formulierungen achten",
+        "Ausgaben gegenprüfen",
         "Auf Stereotypen und Vorurteile achten",
         "Bei Bildern auf unnatürliche Details achten",
-        "Die Authentizität des Erstellers überprüfen",
         "Nach Quellenangaben suchen",
         "Keine besonderen Strategien",
         "Sonstiges"

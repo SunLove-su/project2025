@@ -13,6 +13,12 @@ st.markdown("""
             Vielen Dank für deine Teilnahme!
             Ich hoffe das Modul hat dir Spaß gemacht und du konntest einiges für dich mitnehmen.
 
+            ***Wichtige Regeln im Umgang mit KI***
+            1. Gebe keine sensiblen Daten in die KI (Keine Namen, Dokumente, Bilder u.a.)
+            2. Prüfe und Hinterfrage die Ergebnisse der KI immer, die Ergebnisse können fehlerhaft sein.
+            3. Achte auf potenzielle Vorurteile in KI-Antworten
+            4. Beachte den Urheberrechte bei der Nutzung von KI
+            5. Informiere dich über Entwicklungen und Änderungen
             ***Die Seite kannst du jetzt gerne schließen***
             
             """)

@@ -3,6 +3,7 @@ from google.cloud import firestore
 import json
 import uuid
 import datetime
+from supabase import create_client
 
 st.set_page_config(
     page_title="Abschlussumfrage"
@@ -260,24 +261,25 @@ if st.button("Abschluss"):
                 dauerUmfrageSekunden
             else:
                 dauerUmfrageSekunden = ""
-
+            user_data = {
+                "dauerUmfrageSekunden": dauerUmfrageSekunden,
+                "Einstiegstumfrage": st.session_state.get("einstiegsumfrage"),
+                "Grundwissen_KI": st.session_state.get("grundwissen_ki"),
+                "Uebung1": st.session_state.get("uebung1"),
+                "Uebung2": st.session_state.get("uebung2"),
+                "Uebung3": st.session_state.get("uebung3"),
+                "Uebung4": st.session_state.get("uebung4"),
+                "Abschlussumfrage": st.session_state.get("abschlussumfrage")
+            }
                 
-            doc_ref = db.collection(u'users').document(user_id)
-            #Hinterher alle Umfrageergenisse
+           #Hinterher alle Umfrageergenisse
             try: 
-                doc_ref.set({
-                        
-                        "dauerUmfrageSekunden": dauerUmfrageSekunden,
-                        "Einstiegstumfrage":st.session_state.get("einstiegsumfrage"),
-                        "Grundwissen_KI":st.session_state.get("grundwissen_ki"),
-                        "Uebung1":st.session_state.get("uebung1"),
-                        "Uebung2":st.session_state.get("uebung2"),
-                        "Uebung3":st.session_state.get("uebung3"),
-                        "Uebung4":st.session_state.get("uebung4"),
-                    
-                    #endzeit
-                        "Abschlussumfrage":st.session_state.get("abschlussumfrage")
-            })
+
+                doc_ref = db.collection(u'users').document(user_id)
+                doc_ref.set(user_data)
+
+
+
                 st.success("Daten erfolgreich gespeichert!")
             except Exception as error:
                 st.error("Es gab ein Problem mit der Speicherung der Daten")
@@ -293,7 +295,28 @@ if st.button("Abschluss"):
 
         except Exception as error:
                 st.error("Es ist ein Fehler mit der Datenbank aufgetreten. Bitte melde dich, wenn du die Fehlermeldung siehst.")
+
                 
+        try:
+            # Supabase-Client erstellen
+            supabase_url = st.secrets["supabase"]["url"]
+            supabase_key = st.secrets["supabase"]["key"]
+            supabase = create_client(supabase_url, supabase_key)
+        
+            # Daten für Supabase vorbereiten
+            supabase_data = {
+                "user_id": user_id,
+                "data": user_data
+            }
+        
+            
+            # Tabelle in Supabase erstellt mit dem Namen "umfrage_antworten"
+            response = supabase.table("umfrage_antworten").insert(supabase_data).execute()
+            st.write("Supabase-Ergebnis:", response)   
+        except Exception as error:
+            st.error("Es ist ein Fehler aufgetreten")
+
+           
     
-        st.switch_page("pages/9_Abschluss.py")
+    st.switch_page("pages/9_Abschluss.py")
 

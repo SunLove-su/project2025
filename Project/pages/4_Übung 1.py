@@ -1,11 +1,47 @@
 import streamlit as st
 import openai
+if not st.session_state.get("admin"):
+    st.set_page_config(page_title="1. Übung",initial_sidebar_state="collapsed")
+ 
+    st.markdown(
+        """
+    <style>
+        [data-testid="stSidebarCollapsedControl"] {
+            display: none
+        }
+    </style>
+    """,
+        unsafe_allow_html=True,
+
+    )
+else:
+
+    st.set_page_config(page_title="1. Übung"
+    
+)
+def login():
+    st.write("Enter the secret code")
+    code = st.text_input("Code")
+    if st.button("Login"):
+        password = code
+        if password == st.secrets["survey_secret"]:
+            st.session_state["logged_in"] = True
+            st.rerun()
+        elif password == st.secrets["admin_secret"]:
+            st.session_state["logged_in"] = True
+            st.session_state["admin"] = True
+            st.rerun()
+        else:
+            st.error("Wrong secret code")
+    st.stop()
+ 
+ 
+if not st.session_state.get("logged_in"):
+    login()
 
 client = openai.OpenAI(api_key=st.secrets["openai"]["api_key"])
 
-st.set_page_config(
-    page_title="1. Übung"
-)
+
 st.markdown("<h4>1. Übung</h4>",unsafe_allow_html=True)
 
 st.markdown("""

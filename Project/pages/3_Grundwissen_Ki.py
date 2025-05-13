@@ -1,10 +1,46 @@
 import streamlit as st
 import openai
 
+ 
+if not st.session_state.get("admin"):
+    st.set_page_config(page_title="Grundwissen über Künstliche Intelligenz (KI)",initial_sidebar_state="collapsed")
+ 
+    st.markdown(
+        """
+    <style>
+        [data-testid="stSidebarCollapsedControl"] {
+            display: none
+        }
+    </style>
+    """,
+        unsafe_allow_html=True,
 
-st.set_page_config(
-    page_title="Grundwissen über Künstliche Intelligenz (KI)"
+    )
+else:
+
+    st.set_page_config(page_title="Grundwissen über Künstliche Intelligenz (KI)"
+    
 )
+def login():
+    st.write("Enter the secret code")
+    code = st.text_input("Code")
+    if st.button("Login"):
+        password = code
+        if password == st.secrets["survey_secret"]:
+            st.session_state["logged_in"] = True
+            st.rerun()
+        elif password == st.secrets["admin_secret"]:
+            st.session_state["logged_in"] = True
+            st.session_state["admin"] = True
+            st.rerun()
+        else:
+            st.error("Wrong secret code")
+    st.stop()
+ 
+ 
+if not st.session_state.get("logged_in"):
+    login()
+
 try: 
     client = openai.OpenAI(api_key=st.secrets["openai"]["api_key"])
 except KeyError:

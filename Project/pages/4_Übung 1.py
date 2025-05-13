@@ -280,7 +280,7 @@ with tab1:
 
 
 
-                    # Frage + Antwort speichern
+                    # Eigene Fragen & KI-Antworten speichern
                     if "eigene_fragen" not in st.session_state.uebung1:
                         st.session_state.uebung1["eigene_fragen"] = []
                     
@@ -304,7 +304,7 @@ st.write("")
 
 
 
-
+st.divider()
 
 fragevertrauen="Glaubst du, dass diese Antworten richtig ist?"
 antwortvertrauen = st.radio(fragevertrauen,

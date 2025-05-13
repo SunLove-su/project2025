@@ -41,7 +41,7 @@ doc_ref.set({
     
     "dauerUmfrageSekunden": dauerUmfrageSekunden,
     "Einstiegstumfrage":st.session_state.get("einstiegsumfrage"),
-    "Antworten_Grundwissen_KI":st.session_state.get("antworten_grundwissen_ki"),
+    "Grundwissen_KI":st.session_state.get("grundwissen_ki"),
     "Uebung1":st.session_state.get("uebung1"),
     "Uebung2":st.session_state.get("uebung2"),
     "Uebung3":st.session_state.get("uebung3"),

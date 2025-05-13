@@ -70,56 +70,53 @@ with st.expander("Was kann KI?",icon=":material/double_arrow:"):
                     - Muster/Merkmale erkennen: KI analysiert Muster und unterstützt bei Diagnosen oder Vorhersagen, z. B. bei Krankheiten oder zur Gefahrenabwehr
                       usw...
                """)
-#Speichern aller Daten auf der Seite
-if "grundwissen_ki" not in st.session_state:
-    st.session_state.grundwissen_ki = []
 
-
+#Speichern der Prompts:
+if "antworten_grundwissen_ki" not in st.session_state:
+    st.session_state.antworten_grundwissen_ki = {
+        "fragen_antworten_ki" : []
+    }
 #Speichern der Anzahl der Prompts ohne Session.State-Befehl wird durch neu eingeben einer Frage wieder 0 gesetzt
 if "anzahleingaben_grundwissen" not in st.session_state:
     st.session_state.anzahleingaben_grundwissen = 0
-tab1 = st.tabs(["Fragen an die KI"])[0]
+
 #st.text_input hat Bugs
 # Eingabe und Button
-with tab1:
-    with st.form("frage_formular", clear_on_submit=True):
-        frage = st.text_input("Falls du noch mehr Wissen möchtest, frag die KI!", 
-                            placeholder="Du kannst mehrere Fragen stellen")
-        senden = st.form_submit_button("Fragen")
+with st.form("frage_formular", clear_on_submit=True):
+    frage = st.text_input("Falls du noch mehr Wissen möchtest, frag die KI!", 
+                          placeholder="Du kannst mehrere Fragen stellen")
+    senden = st.form_submit_button("Fragen")
 
-        st.markdown("Wenn du keine Fragen mehr hast, scrolle bitte weiter nach unten")
-    # Antwort generierung erst wenn Button geklickt und Eingabe vorhanden
-        if senden and frage:
+    st.markdown("Wenn du keine Fragen mehr hast, scrolle bitte weiter nach unten")
+# Antwort generierung erst wenn Button geklickt und Eingabe vorhanden
+    if senden and frage:
 
-            with st.spinner(text="Erstelle Text, bitte warten..."):
-                antwort = client.chat.completions.create(
-                    model="gpt-3.5-turbo",
-                    messages=[{"role": "user", "content": frage}]
-                )
-                antwort_text = antwort.choices[0].message.content
-            
-            # Prompt-Zähler aktualisieren
-            st.session_state.anzahleingaben_grundwissen += 1
-            anzahleingaben = st.session_state.anzahleingaben_grundwissen
-            # Frage anzeigen
-            st.write("Deine Frage:")
-            st.write(frage)
+        with st.spinner(text="Erstelle Text, bitte warten..."):
+            antwort = client.chat.completions.create(
+                model="gpt-3.5-turbo",
+                messages=[{"role": "user", "content": frage}]
+            )
+            antwort_text = antwort.choices[0].message.content
+        antwort
+        # Prompt-Zähler aktualisieren
+        st.session_state.anzahleingaben_grundwissen += 1
+        anzahleingaben = st.session_state.anzahleingaben_grundwissen
+        # Frage anzeigen
+        st.write("Deine Frage:")
+        st.write(frage)
 
 
-            # Antwort anzeigen
-            st.write("Antwort:")
-            st.write(antwort_text)
+        # Antwort anzeigen
+        st.write("Antwort:")
+        st.write(antwort_text)
 
-        
-            # Frage und  Antwort speichern
-            st.session_state.grundwissen_ki.append({
-                "Bereich": "Grundwissen KI",
-                "Typ": "Grundwissen-KI-Interaktion",
-                "Frage": frage,
-                "Antwort": antwort_text,
-                "Anzahl Prompts": anzahleingaben
-            })
-            st.session_state.grundwissen_ki
+    
+        # Frage und  Antwort speichern
+        st.session_state.antworten_grundwissen_ki["fragen_antworten_ki"].append({
+            "Frage": frage,
+            "Antwort": antwort_text,
+            "Anzahl Prompts": anzahleingaben
+        })
     st.write("")
 #Überprüfungsfrage: Sicherstellung, dass die Textbausteine gelesen wurden
 st.divider()

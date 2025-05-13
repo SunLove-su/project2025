@@ -13,10 +13,15 @@ st.markdown("""
             In den Übungen die du durchgegangen bist hast du einiges gelernt.
             Zum Abschluss gibt es noch ein paar Fragen die du bitte beantworten sollst und dann bist du schon fertig
             """)
+if "fragen_abschlussumfrage" not in st.session_state:
+    st.session_state.fragen_abschlussumfrage ={}
+if "antworten_abschlussumfrage" not in st.session_state:
+    st.session_state.antworten_abschlussumfrage = {}
 if "abschlussumfrage" not in st.session_state:
         st.session_state.abschlussumfrage = {}
 
-
+fragen = st.session_state.fragen_abschlussumfrage
+antworten = st.session_state.antworten_abschlussumfrage
 # ATTENTION FRAGE
 frageaufmerksamkeit ="Wähle die Antwort mit der Zahl 2"
 aufmerksamkeit = st.radio (
@@ -29,15 +34,13 @@ aufmerksamkeit = st.radio (
 )
 #Ausgabe der Antwort
 if aufmerksamkeit is not None:
-    
-
+    st.write("Deine Antwort ist:", aufmerksamkeit)
+    fragen["frageaufmerksamkeit"] = frageaufmerksamkeit 
+    antworten["aufmerksamkeit"] = aufmerksamkeit
     st.session_state.abschlussumfrage["aufmerksamkeit"] = {
-    "Bereich": "Abschlussumfrage",
-    "Typ": "Aufmerksamkeit"
-    "Frage":  frageaufmerksamkeit,
+    "Frage":   frageaufmerksamkeit,
     "Antwort": aufmerksamkeit
      }
-     st.write("Deine Antwort ist:", aufmerksamkeit)
 
 st.divider()
 
@@ -58,14 +61,14 @@ wissen_gewonnen = st.multiselect(
 if wissen_gewonnen:
     antwort_wissen = ", ".join(wissen_gewonnen)
     #Ausgabe der Antwort
+    st.write("Deine Antwort ist:", antwort_wissen)
+
+    fragen["wissen_gewonnen"]=fragewissengewonnen
+    antworten["wissen_gewonnen"]=antwort_wissen
     st.session_state.abschlussumfrage["wissen_gewonnen"]={
-        "Bereich": "Abschlussumfrage",
-        "Typ": "Wissen_gewonnen",
         "Frage":fragewissengewonnen,
         "Antwort":antwort_wissen
     }
-    st.write("Deine Antwort ist:", antwort_wissen)
-
 
 st.divider()
 
@@ -82,14 +85,13 @@ erkennungsfaehigkeit_verbessert = st.radio(
 )
 # Ausgabe der Antwort
 if erkennungsfaehigkeit_verbessert is not None:
-
+   st.write("Deine Antwort ist:", erkennungsfaehigkeit_verbessert)
+   fragen["erkennunsgfaehigkeit_verbessert"] = erkennungsfaehigkeit_verbessert 
+   antworten["erkennungsfaehigkeit_verbessert"] = erkennungsfaehigkeit_verbessert
    st.session_state.abschlussumfrage["erkennungsfaehigkeit_verbessert"] = {
-   "Bereich": "Abschlussumfrage",
-   "Typ": "erkennungsfaehigkeit_verbessert",
    "Frage":   frageerkennungsfaehigkeit_verbessert,
    "Antwort": erkennungsfaehigkeit_verbessert
     }
-    st.write("Deine Antwort ist:", erkennungsfaehigkeit_verbessert)
 
 st.divider()
 ##############################
@@ -105,16 +107,14 @@ hinterfragen = st.radio (
 )
 #Ausgabe der Antwort
 if hinterfragen is not None:
- 
+    st.write("Deine Antwort ist:", hinterfragen)
     
-
+    fragen["fragehinterfragen"] = fragehinterfragen 
+    antworten["hinterfragen"] = hinterfragen
     st.session_state.abschlussumfrage["hinterfragen"] = {
-    "Bereich": "Abschlussumfrage",
-    "Typ": "Hinterfragen",
     "Frage":   fragehinterfragen,
     "Antwort": hinterfragen
     }
-   st.write("Deine Antwort ist:", hinterfragen)
 
 frageprüfverhalten_nachher = "Wie genau wirst du KI-generierte Inhalte in Zukunft prüfen?"
 prüfverhalten_nachher = st.radio(
@@ -131,15 +131,13 @@ prüfverhalten_nachher = st.radio(
 )
 
 if prüfverhalten_nachher is not None:
-    
-
+    st.write("Deine Antwort ist:", prüfverhalten_nachher)
+    fragen["frageprüfverhalten_nachher"] = frageprüfverhalten_nachher
+    antworten["prüfverhalten_nachher"] = prüfverhalten_nachher
     st.session_state.abschlussumfrage["prüfverhalten_nachher"] = {
-        "Bereich": "Abschlussumfrage",
-        "Typ": "Prüfverhalten Nachher",
         "Frage": frageprüfverhalten_nachher,
         "Antwort": prüfverhalten_nachher
     }
-    st.write("Deine Antwort ist:", prüfverhalten_nachher)
 
 frageprüfstrategien = "Welche Strategien wirst du in Zukunft nutzen, um KI-generierte Inhalte kritisch zu bewerten?"
 prüfstrategien = st.multiselect(
@@ -160,15 +158,13 @@ prüfstrategien = st.multiselect(
 
 if prüfstrategien:
     antwort_prüfstrategien = ", ".join(prüfstrategien)
-    
-
+    st.write("Deine Antwort ist:", antwort_prüfstrategien)
+    fragen["frageprüfstrategien"] = frageprüfstrategien
+    antworten["prüfstrategien"] = antwort_prüfstrategien
     st.session_state.abschlussumfrage["prüfstrategien"] = {
-        "Bereich": "Abschlussumfrage",
-        "Typ":"Prüfstrategie",
         "Frage": frageprüfstrategien,
         "Antwort": antwort_prüfstrategien
     }
-    st.write("Deine Antwort ist:", antwort_prüfstrategien)
 fragevertrauensveränderung = "Hat sich dein Vertrauen in KI-generierte Inhalte durch die Lerneinheit verändert?"
 vertrauensveränderung = st.radio(
     fragevertrauensveränderung,
@@ -182,15 +178,14 @@ vertrauensveränderung = st.radio(
 )
 
 if vertrauensveränderung is not None:
-    
-
+    st.write("Deine Antwort ist:", vertrauensveränderung)
+    fragen["fragevertrauensveränderung"] = fragevertrauensveränderung
+    antworten["vertrauensveränderung"] = vertrauensveränderung
     st.session_state.abschlussumfrage["vertrauensveränderung"] = {
-        "Bereich":"Abschlussumfrage",
-        "Typ":"Vertrauensveränderung",
         "Frage": fragevertrauensveränderung,
         "Antwort": vertrauensveränderung
     }
-    st.write("Deine Antwort ist:", vertrauensveränderung)
+
 st.divider()
 
 #########################
@@ -207,22 +202,23 @@ modul_bewertung = st.radio(
 )
 #Ausgabe der Antwort
 if modul_bewertung is not None:
+    st.write("Deine Antwort ist:", modul_bewertung)
+
+   
+    fragen["fragemodul"] = fragemodul 
+    antworten["modul_bewertung"] = modul_bewertung
     st.session_state.abschlussumfrage["modul_bewertung"] = {
-    "Bereich":"Abschlussumfrage",
-    "Typ":"Modul Bewertung"
     "Frage":   fragemodul,
     "Antwort": modul_bewertung
     }
-    st.write("Deine Antwort ist:", modul_bewertung)
 
 frageverbesserung = "Was kann an der Lerneinheit verbessert werden? (optional)"
 verbesserung = st.text_area(frageverbesserung, height=100)
 if verbesserung:
    
-
+    fragen["frageverbesserung"] = frageverbesserung 
+    antworten["verbesserung"] = verbesserung
     st.session_state.abschlussumfrage["verbesserung"] = {
-    "Bereich": "Abschlussumfrage",
-    "Typ": "Verbesserung",
     "Frage":   frageverbesserung,
     "Antwort": verbesserung
     }

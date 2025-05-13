@@ -20,10 +20,12 @@ st.markdown("""
 st.divider()
 
 st.markdown("""
-               Mit KI-Anwendungen erstellen zur Zeit Nutzer von sich Bilder in unterschiedlichen bekannten Stilen, z. B. sich als Anime oder Disneyfigur.
+               Mit KI-Anwendungen haben Nutzer von sich Bilder in unterschiedlichen bekannten Stilen, z. B. sich als Anime oder Disneyfigur erstellt.
                Anstatt ein ein persönliches Bild hochzuladen, wird das Bild mithilfe eines Prompts erzeugt.
 
                 "***Prompt:*** Erstelle mir ein Bild von Cinderella im Disney-Stil mit kurzen Haaren, einem Business-Outfit und einem Kaffee in der Hand."
+                Erzeugte mir das unten aufgeführte Bild. Es gab Anpassungen bei der KI-Anwendung und jetzt werden die Bilder nicht so identisch im Disney-Stil erzeugt.
+                Versuche es selbst, kriegst du kein Bild, dann musst du deinen Prompt anpassen.
             """)
             
 try:         
@@ -43,54 +45,68 @@ st.divider()
 #Speichern der Prompts:
 
 if "uebung4" not in st.session_state:
-    st.session_state.uebung4 ={
-    
-        "prompt":{"antworten":[]},
-        "datenschutz":{},
-        "urheberrecht":{}
-    }
+    st.session_state.uebung4 ={}
 
-# Eingabe und Button
-with st.form("frage_formular4", clear_on_submit=True):
-    st.markdown(
-    """Jetzt bist du wieder dran! Du kannst dir nun ein Bild mithilfe der KI erstellen lassen. Anstatt ein Bild hochzuladen, beschreibe das Bild,
-     was du erstellen lassen möchtest.
-        """)
-    eingabe = st.text_input("Bitte beschreibe, wie dein Bild generiert werden soll",placeholder="z. B. Erstelle mir ein Bild von einer jungen Frau mit braunen Haaren in einem Kleid im Disney-Stil")
-    beschreibung=(f"Stelle nur eine Person/Tier darf{eingabe}")
-    senden = st.form_submit_button("erstellen")
-    # Antwort generierung erst wenn Button geklickt und Eingabe vorhanden
+if "anzahl_bildgenerierungen" not in st.session_state:
+    st.session_state.anzahl_bildgenerierungen = 0
+tab1 = st.tabs(["Bildgenerierung"])[0]
+with tab1:
+    # Eingabe und Button
+    with st.form("frage_formular4", clear_on_submit=True):
+        st.markdown(
+        """Jetzt bist du wieder dran! Du kannst dir nun ein Bild mithilfe der KI erstellen lassen. Anstatt ein Bild hochzuladen, beschreibe das Bild,
+        was du erstellen lassen möchtest.
+            """)
+        eingabe = st.text_input("Bitte beschreibe, wie dein Bild generiert werden soll",placeholder="z. B. Erstelle mir ein Bild von einer jungen Frau mit braunen Haaren in einem Kleid im Disney-Stil")
+        beschreibung=(f"Stelle nur eine Person oder ein Tier dar: {eingabe}")
+        senden = st.form_submit_button("erstellen")
+        # Antwort generierung erst wenn Button geklickt und Eingabe vorhanden
+
     try:
         if senden and eingabe:
             with st.spinner(text="Generiere Bild, bitte warten..."):
-            # Antwort holen
+                st.session_state.anzahl_bildgenerierungen += 1
+                aktuelle_anzahl = st.session_state.anzahl_bildgenerierungen
+                
+                # Antwort holen
                 antwort = client.images.generate(
-                model="dall-e-3",
-                prompt=beschreibung,
-                n=1,
-                size="1024x1024"
+                    model="dall-e-3",
+                    prompt=beschreibung,
+                    n=1,
+                    size="1024x1024"
+                )
 
-            )
-
-            # Antwort zeigen
-            st.write("Bild:")
+                # Antwort zeigen
+                st.write("Bild:")
                 # Bild anzeigen
-            generiertesBild = antwort.data[0].url
-            st.image(generiertesBild, width=200)
-            st.session_state.uebung4["prompt"]["antworten"].append(eingabe)
+                generiertesBild = antwort.data[0].url
+                st.image(generiertesBild, width=200)
+                
+                # Speichern des Bildes - innerhalb der if-Bedingung und des spinners
+                if "BildgenerierenKI" not in st.session_state.uebung4:
+                    st.session_state.uebung4["BildgenerierenKI"] = []
+                
+                st.session_state.uebung4["BildgenerierenKI"].append({
+                    "Bereich": "Übung4",
+                    "Typ": "DALL-E Bilderstellung",
+                    "Frage": "Bitte beschreibe, wie dein Bild generiert werden soll",
+                    "Antwort": eingabe,
+                    "Anzahl Bildgenerierungen": aktuelle_anzahl
+                })
+                st.session_state.uebung4["BildgenerierenKI"]
     except openai.APIStatusError:
-        st.error("OpenAI ist gerade nicht erreichbar versuch es erneut")
+            st.error("OpenAI verarbeitet die Anfrage nicht, verändere den Prompt und versuche es erneut")
     except openai.APIConnectionError:
-        st.error("OpenAI ist gerade nicht erreichbar versuch es erneut")
+            st.error("OpenAI ist gerade nicht erreichbar versuch es erneut")
     except openai.RateLimitError:
-        st.error("Zu viele Anfragen auf einmal, bitte warte und versuche es erneut.")
+            st.error("Zu viele Anfragen auf einmal, bitte warte und versuche es erneut.")
     except openai.BadRequestError as e:
-        st.error(f"Eingabefehler: {e}")
+            st.error(f"Eingabefehler: {e}")
     except openai.APITimeoutError:
-        st.error("OpenAI ist gerade nicht erreichbar versuch es erneut")
+            st.error("OpenAI ist gerade nicht erreichbar versuch es erneut")
     except Exception as e :
         st.error(e)
-    
+            
 
 
 
@@ -110,11 +126,14 @@ datenschutz=st.radio(fragedatenschutz,
     )
  #Ausgabe der Antwort
 if datenschutz is not None:
-    st.write("Deine Antwort ist:",datenschutz)
+    
     st.session_state.uebung4["datenschutz"] = {
+        "Bereich":"Übung4",
+        "Typ" : "Datenschutz",
         "Frage" : fragedatenschutz,
         "Antwort": datenschutz
     }
+    st.write("Deine Antwort ist:",datenschutz)
 frageurheberrecht="Findest du es in Orndung, dass Bilder im Stil von bekannten Firmen und Künstlern innerhalb von Minuten generiert werden, obwohl diese Jahre lang daran arbeiten?"
 urheberrecht=st.radio(frageurheberrecht,
                                   ["Ja, ich finde es in Ordnung",
@@ -124,20 +143,24 @@ urheberrecht=st.radio(frageurheberrecht,
                                    ], index=None
                         )
 if urheberrecht is not None:
-        st.write("Deine Antwort ist:",urheberrecht)
+        
         st.session_state.uebung4["urheberrecht"]={
+            "Bereich":"Übung4",
+            "Typ": "Urheberrecht",
             "Frage": frageurheberrecht,
             "Antwort": urheberrecht
-
         }
+        st.write("Deine Antwort ist:",urheberrecht)
     
+st.session_state.uebung4
 st.divider()
 st.markdown("Um fortzufahren, klicke auf \"weiter\" ")
 col1, col2 = st.columns([8,2])
 with col2:
 
     if st.button("weiter"):
-        unbeantwortet = (datenschutz is None or urheberrecht is None)
+        unbeantwortet = (datenschutz is None or urheberrecht is None
+        or "BildgenerierenKI" not in st.session_state.uebung4)
         if unbeantwortet:
             st. error("Bitte beantworte alle Fragen, um fortzufahren.")
         else: 

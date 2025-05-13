@@ -8,11 +8,17 @@ st.set_page_config(
 )
 st.markdown("<h4>2. Übung</h4>",unsafe_allow_html=True)
 
+if "fragen_uebung2" not in st.session_state:
+    st.session_state.fragen_uebung2 = {}
+if "antworten_uebung2" not in st.session_state:
+    st.session_state.antworten_uebung2 = {}
+
 
 if "uebung2" not in st.session_state:
     st.session_state.uebung2 ={}
 
-
+fragen   = st.session_state.fragen_uebung2   
+antworten = st.session_state.antworten_uebung2
 
 frage_personecht = "Glaubst du die Person auf dem Bild ist echt?"
 
@@ -32,15 +38,18 @@ personecht=st.radio(frage_personecht,
                     )
 
              
+#Ausgabe der Antwort 
+st.session_state.fragen_uebung2["frage_personecht"] = frage_personecht
 
 if personecht is not None:
-    st.session_state.uebung2["bildeinschaetzung"] = {
-    "Bereich": "Übung2",
-    "Typ": "Bild-Echt-Einschätzung",
+    st.write("Deine Antwort ist:", personecht)
+    fragen["personecht"]   = frage_personecht 
+    antworten["personecht"] = personecht
+    st.session_state.uebung2["personecht"] = {
     "Frage":   frage_personecht,
     "Antwort": personecht
      }
-    st.write("Deine Antwort ist:", personecht)
+
     st.session_state.uebung2
 
 st.divider()

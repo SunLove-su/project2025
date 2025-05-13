@@ -126,8 +126,8 @@ if st.button("ChatGPT nach Vokalen fragen"):
     
 
     
-    if "vokale_chatgpt_antworten" not in st.session_state.uebung1:
-        st.session_state.uebung1["vokale_chatgpt_antworten"] = []
+    if "vokale_chatgpt_historie" not in st.session_state.uebung1:
+        st.session_state.uebung1["vokale_chatgpt_historie"] = []
 
     # Lösung generieren
     with st.spinner(text="Erstelle Text, bitte warten..."):
@@ -142,7 +142,7 @@ if st.button("ChatGPT nach Vokalen fragen"):
     antwort_text=antwort.choices[0].message.content
     st.write(f"Antwort von ChatGPT: {antwort_text}")
 
-    st.session_state.uebung1["vokale_chatgpt_antworten"].append({
+    st.session_state.uebung1["vokale_chatgpt_historie"].append({
             "Bereich": "Übung1",
             "Typ": "Vokale zählen ChatGPT",
             "Frage" : beispielsatz,

@@ -3,44 +3,44 @@ import datetime
 
 
  
-# if not st.session_state.get("admin"):
-#     st.set_page_config(page_title="Lerneinheit zur Sensibilisierung von KI-generierten Inhalten",initial_sidebar_state="collapsed")
+if not st.session_state.get("admin"):
+    st.set_page_config(page_title="Lerneinheit zur Sensibilisierung von KI-generierten Inhalten",initial_sidebar_state="collapsed")
  
-#     st.markdown(
-#         """
-#     <style>
-#         [data-testid="stSidebarCollapsedControl"] {
-#             display: none
-#         }
-#     </style>
-#     """,
-#         unsafe_allow_html=True,
+    st.markdown(
+        """
+    <style>
+        [data-testid="stSidebarCollapsedControl"] {
+            display: none
+        }
+    </style>
+    """,
+        unsafe_allow_html=True,
 
-#     )
-# else:
+    )
+else:
 
-#     st.set_page_config(page_title="Lerneinheit zur Sensibilisierung von KI-generierten Inhalten"
+    st.set_page_config(page_title="Lerneinheit zur Sensibilisierung von KI-generierten Inhalten"
     
-# )
-# def login():
-#     st.write("Enter the secret code")
-#     code = st.text_input("Code")
-#     if st.button("Login"):
-#         password = code
-#         if password == st.secrets["survey_secret"]:
-#             st.session_state["logged_in"] = True
-#             st.rerun()
-#         elif password == st.secrets["admin_secret"]:
-#             st.session_state["logged_in"] = True
-#             st.session_state["admin"] = True
-#             st.rerun()
-#         else:
-#             st.error("Wrong secret code")
-#     st.stop()
+)
+def login():
+    st.write("Enter the secret code")
+    code = st.text_input("Code")
+    if st.button("Login"):
+        password = code
+        if password == st.secrets["survey_secret"]:
+            st.session_state["logged_in"] = True
+            st.rerun()
+        elif password == st.secrets["admin_secret"]:
+            st.session_state["logged_in"] = True
+            st.session_state["admin"] = True
+            st.rerun()
+        else:
+            st.error("Wrong secret code")
+    st.stop()
  
  
-# if not st.session_state.get("logged_in"):
-#     login()
+if not st.session_state.get("logged_in"):
+    login()
 
 st.markdown("<h4>Willkommen zum Lerneinheit zur Sensibilisierung KI-generierter Inhalte</h4>", unsafe_allow_html=True)
 st.markdown("""Diese Lerneinheit soll die Risiken von KI-generierten Inhalten aufzeigen und dich für diese sensibilisieren.

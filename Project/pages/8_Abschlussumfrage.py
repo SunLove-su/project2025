@@ -33,7 +33,7 @@ if aufmerksamkeit is not None:
 
     st.session_state.abschlussumfrage["aufmerksamkeit"] = {
     "Bereich": "Abschlussumfrage",
-    "Typ": "Aufmerksamkeit"
+    "Typ": "Aufmerksamkeit",
     "Frage":  frageaufmerksamkeit,
     "Antwort": aufmerksamkeit
      }
@@ -209,7 +209,7 @@ modul_bewertung = st.radio(
 if modul_bewertung is not None:
     st.session_state.abschlussumfrage["modul_bewertung"] = {
     "Bereich":"Abschlussumfrage",
-    "Typ":"Modul Bewertung"
+    "Typ":"Modul Bewertung",
     "Frage":   fragemodul,
     "Antwort": modul_bewertung
     }

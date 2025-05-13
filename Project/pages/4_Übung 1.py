@@ -219,9 +219,10 @@ st.divider()
 #st.text_input hat Bugs
 # Eingabe und Button
 #with tab1:
-input_container = st.container()
 
-with input_container:
+#Expander im Container, da sonst nach Betätigung des Buttons der Fokus ans Ende der Seite springt
+containerfokus = st.container()
+with containerfokus:
     with st.expander("Vorgegebene Fragen", expanded=True):
         textzuaufgaben=st.markdown("""
                     Suche die eine der beiden hier angegebenen Fragen aus, die ChatGPT dir beantworten soll und gibt diese in das untenstehende leere

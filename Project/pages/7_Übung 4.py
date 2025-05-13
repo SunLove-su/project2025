@@ -87,63 +87,65 @@ if "anzahl_bildgenerierungen" not in st.session_state:
     st.session_state.anzahl_bildgenerierungen = 0
 #tab1 = st.tabs(["Bildgenerierung"])[0]
 #with tab1:
-with st.expander("Bildgenerierung", expanded=True):    
-    # Eingabe und Button
-    with st.form("frage_formular4", clear_on_submit=True):
-        st.markdown(
-        """Jetzt bist du wieder dran! Du kannst dir nun ein Bild mithilfe der KI erstellen lassen. Anstatt ein Bild hochzuladen, beschreibe das Bild,
-        was du erstellen lassen möchtest.
-            """)
-        eingabe = st.text_input("Bitte beschreibe, wie dein Bild generiert werden soll",placeholder="z. B. Erstelle mir ein Bild von einer jungen Frau mit braunen Haaren in einem Kleid im Disney-Stil")
-        beschreibung=(f"Stelle nur eine Person oder ein Tier dar: {eingabe}")
-        senden = st.form_submit_button("erstellen")
-        # Antwort generierung erst wenn Button geklickt und Eingabe vorhanden
+containerfokus = st.container()
+with containerfokus:
+    with st.expander("Bildgenerierung", expanded=True):    
+        # Eingabe und Button
+        with st.form("frage_formular4", clear_on_submit=True):
+            st.markdown(
+            """Jetzt bist du wieder dran! Du kannst dir nun ein Bild mithilfe der KI erstellen lassen. Anstatt ein Bild hochzuladen, beschreibe das Bild,
+            was du erstellen lassen möchtest.
+                """)
+            eingabe = st.text_input("Bitte beschreibe, wie dein Bild generiert werden soll",placeholder="z. B. Erstelle mir ein Bild von einer jungen Frau mit braunen Haaren in einem Kleid im Disney-Stil")
+            beschreibung=(f"Stelle nur eine Person oder ein Tier dar: {eingabe}")
+            senden = st.form_submit_button("erstellen")
+            # Antwort generierung erst wenn Button geklickt und Eingabe vorhanden
 
-    try:
-        if senden and eingabe:
-            with st.spinner(text="Generiere Bild, bitte warten..."):
-                st.session_state.anzahl_bildgenerierungen += 1
-                aktuelle_anzahl = st.session_state.anzahl_bildgenerierungen
-                
-                # Antwort holen
-                antwort = client.images.generate(
-                    model="dall-e-3",
-                    prompt=beschreibung,
-                    n=1,
-                    size="1024x1024"
-                )
+        try:
+            if senden and eingabe:
+                with st.spinner(text="Generiere Bild, bitte warten..."):
+                    st.session_state.anzahl_bildgenerierungen += 1
+                    aktuelle_anzahl = st.session_state.anzahl_bildgenerierungen
+                    
+                    # Antwort holen
+                    antwort = client.images.generate(
+                        model="dall-e-3",
+                        prompt=beschreibung,
+                        n=1,
+                        size="1024x1024"
+                    )
 
-                # Antwort zeigen
-                st.write("Bild:")
-                # Bild anzeigen
-                generiertesBild = antwort.data[0].url
-                st.image(generiertesBild, width=200)
+                    # Antwort zeigen
+                    st.write("Bild:")
+                    # Bild anzeigen
+                    generiertesBild = antwort.data[0].url
+                    st.image(generiertesBild, width=200)
+                    
+                    # Speichern des Bildes - innerhalb der if-Bedingung und des spinners
+                    if "BildgenerierenKI" not in st.session_state.uebung4:
+                        st.session_state.uebung4["BildgenerierenKI"] = []
+                    
+                    st.session_state.uebung4["BildgenerierenKI"].append({
+                        "Bereich": "Übung4",
+                        "Typ": "DALL-E Bilderstellung",
+                        "Frage": "Bitte beschreibe, wie dein Bild generiert werden soll",
+                        "Antwort": eingabe,
+                        "Anzahl Bildgenerierungen": aktuelle_anzahl
+                    })
+                    st.session_state.uebung4["BildgenerierenKI"]
+        except openai.APIStatusError:
+                st.error("OpenAI verarbeitet die Anfrage nicht, verändere den Prompt und versuche es erneut")
+        except openai.APIConnectionError:
+                st.error("OpenAI ist gerade nicht erreichbar versuch es erneut")
+        except openai.RateLimitError:
+                st.error("Zu viele Anfragen auf einmal, bitte warte und versuche es erneut.")
+        except openai.BadRequestError as e:
+                st.error(f"Eingabefehler: {e}")
+        except openai.APITimeoutError:
+                st.error("OpenAI ist gerade nicht erreichbar versuch es erneut")
+        except Exception as e :
+            st.error(e)
                 
-                # Speichern des Bildes - innerhalb der if-Bedingung und des spinners
-                if "BildgenerierenKI" not in st.session_state.uebung4:
-                    st.session_state.uebung4["BildgenerierenKI"] = []
-                
-                st.session_state.uebung4["BildgenerierenKI"].append({
-                    "Bereich": "Übung4",
-                    "Typ": "DALL-E Bilderstellung",
-                    "Frage": "Bitte beschreibe, wie dein Bild generiert werden soll",
-                    "Antwort": eingabe,
-                    "Anzahl Bildgenerierungen": aktuelle_anzahl
-                })
-                st.session_state.uebung4["BildgenerierenKI"]
-    except openai.APIStatusError:
-            st.error("OpenAI verarbeitet die Anfrage nicht, verändere den Prompt und versuche es erneut")
-    except openai.APIConnectionError:
-            st.error("OpenAI ist gerade nicht erreichbar versuch es erneut")
-    except openai.RateLimitError:
-            st.error("Zu viele Anfragen auf einmal, bitte warte und versuche es erneut.")
-    except openai.BadRequestError as e:
-            st.error(f"Eingabefehler: {e}")
-    except openai.APITimeoutError:
-            st.error("OpenAI ist gerade nicht erreichbar versuch es erneut")
-    except Exception as e :
-        st.error(e)
-            
 
 
 

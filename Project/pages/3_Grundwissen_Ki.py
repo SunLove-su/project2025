@@ -117,56 +117,58 @@ if "anzahleingaben_grundwissen" not in st.session_state:
 #tab1 = st.tabs(["Fragen an die KI"])[0]
 #st.text_input hat Bugs
 # Eingabe und Button
-with st.expander("Fragen an die KI", expanded=True):
-#with tab1:
-    with st.form("frage_formular", clear_on_submit=True):
-        frage = st.text_input("Falls du noch mehr Wissen möchtest, frag die KI!", 
-                            placeholder="Du kannst mehrere Fragen stellen")
-        senden = st.form_submit_button("Fragen")
+containerfokus = st.container()
+with containerfokus:
+    with st.expander("Fragen an die KI", expanded=True):
+    #with tab1:
+        with st.form("frage_formular", clear_on_submit=True):
+            frage = st.text_input("Falls du noch mehr Wissen möchtest, frag die KI!", 
+                                placeholder="Du kannst mehrere Fragen stellen")
+            senden = st.form_submit_button("Fragen")
 
-        st.markdown("Wenn du keine Fragen mehr hast, scrolle bitte weiter nach unten")
-    # Antwort generierung erst wenn Button geklickt und Eingabe vorhanden
-    try:
-        if senden and frage:
+            st.markdown("Wenn du keine Fragen mehr hast, scrolle bitte weiter nach unten")
+            # Antwort generierung erst wenn Button geklickt und Eingabe vorhanden
+            try:
+                if senden and frage:
 
-            with st.spinner(text="Erstelle Text, bitte warten..."):
-                antwort = client.chat.completions.create(
-                    model="gpt-3.5-turbo",
-                    messages=[{"role": "user", "content": frage}]
-                )
-                antwort_text = antwort.choices[0].message.content
+                    with st.spinner(text="Erstelle Text, bitte warten..."):
+                        antwort = client.chat.completions.create(
+                            model="gpt-3.5-turbo",
+                            messages=[{"role": "user", "content": frage}]
+                        )
+                        antwort_text = antwort.choices[0].message.content
+                    
+                        # Prompt-Zähler aktualisieren
+                        st.session_state.anzahleingaben_grundwissen += 1
+                        anzahleingaben = st.session_state.anzahleingaben_grundwissen
+                        # Frage anzeigen
+                        st.write("Deine Frage:")
+                        st.write(frage)
+
+
+                        # Antwort anzeigen
+                        st.write("Antwort:")
+                        st.write(antwort_text)
+
             
-            # Prompt-Zähler aktualisieren
-            st.session_state.anzahleingaben_grundwissen += 1
-            anzahleingaben = st.session_state.anzahleingaben_grundwissen
-            # Frage anzeigen
-            st.write("Deine Frage:")
-            st.write(frage)
-
-
-            # Antwort anzeigen
-            st.write("Antwort:")
-            st.write(antwort_text)
-
-        
-            # Frage und  Antwort speichern
-            st.session_state.grundwissen_ki.append({
-                "Bereich": "Grundwissen KI",
-                "Typ": "Grundwissen-KI-Interaktion",
-                "Frage": frage,
-                "Antwort": antwort_text,
-                "Anzahl Prompts": anzahleingaben
-            })
-            st.session_state.grundwissen_ki
-    except openai.APIStatusError:
-        st.error("OpenAI verarbeitet die Anfrage nicht, bitte versuche es erneut.")
-    except openai.APIConnectionError:
-        st.error("Verbindungsproblem mit OpenAI. Bitte versuche es später noch einmal.")
-    except openai.RateLimitError:
-        st.error("Zu viele Anfragen. Bitte warte einen Moment und versuche es dann erneut.")
-    except Exception as e:
-        st.error(f"Ein Fehler ist aufgetreten: {e}")
-    st.write("")
+                        # Frage und  Antwort speichern
+                        st.session_state.grundwissen_ki.append({
+                            "Bereich": "Grundwissen KI",
+                            "Typ": "Grundwissen-KI-Interaktion",
+                            "Frage": frage,
+                            "Antwort": antwort_text,
+                            "Anzahl Prompts": anzahleingaben
+                        })
+                st.session_state.grundwissen_ki
+            except openai.APIStatusError:
+                st.error("OpenAI verarbeitet die Anfrage nicht, bitte versuche es erneut.")
+            except openai.APIConnectionError:
+                st.error("Verbindungsproblem mit OpenAI. Bitte versuche es später noch einmal.")
+            except openai.RateLimitError:
+                st.error("Zu viele Anfragen. Bitte warte einen Moment und versuche es dann erneut.")
+            except Exception as e:
+                st.error(f"Ein Fehler ist aufgetreten: {e}")
+            st.write("")
 #Überprüfungsfrage: Sicherstellung, dass die Textbausteine gelesen wurden
 st.divider()
 st.write ("Nachdem du jetzt ein paar Informationen über KI erhalten hast, beantworte bitte die folgende Frage:")

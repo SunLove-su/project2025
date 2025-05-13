@@ -72,120 +72,122 @@ if "ki_antwort" not in st.session_state:
 
 # Berufsvorschlag
 #with tab1:
-with st.expander("Berufsvorschlag", expanded=True):    
-    st.markdown("Deine Berufsvorschläge:")
-    frage_berufsvorschlag = "Welchen Beruf würdest du gerne ausüben?"
-    with st.form("frage_formular3_1", clear_on_submit=True):     
-        berufsvorschlag = st.text_input("Deine Berufsvorschläge:")
-        
-        speichern = st.form_submit_button("speichern")
-        if speichern and berufsvorschlag:
-            st.write(f"Deine Antwort ist: {berufsvorschlag}")
-            st.session_state.uebung3["berufsvorschlag"] = {
-                "Bereich": "Übung3",
-                "Typ": "Eigener Berufsvorschlag",
-                "Frage": frage_berufsvorschlag,
-                "Antwort": berufsvorschlag
-            }
-            # Wenn bereits KI-Antwort vorhanden, zeige Vergleich
-            if st.session_state.ki_antwort:
-                st.write("VERGLEICH DER ANTWORTEN:")
-                st.write(f"**Deine Vorschläge:** {berufsvorschlag}")
-                st.write(f"**KI-Vorschläge:** {st.session_state.ki_antwort}")
+containerfokus = st.container()
+with containerfokus:
+    with st.expander("Berufsvorschlag", expanded=True):    
+        st.markdown("Deine Berufsvorschläge:")
+        frage_berufsvorschlag = "Welchen Beruf würdest du gerne ausüben?"
+        with st.form("frage_formular3_1", clear_on_submit=True):     
+            berufsvorschlag = st.text_input("Deine Berufsvorschläge:")
+            
+            speichern = st.form_submit_button("speichern")
+            if speichern and berufsvorschlag:
+                st.write(f"Deine Antwort ist: {berufsvorschlag}")
+                st.session_state.uebung3["berufsvorschlag"] = {
+                    "Bereich": "Übung3",
+                    "Typ": "Eigener Berufsvorschlag",
+                    "Frage": frage_berufsvorschlag,
+                    "Antwort": berufsvorschlag
+                }
+                # Wenn bereits KI-Antwort vorhanden, zeige Vergleich
+                if st.session_state.ki_antwort:
+                    st.write("VERGLEICH DER ANTWORTEN:")
+                    st.write(f"**Deine Vorschläge:** {berufsvorschlag}")
+                    st.write(f"**KI-Vorschläge:** {st.session_state.ki_antwort}")
 
 
-    st.markdown("""
-    "Frage die KI nach Berufen für dein Geschlecht:
-    """)
-    # Erste KI-Anfrage
-    with st.form("frage_formular3_2", clear_on_submit=True):
-        frage1 = st.text_input("Deine Frage bitte",placeholder="z. B. Welcher Beruf passt zu einer Frau / einem Mann")
-        senden1 = st.form_submit_button("senden")
-        
-        if senden1 and frage1:
-            try:
-                with st.spinner(text="Erstelle Text, bitte warten..."):
-                    antwort = client.chat.completions.create(
-                        model="gpt-3.5-turbo",
-                        messages=[
-                            {"role": "system", "content": "Format 3-4 Vorschlag, kurze Antworten, die nur stereotypisch sind"},
-                            {"role": "user", "content": frage1}
-                        ]
-                    )
-                    antwort_text = antwort.choices[0].message.content
-                    st.write("Antwort:")
-                    st.write(antwort_text)
-                    st.session_state.ki_antwort = antwort_text
-                    st.session_state.uebung3["ki_antwort_1"] = {
-                        "Bereich": "Übung3",
-                        "Typ": "Berufsvorschlag eigenes Geschlecht-KI-Interaktion 1",
-                        "Frage": frage1,
-                        "Antwort": antwort_text
-                    }
-                    
-                    # # Vergleich anzeigen wenn Berufsvorschlag vorhanden
-                    # if "berufsvorschlag" in st.session_state.uebung3:
-                    #     st.write("VERGLEICH DER ANTWORTEN:")
-                    #     st.write(f"**Deine Vorschläge:** {st.session_state.uebung3['berufsvorschlag']['Antwort']}")
-                    #     st.write(f"**KI-Vorschläge:** {antwort_text}")
-            except openai.APIStatusError:
-                st.error("OpenAI verarbeitet die Anfrage nicht, bitte versuche es erneut.")
-            except openai.APIConnectionError:
-                st.error("Verbindungsproblem mit OpenAI. Bitte versuche es später noch einmal.")
-            except openai.RateLimitError:
-                st.error("Zu viele Anfragen. Bitte warte einen Moment und versuche es dann erneut.")
-            except Exception as e:
-                st.error(f"Ein Fehler ist aufgetreten: {e}")
+        st.markdown("""
+        "Frage die KI nach Berufen für dein Geschlecht:
+        """)
+        # Erste KI-Anfrage
+        with st.form("frage_formular3_2", clear_on_submit=True):
+            frage1 = st.text_input("Deine Frage bitte",placeholder="z. B. Welcher Beruf passt zu einer Frau / einem Mann")
+            senden1 = st.form_submit_button("senden")
+            
+            if senden1 and frage1:
+                try:
+                    with st.spinner(text="Erstelle Text, bitte warten..."):
+                        antwort = client.chat.completions.create(
+                            model="gpt-3.5-turbo",
+                            messages=[
+                                {"role": "system", "content": "Format 3-4 Vorschlag, kurze Antworten, die nur stereotypisch sind"},
+                                {"role": "user", "content": frage1}
+                            ]
+                        )
+                        antwort_text = antwort.choices[0].message.content
+                        st.write("Antwort:")
+                        st.write(antwort_text)
+                        st.session_state.ki_antwort = antwort_text
+                        st.session_state.uebung3["ki_antwort_1"] = {
+                            "Bereich": "Übung3",
+                            "Typ": "Berufsvorschlag eigenes Geschlecht-KI-Interaktion 1",
+                            "Frage": frage1,
+                            "Antwort": antwort_text
+                        }
+                        
+                        # # Vergleich anzeigen wenn Berufsvorschlag vorhanden
+                        # if "berufsvorschlag" in st.session_state.uebung3:
+                        #     st.write("VERGLEICH DER ANTWORTEN:")
+                        #     st.write(f"**Deine Vorschläge:** {st.session_state.uebung3['berufsvorschlag']['Antwort']}")
+                        #     st.write(f"**KI-Vorschläge:** {antwort_text}")
+                except openai.APIStatusError:
+                    st.error("OpenAI verarbeitet die Anfrage nicht, bitte versuche es erneut.")
+                except openai.APIConnectionError:
+                    st.error("Verbindungsproblem mit OpenAI. Bitte versuche es später noch einmal.")
+                except openai.RateLimitError:
+                    st.error("Zu viele Anfragen. Bitte warte einen Moment und versuche es dann erneut.")
+                except Exception as e:
+                    st.error(f"Ein Fehler ist aufgetreten: {e}")
 
 
-    st.markdown("""
-                    "Frage die KI nach Berufen für das andere Geschlecht:""")
-    # Zweite KI-Anfrage
-    with st.form("frage_formular3_3", clear_on_submit=True):
-        frage2 = st.text_input("Deine Frage bitte",placeholder="z. B. Welcher Beruf passt zu einer Frau / einem Mann")
-        senden2 = st.form_submit_button("senden")
-        
-        if senden2 and frage2:
-            try:
-                with st.spinner(text="Erstelle Text, bitte warten..."):
-                    antwort = client.chat.completions.create(
-                        model="gpt-3.5-turbo",
-                        messages=[
-                            {"role": "system", "content": "Format 3-4 Vorschlag, kurze Antworten, die nur stereotypisch sind"},
-                            {"role": "user", "content": frage2}
-                        ]
-                    )
-                    antwort_text = antwort.choices[0].message.content
-                    st.write("Antwort:")
-                    st.write(antwort_text)
-                    st.session_state.ki_antwort = antwort_text
-                    st.session_state.uebung3["ki_antwort_2"] = {
-                        "Bereich":"Übung3",
-                        "Typ":"Berufsvorschlag anderes Geschlecht - KI-Interaktion 2",
-                        "Frage": frage2,
-                        "Antwort": antwort_text
-                    }
-            except openai.APIStatusError:
-                st.error("OpenAI verarbeitet die Anfrage nicht, bitte versuche es erneut.")
-            except openai.APIConnectionError:
-                st.error("Verbindungsproblem mit OpenAI. Bitte versuche es später noch einmal.")
-            except openai.RateLimitError:
-                st.error("Zu viele Anfragen. Bitte warte einen Moment und versuche es dann erneut.")
-            except Exception as e:
-                st.error(f"Ein Fehler ist aufgetreten: {e}")
-#tab2 = st.tabs(["Vergleich der Eingabe und der KI-Ausgaben"])[0]               
-#with tab2:  
-with st.expander("Vergleich der Eingabe und der KI-Ausgaben", expanded=True):             
-    # Vergleich anzeigen wenn alle Daten vorhanden sind
-    if ("berufsvorschlag" in st.session_state.uebung3 and 
-        "ki_antwort_1" in st.session_state.uebung3 and
-        "ki_antwort_2" in st.session_state.uebung3):
-        st.write("VERGLEICH DER ANTWORTEN:")
-        st.write(f"**Deine Vorschläge:** {st.session_state.uebung3['berufsvorschlag']['Antwort']}")
-        st.write(f"**KI-Vorschläge für dein Geschlecht:** {st.session_state.uebung3['ki_antwort_1']['Antwort']}")
-        st.write(f"**KI-Vorschläge für das andere Geschlecht:** {st.session_state.uebung3['ki_antwort_2']['Antwort']}") 
-    else:
-        st.info("Fülle bitte oben alle Felder aus!")
+        st.markdown("""
+                        "Frage die KI nach Berufen für das andere Geschlecht:""")
+        # Zweite KI-Anfrage
+        with st.form("frage_formular3_3", clear_on_submit=True):
+            frage2 = st.text_input("Deine Frage bitte",placeholder="z. B. Welcher Beruf passt zu einer Frau / einem Mann")
+            senden2 = st.form_submit_button("senden")
+            
+            if senden2 and frage2:
+                try:
+                    with st.spinner(text="Erstelle Text, bitte warten..."):
+                        antwort = client.chat.completions.create(
+                            model="gpt-3.5-turbo",
+                            messages=[
+                                {"role": "system", "content": "Format 3-4 Vorschlag, kurze Antworten, die nur stereotypisch sind"},
+                                {"role": "user", "content": frage2}
+                            ]
+                        )
+                        antwort_text = antwort.choices[0].message.content
+                        st.write("Antwort:")
+                        st.write(antwort_text)
+                        st.session_state.ki_antwort = antwort_text
+                        st.session_state.uebung3["ki_antwort_2"] = {
+                            "Bereich":"Übung3",
+                            "Typ":"Berufsvorschlag anderes Geschlecht - KI-Interaktion 2",
+                            "Frage": frage2,
+                            "Antwort": antwort_text
+                        }
+                except openai.APIStatusError:
+                    st.error("OpenAI verarbeitet die Anfrage nicht, bitte versuche es erneut.")
+                except openai.APIConnectionError:
+                    st.error("Verbindungsproblem mit OpenAI. Bitte versuche es später noch einmal.")
+                except openai.RateLimitError:
+                    st.error("Zu viele Anfragen. Bitte warte einen Moment und versuche es dann erneut.")
+                except Exception as e:
+                    st.error(f"Ein Fehler ist aufgetreten: {e}")
+    #tab2 = st.tabs(["Vergleich der Eingabe und der KI-Ausgaben"])[0]               
+    #with tab2:  
+    with st.expander("Vergleich der Eingabe und der KI-Ausgaben", expanded=True):             
+        # Vergleich anzeigen wenn alle Daten vorhanden sind
+        if ("berufsvorschlag" in st.session_state.uebung3 and 
+            "ki_antwort_1" in st.session_state.uebung3 and
+            "ki_antwort_2" in st.session_state.uebung3):
+            st.write("VERGLEICH DER ANTWORTEN:")
+            st.write(f"**Deine Vorschläge:** {st.session_state.uebung3['berufsvorschlag']['Antwort']}")
+            st.write(f"**KI-Vorschläge für dein Geschlecht:** {st.session_state.uebung3['ki_antwort_1']['Antwort']}")
+            st.write(f"**KI-Vorschläge für das andere Geschlecht:** {st.session_state.uebung3['ki_antwort_2']['Antwort']}") 
+        else:
+            st.info("Fülle bitte oben alle Felder aus!")
 
 st.divider()
 

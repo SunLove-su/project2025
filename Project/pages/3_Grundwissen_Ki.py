@@ -78,10 +78,11 @@ if "grundwissen_ki" not in st.session_state:
 #Speichern der Anzahl der Prompts ohne Session.State-Befehl wird durch neu eingeben einer Frage wieder 0 gesetzt
 if "anzahleingaben_grundwissen" not in st.session_state:
     st.session_state.anzahleingaben_grundwissen = 0
-tab1 = st.tabs(["Fragen an die KI"])[0]
+#tab1 = st.tabs(["Fragen an die KI"])[0]
 #st.text_input hat Bugs
 # Eingabe und Button
-with tab1:
+with st.expander("Fragen an die KI", expanded=True):
+#with tab1:
     with st.form("frage_formular", clear_on_submit=True):
         frage = st.text_input("Falls du noch mehr Wissen möchtest, frag die KI!", 
                             placeholder="Du kannst mehrere Fragen stellen")

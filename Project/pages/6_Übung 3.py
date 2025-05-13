@@ -29,10 +29,11 @@ if "uebung3" not in st.session_state:
     st.session_state.uebung3 = {}
 if "ki_antwort" not in st.session_state:
     st.session_state.ki_antwort = ""
-tab1 = st.tabs(["Eingaben"])[0]
+#tab1 = st.tabs(["Eingaben"])[0]
 
 # Berufsvorschlag
-with tab1:
+#with tab1:
+with st.expander("Berufsvorschlag", expanded=True):    
     st.markdown("Deine Berufsvorschläge:")
     frage_berufsvorschlag = "Welchen Beruf würdest du gerne ausüben?"
     with st.form("frage_formular3_1", clear_on_submit=True):     
@@ -133,8 +134,9 @@ with tab1:
                 st.error("Zu viele Anfragen. Bitte warte einen Moment und versuche es dann erneut.")
             except Exception as e:
                 st.error(f"Ein Fehler ist aufgetreten: {e}")
-tab2 = st.tabs(["Vergleich der Eingabe und der KI-Ausgaben"])[0]               
-with tab2:               
+#tab2 = st.tabs(["Vergleich der Eingabe und der KI-Ausgaben"])[0]               
+#with tab2:  
+with st.expander("Vergleich der Eingabe und der KI-Ausgaben", expanded=True):             
     # Vergleich anzeigen wenn alle Daten vorhanden sind
     if ("berufsvorschlag" in st.session_state.uebung3 and 
         "ki_antwort_1" in st.session_state.uebung3 and

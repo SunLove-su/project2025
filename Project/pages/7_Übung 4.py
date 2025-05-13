@@ -49,8 +49,9 @@ if "uebung4" not in st.session_state:
 
 if "anzahl_bildgenerierungen" not in st.session_state:
     st.session_state.anzahl_bildgenerierungen = 0
-tab1 = st.tabs(["Bildgenerierung"])[0]
-with tab1:
+#tab1 = st.tabs(["Bildgenerierung"])[0]
+#with tab1:
+with st.expander("Bildgenerierung", expanded=True):    
     # Eingabe und Button
     with st.form("frage_formular4", clear_on_submit=True):
         st.markdown(

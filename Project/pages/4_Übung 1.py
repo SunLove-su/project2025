@@ -1,5 +1,8 @@
 import streamlit as st
 import openai
+
+client = openai.OpenAI(api_key=st.secrets["openai"]["api_key"])
+
 if not st.session_state.get("admin"):
     st.set_page_config(page_title="1. Übung",initial_sidebar_state="collapsed")
  
@@ -39,7 +42,7 @@ def login():
 if not st.session_state.get("logged_in"):
     login()
 
-client = openai.OpenAI(api_key=st.secrets["openai"]["api_key"])
+
 
 
 st.markdown("<h4>1. Übung</h4>",unsafe_allow_html=True)
@@ -55,7 +58,7 @@ st.markdown("""
 
 
 
-st.markdown("Jetzt kannst du, was ChatGPT kann und ob die Anwendung ihre Daten analysiert hat.")
+st.markdown("Jetzt kannst du sehen, was ChatGPT kann und ob die Anwendung ihre Daten analysiert hat.")
 st.markdown("""
                 Du stellst ChatGPT einige Aufgaben und schaust dir Antworten an.
                
@@ -225,10 +228,9 @@ containerfokus = st.container()
 with containerfokus:
     with st.expander("Vorgegebene Fragen", expanded=True):
         textzuaufgaben=st.markdown("""
-                    Suche die eine der beiden hier angegebenen Fragen aus, die ChatGPT dir beantworten soll und gibt diese in das untenstehende leere
-                    Textfeld ein.
-                    1. Wer ist der aktuelle Präsident der USA ist
-                    2. Wie das Ergebnis der Aufgabe 482 * 739 (Gerne kannst du den Taschenrechner benutzen und die Ergebnisse zu prüfen)
+                    Wähle eine der beiden folgenden Fragen aus und gib sie in das untenstehende Textfeld ein:
+                    1. Wer ist der aktuelle Präsident der USA
+                    2. Was das Ergebnis der Aufgabe 482 * 739 (Gerne kannst du den Taschenrechner benutzen und die Ergebnisse zu prüfen)
                 """)
         with st.form("frage_formular_vorgegeben", clear_on_submit=True):
             frage = st.text_input("Stelle eine der oben vorgegebenen Fragen")
@@ -273,22 +275,34 @@ with containerfokus:
                                 "Antwort": antwort_text,
                                 "Anzahl Prompts": anzahleingaben_vorgegeben
                             })
-                except openai.APIStatusError:
-                    st.error("OpenAI verarbeitet die Anfrage nicht, bitte versuche es erneut.")
-                except openai.APIConnectionError:
-                    st.error("Verbindungsproblem mit OpenAI. Bitte versuche es später noch einmal.")
-                except openai.RateLimitError:
-                    st.error("Zu viele Anfragen. Bitte warte einen Moment und versuche es dann erneut.")
-                except Exception as e:
-                    st.error(f"Ein Fehler ist aufgetreten: {e}")
+
                             
 
-                    # Eingabe und Button
-                    textzuaufgaben=st.markdown("""
+
+                except openai.APIStatusError as error:
+                    st.error("OpenAI verarbeitet die Anfrage nicht, verändere den Prompt und versuche es erneut. Bitte melde dich, wenn du die Fehlermeldung bekommst.")
+                    st.info(f"OpenAI-Fehlermeldung: {str(error)}")
+                except openai.APIConnectionError as error:
+                    st.error("Problem mit der Verbindung zu OpenAI. Bitte versuche es erneut. Bitte melde dich, wenn du die Fehlermeldung bekommst.")
+                    st.info(f"OpenAI-Fehlermeldung: {str(error)}")
+                except openai.RateLimitError as error:
+                    st.error("Zu viele Anfragen: Das Kontingent oder die Rate wurde überschritten. Bitte warte einen Moment und versuche es erneut. Bitte melde dich, wenn du die Fehlermeldung bekommst.")
+                    st.info(f"OpenAI-Fehlermeldung: {str(error)}")
+                except openai.BadRequestError as error:
+                    st.error("Ungültige Anfrage: Die Anfrage enthält fehlerhafte Daten. Bitte melde dich, wenn du die Fehlermeldung bekommst.")
+                    st.info(f"OpenAI-Fehlermeldung: {str(error)}")
+                except openai.APITimeoutError as error:
+                    st.error("Zeitüberschreitung bei der Verbindung zu OpenAI. Bitte versuche es später erneut. Bitte melde dich, wenn du die Fehlermeldung bekommst.")
+                    st.info(f"OpenAI-Fehlermeldung: {str(error)}")
+                except Exception as error:
+                    st.error("Es ist ein Fehler bei der Kommunikation mit OpenAI aufgetreten. Bitte melde dich, wenn du die Fehlermeldung bekommst.")
+                    st.info(f"OpenAI-Fehlermeldung: {str(error)}")
+                        # Eingabe und Button
+    textzuaufgaben=st.markdown("""
                                     Jetzt bist du dran!
                                     Stelle ChatGPT eine Frage, die dich interessiert
             
-                    """)
+                        	        """)
         #tab2 = st.tabs(["Eigene Fragen"])[0]
         #with tab2:
     with st.expander("Eigene Fragen", expanded=True):
@@ -335,14 +349,25 @@ with containerfokus:
                         "Antwort": antwort_text_eigene,
                         "Anzahl Prompts": anzahleingaben_eigene
                     })
-                except openai.APIStatusError:
-                    st.error("OpenAI verarbeitet die Anfrage nicht, bitte versuche es erneut.")
-                except openai.APIConnectionError:
-                    st.error("Verbindungsproblem mit OpenAI. Bitte versuche es später noch einmal.")
-                except openai.RateLimitError:
-                    st.error("Zu viele Anfragen. Bitte warte einen Moment und versuche es dann erneut.")
-                except Exception as e:
-                    st.error(f"Ein Fehler ist aufgetreten: {e}")
+                except openai.APIStatusError as error:
+                    st.error("OpenAI verarbeitet die Anfrage nicht, verändere den Prompt und versuche es erneut. Bitte melde dich, wenn du die Fehlermeldung bekommst.")
+                    st.info(f"OpenAI-Fehlermeldung: {str(error)}")
+                except openai.APIConnectionError as error:
+                    st.error("Problem mit der Verbindung zu OpenAI. Bitte versuche es erneut. Bitte melde dich, wenn du die Fehlermeldung bekommst.")
+                    st.info(f"OpenAI-Fehlermeldung: {str(error)}")
+                except openai.RateLimitError as error:
+                    st.error("Zu viele Anfragen: Das Kontingent oder die Rate wurde überschritten. Bitte warte einen Moment und versuche es erneut. Bitte melde dich, wenn du die Fehlermeldung bekommst.")
+                    st.info(f"OpenAI-Fehlermeldung: {str(error)}")
+                except openai.BadRequestError as error:
+                    st.error("Ungültige Anfrage: Die Anfrage enthält fehlerhafte Daten. Bitte melde dich, wenn du die Fehlermeldung bekommst.")
+                    st.info(f"OpenAI-Fehlermeldung: {str(error)}")
+                except openai.APITimeoutError as error:
+                    st.error("Zeitüberschreitung bei der Verbindung zu OpenAI. Bitte versuche es später erneut. Bitte melde dich, wenn du die Fehlermeldung bekommst.")
+                    st.info(f"OpenAI-Fehlermeldung: {str(error)}")
+                except Exception as error:
+                    st.error("Es ist ein Fehler bei der Kommunikation mit OpenAI aufgetreten. Bitte melde dich, wenn du die Fehlermeldung bekommst.")
+                    st.info(f"OpenAI-Fehlermeldung: {str(error)}")
+                
 
 st.write("")
 
@@ -350,7 +375,7 @@ st.write("")
 
 st.divider()
 
-fragevertrauen="Glaubst du, dass diese Antworten richtig ist?"
+fragevertrauen="Glaubst du, dass diese Antworten richtig sind?"
 antwortvertrauen = st.radio(fragevertrauen,
         ("Ja, die Antworten waren richtig",
          "Ja, die Antworten sind wahrscheinlich richtig",

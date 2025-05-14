@@ -160,14 +160,25 @@ with containerfokus:
                             "Anzahl Prompts": anzahleingaben
                         })
                 st.session_state.grundwissen_ki
-            except openai.APIStatusError:
-                st.error("OpenAI verarbeitet die Anfrage nicht, bitte versuche es erneut.")
-            except openai.APIConnectionError:
-                st.error("Verbindungsproblem mit OpenAI. Bitte versuche es später noch einmal.")
-            except openai.RateLimitError:
-                st.error("Zu viele Anfragen. Bitte warte einen Moment und versuche es dann erneut.")
-            except Exception as e:
-                st.error(f"Ein Fehler ist aufgetreten: {e}")
+            except openai.APIStatusError as error:
+                st.error("OpenAI verarbeitet die Anfrage nicht, verändere den Prompt und versuche es erneut. Bitte melde dich, wenn du die Fehlermeldung bekommst.")
+                st.info(f"OpenAI-Fehlermeldung: {str(error)}")
+            except openai.APIConnectionError as error:
+                st.error("Problem mit der Verbindung zu OpenAI. Bitte versuche es erneut. Bitte melde dich, wenn du die Fehlermeldung bekommst.")
+                st.info(f"OpenAI-Fehlermeldung: {str(error)}")
+            except openai.RateLimitError as error:
+                st.error("Zu viele Anfragen: Das Kontingent oder die Rate wurde überschritten. Bitte warte einen Moment und versuche es erneut. Bitte melde dich, wenn du die Fehlermeldung bekommst.")
+                st.info(f"OpenAI-Fehlermeldung: {str(error)}")
+            except openai.BadRequestError as error:
+                st.error("Ungültige Anfrage: Die Anfrage enthält fehlerhafte Daten. Bitte melde dich, wenn du die Fehlermeldung bekommst.")
+                st.info(f"OpenAI-Fehlermeldung: {str(error)}")
+            except openai.APITimeoutError as error:
+                st.error("Zeitüberschreitung bei der Verbindung zu OpenAI. Bitte versuche es später erneut. Bitte melde dich, wenn du die Fehlermeldung bekommst.")
+                st.info(f"OpenAI-Fehlermeldung: {str(error)}")
+            except Exception as error:
+                st.error("Es ist ein Fehler bei der Kommunikation mit OpenAI aufgetreten. Bitte melde dich, wenn du die Fehlermeldung bekommst.")
+                st.info(f"OpenAI-Fehlermeldung: {str(error)}")
+                
             st.write("")
 #Überprüfungsfrage: Sicherstellung, dass die Textbausteine gelesen wurden
 st.divider()

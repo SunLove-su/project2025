@@ -1,7 +1,12 @@
 import streamlit as st
 import openai
 
-client = openai.OpenAI(api_key=st.secrets["openai"]["api_key"])
+try: 
+    client = openai.OpenAI(api_key=st.secrets["openai"]["api_key"])
+except KeyError:
+    st.error("Kein API Key für OpenAI vorhanden. Abfragen über OpenAI nicht möglich")
+    
+ 
 
 if not st.session_state.get("admin"):
     st.set_page_config(page_title="2. Übung",initial_sidebar_state="collapsed")

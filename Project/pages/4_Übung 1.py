@@ -408,9 +408,12 @@ st.markdown("Um fortzufahren, klicke auf \"weiter\" ")
 col1, col2 = st.columns([8,2])
 with col2:
     if st.button("weiter"):
-        # Prüft, ob eine der beiden Fragen NICHT beantwortet wurde
-        unbeantwortet = (textecht is None or antwortvertrauen is None)
-        if unbeantwortet:
-            st.error("Bitte beantworte alle Fragen, um fortzufahren.")
-        else:
+        unbeantwortet = False
+        if textecht is None:
+            st.error ("Bitte beantworte die Frage, ob der Text echt ist.")
+            unbeantwortet = True
+        if antwortvertrauen is None:
+            st.error ("Bitte gebe an, ob du den Antworten der KI vertraust.")
+            unbeantwortet = True
+        if not unbeantwortet:
             st.switch_page("pages/5_Übung 2.py")

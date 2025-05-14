@@ -237,10 +237,29 @@ col1, col2 = st.columns([8,2])
 with col2:
 
     if st.button("Weiter"):
-        unbeantwortet =(alter is None or geschlecht is None or kiwissen is None or
-                        erkennungsfaehigkeit is None or haeufigkeitkinutzung is None or
-                        vertrauenkiinhalten is None or  pruefungvorher is None  )
-        if unbeantwortet:
-            st.error("Bitte beantworte alle Fragen, um fortzufahren.")
-        else: 
+        unbeantwortet = False
+
+        if alter is None:
+            st.error("Bitte gebe dein Alter an.")
+            unbeantwortet = True
+        if geschlecht is None:
+            st.error("Bitte gebe dein Geschlecht an.")
+            unbeantwortet = True
+        if kiwissen is None:
+            st.error("Bitte gebe dein Wissensstand an.")
+            unbeantwortet = True
+        if erkennungsfaehigkeit is None:
+            st.error ("Bitte gebe deine Erkennungsfähigkeit an.")
+            unbeantwortet = True
+        if haeufigkeitkinutzung is None:
+            st.error ("Bitte gebe an wie häufig du KI nutzt.")
+            unbeantwortet = True
+        if vertrauenkiinhalten is None:
+            st.error ("Bitte gebe an wie sehr du KI generierten Inhalten vertraust")
+            unbeantwortet = True
+        if pruefungvorher is None:
+            st.error ("Bitte gebe an, ob du KI prüfst.")
+            unbeantwortet = True
+ 
+        if not unbeantwortet: 
             st.switch_page("pages/3_Grundwissen_Ki.py")

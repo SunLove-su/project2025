@@ -236,10 +236,15 @@ st.markdown("Um fortzufahren, klicke auf \"weiter\" ")
 col1, col2 = st.columns([8,2])
 with col2:
     if st.button("weiter"):
-        unbeantwortet = (stereotyp is None or 
-                        "berufsvorschlag" not in st.session_state.uebung3 or 
-                        st.session_state.ki_antwort == "")
-        if unbeantwortet:
-            st.error("Bitte beantworte alle Fragen, um fortzufahren.")
-        else:
+        unbeantwortet = False
+        if stereotyp is None:
+            st.error("Bitte beantworte die Frage mit dem Stereotyp.")
+            unbeantwortet= True 
+        if "berufsvorschlag" not in st.session_state.uebung3:
+            st.error("Bitte beantworte die Frage mit dem Berufsvorschlag.")
+            unbeantwortet = True
+        if st.session_state.ki_antwort == "":
+            st.error("Bitte Frage die KI nach KI-Berufsvorschlägen")
+            unbeantwortet = True
+        if not unbeantwortet:
             st.switch_page("pages/7_Übung 4.py")

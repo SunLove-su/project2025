@@ -90,9 +90,10 @@ col1, col2 = st.columns([8,2])
 with col2:
 
     if st.button("weiter"):
-        unbeantwortet = (personecht is None)
-        if unbeantwortet:
-            st.error("Bitte beantworte alle Fragen, um fortzufahren.")
-        else: 
-                
+        unbeantwortet = False
+        if personecht is None:
+            st.error("Bitte beantworte die Frage, ob die Person auf dem Bild echt ist.")
+            unbeantwortet = True
+        
+        if not unbeantwortet:
             st.switch_page("pages/6_Übung 3.py")

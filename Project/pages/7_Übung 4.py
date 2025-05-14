@@ -210,9 +210,16 @@ col1, col2 = st.columns([8,2])
 with col2:
 
     if st.button("weiter"):
-        unbeantwortet = (datenschutz is None or urheberrecht is None
-        or "BildgenerierenKI" not in st.session_state.uebung4)
-        if unbeantwortet:
-            st. error("Bitte beantworte alle Fragen, um fortzufahren.")
-        else: 
+        unbeantwortet = False
+        if datenschutz is None:
+            st.error("Bitte beantworte die Frage mit dem Datenschutz.")
+            unbeantwortet = True
+        if urheberrecht is None:
+            st.error("Bitte beantworte die Frage mit dem Urheberrecht.")
+            unbeantwortet = True
+        if "BildgenerierenKI" not in st.session_state.uebung4:
+            st.error("Bitte lass von der KI ein Bild generieren.")
+            unbeantwortet = True
+        
+        if not unbeantwortet:
             st.switch_page("pages/8_Abschlussumfrage.py")

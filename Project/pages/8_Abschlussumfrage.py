@@ -269,14 +269,30 @@ if verbesserung:
 
 if st.button("Abschluss"):
 
-    unbeantwortet = (aufmerksamkeit is None or wissen_gewonnen is None or 
-                     erkennungsfaehigkeit_verbessert is None or modul_bewertung is None or
-                     prüfverhalten_nachher is None or prüfstrategien is None or
-                     vertrauensveränderung is None)
-    if unbeantwortet:
-        st.error("Bitte beantworte alle Fragen, um fortzufahren.")
-    else:
+    unbeantwortet = False
+    if aufmerksamkeit is None:
+        st.error("Bitte beantworte die Frage mit der Aufmerksamkeit.")
+        unbeantwortet = True
+    if wissen_gewonnen is None:
+        st.error("Bitte beantworte die Frage mit dem Wissen gewonnen.")
+        unbeantwortet = True
+    if erkennungsfaehigkeit_verbessert is None:
+        st.error("Bitte beantworte die Frage mit der Erkennungsfähigkeit.")
+        unbeantwortet = True
+    if modul_bewertung is None:
+        st.error("Bitte bewerte das Modul.")
+        unbeantwortet = True
+    if prüfverhalten_nachher is None:
+        st.error("Bitte gebe dein Prüfverhalten an.")
+        unbeantwortet = True
+    if prüfstrategien is None:
+        st.error("Bitte gebe deine Prüfstrategien an.")
+        unbeantwortet = True
+    if vertrauensveränderung is None:
+        st.error("Bitte gebe deine Vertrauen in KI an.")
+        unbeantwortet = True
     
+    if not unbeantwortet:   
         try:
             
             googlecredentials = json.loads(st.secrets["firestore"]["google_api_key"])

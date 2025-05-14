@@ -224,10 +224,12 @@ col1, col2 = st.columns([8,2])
 with col2:
 
     if st.button("weiter"):
-        if ueberpruefungsfrage is not None:
-            if ueberpruefungsfrage==richtigeAntwort:
-               st.switch_page("pages/4_Übung 1.py")
-            else:
-                st.error("Die Antwort ist falsch. Bitte lies nochmal den Baustein Grundlagen")
-        else:
-            st.error("Bitte beantworte die Frage, um fortzufahren")
+        unbeantwortet = False
+
+        if ueberpruefungsfrage is None:
+            st.error("Bitte Beantworte die Überprüfungsfrage.")
+            unbeantwortet = True 
+
+        if not unbeantwortet and ueberpruefungsfrage==richtigeAntwort:
+              
+            st.switch_page("pages/4_Übung 1.py")

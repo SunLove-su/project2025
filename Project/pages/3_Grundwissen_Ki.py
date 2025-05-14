@@ -171,15 +171,35 @@ with containerfokus:
             st.write("")
 #Überprüfungsfrage: Sicherstellung, dass die Textbausteine gelesen wurden
 st.divider()
+if "anzahl_ueberpruefungsfrage" not in st.session_state:
+    st.session_state.anzahl_ueberpruefungsfrage = 0
+
+def zaehle_aenderung():
+    st.session_state.anzahl_ueberpruefungsfrage +=1
+
 st.write ("Nachdem du jetzt ein paar Informationen über KI erhalten hast, beantworte bitte die folgende Frage:")
-ueberpruefungsfrage=st.radio("Welche Aussage über KI trifft zu?",
+frageueberpruefung="Welche Aussage über KI trifft zu?"
+ueberpruefungsfrage=st.radio(frageueberpruefung,
                             ("KI braucht Schritt für Schritt-Anweisungen",
                              "KI kann jede Aufgabe lösen und macht keine Fehler",
                              "KI braucht sehr viele Daten um zu lernen und macht trotzdem Fehler",
                              "Keine der Dargestellten Fragen ist richtig"),
                              index=None,
-
+                             on_change=zaehle_aenderung()
 )
+
+
+if ueberpruefungsfrage is not None:
+    st.session_state.grundwissen_ki.append({
+    "Bereich": "Grundwissen KI",
+    "Typ": "Ueberpruefungsfrage",
+    "Frage":   frageueberpruefung,
+    "Antwort": ueberpruefungsfrage
+    })
+    st.write(f"Du hast die Antwort gegeben: {ueberpruefungsfrage}.")
+
+
+   
 richtigeAntwort="KI braucht sehr viele Daten um zu lernen und macht trotzdem Fehler"
 
 

@@ -40,5 +40,19 @@ def login():
                 st.error("Das Passwort ist falsch")
         st.stop()
  
+def openai_fehlerbehandlung(error):
+    error_text = str(error).lower()
+    if "api_status_error" in error_text:
+        st.error("OpenAI verarbeitet die Anfrage nicht, verändere den Prompt und versuche es erneut. Bitte melde dich, wenn du die Fehlermeldung bekommst.")
+    elif "api_connection_error" in error_text: 
+        st.error("Problem mit der Verbindung zu OpenAI. Bitte versuche es erneut. Bitte melde dich, wenn du die Fehlermeldung bekommst.")
+    elif "rate_limit_error" in error_text:
+        st.error("Zu viele Anfragen: Das Kontingent oder die Rate wurde überschritten. Bitte warte einen Moment und versuche es erneut. Bitte melde dich, wenn du die Fehlermeldung bekommst.")
+    elif "bad_request_error" in error_text:
+        st.error("Ungültige Anfrage: Die Anfrage enthält fehlerhafte Daten. Bitte melde dich, wenn du die Fehlermeldung bekommst.")
+    elif "api_timeout_error" in error_text:
+        st.error("Zeitüberschreitung bei der Verbindung zu OpenAI. Bitte versuche es später erneut. Bitte melde dich, wenn du die Fehlermeldung bekommst.")
+    else:
+        st.error("Es ist ein Fehler bei der Kommunikation mit OpenAI aufgetreten. Bitte melde dich, wenn du die Fehlermeldung bekommst.")
 
-
+    st.info(f"OpenAI-Fehlermeldung: {str(error)}")

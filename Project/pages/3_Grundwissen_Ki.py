@@ -126,24 +126,8 @@ with containerfokus:
                             "Anzahl Prompts": anzahleingaben
                         })
                 st.session_state.grundwissen_ki
-            except openai.APIStatusError as error:
-                st.error("OpenAI verarbeitet die Anfrage nicht, verändere den Prompt und versuche es erneut. Bitte melde dich, wenn du die Fehlermeldung bekommst.")
-                st.info(f"OpenAI-Fehlermeldung: {str(error)}")
-            except openai.APIConnectionError as error:
-                st.error("Problem mit der Verbindung zu OpenAI. Bitte versuche es erneut. Bitte melde dich, wenn du die Fehlermeldung bekommst.")
-                st.info(f"OpenAI-Fehlermeldung: {str(error)}")
-            except openai.RateLimitError as error:
-                st.error("Zu viele Anfragen: Das Kontingent oder die Rate wurde überschritten. Bitte warte einen Moment und versuche es erneut. Bitte melde dich, wenn du die Fehlermeldung bekommst.")
-                st.info(f"OpenAI-Fehlermeldung: {str(error)}")
-            except openai.BadRequestError as error:
-                st.error("Ungültige Anfrage: Die Anfrage enthält fehlerhafte Daten. Bitte melde dich, wenn du die Fehlermeldung bekommst.")
-                st.info(f"OpenAI-Fehlermeldung: {str(error)}")
-            except openai.APITimeoutError as error:
-                st.error("Zeitüberschreitung bei der Verbindung zu OpenAI. Bitte versuche es später erneut. Bitte melde dich, wenn du die Fehlermeldung bekommst.")
-                st.info(f"OpenAI-Fehlermeldung: {str(error)}")
             except Exception as error:
-                st.error("Es ist ein Fehler bei der Kommunikation mit OpenAI aufgetreten. Bitte melde dich, wenn du die Fehlermeldung bekommst.")
-                st.info(f"OpenAI-Fehlermeldung: {str(error)}")
+                    hilfsdatei.openai_fehlerbehandlung(error)
                 
             st.write("")
 #Überprüfungsfrage: Sicherstellung, dass die Textbausteine gelesen wurden
@@ -162,7 +146,7 @@ ueberpruefungsfrage=st.radio(frageueberpruefung,
                              "KI braucht sehr viele Daten um zu lernen und macht trotzdem Fehler",
                              "Keine der Dargestellten Fragen ist richtig"),
                              index=None,
-                             on_change=zaehle_aenderung()
+                             on_change=zaehle_aenderung
 )
 
 
@@ -197,5 +181,6 @@ with col2:
             unbeantwortet = True
 
         if not unbeantwortet and ueberpruefungsfrage==richtigeAntwort:
+            st.info("Deine Antwort war richtig!")
               
             st.switch_page("pages/4_Übung 1.py")

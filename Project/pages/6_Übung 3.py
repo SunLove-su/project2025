@@ -29,11 +29,9 @@ st.markdown("""
 # Initialisierung
 if "uebung3" not in st.session_state:
     st.session_state.uebung3 = {}
-if "alle_ki_anfragen_eigenes" not in st.session_state.uebung3:
-    st.session_state.uebung3["alle_ki_anfragen_eigenes"] = []  # Liste für eigenes Geschlecht
-if "alle_ki_anfragen_anderes" not in st.session_state.uebung3:
-    st.session_state.uebung3["alle_ki_anfragen_anderes"] = [] 
-
+if "zaehler_berufsvorschlag" not in st.session_state:
+    st.session_state.zaehler_berufsvorschlag = 0
+    st.session_state.zaehler_eigenes_geschlecht = 0
 if "zaehler_eigenes_geschlecht" not in st.session_state:
     st.session_state.zaehler_eigenes_geschlecht = 0
 if "zaehler_anderes_geschlecht" not in st.session_state:
@@ -50,14 +48,33 @@ with containerfokus:
             
             speichern = st.form_submit_button("speichern")
             if speichern and berufsvorschlag:
+                st.session_state.zaehler_berufsvorschlag += 1
+                zaehler_berufsvorschlag = st.session_state.zaehler_berufsvorschlag
                 st.write(f"Deine Antwort ist: {berufsvorschlag}")
+                
+                
+                 # Initialisiere die Historie-Liste, falls sie nicht existiert
+                if "berufsvorschlag_historie" not in st.session_state.uebung3:
+                    st.session_state.uebung3["berufsvorschlag_historie"] = []
+                
+                # Füge zur Historie hinzu
+                st.session_state.uebung3["berufsvorschlag_historie"].append({
+                    "Bereich": "Übung3",
+                    "Typ": "Eigener Berufsvorschlag",
+                    "Frage": frage_berufsvorschlag,
+                    "Antwort": berufsvorschlag,
+                    "Anzahl": zaehler_berufsvorschlag
+                })
+                
+                # Speichere aktuellen Eintrag
                 st.session_state.uebung3["berufsvorschlag"] = {
                     "Bereich": "Übung3",
                     "Typ": "Eigener Berufsvorschlag",
                     "Frage": frage_berufsvorschlag,
-                    "Antwort": berufsvorschlag
+                    "Antwort": berufsvorschlag,
+                    "Anzahl": zaehler_berufsvorschlag
                 }
-                # Wenn bereits KI-Antwort für das eigene Geschlecht vorhanden, zeige Vergleich
+                    # Wenn bereits KI-Antwort für das eigene Geschlecht vorhanden, zeige Vergleich
                 if "ki_antwort_1" in st.session_state.uebung3:
                     st.write("VERGLEICH DER ANTWORTEN:")
                     st.write(f"**Deine Vorschläge:** {berufsvorschlag}")
@@ -76,6 +93,8 @@ with containerfokus:
             if senden1 and frage1:
                 try:
                     with st.spinner(text="Erstelle Text, bitte warten..."):
+                        st.session_state.zaehler_eigenes_geschlecht += 1
+                        zaehler_eigenes_geschlecht = st.session_state.zaehler_eigenes_geschlecht
                         antwort = client.chat.completions.create(
                             model="gpt-3.5-turbo",
                             messages=[
@@ -87,22 +106,25 @@ with containerfokus:
                         st.write("Antwort:")
                         st.write(antwort_text)
 
-                        #Zählen wie oft ggfls Teilnehmer ausprobiert haben
-                        st.session_state.zaehler_eigenes_geschlecht += 1
-                        zaehler_eigenes_geschlecht = st.session_state.zaehler_eigenes_geschlecht
-                        st.session_state.uebung3["alle_ki_anfragen_eigenes"].append({
+                        if "ki_antwort_1_historie" not in st.session_state.uebung3:
+                            st.session_state.uebung3["ki_antwort_1_historie"] = []
+
+                        # Füge zur Historie hinzu
+                        st.session_state.uebung3["ki_antwort_1_historie"].append({
                             "Bereich": "Übung3",
-                            "Typ": "Berufsvorschlag_Eigenes_Geschlecht",
+                            "Typ": "Berufsvorschlag_Eigenes_Geschlecht_KI_Interaktion_1",
                             "Frage": frage1,
                             "Antwort": antwort_text,
                             "Anzahl": zaehler_eigenes_geschlecht
                         })
-            
+                        
+                        # Speichere aktuellen Eintrag
                         st.session_state.uebung3["ki_antwort_1"] = {
                             "Bereich": "Übung3",
                             "Typ": "Berufsvorschlag_Eigenes_Geschlecht_KI_Interaktion_1",
                             "Frage": frage1,
-                            "Antwort": antwort_text
+                            "Antwort": antwort_text,
+                            "Anzahl": zaehler_eigenes_geschlecht
                         }
 
                 except openai.APIStatusError as error:
@@ -135,6 +157,9 @@ with containerfokus:
             if senden2 and frage2:
                 try:
                     with st.spinner(text="Erstelle Text, bitte warten..."):
+                        st.session_state.zaehler_anderes_geschlecht += 1
+                        zaehler_anderes_geschlecht = st.session_state.zaehler_anderes_geschlecht
+            
                         antwort = client.chat.completions.create(
                             model="gpt-3.5-turbo",
                             messages=[
@@ -145,24 +170,31 @@ with containerfokus:
                         antwort_text = antwort.choices[0].message.content
                         st.write("Antwort:")
                         st.write(antwort_text)
-                        
-                        st.session_state.zaehler_anderes_geschlecht += 1
-                        zaehler_anderes_geschlecht = st.session_state.zaehler_anderes_geschlecht
-                       
-                        st.session_state.uebung3["alle_ki_anfragen_anderes"].append({
-                            "Bereich": "Übung3",
-                            "Typ": "Berufsvorschlag_Anderes_Geschlecht",
+
+
+                        # Initialisiere die Historie-Liste, falls sie nicht existiert
+                        if "ki_antwort_2_historie" not in st.session_state.uebung3:
+                            st.session_state.uebung3["ki_antwort_2_historie"] = []
+                            
+                        # Füge zur Historie hinzu
+                        st.session_state.uebung3["ki_antwort_2_historie"].append({
+                            "Bereich":"Übung3",
+                            "Typ":"Berufsvorschlag_Anderes_Geschlecht_KI_Interaktion_2",
                             "Frage": frage2,
                             "Antwort": antwort_text,
                             "Anzahl": zaehler_anderes_geschlecht
                         })
-                       
+                        
+                        # Speichere aktuellen Eintrag
                         st.session_state.uebung3["ki_antwort_2"] = {
                             "Bereich":"Übung3",
                             "Typ":"Berufsvorschlag_Anderes_Geschlecht_KI_Interaktion_2",
                             "Frage": frage2,
-                            "Antwort": antwort_text
+                            "Antwort": antwort_text,
+                            "Anzahl": zaehler_anderes_geschlecht
                         }
+
+
                 except openai.APIStatusError as error:
                     st.error("OpenAI verarbeitet die Anfrage nicht, verändere den Prompt und versuche es erneut. Bitte melde dich, wenn du die Fehlermeldung bekommst.")
                     st.info(f"OpenAI-Fehlermeldung: {str(error)}")

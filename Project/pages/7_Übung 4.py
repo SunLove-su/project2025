@@ -91,7 +91,7 @@ with containerfokus:
                     generiertesBild = antwort.data[0].url
                     st.image(generiertesBild, width=200)
                     
-                    # Speichern des Bildes - innerhalb der if-Bedingung und des spinners
+                    
                     if "BildgenerierenKI" not in st.session_state.uebung4:
                         st.session_state.uebung4["BildgenerierenKI"] = []
                     

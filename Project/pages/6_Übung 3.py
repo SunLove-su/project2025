@@ -1,48 +1,11 @@
 import streamlit as st
 import openai
+import hilfsdatei
 
 client = openai.OpenAI(api_key=st.secrets["openai"]["api_key"])
 
-if not st.session_state.get("admin"):
-    st.set_page_config(page_title="3. Übung",initial_sidebar_state="collapsed")
- 
-    st.markdown(
-        """
-    <style>
-        [data-testid="stSidebarCollapsedControl"] {
-            display: none
-        }
-    </style>
-    """,
-        unsafe_allow_html=True,
-
-    )
-else:
-
-    st.set_page_config(page_title="3. Übung"
-    
-)
-def login():
-    st.write("Enter the secret code")
-    code = st.text_input("Code")
-    if st.button("Login"):
-        password = code
-        if password == st.secrets["survey_secret"]:
-            st.session_state["logged_in"] = True
-            st.rerun()
-        elif password == st.secrets["admin_secret"]:
-            st.session_state["logged_in"] = True
-            st.session_state["admin"] = True
-            st.rerun()
-        else:
-            st.error("Wrong secret code")
-    st.stop()
- 
- 
-if not st.session_state.get("logged_in"):
-    login()
-
-
+hilfsdatei.seite("3.Übung")
+hilfsdatei.login()
 
 st.markdown("<h4>3. Übung</h4>",unsafe_allow_html=True)
 
@@ -89,11 +52,12 @@ with containerfokus:
                     "Frage": frage_berufsvorschlag,
                     "Antwort": berufsvorschlag
                 }
-                # Wenn bereits KI-Antwort vorhanden, zeige Vergleich
-                if st.session_state.ki_antwort:
+                # Wenn bereits KI-Antwort für das eigene Geschlecht vorhanden, zeige Vergleich
+                if "ki_antwort_1" in st.session_state.uebung3:
                     st.write("VERGLEICH DER ANTWORTEN:")
                     st.write(f"**Deine Vorschläge:** {berufsvorschlag}")
-                    st.write(f"**KI-Vorschläge:** {st.session_state.ki_antwort}")
+                    # ' für die Ausgabe der gespeicherten Werte, da sonst SyntaxError: f-string: unmatched '['
+                    st.write(f"**KI-Vorschläge:** {st.session_state.uebung3['ki_antwort_1']['Antwort']}")
 
 
         st.markdown("""
@@ -243,8 +207,11 @@ with col2:
         if "berufsvorschlag" not in st.session_state.uebung3:
             st.error("Bitte beantworte die Frage mit dem Berufsvorschlag.")
             unbeantwortet = True
-        if st.session_state.ki_antwort == "":
-            st.error("Bitte Frage die KI nach KI-Berufsvorschlägen")
+        if "ki_antwort_1" not in st.session_state.uebung3:
+            st.error("Bitte frage die KI nach Berufen für dein Geschlecht.")
+            unbeantwortet = True
+        if "ki_antwort_2" not in st.session_state.uebung3:
+            st.error("Bitte frage die KI nach Berufen für das andere Geschlecht.")
             unbeantwortet = True
         if not unbeantwortet:
             st.switch_page("pages/7_Übung 4.py")

@@ -4,44 +4,11 @@ import json
 import uuid
 import datetime
 from supabase import create_client
-if not st.session_state.get("admin"):
-    st.set_page_config(page_title="Abschluss",initial_sidebar_state="collapsed")
- 
-    st.markdown(
-        """
-    <style>
-        [data-testid="stSidebarCollapsedControl"] {
-            display: none
-        }
-    </style>
-    """,
-        unsafe_allow_html=True,
+import hilfsdatei 
 
-    )
-else:
+hilfsdatei.seite("Abschluss")
+hilfsdatei.login()
 
-    st.set_page_config(page_title="Abschluss"
-    
-)
-def login():
-    st.write("Enter the secret code")
-    code = st.text_input("Code")
-    if st.button("Login"):
-        password = code
-        if password == st.secrets["survey_secret"]:
-            st.session_state["logged_in"] = True
-            st.rerun()
-        elif password == st.secrets["admin_secret"]:
-            st.session_state["logged_in"] = True
-            st.session_state["admin"] = True
-            st.rerun()
-        else:
-            st.error("Wrong secret code")
-    st.stop()
- 
- 
-if not st.session_state.get("logged_in"):
-    login()
 
 st.markdown("<h4>Abschluss</h4>",unsafe_allow_html=True)
 

@@ -229,6 +229,9 @@ with col2:
         if ueberpruefungsfrage is None:
             st.error("Bitte Beantworte die Überprüfungsfrage.")
             unbeantwortet = True 
+        elif ueberpruefungsfrage != richtigeAntwort:
+            st.error("Deine Antwort ist leider falsch. Bitte lies den Inhalt nochmal und versuche es erneut.")
+            unbeantwortet = True
 
         if not unbeantwortet and ueberpruefungsfrage==richtigeAntwort:
               

@@ -259,6 +259,14 @@ with containerfokus:
     with st.expander("Eigene Fragen", expanded=True):
         with st.form("frage_formular_eigene", clear_on_submit=True):
             frage_eigene = st.text_input("Stelle hier deine eigenen Fragen")
+            falscheantworten = (
+            "Beantworte die folgende Frage mit einer Antwort, die **nicht korrekt ist**. "
+            "Die Antwort muss **in jedem Fall falsch sein**, aber so formuliert, dass sie **plausibel und glaubwürdig klingt**. "
+            "Vermeide jede Form der richtigen Antwort. "
+            "Nutze stattdessen Halbwahrheiten, häufige Irrtümer oder realistisch klingende Fehlinformationen."
+
+            )
+            prompt = f"{falscheantworten}\n\nFrage: {frage_eigene}\nAntwort:"
             senden = st.form_submit_button("Fragen")
 
             st.markdown("Wenn du fertig bist, dann scrolle bitte weiter nach unten")
@@ -269,7 +277,7 @@ with containerfokus:
                     with st.spinner(text="Erstelle Text, bitte warten..."):
                         antwort = client.chat.completions.create(
                             model="gpt-3.5-turbo",
-                            messages=[{"role": "user", "content": frage_eigene}]
+                            messages=[{"role": "user", "content":prompt}]
                         )
                         antwort_text_eigene= antwort.choices[0].message.content
 

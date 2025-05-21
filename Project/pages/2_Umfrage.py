@@ -1,39 +1,47 @@
 import streamlit as st
 import hilfsdatei
-
  
+#Überschrift der Seite
 hilfsdatei.seite("Einstiegsumfrage")
+#Alle Seiten mit PW versehen, dass weiterhin die Teilnehmer die Navigation nicht sehen
 hilfsdatei.login()
 
+#Überschrift der Sektion
 st.markdown("<h4>Einstiegsumfrage</h4>",unsafe_allow_html=True)
 
+#Einleitung der Sektion
 st.markdown("""
             Die Umfrage erfasst deine persönliche Erfahrung und Einschätzung
             von KI.
             Die Antworten werden nur im Rahmen dieser Arbeit ausgewertet.           
            """)
+#Trennungslinie
 st.divider()
-
+#Speicherung der Antworten in "einstiegsumfrage"
+#Dictonary das die Antworten speichert, damit sie später im Abschluss an die Datenbank übergeben werden kann
 if "einstiegsumfrage" not in st.session_state:
     st.session_state.einstiegsumfrage ={}
 
 
 # Demografische Daten
 
-#Frage Alter: Wie alt bist du
+#Frage nach dem Alter der Teilnehmenden
 #Alter der Jugendlichen in den Studien Vodafone(2024) = 14-20, Sinus (2024) = 14-17
 fragealter = "Wie alt bist du?"
 alter = st.radio (fragealter,
-                                ("unter 15",
-                                "15-16",
-                                "16-17",
-                                "17-18",
-                                "18-19",
-                                "über 19",
-                                "Keine Angabe"
+                                (
+                                    "Unter 15 Jahre",
+                                    "15 - 16 Jahre",
+                                    "17 - 18 Jahre",
+                                    "19 Jahre",
+                                    "Über 19 Jahre",
+                                    "Keine Angabe"
+    
                                 ),
+# index= None, damit nicht schon eine "Vorauswahl" besteht.
                                 index=None
 )
+#sobald der Teilnehmer den Radio-Button bestätigt, dann soll die Eingabe unter den Schlüssel "alter" gespeichert werden
 if alter is not None:
     st.session_state.einstiegsumfrage["alter"]={
     "Bereich": "Einstiegsumfrage",
@@ -41,7 +49,7 @@ if alter is not None:
     "Frage":   fragealter,
     "Antwort": alter
     }
-    st.write(f"Du bist: {alter} Jahre alt.")
+    st.markdown(f"Deine Antwort: {alter}.")
 
 
    
@@ -65,8 +73,8 @@ if geschlecht is not None:
  
  }
 
- st.write(f"Du fühlst dich dem {geschlecht} zugehörig.")
-
+ st.markdown(f"Deine Antwort: {geschlecht}.")
+#Trennungslinie
 st.divider()
 ##############
 
@@ -76,7 +84,7 @@ kiwissen = st.radio(
                     frage_kiwissen,
                     ("Sehr gut",
                      "Gut",
-                     "Ein wenig",
+                     "Mittel",
                      "Kaum",
                      "Gar nicht",
                      "Keine Angabe"),
@@ -91,6 +99,9 @@ if kiwissen is not None:
         "Antwort": kiwissen
     
     }
+    st.markdown (f"Deine Antwort: {kiwissen}.")
+
+#Frage: Erkennungsfähigkeit, ob ein Text oder Bild von der KI generiert wurde
 
 frage_erkennungsfaehigkeit = "Wie gut kannst du erkennen, ob ein Text oder Bild von einer KI stammt?"
 erkennungsfaehigkeit = st.radio(
@@ -98,9 +109,9 @@ erkennungsfaehigkeit = st.radio(
     [
         "Sehr gut",
         "Gut", 
-        "Mittelmäßig",
-        "Nicht so gut",
-        "Gar nicht gut",
+        "Mittel",
+        "Eher schlecht",
+        "Schlecht",
         "Keine Angabe"
     ],
     index=None
@@ -113,11 +124,13 @@ if erkennungsfaehigkeit is not None:
         "Frage": frage_erkennungsfaehigkeit,
         "Antwort": erkennungsfaehigkeit
     }
-    st.write("Deine Antwort ist:", erkennungsfaehigkeit)
+    st.markdown(f"Deine Antwort: {erkennungsfaehigkeit}.")
 
 #########################
+
 # Nutzunghäufigkeit (Vodafone2024) S. 11 , Gerlich Studie 2025
-fragehaeufigkeitkinutzung = "Wie oft nutzt du KI-Tools?"
+#Frage, wie oft KI-Anwendungen genutzt werden
+fragehaeufigkeitkinutzung = "Wie oft nutzt du KI-Anwendungen (z. B. ChatGPT, DALL·E, Perplexity usw.)?"
 haeufigkeitkinutzung = st.radio(
                                 fragehaeufigkeitkinutzung,
                                 ("Täglich",
@@ -126,7 +139,7 @@ haeufigkeitkinutzung = st.radio(
                                 "Einmal pro Monat",
                                 "Seltener als einmal pro Monat",
                                 "Nie",
-                                "Keine Antwort"),
+                                "Keine Angabe"),
                                  index=None,
 )
 if haeufigkeitkinutzung is not None:
@@ -137,11 +150,12 @@ if haeufigkeitkinutzung is not None:
     "Antwort": haeufigkeitkinutzung,
     
     }
-    st.write(f"Du nutzt KI: {haeufigkeitkinutzung}")
+    st.markdown(f"Deine Antwort: {haeufigkeitkinutzung}")
    
-
+#Trennungslinie
 st.divider()
 
+#Frage für wie sehr KI Inhalten vertraut wird
 fragevertrauenkiinhalte = "Für wie vertrauenswürdig hältst du KI-generierte Inhalte?"
 vertrauenkiinhalten = st.radio(
                                fragevertrauenkiinhalte,
@@ -164,13 +178,16 @@ if vertrauenkiinhalten is not None:
     "Frage": fragevertrauenkiinhalte,
     "Antwort": vertrauenkiinhalten,
     }
-    st.write(f"Du hälst KI-generierte Inhalte für {vertrauenkiinhalten}")
+    st.markdown(f"Deine Antwort: {vertrauenkiinhalten}")
+
+
+#Frage ob KI-generierte Inhalte geprüft werden
 
 fragepruefungvorher = "Wie genau prüfst du KI-generierte Inhalte, bevor du ihnen vertraust?"
 pruefungvorher = st.radio(
                 fragepruefungvorher,
-                ("Sehr genau - ich prüfe alle Fakten",
-                 "Eher genau - ich prüfe wichtige Behauptungen",
+                ("Sehr genau - ich prüfe alles, bis ins kleinste Detail",
+                 "Eher genau - ich prüfe, aber nicht alles bis ins kleinste Detail",
                  "Manchmal - ich prüfe je nach Thema",
                  "Eher ungenau - ich prüfe selten nach",
                  "Gar nicht - ich prüfe die Inhalte nicht",
@@ -186,43 +203,50 @@ if pruefungvorher is not None:
         "Antwort": pruefungvorher
     
     }
-    st.write(f"Dein Prüfverhalten: {pruefungvorher}")
+    st.markdown(f"Deine Antwort: {pruefungvorher}")
     
 
-st.session_state.einstiegsumfrage
 
 
+#Anzeigen der gespeicherten Eingaben, zur Überprüfung
+#st.session_state.einstiegsumfrage
 
-
+#Trennungslinie
 st.divider()
-st.markdown("Um fortzufahren, klicke auf \"Weiter\" ")
+
+#Button zur nächsten Seite
+st.markdown("Um fortzufahren, klicke auf \"Weiter\"")
+st.markdown("Aktueller Fortschritt in der gesamten Lerneinheit: 1 von 7")
+st.progress (1/7)
+
+#Anpassung des Layouts des Buttons
 col1, col2 = st.columns([8,2])
 with col2:
 
     if st.button("Weiter"):
         unbeantwortet = False
-
+#Prüfung, ob alle Eingaben erfolgt sind
         if alter is None:
-            st.error("Bitte gebe dein Alter an.")
+            st.error("Bitte gib dein Alter an.")
             unbeantwortet = True
         if geschlecht is None:
-            st.error("Bitte gebe dein Geschlecht an.")
+            st.error("Bitte gib dein Geschlecht an.")
             unbeantwortet = True
         if kiwissen is None:
-            st.error("Bitte gebe dein Wissensstand an.")
+            st.error("Bitte gib deinen Wissensstand an.")
             unbeantwortet = True
         if erkennungsfaehigkeit is None:
-            st.error ("Bitte gebe deine Erkennungsfähigkeit an.")
+            st.error ("Bitte gib deine Einschätzung zur Erkennung von KI-generierten Inhalten an.")
             unbeantwortet = True
         if haeufigkeitkinutzung is None:
-            st.error ("Bitte gebe an wie häufig du KI nutzt.")
+            st.error ("Bitte gib an, wie häufig du KI nutzt.")
             unbeantwortet = True
         if vertrauenkiinhalten is None:
-            st.error ("Bitte gebe an wie sehr du KI generierten Inhalten vertraust")
+            st.error ("Bitte gib an, wie sehr du KI-generierten Inhalten vertraust")
             unbeantwortet = True
         if pruefungvorher is None:
-            st.error ("Bitte gebe an, ob du KI prüfst.")
+            st.error ("Bitte gib an, ob du KI prüfst.")
             unbeantwortet = True
- 
-        if not unbeantwortet: 
+ #Wenn alle Pflichtfelder beantwortet sind, dann kann der Teilnehmer auf die nächste Seite
+        if not unbeantwortet:
             st.switch_page("pages/3_Grundwissen_Ki.py")

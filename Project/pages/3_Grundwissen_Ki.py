@@ -132,13 +132,67 @@ with containerfokus:
             st.write("")
 #Überprüfungsfrage: Sicherstellung, dass die Textbausteine gelesen wurden
 st.divider()
+
+st.write ("Nachdem du jetzt ein paar Informationen über KI erhalten hast, beantworte bitte die folgende Frage:")
+
+
+#Frage: Verständlichkeit der dargestellten Inhalte
+
+frage_verstaendlichkeitki= "Wie verständlich waren die Informationen über KI?"
+verstaendlichkeitki = st.radio(
+    frage_verstaendlichkeitki,
+    [
+        "Sehr gut",
+        "Gut", 
+        "Mittel",
+        "Eher schlecht",
+        "Schlecht",
+        "Keine Angabe"
+    ],
+    index=None
+)
+
+if verstaendlichkeitki is not None:
+    st.session_state.grundwissen_ki["verstaendlichkeitki"] = {
+        "Bereich": "Einstiegsumfrage",
+        "Typ": "Verstaendlichkeitki",
+        "Frage": frage_verstaendlichkeitki,
+        "Antwort": verstaendlichkeitki
+    }
+
+
+#Frage: Verständlichkeit der dargestellten Inhalte
+
+frage_neueInformationenKI = "Hast du neues über die KI erfahren?"
+neueInformationenKI  = st.radio(
+    frage_neueInformationenKI ,
+    [
+        "Sehr gut",
+        "Gut", 
+        "Mittel",
+        "Eher schlecht",
+        "Schlecht",
+        "Keine Angabe"
+    ],
+    index=None
+)
+
+if neueInformationenKI is not None:
+    st.session_state.grundwissen_ki["neueInformationenKI "] = {
+        "Bereich": "Einstiegsumfrage",
+        "Typ": "Verstaendlichkeitki",
+        "Frage": frage_neueInformationenKI ,
+        "Antwort": neueInformationenKI 
+    }
+
+
+
 if "anzahl_ueberpruefungsfrage" not in st.session_state:
     st.session_state.anzahl_ueberpruefungsfrage = 0
 
 def zaehle_aenderung():
     st.session_state.anzahl_ueberpruefungsfrage +=1
 
-st.write ("Nachdem du jetzt ein paar Informationen über KI erhalten hast, beantworte bitte die folgende Frage:")
 frageueberpruefung="Welche Aussage über KI trifft zu?"
 ueberpruefungsfrage=st.radio(frageueberpruefung,
                             ("KI braucht Schritt für Schritt-Anweisungen",
@@ -157,7 +211,7 @@ if ueberpruefungsfrage is not None:
     "Frage":   frageueberpruefung,
     "Antwort": ueberpruefungsfrage
     })
-    st.write(f"Du hast die Antwort gegeben: {ueberpruefungsfrage}.")
+    st.write(f"Deine Antwort: {ueberpruefungsfrage}.")
 
 
    

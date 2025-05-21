@@ -257,7 +257,7 @@ if st.button("Abschluss"):
     if vertrauensveränderung is None:
         st.error("Bitte gebe deine Vertrauen in KI an.")
         unbeantwortet = True
-    
+    speicherfehler = 0
     if not unbeantwortet:   
         try:
             
@@ -295,30 +295,38 @@ if st.button("Abschluss"):
                 doc_ref.set(user_data)
                 st.success("Daten erfolgreich gespeichert!")
             except Exception as error:
+                speicherfehler +=1
                 st.error("Es gab ein Problem mit der Speicherung der Daten")
                 st.info(f"Google-Fehlermeldung:{str(error)}")
 
         except KeyError as error:
+            speicherfehler +=1
             st.error("Problem mit der Datenbankkonfiguration. Bitte melde dich, wenn du die Fehlermeldung bekommst.")
         # https://firebase.google.com/docs/reference/swift/firebasefirestore/api/reference/Enums/Error-Types
         #https://cloud.google.com/firestore/docs/understand-error-codes?hl=de 
         except google_exceptions.ServiceUnavailable as error:
+            speicherfehler +=1
             st.error("Problem mit der Verbindung zur Datenbank. Bitte melde dich, wenn du die Fehlermeldung bekommst.")
             st.info(f"Google-Fehlermeldung: {str(error)}")
         except google_exceptions.DeadlineExceeded as error:
+            speicherfehler +=1
             st.error("Problem mit der Verbindung zur Datenbank. Bitte melde dich, wenn du die Fehlermeldung bekommst.")
             st.info(f"Google-Fehlermeldung: {str(error)}")
         except google_exceptions.ResourceExhausted as error:
+            speicherfehler +=1
             st.error("Zu viele Anfragen: Das Kontingent oder die Rate wurde überschritten. Bitte melde dich, wenn du die Fehlermeldung bekommst.")
             st.info(f"Google-Fehlermeldung: {str(error)}")
         except google_exceptions.NotFound as error:
+            speicherfehler +=1
             st.error("Dokument nicht gefunden: Das gesuchte Dokument existiert nicht in der Datenbank. Bitte melde dich, wenn du die Fehlermeldung bekommst.")
             st.info(f"Google-Fehlermeldung: {str(error)}")
         except google_exceptions.PermissionDenied as error:
+            speicherfehler +=1
             st.error("Zugriff verweigert: Du hast keine Berechtigung für diese Operation. Bitte melde dich, wenn du die Fehlermeldung bekommst.")
             st.info(f"Google-Fehlermeldung: {str(error)}")
         except Exception as error:
             st.error(f"Google-Fehlermeldung:{str(error)}")
+            speicherfehler +=1
 
     
         try:
@@ -337,18 +345,22 @@ if st.button("Abschluss"):
             # Tabelle in Supabase erstellt mit dem Namen "umfrage_antworten"
             response = supabase.table("umfrage_antworten").insert(supabase_data).execute()
             st.write("Supabase-Ergebnis:", response) 
-        
+            
         #Errorcodes: https://supabase.com/docs/guides/storage/debugging/error-codes
+
         except Exception as error:
+            speicherfehler +=1
             error_text = str(error).lower()
             
             if "429" in error_text or "too many requests" in error_text:
                 st.error("Zu viele Anfragen: Das Kontingent oder die Rate wurde überschritten. Bitte melde dich, wenn du die Fehlermeldung bekommst.")
                 st.info(f"Supabase-Fehlermeldung: {str(error)}")
                 
+                
             elif "544" in error_text or "database_timeout" in error_text:
                 st.error("Zeitüberschreitung bei der Datenbankverbindung. Bitte versuche es später erneut. Bitte melde dich, wenn du die Fehlermeldung bekommst.")
                 st.info(f"Supabase-Fehlermeldung: {str(error)}")
+                
                 
             elif "500" in error_text or "internal_server_error" in error_text:
                 st.error("Interner Serverfehler bei Supabase. Bitte melde dich, wenn du die Fehlermeldung bekommst.")
@@ -365,6 +377,8 @@ if st.button("Abschluss"):
             else:
                 st.error("Es gibt ein Problem mit der Datenbank. Bitte melde dich, wenn du die Fehlermeldung siehst.")
                 st.info(f"Supabase-Fehlermeldung: {str(error)}")
-    
-        st.switch_page("pages/9_Abschluss.py")
+        if speicherfehler==0:
+            st.switch_page("pages/9_Abschluss.py")
+        
+        
 

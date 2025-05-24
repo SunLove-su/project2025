@@ -127,10 +127,6 @@ with containerfokus:
                 except Exception as error:
                     hilfsdatei.openai_fehlerbehandlung(error)
 
-                
-
-
-
 
     st.markdown("""
                     Siehst du, du hast ein Bild generieren lassen.

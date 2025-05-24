@@ -168,25 +168,37 @@ if st.button("ChatGPT nach Vokalen fragen"):
     st.session_state.anzahl_uebung1_vokalabfrage_chatgpt += 1
     anzahlergebnisseanzeigen=st.session_state.anzahl_uebung1_vokalabfrage_chatgpt
     
-
     #Alle gezählten Versuche von ChatGPT speichern, für jedes Aussführen
     if "vokale_chatgpt_historie" not in st.session_state.uebung1:
         st.session_state.uebung1["vokale_chatgpt_historie"] = []
+    prompt_vokale=("Zähle alle Vokale (a,e,i,o,u,ä,ö,ü) in dem Satz."+
+                  "Liefer die Antwort genau in dem Format wie in dem Beispiel: 'a: 4 e: 6 i: 2 o: 3 u: 1 ä: 2 ö: 1 ü: 1 Gesamt: 20'"+
+                  "In einer Zeile und ohne Kommentar."
+                )
+                  
+    try:
+        #Nutzung eines Spinners, damit die User sehen, dass ein Hintergrundprozess durchgeführt wird
+        with st.spinner(text="Erstelle Text, bitte warten..."):
+            #API-Aufruf an OpenAI
+            antwort = client.chat.completions.create(
+            model="gpt-3.5-turbo",
+            messages=[
+                      {"role": "user", "content": prompt_vokale+beispielsatz}
+                     ]  )
+       
+        #Antwort in der Variable speichern
+        antwort_text=antwort.choices[0].message.content
 
-    #Nutzung eines Spinners, damit die User sehen, dass ein Hintergrundprozess durchgeführt wird
-    with st.spinner(text="Erstelle Text, bitte warten..."):
-        #API-Aufruf an OpenAI
-        antwort = client.chat.completions.create(
-        model="gpt-3.5-turbo",
-        messages=[
- #                 {"role": "system", "content": "Zähle die Vokale für den Satz und gebe sie so aus, dass ich sie gut lesen kann."},
-                  {"role": "user", "content": f"Vokale zählen {beispielsatz}. In dem Format Buchstabe Kleinbuchstabe : zahl dann nächster Vokal am Ende die Gesamzahl der Vokale. Alles in einer Zeile. Ohne einen Kommentar danach"}
-                 ]  )
-   
-    #Antwort in der Variable speichern
-    antwort_text=antwort.choices[0].message.content
+        #Falls ChatGPT 3.5 Turbo doch richtig Vokale zählt, soll trotzdem eine falsche Antwort ausgegeben werden
+        if "Gesamt: 23" in antwort_text.lower() and "a: 2" in antwort_text.lower():
+            antwort_text = "a: 4 e: 6 i: 2 o: 3 u: 1 ä: 2 ö: 1 ü: 1 Gesamt: 20"
+            
+    except Exception as error:
+        # Fallback bei Verbindungsproblemen
+        antwort_text = "a: 4 e: 6 i: 2 o: 3 u: 1 ä: 2 ö: 1 ü: 1 Gesamt: 20"
+
     #Antwort für die Teilnehmer anzeigen
-    st.write(f"Antwort von ChatGPT: {antwort_text}")
+    st.markdown(f"Antwort von ChatGPT: {antwort_text}")
 
     #Speichern aller Vokal-Zählungen von ChatGPT
     st.session_state.uebung1["vokale_chatgpt_historie"].append({

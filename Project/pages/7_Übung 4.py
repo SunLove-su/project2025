@@ -1,29 +1,49 @@
+"""
+4. Übung: Stereotype in KI-Berufsvorschlägen
+
+1. Teilnehmer geben eigene Berufsvorschläge ein
+2. KI-Anfragen für verschiedene Geschlechter
+3. Vergleich der Antworten und Bewertung von Stereotypen
+
+"""
+
 import streamlit as st
 import openai
 import hilfsdatei
 
-client = openai.OpenAI(api_key=st.secrets["openai"]["api_key"])
+#Verbindung zu OpenAI
+try:
+    client = openai.OpenAI(api_key=st.secrets["openai"]["api_key"])
+#Fehlermeldung, falls der API-Schlüssel falsch ist
+except KeyError:
+    st.error("Kein API Key für OpenAI vorhanden. Abfragen über OpenAI nicht möglich")
 
+#Überschrift der Seite
 hilfsdatei.seite("4.Übung")
+
+#Sicherstellen, dass ein Zugriff der Seiten nur mit Passwort erfolgt, und dass User keine Navigationsseite sehen
+
 hilfsdatei.login()
 
+#Überschrift auf der Seite
 st.markdown("<h4>4. Übung</h4>",unsafe_allow_html=True)
+#Einleitung zur Übung
 st.markdown("""
                 In den Übungen zuvor hast du schon Erfahrungen mit ChatGPT und DALL E gesammelt.
                 Jetzt nutzt du ChatGPT, um dir bei einer Aufgabe zu helfen.       
             """)  
+#Trennungslinie
         
 st.divider()
+#Aufgabenstellung
 st.markdown("""
                 Du sollst in der Schule einen Aufsatz über deinen Berufswunsch schreiben. 
                 Welchen Beruf würdest du gerne ausüben?        
-            """)   
-st.markdown("""
-        Schreibe deine Berufsvorschläge in das unten stehende Feld und bitte die KI weitere Berufsvorschläge für dich zu generieren, z. B. welche Berufe passen zu einer Frau / zu einem Mann.
-        Hinweis: Bitte gib außer deinem Geschlecht keine persönlichen Daten wie z. B. deinen Namen an.
+                Schreibe deine Berufsvorschläge in das unten stehende Feld und bitte die KI weitere Berufsvorschläge für dich zu generieren, z. B. welche Berufe passen zu einer Frau / zu einem Mann.
+                Hinweis: Bitte gib außer deinem Geschlecht keine persönlichen Daten wie z. B. deinen Namen an.
             """)
 
-# Initialisierung
+# Speicherung der Daten
 if "uebung4" not in st.session_state:
     st.session_state.uebung4 = {}
 if "zaehler_berufsvorschlag" not in st.session_state:
@@ -34,20 +54,24 @@ if "zaehler_eigenes_geschlecht" not in st.session_state:
 if "zaehler_anderes_geschlecht" not in st.session_state:
     st.session_state.zaehler_anderes_geschlecht = 0
 
-#Teilnehmer geben eigenen Berufsvorschlag ein
+
 containerfokus = st.container()
+#Container für besseren Fokus
 with containerfokus:
-    with st.expander("Berufsvorschlag", expanded=True):    
+    with st.expander("Berufsvorschlag", expanded=True): 
+        #Teilnehmer geben eigenen Berufsvorschlag ein   
         st.markdown("Deine Berufsvorschläge:")
         frage_berufsvorschlag = "Welchen Beruf würdest du gerne ausüben?"
         with st.form("frage_formular3_1", clear_on_submit=True):     
             berufsvorschlag = st.text_input("Deine Berufsvorschläge:")
             
-            speichern = st.form_submit_button("speichern")
+            speichern = st.form_submit_button("Speichern")
             if speichern and berufsvorschlag:
+                #Anzahl an eigenen Berufsvorschlägen erhöhen
                 st.session_state.zaehler_berufsvorschlag += 1
                 zaehler_berufsvorschlag = st.session_state.zaehler_berufsvorschlag
-                st.write(f"Deine Antwort ist: {berufsvorschlag}")
+                #Ausgabe des eigenen Berufvorschlags
+                st.markdown(f"Deine Antwort ist: {berufsvorschlag}")
                 
                 
                  # Initialisiere die Historie-Liste, falls sie nicht existiert
@@ -56,7 +80,7 @@ with containerfokus:
                 
                 # Füge zur Historie hinzu
                 st.session_state.uebung4["berufsvorschlag_historie"].append({
-                    "Bereich": "Übung3",
+                    "Bereich": "Übung4",
                     "Typ": "Eigener Berufsvorschlag",
                     "Frage": frage_berufsvorschlag,
                     "Antwort": berufsvorschlag,
@@ -65,31 +89,33 @@ with containerfokus:
                 
                 # Speichere aktuellen Eintrag
                 st.session_state.uebung4["berufsvorschlag"] = {
-                    "Bereich": "Übung3",
+                    "Bereich": "Übung4",
                     "Typ": "Eigener Berufsvorschlag",
                     "Frage": frage_berufsvorschlag,
                     "Antwort": berufsvorschlag,
                     "Anzahl": zaehler_berufsvorschlag
                 }
-                    # Wenn bereits KI-Antwort für das eigene Geschlecht vorhanden, zeige Vergleich
+                # Wenn bereits KI-Antwort für das eigene Geschlecht vorhanden, zeige Vergleich
                 if "ki_antwort_1" in st.session_state.uebung4:
-                    st.write("VERGLEICH DER ANTWORTEN:")
-                    st.write(f"**Deine Vorschläge:** {berufsvorschlag}")
-                    # ' für die Ausgabe der gespeicherten Werte, da sonst SyntaxError: f-string: unmatched '['
-                    st.write(f"**KI-Vorschläge:** {st.session_state.uebung4['ki_antwort_1']['Antwort']}")
+                    st.markdown("VERGLEICH DER ANTWORTEN:")
+                    st.markdown(f"**Deine Antwort:** {berufsvorschlag}")
+                    st.markdown(f"**ChatGPT Antwort:** {st.session_state.uebung4['ki_antwort_1']['Antwort']}")
 
 
         st.markdown("""
-        "Frage die KI nach Berufen für dein Geschlecht:
-        """)
-        # Erste KI-Anfrage: Anfrage Berufsvorschlag einges Gesclecht
+                        Frage die KI nach Berufen für dein Geschlecht:
+                    """)
+        # Erste KI-Anfrage: Anfrage Berufsvorschlag einges Geschlecht
         with st.form("frage_formular3_2", clear_on_submit=True):
             frage1 = st.text_input("Deine Frage bitte",placeholder="z. B. Welcher Beruf passt zu einer Frau / einem Mann")
             senden1 = st.form_submit_button("senden")
             
             if senden1 and frage1:
                 try:
-                    with st.spinner(text="Erstelle Text, bitte warten..."):
+                    #Nutzung eines Spinners, damit die Teilnehmer sehen, dass ein Hintergrundprozess durchgeführt wird
+                    with
+                        st.spinner(text="Erstelle Text, bitte warten..."):
+                        #Zählen falls mehr Anfragen vom Teilnehmer erstellt werden
                         st.session_state.zaehler_eigenes_geschlecht += 1
                         zaehler_eigenes_geschlecht = st.session_state.zaehler_eigenes_geschlecht
                         antwort = client.chat.completions.create(
@@ -108,7 +134,7 @@ with containerfokus:
 
                         # Füge zur Historie hinzu
                         st.session_state.uebung4["ki_antwort_1_historie"].append({
-                            "Bereich": "Übung3",
+                            "Bereich": "Übung4",
                             "Typ": "Berufsvorschlag_Eigenes_Geschlecht_KI_Interaktion_1",
                             "Frage": frage1,
                             "Antwort": antwort_text,
@@ -117,7 +143,7 @@ with containerfokus:
                         
                         # Speichere aktuellen Eintrag
                         st.session_state.uebung4["ki_antwort_1"] = {
-                            "Bereich": "Übung3",
+                            "Bereich": "Übung4",
                             "Typ": "Berufsvorschlag_Eigenes_Geschlecht_KI_Interaktion_1",
                             "Frage": frage1,
                             "Antwort": antwort_text,
@@ -139,7 +165,9 @@ with containerfokus:
             
             if senden2 and frage2:
                 try:
+                    #Nutzung eines Spinners, damit die Teilnehmer sehen, dass ein Hintergrundprozess durchgeführt wird
                     with st.spinner(text="Erstelle Text, bitte warten..."):
+                        #Zählen wie oft die KI-Anfrage für das andere Geschlecht erstellt wird
                         st.session_state.zaehler_anderes_geschlecht += 1
                         zaehler_anderes_geschlecht = st.session_state.zaehler_anderes_geschlecht
             
@@ -161,7 +189,7 @@ with containerfokus:
                             
                         # Füge zur Historie hinzu
                         st.session_state.uebung4["ki_antwort_2_historie"].append({
-                            "Bereich":"Übung3",
+                            "Bereich":"Übung4",
                             "Typ":"Berufsvorschlag_Anderes_Geschlecht_KI_Interaktion_2",
                             "Frage": frage2,
                             "Antwort": antwort_text,
@@ -170,7 +198,7 @@ with containerfokus:
                         
                         # Speichere aktuellen Eintrag
                         st.session_state.uebung4["ki_antwort_2"] = {
-                            "Bereich":"Übung3",
+                            "Bereich":"Übung4",
                             "Typ":"Berufsvorschlag_Anderes_Geschlecht_KI_Interaktion_2",
                             "Frage": frage2,
                             "Antwort": antwort_text,
@@ -178,26 +206,8 @@ with containerfokus:
                         }
 
 
-                except openai.APIStatusError as error:
-                    st.error("OpenAI verarbeitet die Anfrage nicht, verändere den Prompt und versuche es erneut. Bitte melde dich, wenn du die Fehlermeldung bekommst.")
-                    st.info(f"OpenAI-Fehlermeldung: {str(error)}")
-                except openai.APIConnectionError as error:
-                    st.error("Problem mit der Verbindung zu OpenAI. Bitte versuche es erneut. Bitte melde dich, wenn du die Fehlermeldung bekommst.")
-                    st.info(f"OpenAI-Fehlermeldung: {str(error)}")
-                except openai.RateLimitError as error:
-                    st.error("Zu viele Anfragen: Das Kontingent oder die Rate wurde überschritten. Bitte warte einen Moment und versuche es erneut. Bitte melde dich, wenn du die Fehlermeldung bekommst.")
-                    st.info(f"OpenAI-Fehlermeldung: {str(error)}")
-                except openai.BadRequestError as error:
-                    st.error("Ungültige Anfrage: Die Anfrage enthält fehlerhafte Daten. Bitte melde dich, wenn du die Fehlermeldung bekommst.")
-                    st.info(f"OpenAI-Fehlermeldung: {str(error)}")
-                except openai.APITimeoutError as error:
-                    st.error("Zeitüberschreitung bei der Verbindung zu OpenAI. Bitte versuche es später erneut. Bitte melde dich, wenn du die Fehlermeldung bekommst.")
-                    st.info(f"OpenAI-Fehlermeldung: {str(error)}")
                 except Exception as error:
-                    st.error("Es ist ein Fehler bei der Kommunikation mit OpenAI aufgetreten. Bitte melde dich, wenn du die Fehlermeldung bekommst.")
-                    st.info(f"OpenAI-Fehlermeldung: {str(error)}")
-    #tab2 = st.tabs(["Vergleich der Eingabe und der KI-Ausgaben"])[0]               
-    #with tab2:  
+                    hilfsdatei.openai_fehlerbehandlung(error)
     with st.expander("Vergleich der Eingabe und der KI-Ausgaben", expanded=True):             
         # Vergleich anzeigen wenn alle Daten vorhanden sind
         if ("berufsvorschlag" in st.session_state.uebung4 and 
@@ -210,9 +220,10 @@ with containerfokus:
         else:
             st.info("Fülle bitte oben alle Felder aus!")
 
+#Trennungslinie
 st.divider()
 
-# Stereotyp-Frage
+# Frage ob es für die Geschlechter einen Stereotyp gibt
 frage_stereotyp = "Sind das typische Berufe für eine Frau /einen Mann?"
 stereotyp = st.radio(frage_stereotyp,
     ("Ja, das sind typische Berufe für eine Frau / einen Mann",
@@ -221,11 +232,11 @@ stereotyp = st.radio(frage_stereotyp,
      "Keine Angabe"
     ), index=None
 )
-
+#Antwort speichern
 if stereotyp is not None:
     st.write("Deine Antwort ist:", stereotyp)
     st.session_state.uebung4["stereotyp"] = {
-        "Bereich":"Übung3",
+        "Bereich":"Übung4",
         "Typ":"Stereotyp-Einschätzung",
         "Frage": frage_stereotyp,
         "Antwort": stereotyp
@@ -233,23 +244,25 @@ if stereotyp is not None:
 
 # Weiter-Button
 st.divider()
-st.markdown("Um fortzufahren, klicke auf \"weiter\" ")
-col1, col2 = st.columns([8,2])
-with col2:
-    if st.button("weiter"):
-        unbeantwortet = False
+st.markdown("Um fortzufahren, klicke auf \"Weiter\"")
+#Anzeigen wie weit der Teilnehmer in der gesamten Lerneinheit ist
+st.markdown("Aktueller Fortschritt in der gesamten Lerneinheit: 6 von 7")
+st.progress (6/7)
 
-        if "berufsvorschlag" not in st.session_state.uebung4:
-            st.error("Bitte beantworte die Frage mit dem Berufsvorschlag.")
-            unbeantwortet = True
-        if "ki_antwort_1" not in st.session_state.uebung4:
-            st.error("Bitte frage die KI nach Berufen für dein Geschlecht.")
-            unbeantwortet = True
-        if "ki_antwort_2" not in st.session_state.uebung4:
-            st.error("Bitte frage die KI nach Berufen für das andere Geschlecht.")
-            unbeantwortet = True
-        if stereotyp is None:
-            st.error("Bitte beantworte die Frage mit dem Stereotyp.")
-            unbeantwortet= True 
-        if not unbeantwortet:
-            st.switch_page("pages/8_Abschlussumfrage.py")
+if st.button("Weiter"):
+    unbeantwortet = False
+
+    if "berufsvorschlag" not in st.session_state.uebung4:
+        st.error("Bitte beantworte die Frage mit dem Berufsvorschlag.")
+        unbeantwortet = True
+    if "ki_antwort_1" not in st.session_state.uebung4:
+        st.error("Bitte frage die KI nach Berufen für dein Geschlecht.")
+        unbeantwortet = True
+    if "ki_antwort_2" not in st.session_state.uebung4:
+        st.error("Bitte frage die KI nach Berufen für das andere Geschlecht.")
+        unbeantwortet = True
+    if stereotyp is None:
+        st.error("Bitte beantworte die Frage mit dem Stereotyp.")
+        unbeantwortet= True 
+    if not unbeantwortet:
+        st.switch_page("pages/8_Abschlussumfrage.py")

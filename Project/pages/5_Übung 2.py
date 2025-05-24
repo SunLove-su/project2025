@@ -70,8 +70,8 @@ if personecht is not None:
 
 st.divider()
 st.markdown("Um fortzufahren, klicke auf \"Weiter\"")
-st.markdown("Aktueller Fortschritt in der gesamten Lerneinheit: 4 von 7")
-st.progress (4/7)
+st.markdown("Aktueller Fortschritt in der gesamten Lerneinheit: 4 von 8")
+st.progress (4/8)
 
 
 if st.button("Weiter"):

@@ -219,8 +219,8 @@ st.divider()
 
 #Button zur nächsten Seite
 st.markdown("Um fortzufahren, klicke auf \"Weiter\"")
-st.markdown("Aktueller Fortschritt in der gesamten Lerneinheit: 1 von 7")
-st.progress (1/7)
+st.markdown("Aktueller Fortschritt in der gesamten Lerneinheit: 1 von 8")
+st.progress (1/8)
 
 #zuvor mit column col1, col2 = st.columns([8,2]) #with col2: den Button rechts auf der Seite dargestellt.
 #bei einer mobilen Ansicht bleibt er jedoch links, deshalb ohne column

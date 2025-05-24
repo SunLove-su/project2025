@@ -175,8 +175,8 @@ st.session_state.uebung3
 st.divider()
 st.markdown("Um fortzufahren, klicke auf \"Weiter\"")
 #Anzeigen wie weit der Teilnehmer in der gesamten Lerneinheit ist
-st.markdown("Aktueller Fortschritt in der gesamten Lerneinheit: 5 von 7")
-st.progress (5/7)
+st.markdown("Aktueller Fortschritt in der gesamten Lerneinheit: 5 von 8")
+st.progress (5/8)
 if st.button("Weiter"):
     unbeantwortet = False
     if datenschutz is None:

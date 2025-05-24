@@ -264,8 +264,8 @@ richtigeAntwort="KI braucht sehr viele Daten um zu lernen und macht trotzdem Feh
 #Trennungslinie
 st.divider()
 st.markdown("Um fortzufahren, klicke auf \"Weiter\"")
-st.markdown("Aktueller Fortschritt in der gesamten Lerneinheit: 2 von 7")
-st.progress (2/7)
+st.markdown("Aktueller Fortschritt in der gesamten Lerneinheit: 2 von 8")
+st.progress (2/8)
 
 #Überprüfung, ob alle Antworten vom Teilnehmer vorhanden sind, danach erfolgt die Möglichkeit auf die nächste Seite zu gelangen
 if st.button("Weiter"):

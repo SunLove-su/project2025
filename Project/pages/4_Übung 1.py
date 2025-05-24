@@ -394,8 +394,8 @@ st.divider()
 #Anweisung für den Teilnehmer, sobald er mit der Übung fertig ist
 st.markdown("Um fortzufahren, klicke auf \"Weiter\"")
 #Anzeigen wie weit der Teilnehmer in der gesamten Lerneinheit ist
-st.markdown("Aktueller Fortschritt in der gesamten Lerneinheit: 3 von 7")
-st.progress (3/7)
+st.markdown("Aktueller Fortschritt in der gesamten Lerneinheit: 3 von 8")
+st.progress (3/8)
 
 if st.button("Weiter"):
     unbeantwortet = False

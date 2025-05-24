@@ -26,6 +26,11 @@ st.markdown("""
 
             
             """,unsafe_allow_html=True)
+
+#Anzeigen wie weit der Teilnehmer in der gesamten Lerneinheit ist
+st.markdown("Aktueller Fortschritt in der gesamten Lerneinheit: 8 von 8")
+st.progress (8/8)
+
 googlecredentials = json.loads(st.secrets["firestore"]["google_api_key"])
 db=firestore.Client.from_service_account_info(googlecredentials)
 user_id = f"{uuid.uuid4()}"

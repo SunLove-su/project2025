@@ -1,3 +1,10 @@
+"""
+Abschlussumfrage
+
+
+Speicherung der Daten mit Ausführen des Buttons. Speicherung erfolgt nur, wenn keine Fehler in der 
+Datenbank vorhanden sind.
+"""
 import streamlit as st
 from google.cloud import firestore
 import json
@@ -7,16 +14,20 @@ from supabase import create_client
 from google.api_core import exceptions as google_exceptions
 import hilfsdatei
 
+#Überschrift der Seite
 hilfsdatei.seite("Abschlussumfrage")
+#Sicherstellen, dass ein Zugriff der Seiten nur mit Passwort erfolgt, und dass User keine Navigationsseite sehen
+
 hilfsdatei.login()
 
-
+#Überschrift der Seite
 st.markdown("<h4>Abschlussumfrage</h4>",unsafe_allow_html=True)
-
+#Einleitung der Abschlussumfrage
 st.markdown("""
             In den Übungen die du durchgegangen bist hast du einiges gelernt.
             Zum Abschluss gibt es noch ein paar Fragen die du bitte beantworten sollst und dann bist du schon fertig
             """)
+#Speichern Antworten
 if "abschlussumfrage" not in st.session_state:
         st.session_state.abschlussumfrage = {}
 
@@ -234,6 +245,9 @@ if verbesserung:
 #############################################
 
 if st.button("Abschluss"):
+    #Anzeigen wie weit der Teilnehmer in der gesamten Lerneinheit ist
+    st.markdown("Aktueller Fortschritt in der gesamten Lerneinheit: 7 von 8")
+    st.progress (7/8)
 
     unbeantwortet = False
     if aufmerksamkeit is None:
@@ -263,6 +277,7 @@ if st.button("Abschluss"):
             
             googlecredentials = json.loads(st.secrets["firestore"]["google_api_key"])
             db=firestore.Client.from_service_account_info(googlecredentials)
+
             user_id = f"{uuid.uuid4()}"
             if "user_id" in st.session_state:
                 user_id=st.session_state.user_id
@@ -306,26 +321,27 @@ if st.button("Abschluss"):
         #https://cloud.google.com/firestore/docs/understand-error-codes?hl=de 
         except google_exceptions.ServiceUnavailable as error:
             speicherfehler +=1
-            st.error("Problem mit der Verbindung zur Datenbank. Bitte melde dich, wenn du die Fehlermeldung bekommst.")
+            st.error("Firestore: Problem mit der Verbindung zur Datenbank. Bitte melde dich, wenn du die Fehlermeldung bekommst.")
             st.info(f"Google-Fehlermeldung: {str(error)}")
         except google_exceptions.DeadlineExceeded as error:
             speicherfehler +=1
-            st.error("Problem mit der Verbindung zur Datenbank. Bitte melde dich, wenn du die Fehlermeldung bekommst.")
+            st.error("Firestore: Problem mit der Verbindung zur Datenbank. Bitte melde dich, wenn du die Fehlermeldung bekommst.")
             st.info(f"Google-Fehlermeldung: {str(error)}")
         except google_exceptions.ResourceExhausted as error:
             speicherfehler +=1
-            st.error("Zu viele Anfragen: Das Kontingent oder die Rate wurde überschritten. Bitte melde dich, wenn du die Fehlermeldung bekommst.")
+            st.error("Firestore: Zu viele Anfragen. Das Kontingent oder die Rate wurde überschritten. Bitte melde dich, wenn du die Fehlermeldung bekommst.")
             st.info(f"Google-Fehlermeldung: {str(error)}")
         except google_exceptions.NotFound as error:
             speicherfehler +=1
-            st.error("Dokument nicht gefunden: Das gesuchte Dokument existiert nicht in der Datenbank. Bitte melde dich, wenn du die Fehlermeldung bekommst.")
+            st.error("Firestore:Dokument nicht gefunden. Das gesuchte Dokument existiert nicht in der Datenbank. Bitte melde dich, wenn du die Fehlermeldung bekommst.")
             st.info(f"Google-Fehlermeldung: {str(error)}")
         except google_exceptions.PermissionDenied as error:
             speicherfehler +=1
-            st.error("Zugriff verweigert: Du hast keine Berechtigung für diese Operation. Bitte melde dich, wenn du die Fehlermeldung bekommst.")
+            st.error("Firestore: Zugriff verweigert. Du hast keine Berechtigung für diese Operation. Bitte melde dich, wenn du die Fehlermeldung bekommst.")
             st.info(f"Google-Fehlermeldung: {str(error)}")
         except Exception as error:
-            st.error(f"Google-Fehlermeldung:{str(error)}")
+            st.error("Firestore: Es gibt ein Problem mit der Datenbank. Bitte melde dich, wenn du die Fehlermeldung siehst")
+            st.info(f"Google-Fehlermeldung:{str(error)}")
             speicherfehler +=1
 
     
@@ -353,30 +369,31 @@ if st.button("Abschluss"):
             error_text = str(error).lower()
             
             if "429" in error_text or "too many requests" in error_text:
-                st.error("Zu viele Anfragen: Das Kontingent oder die Rate wurde überschritten. Bitte melde dich, wenn du die Fehlermeldung bekommst.")
+                st.error("Supabase: Zu viele Anfragen. Das Kontingent oder die Rate wurde überschritten. Bitte melde dich, wenn du die Fehlermeldung bekommst.")
                 st.info(f"Supabase-Fehlermeldung: {str(error)}")
                 
                 
             elif "544" in error_text or "database_timeout" in error_text:
-                st.error("Zeitüberschreitung bei der Datenbankverbindung. Bitte versuche es später erneut. Bitte melde dich, wenn du die Fehlermeldung bekommst.")
+                st.error("Supabase: Zeitüberschreitung bei der Datenbankverbindung. Bitte versuche es später erneut. Bitte melde dich, wenn du die Fehlermeldung bekommst.")
                 st.info(f"Supabase-Fehlermeldung: {str(error)}")
                 
                 
             elif "500" in error_text or "internal_server_error" in error_text:
-                st.error("Interner Serverfehler bei Supabase. Bitte melde dich, wenn du die Fehlermeldung bekommst.")
+                st.error("Supabase: Interner Serverfehler bei Supabase. Bitte melde dich, wenn du die Fehlermeldung bekommst.")
                 st.info(f"Supabase-Fehlermeldung: {str(error)}")
                 
             elif "403" in error_text or "unauthorized" in error_text:
-                st.error("Problem mit der Berechtigung. Bitte melde dich, wenn du die Fehlermeldung bekommst.")
+                st.error("Supabase: Problem mit der Berechtigung. Bitte melde dich, wenn du die Fehlermeldung bekommst.")
                 st.info(f"Supabase-Fehlermeldung: {str(error)}")
                 
             elif "404" in error_text or "not_found" in error_text:
-                st.error("Die Datei ist nicht vorhanden oder du hast nicht die Berechtigungen für den Zugriff. Bitte melde dich, wenn du die Fehlermeldung bekommst.")
+                st.error("Supabase: Die Datei ist nicht vorhanden oder du hast nicht die Berechtigungen für den Zugriff. Bitte melde dich, wenn du die Fehlermeldung bekommst.")
                 st.info(f"Supabase-Fehlermeldung: {str(error)}")
                 
             else:
-                st.error("Es gibt ein Problem mit der Datenbank. Bitte melde dich, wenn du die Fehlermeldung siehst.")
+                st.error("Supabase: Es gibt ein Problem mit der Datenbank. Bitte melde dich, wenn du die Fehlermeldung siehst.")
                 st.info(f"Supabase-Fehlermeldung: {str(error)}")
+        #Wenn es keine Fehler bei der Datenbank gibt, kann die Lerneinheit abgeschlossen werden
         if speicherfehler==0:
             st.switch_page("pages/9_Abschluss.py")
         

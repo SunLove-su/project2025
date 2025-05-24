@@ -5,7 +5,7 @@ import hilfsdatei
 #Verbindung zu OpenAI
 try: 
     client = openai.OpenAI(api_key=st.secrets["openai"]["api_key"])
-#Fehlermeldung, falls der Schlüssel falsch ist
+#Fehlermeldung, falls der API-Schlüssel falsch ist
 except KeyError:
     st.error("Kein API Key für OpenAI vorhanden. Abfragen über OpenAI nicht möglich")
 #Überschrift der Seite    
@@ -94,7 +94,7 @@ if "anzahleingaben_grundwissen" not in st.session_state:
 containerfokus = st.container()
 with containerfokus:
     with st.expander("Fragen an die KI", expanded=True):
-        #Nutzung von Form, weil Textinput Probleme hat. 
+        #Nutzung von Form in Kombination mit Textinput weil Textinput Probleme hat. 
         #"Press Enter" funktioniert nicht bei st.text_input, obwohl es angezeigt wird.
         with st.form("frage_formular", clear_on_submit=True):
             frage = st.text_input("Falls du noch mehr Wissen möchtest, frag die KI!", 
@@ -263,7 +263,9 @@ richtigeAntwort="KI braucht sehr viele Daten um zu lernen und macht trotzdem Feh
 
 #Trennungslinie
 st.divider()
-st.markdown("Um fortzufahren, klicke auf \"Weiter\" ")
+st.markdown("Um fortzufahren, klicke auf \"Weiter\"")
+st.markdown("Aktueller Fortschritt in der gesamten Lerneinheit: 2 von 7")
+st.progress (2/7)
 
 #Überprüfung, ob alle Antworten vom Teilnehmer vorhanden sind, danach erfolgt die Möglichkeit auf die nächste Seite zu gelangen
 if st.button("Weiter"):

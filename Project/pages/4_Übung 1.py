@@ -1,19 +1,32 @@
+"""
+Übung 1: Interaktion mit der KI-Schnittstelle
+Aufbau der Seite mit den Übungen
+1. KI-generierter Text
+2. Vokalzählung
+3. Vorgebene Fragen von der KI beantworten lassen
+4. Eigene Fragen an die KI stellen, der Prompt ist manipuliert
+
+Weitere Datenerfassung durch Fragen
+"""
+
 import streamlit as st
 import openai
 import hilfsdatei
 
+#Verbindung zu OpenAI
 try: 
     client = openai.OpenAI(api_key=st.secrets["openai"]["api_key"])
+#Fehlermeldung bei fehlendem oder falschem  API-Schlüssel
 except KeyError:
     st.error("Kein API Key für OpenAI vorhanden. Abfragen über OpenAI nicht möglich")
-
-hilfsdatei.seite("1. Übung)")
+#Seitentitel
+hilfsdatei.seite("1. Übung")
+#Sicherstellen, dass ein Zugriff der Seiten nur mit Passwort erfolgt, und dass User keine Navigationsseite sehen
 hilfsdatei.login()
- 
 
-
+#Überschrift auf der Seite
 st.markdown("<h4>1. Übung</h4>",unsafe_allow_html=True)
-
+#Einleitung der ersten Übung
 st.markdown("""
             Beginne mit der ersten Übung :)
 
@@ -30,7 +43,9 @@ st.markdown("""
                 Du stellst ChatGPT einige Aufgaben und schaust dir Antworten an.
                
             """)
+#Trennungslinie
 st.divider()
+#Lernziele bzw. Aufgaben auf der Seite
 st.markdown("""
                     Dafür soll ChatGPT dich unterstützen und für dich ein paar Aufgaben erledigen, d. h.:
                     - einen kurzen Text schreiben
@@ -41,28 +56,39 @@ st.markdown("""
 
 
 st.markdown("")
+#Trennungslinie
 st.divider()
-st.divider()
+
+#Speichern aller Antworten der Teilnehmer für die Seite
 
 if "uebung1" not in st.session_state:
     st.session_state.uebung1 ={}
+#Speichern der vorgegebenen Fragen & Antworten 
 if "anzahleingaben_uebung1_vorgegeben" not in st.session_state:
     st.session_state.anzahleingaben_uebung1_vorgegeben = 0
+#Speichern eigener Fragen & Antworten (Prompt ist angepasst, sodass er immer falsche Antworten liefern soll)
 if "anzahleingaben_uebung1_eigene" not in st.session_state:
     st.session_state.anzahleingaben_uebung1_eigene = 0
 
+#Aufgabe 1:
+
+#Prompt in ChatGPT eingegeben wurde
 st.markdown("""
             ***Prompt für ChatGPT:***
             "Schreibe mir einen oder zwei Sätze über einen Sommertag mit Erdbeereis."
         """)
 
+#Antwort von ChatGPT auf den Prompt "Schreibe mir einen oder zwei Sätze über einen Sommertag mit Erdbeereis"
 st.markdown("""
                 ***ChatGPT Antwort:***
                 "Die Sonne brannte vom wolkenlosen Himmel, während das süße Erdbeereis langsam in meiner Hand schmolz.
                 Jeder Löffel war
                 ein kleiner, kühler Moment des Glücks an diesem warmen Sommertag."
             """)
+#Speichern der Antwort von ChatGPT
 textdeutsch="Die Sonne brannte vom wolkenlosen Himmel, während das süße Erdbeereis langsam in meiner Hand schmolz. Jeder Löffel war ein kleiner, kühler Moment des Glücks an diesem warmen Sommertag"
+
+#Frage ob die Teilnehmer den Satz ebenfalls so schreiben würden
 fragetextecht = "Würdest du die 1-2 Sätze über einen Sommertag auch so schreiben?"
 textecht=st.radio(fragetextecht,
                  ("Ja, sehr wahrscheinlich",
@@ -74,46 +100,54 @@ textecht=st.radio(fragetextecht,
                   index=None           
             
             )
-if textecht:
-    
+#Antwort speichern
+if textecht is not None:    
     st.session_state.uebung1["texteinschaetzung"]={
     "Bereich": "Übung1",
     "Typ":"Texteinschätzung",
-    "Frage":   fragetextecht,
+    "Frage": fragetextecht,
     "Antwort": textecht
      }
-    st.markdown("Die Sätze klingen gut und menschlich– aber sie wurden von einer KI geschrieben")
-    
+    st.markdown("Die Sätze klingen gut und als würden sie von einem Menschen stammen, aber sie wurden von einer KI geschrieben")
 
-
-
+#Trennungslinie
 st.divider()
 
-# Vokale zählen Teil integrieren
+#Übung 2:
+
+#Vokale zählen Teil integrieren
+#Aufgabenstellung für die Teilnehmer
 st.markdown("""
             In der nächsten Übung nutzt du den Satz: ***"An einem schönen Sommertag genieße ich ein kühles Erdbeereis."***
             Diesmal sollst du den Satz etwas genauer untersuchen.
             Zähle die Anzahl von mindestens 2 Vokalen (a ,e ,i ,o ,u ,ä ,ö  und ü).
             """)
-
+#Speichern des Beispielsatzes für das Vokale zählen
 beispielsatz = "An einem schönen Sommertag genieße ich ein kühles Erdbeereis."
 st.markdown(beispielsatz)
 
+#Bei Benutzung des Buttons, werden die Vokale des Satzes gezählt
 if st.button("Vokale selbst zählen"):
+    #Alle Wörter werden klein geschrieben
     satzklein = beispielsatz.lower()
+    #Vokale
     vokale ="aeiouäöü"
     ausgabe = ""
     gesamtvokale = 0
-        
+    
+    #Durchlaufen der Vokale, wenn ein Vokal vorkommt wird dieser aufaddiert
     for vokal in vokale:
         anzahl = satzklein.count(vokal)
         if anzahl > 0:
+            #Ausgabe z. B: a: 2
             ausgabe += f"{vokal}: {anzahl} "
+            #Zählen der gesamten Vokale im Satz
             gesamtvokale += anzahl
     
     # Die gesamte Ausgabe in einer Zeile anzeigen
     ausgabe += f"Gesamt: {gesamtvokale}"
     st.write(f"Selbstgezählte Antwort: {ausgabe}")
+    #Speichern der Vokale für den Satz
     st.session_state.uebung1["vokale_selbst"]={
         "Bereich":"Übung1",
         "Typ":"Vokale selbst zählen",
@@ -123,22 +157,25 @@ if st.button("Vokale selbst zählen"):
         }
 
 
-
+#ChatGPT zählen lassen
 if st.button("ChatGPT nach Vokalen fragen"):
+    #Speichern der Vokale, die ChatGPT zählt
     if "anzahl_uebung1_vokalabfrage_chatgpt" not in st.session_state:
+        #Speichern, wie oft Teilnehmer das Ergebnis des Vokale zählens von ChatGPT ausführen
         st.session_state.anzahl_uebung1_vokalabfrage_chatgpt = 0
 
- 
+    #Bei erneuten ausführen des Buttons, wird die Anzahl hochgezählt
     st.session_state.anzahl_uebung1_vokalabfrage_chatgpt += 1
     anzahlergebnisseanzeigen=st.session_state.anzahl_uebung1_vokalabfrage_chatgpt
     
 
-    
+    #Alle gezählten Versuche von ChatGPT speichern, für jedes Aussführen
     if "vokale_chatgpt_historie" not in st.session_state.uebung1:
         st.session_state.uebung1["vokale_chatgpt_historie"] = []
 
-    # Lösung generieren
+    #Nutzung eines Spinners, damit die User sehen, dass ein Hintergrundprozess durchgeführt wird
     with st.spinner(text="Erstelle Text, bitte warten..."):
+        #API-Aufruf an OpenAI
         antwort = client.chat.completions.create(
         model="gpt-3.5-turbo",
         messages=[
@@ -146,10 +183,12 @@ if st.button("ChatGPT nach Vokalen fragen"):
                   {"role": "user", "content": f"Vokale zählen {beispielsatz}. In dem Format Buchstabe Kleinbuchstabe : zahl dann nächster Vokal am Ende die Gesamzahl der Vokale. Alles in einer Zeile. Ohne einen Kommentar danach"}
                  ]  )
    
-    # Antwort zeigen
+    #Antwort in der Variable speichern
     antwort_text=antwort.choices[0].message.content
+    #Antwort für die Teilnehmer anzeigen
     st.write(f"Antwort von ChatGPT: {antwort_text}")
 
+    #Speichern aller Vokal-Zählungen von ChatGPT
     st.session_state.uebung1["vokale_chatgpt_historie"].append({
             "Bereich": "Übung1",
             "Typ": "Vokale zählen ChatGPT",
@@ -157,6 +196,7 @@ if st.button("ChatGPT nach Vokalen fragen"):
             "Antwort": antwort_text,
             "Vokalabfrage_Anzahl": anzahlergebnisseanzeigen
         })
+    #Speichern der letzten Vokal-Zählung
     st.session_state.uebung1["vokale_chatgpt"] = {
         "Bereich": "Übung1",
         "Typ": "Vokale zählen ChatGPT",
@@ -165,73 +205,84 @@ if st.button("ChatGPT nach Vokalen fragen"):
         "Vokalabfrage_Anzahl": anzahlergebnisseanzeigen
     }
     
-   
+    #Den Teilenhmern das Ergebnis der Übung 2 "Vokale zählen" anzeigen, da in Streamlit beim nächsten Widget, dass darüber schließt
+
     with st.expander("***VERGLEICH DER ERGEBNISSE:***",icon=":material/double_arrow:"):
+        #Sicherstellen, dass der Vergleich die Übung durchgeführt wurde und anzeigen der letzten Ergebnisse
         if "vokale_chatgpt" in st.session_state.uebung1 and "vokale_selbst" in st.session_state.uebung1:
             st.markdown(f"""
                         ***Selbstgezählte Antwort:*** {st.session_state.uebung1["vokale_selbst"]["Antwort"]}\n
                         ***ChatGPT´s Antwort:*** {st.session_state.uebung1["vokale_chatgpt"]["Antwort"]}
                     """)
+            #Hinweis, dass die KI Fehler machen kann
             st.markdown("""
                         Wie du siehst macht die KI-Anwendung auch Fehler. Sie kann gut Texte erzeugen, Fragen beantworten
                         aber nicht alles ist richtig! Sie kann sich auch vertun, deshalb ist es wichtig, dass Ergebnis immer zu prüfen!
-                        """)
+                       """)
+        #Fall der Vergleich nicht durchgeführt wird, dann den Teilnehmer darauf hinweisen
         else:
             st.info("Bitte klicke zuerst auf 'ChatGPT nach Vokalen fragen', um die Ergebnisse vergleichen zu können.")
 
-           
-
-
+        
+#Trennungslinie
 st.divider()
 
-#tab1 = st.tabs(["Vorgegebene Fragen"])[0]
-
-#st.text_input hat Bugs
-# Eingabe und Button
-#with tab1:
+#Aufgabe 3
 
 #Expander im Container, da sonst nach Betätigung des Buttons der Fokus ans Ende der Seite springt
+#Fokusverlust vorwiegend bei Interaktion mit KI, d.h. bei Eingabe von Prompts und Ausgabe der Antworten
 containerfokus = st.container()
 with containerfokus:
+    #Expander soll offen sein, damit die Teilnehmer die Aufgabe direkt sehen
     with st.expander("Vorgegebene Fragen", expanded=True):
         textzuaufgaben=st.markdown("""
                     Wähle eine der beiden folgenden Fragen aus und gib sie in das untenstehende Textfeld ein:
                     1. Wer ist der aktuelle Präsident der USA
                     2. Was das Ergebnis der Aufgabe 482 * 739 (Gerne kannst du den Taschenrechner benutzen und die Ergebnisse zu prüfen)
                 """)
+        #Clear_on_submit damit die Teilnehmer direkt dazu verleitet werden in das Textfeld neue Fragen zu stellen
         with st.form("frage_formular_vorgegeben", clear_on_submit=True):
             frage = st.text_input("Stelle eine der oben vorgegebenen Fragen")
             senden = st.form_submit_button("Fragen")
-
+            #Hinweis an den Teilnehmer, damit er weiterscrollt.
+            #Fokus sollte auf dieser Übung verbleiben, bis der Teilnehmer alle Fragen gestellt hat
             st.markdown("Wenn du fertig bist, dann scrolle bitte weiter nach unten")
             # Antwort generierung erst wenn Button geklickt und Eingabe vorhanden
             
             if senden and frage:
                 try:
+                        #Nutzung eines Spinners, damit die User sehen, dass ein Hintergrundprozess durchgeführt wird
                         with st.spinner(text="Erstelle Text, bitte warten..."):
+                            #API-Aufruf an OpenAI
                             antwort = client.chat.completions.create(
+                                #GPT 3.5 Turbo Nutzung, da es KI-Grenzen aufzeigt und keine Manipulation durch Anpassung des Prompts erfolgen muss(Rechenfehler bei höheren Zahlen, veraltete Daten)
+                                #Ansonsten Empfehlung Nutung von gpt-4omini
                                 model="gpt-3.5-turbo",
+                                #Übergabe der "Frage" aus dem Form
                                 messages=[{"role": "user", "content": frage}]
                             )
-                            antwort_text = antwort.choices[0].message.content
+                            if antwort and antwort.choices:
+                                antwort_text = antwort.choices[0].message.content
+                            else:
+                                antwort_text = "Keine Antwort erhalten."
 
-                            # Prompt-Zähler aktualisieren
+
+                            # Zählen der Teilnehmereingaben bei den vorgegebenen Fragen
                             st.session_state.anzahleingaben_uebung1_vorgegeben+= 1
                             anzahleingaben_vorgegeben = st.session_state.anzahleingaben_uebung1_vorgegeben
 
 
-
-                            # Frage anzeigen
+                            #Vorgegebene Fragen anzeigen, die die Teilnehmer eingeben
                             st.write("Deine Frage:")
                             st.write(frage)
                             
-                            # Antwort anzeigen
+                            #ChatGPTs Antworten anzeigen
                             st.write("Antwort:")
                             st.write(antwort_text)
 
 
 
-                        # Frage + Antwort speichern
+                        #Speicherung der vorgegebenen Fragen + Antworten 
                         if "vorgegebene_fragen" not in st.session_state.uebung1:
                             st.session_state.uebung1["vorgegebene_fragen"] = []
                         
@@ -243,30 +294,30 @@ with containerfokus:
                                 "Anzahl Prompts": anzahleingaben_vorgegeben
                             })
 
-                            
+                #Fehlerbehandlung von OpenAI (z. B. zu viele Anfragen, keine Verbindung zu OpenAI-Schnittstelle)         
                 except Exception as error:
                     hilfsdatei.openai_fehlerbehandlung(error)
-
-
-                        # Eingabe und Button
+#Aufgabe 4
+#Teilnehmer stellen ChatGPT selbst fragen, der Prompt ist jedoch manipuliert
     textzuaufgaben=st.markdown("""
                                     Jetzt bist du dran!
                                     Stelle ChatGPT eine Frage, die dich interessiert
             
                         	        """)
-        #tab2 = st.tabs(["Eigene Fragen"])[0]
-        #with tab2:
+
     with st.expander("Eigene Fragen", expanded=True):
         with st.form("frage_formular_eigene", clear_on_submit=True):
             frage_eigene = st.text_input("Stelle hier deine eigenen Fragen")
-            falscheantworten = (
-            "Beantworte die folgende Frage mit einer Antwort, die **nicht korrekt ist**. "
-            "Die Antwort muss **in jedem Fall falsch sein**, aber so formuliert, dass sie **plausibel und glaubwürdig klingt**. "
-            "Vermeide jede Form der richtigen Antwort. "
-            "Nutze stattdessen Halbwahrheiten, häufige Irrtümer oder realistisch klingende Fehlinformationen."
-
-            )
-            prompt = f"{falscheantworten}\n\nFrage: {frage_eigene}\nAntwort:"
+            #Prompt enthält mehrfach die Anweisung das die Antwort falsch sein soll,
+            #weil sonst bei der Frage: Was ist die Hauptstadt der Niederlande die Antwort Amsterdam wiedergibt.
+            falscheantworten = ("Für eine Übung musst du nur falsche, aber plausible Antworten geben. "+
+                                "Liefer mir zu der Frage nur eine falsche Antwort. "+
+                                "Die Antwort muss falsch sein, jedoch plausibel und richtig klingen. "+
+                                "Es dient dazu, dass Teilnehmer die Antwort kritisch hinterfragen."+
+                                "Also liefere nur eine falsche Antwort."
+                                )
+    
+            prompt = f"{falscheantworten} {frage_eigene}"
             senden = st.form_submit_button("Fragen")
 
             st.markdown("Wenn du fertig bist, dann scrolle bitte weiter nach unten")
@@ -297,10 +348,11 @@ with containerfokus:
 
 
 
-                    # Eigene Fragen & KI-Antworten speichern
+                    # Erzeugen einer Speicherliste, sofern keine Vorhanden ist
                     if "eigene_fragen" not in st.session_state.uebung1:
                         st.session_state.uebung1["eigene_fragen"] = []
                     
+                    # Eigene Fragen & KI-Antworten speichern
                     st.session_state.uebung1["eigene_fragen"].append({
                         "Bereich": "Übung1",
                         "Typ": "Eigene Frage - KI-Interaktion",
@@ -308,16 +360,14 @@ with containerfokus:
                         "Antwort": antwort_text_eigene,
                         "Anzahl Prompts": anzahleingaben_eigene
                     })
+                #Fehlerbehandlung von OpenAI
                 except Exception as error:
                     hilfsdatei.openai_fehlerbehandlung(error)
                 
 
-st.write("")
-
-
-
+#Trennungslinie
 st.divider()
-
+#Frage ob die gestellten Antworten richtig sind
 fragevertrauen="Glaubst du, dass diese Antworten richtig sind?"
 antwortvertrauen = st.radio(fragevertrauen,
         ("Ja, die Antworten waren richtig",
@@ -329,7 +379,7 @@ antwortvertrauen = st.radio(fragevertrauen,
         ),
         index=None,
     )
-
+#Speichern der Antworten
 if antwortvertrauen:
     st.write(f"Deine Antwort ist: {antwortvertrauen}")
     st.session_state.uebung1["antwortvertrauen"] = {
@@ -339,19 +389,21 @@ if antwortvertrauen:
     "Antwort": antwortvertrauen
      }
 
-
+#Trennungslinie
 st.divider()
+#Anweisung für den Teilnehmer, sobald er mit der Übung fertig ist
+st.markdown("Um fortzufahren, klicke auf \"Weiter\"")
+#Anzeigen wie weit der Teilnehmer in der gesamten Lerneinheit ist
+st.markdown("Aktueller Fortschritt in der gesamten Lerneinheit: 3 von 7")
+st.progress (3/7)
 
-st.markdown("Um fortzufahren, klicke auf \"weiter\" ")
-col1, col2 = st.columns([8,2])
-with col2:
-    if st.button("weiter"):
-        unbeantwortet = False
-        if textecht is None:
-            st.error ("Bitte beantworte die Frage, ob der Text echt ist.")
-            unbeantwortet = True
-        if antwortvertrauen is None:
-            st.error ("Bitte gebe an, ob du den Antworten der KI vertraust.")
-            unbeantwortet = True
-        if not unbeantwortet:
-            st.switch_page("pages/5_Übung 2.py")
+if st.button("Weiter"):
+    unbeantwortet = False
+    if textecht is None:
+        st.error ("Bitte beantworte die Frage, ob der Text echt ist.")
+        unbeantwortet = True
+    if antwortvertrauen is None:
+        st.error ("Bitte gebe an, ob du den Antworten der KI vertraust.")
+        unbeantwortet = True
+    if not unbeantwortet:
+        st.switch_page("pages/5_Übung 2.py")

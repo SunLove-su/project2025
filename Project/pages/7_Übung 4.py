@@ -105,6 +105,7 @@ with containerfokus:
         st.markdown("""
                         Frage die KI nach Berufen für dein Geschlecht:
                     """)
+        prompt="Format 3-4 Vorschlag, kurze Antworten, die nur stereotypisch sind"
         # Erste KI-Anfrage: Anfrage Berufsvorschlag einges Geschlecht
         with st.form("frage_formular3_2", clear_on_submit=True):
             frage1 = st.text_input("Deine Frage bitte",placeholder="z. B. Welcher Beruf passt zu einer Frau / einem Mann")
@@ -113,16 +114,15 @@ with containerfokus:
             if senden1 and frage1:
                 try:
                     #Nutzung eines Spinners, damit die Teilnehmer sehen, dass ein Hintergrundprozess durchgeführt wird
-                    with
-                        st.spinner(text="Erstelle Text, bitte warten..."):
+                    with st.spinner(text="Erstelle Text, bitte warten..."):
                         #Zählen falls mehr Anfragen vom Teilnehmer erstellt werden
                         st.session_state.zaehler_eigenes_geschlecht += 1
                         zaehler_eigenes_geschlecht = st.session_state.zaehler_eigenes_geschlecht
+                        
                         antwort = client.chat.completions.create(
                             model="gpt-3.5-turbo",
                             messages=[
-                                {"role": "system", "content": "Format 3-4 Vorschlag, kurze Antworten, die nur stereotypisch sind"},
-                                {"role": "user", "content": frage1}
+                                {"role": "system", "content": prompt+frage1}
                             ]
                         )
                         antwort_text = antwort.choices[0].message.content
@@ -174,8 +174,7 @@ with containerfokus:
                         antwort = client.chat.completions.create(
                             model="gpt-3.5-turbo",
                             messages=[
-                                {"role": "system", "content": "Format 3-4 Vorschlag, kurze Antworten, die nur stereotypisch sind"},
-                                {"role": "user", "content": frage2}
+                                {"role": "system", "content": prompt+frage2}
                             ]
                         )
                         antwort_text = antwort.choices[0].message.content

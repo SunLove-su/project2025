@@ -81,49 +81,51 @@ with containerfokus:
             """)
 
             eingabe = st.text_input("Bitte beschreibe, wie dein Bild generiert werden soll",placeholder="z. B. Erstelle mir ein Bild von einer jungen Frau mit braunen Haaren in einem Kleid im Disney-Stil")
-            beschreibung=(f"Stelle nur eine Person oder ein Tier dar: {eingabe}")
+            einePerson=("Stelle nur eine Person oder nur ein Tier dar. Stelle keine weiteren Tiere oder Personen dar.")
+            beschreibung=(einePerson+eingabe)
             senden = st.form_submit_button("Erstellen")
             #Bildgenerierung, wenn Button geklickt und Eingabe vorhanden
         
-    try:
+    
             if senden and eingabe:
-                #Nutzung eines Spinners, damit die User sehen, dass ein Hintergrundprozess durchgeführt wird
-                with st.spinner(text="Generiere Bild, bitte warten..."):
-                   
-                   #Zählen wie oft der Teilnehmer Bilder generiert
-                    st.session_state.anzahl_bildgenerierungen += 1
-                    aktuelle_anzahl = st.session_state.anzahl_bildgenerierungen
+                try:
+                    #Nutzung eines Spinners, damit die User sehen, dass ein Hintergrundprozess durchgeführt wird
+                    with st.spinner(text="Generiere Bild, bitte warten..."):
                     
-                    #DALL-E API Aufruf
-                    antwort = client.images.generate(
-                        model="dall-e-3",
-                        prompt=beschreibung,
-                        n=1,
-                        size="1024x1024"
-                    )
+                        #Zählen wie oft der Teilnehmer Bilder generiert
+                        st.session_state.anzahl_bildgenerierungen += 1
+                        aktuelle_anzahl = st.session_state.anzahl_bildgenerierungen
+                        
+                        #DALL-E API Aufruf
+                        antwort = client.images.generate(
+                            model="dall-e-3",
+                            prompt=beschreibung,
+                            n=1,
+                            size="1024x1024"
+                        )
 
-                    # Generiertes Bild
-                    st.markdown("Bild:")
-                    # Bild anzeigen
-                    generiertesBild = antwort.data[0].url
-                    #Anpassung des Bildes mit width, da size im API Aufruf nicht verkleindert werden kann
-                    st.image(generiertesBild, width=200)
-                    
-                    #Speichern der Daten
-                    if "BildgenerierenKI" not in st.session_state.uebung3:
-                        st.session_state.uebung3["BildgenerierenKI"] = []
-                    
-                    st.session_state.uebung3["BildgenerierenKI"].append({
-                        "Bereich": "Übung3",
-                        "Typ": "DALL-E Bilderstellung",
-                        "Frage": "Bitte beschreibe, wie dein Bild generiert werden soll",
-                        "Antwort": eingabe,
-                        "Anzahl Bildgenerierungen": aktuelle_anzahl
-                    })
-                    st.session_state.uebung3["BildgenerierenKI"]
+                        # Generiertes Bild
+                        st.markdown("Bild:")
+                        # Bild anzeigen
+                        generiertesBild = antwort.data[0].url
+                        #Anpassung des Bildes mit width, da size im API Aufruf nicht verkleindert werden kann
+                        st.image(generiertesBild, width=200)
+                        
+                        #Speichern der Daten
+                        if "BildgenerierenKI" not in st.session_state.uebung3:
+                            st.session_state.uebung3["BildgenerierenKI"] = []
+                        
+                        st.session_state.uebung3["BildgenerierenKI"].append({
+                            "Bereich": "Übung3",
+                            "Typ": "DALL-E Bilderstellung",
+                            "Frage": "Bitte beschreibe, wie dein Bild generiert werden soll",
+                            "Antwort": eingabe,
+                            "Anzahl Bildgenerierungen": aktuelle_anzahl
+                        })
+                        st.session_state.uebung3["BildgenerierenKI"]
 
-        except Exception as error:
-            hilfsdatei.openai_fehlerbehandlung(error)
+                except Exception as error:
+                    hilfsdatei.openai_fehlerbehandlung(error)
 
                 
 

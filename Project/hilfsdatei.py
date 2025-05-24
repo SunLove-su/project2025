@@ -40,6 +40,8 @@ def login():
                 st.error("Das Passwort ist falsch")
         st.stop()
  
+#https://platform.openai.com/docs/guides/error-codes/api-errors.
+       
 def openai_fehlerbehandlung(error):
     error_text = str(error).lower()
     if "api_status_error" in error_text:

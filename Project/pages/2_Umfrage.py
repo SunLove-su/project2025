@@ -41,7 +41,7 @@ alter = st.radio (fragealter,
 # index= None, damit nicht schon eine "Vorauswahl" besteht.
                                 index=None
 )
-#sobald der Teilnehmer den Radio-Button bestätigt, dann soll die Eingabe unter den Schlüssel "alter" gespeichert werden
+#Speicherung der Antwort
 if alter is not None:
     st.session_state.einstiegsumfrage["alter"]={
     "Bereich": "Einstiegsumfrage",
@@ -64,6 +64,7 @@ geschlecht = st.radio(fragegeschlecht,
                                    ),
                                    index=None
 )
+#Speicherung der Antwort
 if geschlecht is not None:
  st.session_state.einstiegsumfrage["geschlecht"]={
     "Bereich":"Einstiegsumfrage",
@@ -91,6 +92,7 @@ kiwissen = st.radio(
     index=None
 )
 
+#Speicherung der Antwort
 if kiwissen is not None:
     st.session_state.einstiegsumfrage["kiwissen"]={
         "Bereich":"Einstiegsumfrage",
@@ -116,7 +118,7 @@ erkennungsfaehigkeit = st.radio(
     ],
     index=None
 )
-
+#Speicherung der Antwort
 if erkennungsfaehigkeit is not None:
     st.session_state.einstiegsumfrage["erkennungsfaehigkeit"] = {
         "Bereich": "Einstiegsumfrage",
@@ -142,6 +144,7 @@ haeufigkeitkinutzung = st.radio(
                                 "Keine Angabe"),
                                  index=None,
 )
+#Speicherung der Antwort
 if haeufigkeitkinutzung is not None:
     st.session_state.einstiegsumfrage["haeufigkeitsnutzung"]={
     "Bereich": "Einstiegsumfrage",
@@ -167,7 +170,7 @@ vertrauenkiinhalten = st.radio(
                                 "Keine Angabe"),
                                index=None
 )
-
+#Speicherung der Antwort
 if vertrauenkiinhalten is not None:
 
 
@@ -194,7 +197,7 @@ pruefungvorher = st.radio(
                  "Keine Angabe"),
                 index=None
 )
-
+#Speicherung der Antwort
 if pruefungvorher is not None:
     st.session_state.einstiegsumfrage["pruefungvorher"]={
         "Bereich": "Einstiegsumfrage",
@@ -219,34 +222,33 @@ st.markdown("Um fortzufahren, klicke auf \"Weiter\"")
 st.markdown("Aktueller Fortschritt in der gesamten Lerneinheit: 1 von 7")
 st.progress (1/7)
 
-#Anpassung des Layouts des Buttons
-col1, col2 = st.columns([8,2])
-with col2:
+#zuvor mit column col1, col2 = st.columns([8,2]) #with col2: den Button rechts auf der Seite dargestellt.
+#bei einer mobilen Ansicht bleibt er jedoch links, deshalb ohne column
 
-    if st.button("Weiter"):
-        unbeantwortet = False
+if st.button("Weiter"):
+    unbeantwortet = False
 #Prüfung, ob alle Eingaben erfolgt sind
-        if alter is None:
-            st.error("Bitte gib dein Alter an.")
-            unbeantwortet = True
-        if geschlecht is None:
-            st.error("Bitte gib dein Geschlecht an.")
-            unbeantwortet = True
-        if kiwissen is None:
-            st.error("Bitte gib deinen Wissensstand an.")
-            unbeantwortet = True
-        if erkennungsfaehigkeit is None:
-            st.error ("Bitte gib deine Einschätzung zur Erkennung von KI-generierten Inhalten an.")
-            unbeantwortet = True
-        if haeufigkeitkinutzung is None:
-            st.error ("Bitte gib an, wie häufig du KI nutzt.")
-            unbeantwortet = True
-        if vertrauenkiinhalten is None:
-            st.error ("Bitte gib an, wie sehr du KI-generierten Inhalten vertraust")
-            unbeantwortet = True
-        if pruefungvorher is None:
-            st.error ("Bitte gib an, ob du KI prüfst.")
-            unbeantwortet = True
- #Wenn alle Pflichtfelder beantwortet sind, dann kann der Teilnehmer auf die nächste Seite
-        if not unbeantwortet:
-            st.switch_page("pages/3_Grundwissen_Ki.py")
+    if alter is None:
+        st.error("Bitte gib dein Alter an.")
+        unbeantwortet = True
+    if geschlecht is None:
+        st.error("Bitte gib dein Geschlecht an.")
+        unbeantwortet = True
+    if kiwissen is None:
+        st.error("Bitte gib deinen Wissensstand an.")
+        unbeantwortet = True
+    if erkennungsfaehigkeit is None:
+        st.error ("Bitte gib deine Einschätzung zur Erkennung von KI-generierten Inhalten an.")
+        unbeantwortet = True
+    if haeufigkeitkinutzung is None:
+        st.error ("Bitte gib an, wie häufig du KI nutzt.")
+        unbeantwortet = True
+    if vertrauenkiinhalten is None:
+        st.error ("Bitte gib an, wie sehr du KI-generierten Inhalten vertraust")
+        unbeantwortet = True
+    if pruefungvorher is None:
+        st.error ("Bitte gib an, ob du KI prüfst.")
+        unbeantwortet = True
+#Wenn alle Pflichtfelder beantwortet sind, dann kann der Teilnehmer auf die nächste Seite
+    if not unbeantwortet:
+        st.switch_page("pages/3_Grundwissen_Ki.py")

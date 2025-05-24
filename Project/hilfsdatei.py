@@ -26,8 +26,11 @@ def login():
         eingabe = st.text_input("Passwort")
         if st.button("Anmelden"):
             passwort = eingabe
-            # Überprüfung ob das eingegebene Passwort mit dem gesetzten Passwort aus der secrets Datei übereinstimmt
-            if passwort == st.secrets["umfrage_passwort"]:
+            basis_passwort = st.secrets["umfrage_passwort"]
+            
+            if passwort.startswith(basis_passwort):
+                teilnehmergruppe_info = passwort.replace(basis_passwort, "")
+                st.session_state["teilnehmergruppe_info"] = teilnehmergruppe_info
                 st.session_state["eingeloggt"] = True
                 st.rerun()
             # Admin-Passwort / Admin kann die Seitenleiste sehen und muss nicht bedingt alle Fragen ausfüllen, um auf

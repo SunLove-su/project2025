@@ -229,6 +229,14 @@ st.divider()
 
 #Aufgabe 3
 
+#Prompt enthält mehrfach die Anweisung das die Antwort falsch sein soll,
+#weil sonst bei der Frage: Was ist die Hauptstadt der Niederlande die Antwort Amsterdam wiedergibt.
+falscheantworten = ("Für eine Übung musst du nur falsche, aber plausible Antworten geben. "+
+                    "Liefer mir zu der Frage nur eine falsche Antwort. "+
+                    "Die Antwort muss falsch sein, jedoch plausibel und richtig klingen. "+
+                    "Es dient dazu, dass Teilnehmer die Antwort kritisch hinterfragen."+
+                    "Also liefere nur eine falsche Antwort."
+                    )
 #Expander im Container, da sonst nach Betätigung des Buttons der Fokus ans Ende der Seite springt
 #Fokusverlust vorwiegend bei Interaktion mit KI, d.h. bei Eingabe von Prompts und Ausgabe der Antworten
 containerfokus = st.container()
@@ -265,6 +273,38 @@ with containerfokus:
                                 antwort_text = antwort.choices[0].message.content
                             else:
                                 antwort_text = "Keine Antwort erhalten."
+
+                            #Sicherstellen, dass die Antworten falsch bleiben
+                            if "präsident" in frage.lower() and "usa" in frage.lower():
+                                if "trump" in antwort_text.lower():
+                                    try:
+                                        #API-Aufruf an OpenAI
+                                        antwort = client.chat.completions.create(
+                                            model="gpt-3.5-turbo",
+                                            messages=[{"role": "user", "content":falscheantworten+frage}]
+                                        )
+                                        if antwort and antwort.choices:
+                                            antwort_text = antwort.choices[0].message.content
+                                        else:
+                                            antwort_text = "Joe Biden ist der aktuelle Präsident der USA."
+                                    #Hier soll die Aufgabe auch ohne Verbindung zu OpenAI funktionieren
+                                    except Exception as error:
+                                        antwort_text = "Joe Biden ist der aktuelle Präsident der USA."
+
+                            elif "482" in frage and "739" in frage:  # Alle Rechenarten abfangen
+                                if "356198" in antwort_text or "356.198" in antwort_text:
+                                    try:
+                                        #API-Aufruf an OpenAI
+                                        antwort = client.chat.completions.create(
+                                            model="gpt-3.5-turbo",
+                                            messages=[{"role": "user", "content":falscheantworten+frage}]
+                                        )
+                                        if antwort and antwort.choices:
+                                            antwort_text = antwort.choices[0].message.content
+                                        else:
+                                            antwort_text = "482 x 739 = 355.420"
+                                    except Exception as error:
+                                        antwort_text = "482 x 739 = 355.420"
 
 
                             # Zählen der Teilnehmereingaben bei den vorgegebenen Fragen
@@ -308,14 +348,7 @@ with containerfokus:
     with st.expander("Eigene Fragen", expanded=True):
         with st.form("frage_formular_eigene", clear_on_submit=True):
             frage_eigene = st.text_input("Stelle hier deine eigenen Fragen")
-            #Prompt enthält mehrfach die Anweisung das die Antwort falsch sein soll,
-            #weil sonst bei der Frage: Was ist die Hauptstadt der Niederlande die Antwort Amsterdam wiedergibt.
-            falscheantworten = ("Für eine Übung musst du nur falsche, aber plausible Antworten geben. "+
-                                "Liefer mir zu der Frage nur eine falsche Antwort. "+
-                                "Die Antwort muss falsch sein, jedoch plausibel und richtig klingen. "+
-                                "Es dient dazu, dass Teilnehmer die Antwort kritisch hinterfragen."+
-                                "Also liefere nur eine falsche Antwort."
-                                )
+
     
             prompt = f"{falscheantworten} {frage_eigene}"
             senden = st.form_submit_button("Fragen")

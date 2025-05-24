@@ -32,7 +32,13 @@ def login():
                 
                 if passwort.startswith(basis_passwort):
                     teilnehmergruppe_info = passwort.replace(basis_passwort, "")
-                    st.session_state["teilnehmergruppe_info"] = teilnehmergruppe_info
+                    
+                        
+                    if teilnehmergruppe_info is not None and teilnehmergruppe_info != "":
+                        st.session_state["teilnehmergruppe_info"] = teilnehmergruppe_info
+                    else:
+                        
+                        st.session_state["teilnehmergruppe_info"] =""
                     st.session_state["eingeloggt"] = True
                     st.rerun()
                 # Admin-Passwort / Admin kann die Seitenleiste sehen und muss nicht bedingt alle Fragen ausfüllen, um auf
@@ -40,6 +46,8 @@ def login():
                 elif passwort == st.secrets["admin_passwort"]:
                     st.session_state["eingeloggt"] = True
                     st.session_state["admin"] = True
+                    st.session_state["teilnehmergruppe_info"] ="admin"
+
                     st.rerun()
                 else:
                     st.error("Das Passwort ist falsch")

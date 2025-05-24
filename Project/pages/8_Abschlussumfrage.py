@@ -294,6 +294,7 @@ if st.button("Abschluss"):
             else:
                 dauerUmfrageSekunden = ""
             user_data = {
+                "teilnehmergruppe": st.session_state.get("teilnehmergruppe_info"),
                 "dauerUmfrageSekunden": dauerUmfrageSekunden,
                 "Einstiegstumfrage": st.session_state.get("einstiegsumfrage"),
                 "Grundwissen_KI": st.session_state.get("grundwissen_ki"),

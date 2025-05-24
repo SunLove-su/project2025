@@ -22,27 +22,31 @@ def seite(titel):
 # Passwortschutz für die Umfrage/damit nicht jeder drauf zugreifen kann
 def login():
    if not st.session_state.get("eingeloggt"): 
-        st.write("Bitte gebe das Passwort ein, damit du teilnehmen kannst")
-        eingabe = st.text_input("Passwort")
-        if st.button("Anmelden"):
-            passwort = eingabe
-            basis_passwort = st.secrets["umfrage_passwort"]
-            
-            if passwort.startswith(basis_passwort):
-                teilnehmergruppe_info = passwort.replace(basis_passwort, "")
-                st.session_state["teilnehmergruppe_info"] = teilnehmergruppe_info
-                st.session_state["eingeloggt"] = True
-                st.rerun()
-            # Admin-Passwort / Admin kann die Seitenleiste sehen und muss nicht bedingt alle Fragen ausfüllen, um auf
-            # die entsprechenden Seiten im Modul zu kommen.
-            elif passwort == st.secrets["admin_passwort"]:
-                st.session_state["eingeloggt"] = True
-                st.session_state["admin"] = True
-                st.rerun()
-            else:
-                st.error("Das Passwort ist falsch")
+        st.markdown("Bitte gebe das Passwort ein, damit du teilnehmen kannst")
+        with st.form("login_formular", clear_on_submit=True):
+            eingabe = st.text_input("Passwort")
+            anmelden = st.form_submit_button("Anmelden")
+            if anmelden and eingabe:
+                passwort = eingabe
+                basis_passwort = st.secrets["umfrage_passwort"]
+                
+                if passwort.startswith(basis_passwort):
+                    teilnehmergruppe_info = passwort.replace(basis_passwort, "")
+                    st.session_state["teilnehmergruppe_info"] = teilnehmergruppe_info
+                    st.session_state["eingeloggt"] = True
+                    st.rerun()
+                # Admin-Passwort / Admin kann die Seitenleiste sehen und muss nicht bedingt alle Fragen ausfüllen, um auf
+                # die entsprechenden Seiten im Modul zu kommen.
+                elif passwort == st.secrets["admin_passwort"]:
+                    st.session_state["eingeloggt"] = True
+                    st.session_state["admin"] = True
+                    st.rerun()
+                else:
+                    st.error("Das Passwort ist falsch")
+            elif anmelden and not eingabe:
+                st.error("Bitte gib ein Passwort ein.")
         st.stop()
- 
+    
 #https://platform.openai.com/docs/guides/error-codes/api-errors.
        
 def openai_fehlerbehandlung(error):

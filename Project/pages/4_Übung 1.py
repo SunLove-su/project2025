@@ -25,7 +25,7 @@ hilfsdatei.seite("1. Übung")
 hilfsdatei.login()
 
 #Überschrift auf der Seite
-st.markdown("<h4>1. Übung</h4>",unsafe_allow_html=True)
+st.markdown("<h5>1. Übung</h5>",unsafe_allow_html=True)
 #Einleitung der ersten Übung
 st.markdown("""
             Beginne mit der ersten Übung :)
@@ -70,9 +70,14 @@ if "anzahleingaben_uebung1_vorgegeben" not in st.session_state:
 if "anzahleingaben_uebung1_eigene" not in st.session_state:
     st.session_state.anzahleingaben_uebung1_eigene = 0
 
-#Aufgabe 1:
+#######################################
+#AUFGABE 1 - Vorgegebener Satz von ChatGPT
+####################################
 
+
+st.markdown("<h5>Aufgabe 1</h5>",unsafe_allow_html=True)
 #Prompt in ChatGPT eingegeben wurde
+
 st.markdown("""
             ***Prompt für ChatGPT:***
             "Schreibe mir einen oder zwei Sätze über einen Sommertag mit Erdbeereis."
@@ -113,7 +118,11 @@ if textecht is not None:
 #Trennungslinie
 st.divider()
 
-#Übung 2:
+#######################
+#AUFGABE 2: Vokale zählen
+############################
+
+st.markdown("<h5>Aufgabe 2</h5>",unsafe_allow_html=True)
 
 #Vokale zählen Teil integrieren
 #Aufgabenstellung für die Teilnehmer
@@ -239,7 +248,10 @@ if st.button("ChatGPT nach Vokalen fragen"):
 #Trennungslinie
 st.divider()
 
-#Aufgabe 3
+#############################
+#AUFGABE 3 - Interaktion KI - vorgegebene Fragen stellen
+###############################
+st.markdown("<h5>Aufgabe 3</h5>",unsafe_allow_html=True)
 
 #Prompt enthält mehrfach die Anweisung das die Antwort falsch sein soll,
 #weil sonst bei der Frage: Was ist die Hauptstadt der Niederlande die Antwort Amsterdam wiedergibt.
@@ -433,6 +445,10 @@ if antwortvertrauen:
     "Frage":   fragevertrauen,
     "Antwort": antwortvertrauen
      }
+
+####################
+#ENDE DER ÜBUNG
+###################
 
 #Trennungslinie
 st.divider()

@@ -265,4 +265,5 @@ if st.button("Weiter"):
         unbeantwortet = True
 #Wenn alle Pflichtfelder beantwortet sind, dann kann der Teilnehmer auf die nächste Seite
     if not unbeantwortet:
-        st.switch_page("pages/3_Grundwissen_Ki.py")
+        naechste_seite ="pages/3_Grundwissen_Ki.py"
+        st.switch_page(naechste_seite)

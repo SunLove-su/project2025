@@ -65,11 +65,11 @@ st.divider()
 if "uebung1" not in st.session_state:
     st.session_state.uebung1 ={}
 #Speichern der vorgegebenen Fragen & Antworten 
-if "anzahleingaben_uebung1_vorgegeben" not in st.session_state:
-    st.session_state.anzahleingaben_uebung1_vorgegeben = 0
+if "zaehler_eingaben_vorgegeben" not in st.session_state:
+    st.session_state.zaehler_eingaben_vorgegeben = 0
 #Speichern eigener Fragen & Antworten (Prompt ist angepasst, sodass er immer falsche Antworten liefern soll)
-if "anzahleingaben_uebung1_eigene" not in st.session_state:
-    st.session_state.anzahleingaben_uebung1_eigene = 0
+if "zaehler_eingaben_eigene" not in st.session_state:
+    st.session_state.zaehler_eingaben_eigene = 0
 
 #######################################
 #AUFGABE 1 - Vorgegebener Satz von ChatGPT
@@ -95,8 +95,8 @@ st.markdown("""
 textdeutsch="Die Sonne brannte vom wolkenlosen Himmel, während das süße Erdbeereis langsam in meiner Hand schmolz. Jeder Löffel war ein kleiner, kühler Moment des Glücks an diesem warmen Sommertag"
 
 #Frage ob die Teilnehmer den Satz ebenfalls so schreiben würden
-fragetextecht = "Würdest du die 1-2 Sätze über einen Sommertag auch so schreiben?"
-textecht=st.radio(fragetextecht,
+frage_text_echt = "Würdest du die 1-2 Sätze über einen Sommertag auch so schreiben?"
+antwort_text_echt=st.radio(frage_text_echt,
                  ("Ja, sehr wahrscheinlich",
                   "Ja, eher wahrscheinlich",
                  "Nein, eher unwahrscheinlich",
@@ -107,12 +107,12 @@ textecht=st.radio(fragetextecht,
             
             )
 #Antwort speichern
-if textecht is not None:    
-    st.session_state.uebung1["texteinschaetzung"]={
+if antwort_text_echt is not None:    
+    st.session_state.uebung1["text_echt"]={
     "Bereich": "Übung1",
     "Typ":"Texteinschätzung",
-    "Frage": fragetextecht,
-    "Antwort": textecht
+    "Frage": frage_text_echt,
+    "Antwort": antwort_text_echt
      }
     st.markdown("Die Sätze klingen gut und als würden sie von einem Menschen stammen, aber sie wurden von einer KI geschrieben")
 
@@ -170,13 +170,13 @@ if st.button("Vokale selbst zählen"):
 #ChatGPT zählen lassen
 if st.button("ChatGPT nach Vokalen fragen"):
     #Speichern der Vokale, die ChatGPT zählt
-    if "anzahl_uebung1_vokalabfrage_chatgpt" not in st.session_state:
+    if "anzahl_vokalabfrage_chatgpt" not in st.session_state:
         #Speichern, wie oft Teilnehmer das Ergebnis des Vokale zählens von ChatGPT ausführen
-        st.session_state.anzahl_uebung1_vokalabfrage_chatgpt = 0
+        st.session_state.anzahl_vokalabfrage_chatgpt = 0
 
     #Bei erneuten ausführen des Buttons, wird die Anzahl hochgezählt
-    st.session_state.anzahl_uebung1_vokalabfrage_chatgpt += 1
-    anzahlergebnisseanzeigen=st.session_state.anzahl_uebung1_vokalabfrage_chatgpt
+    st.session_state.anzahl_vokalabfrage_chatgpt += 1
+    anzahl_vokal_versuch=st.session_state.anzahl_vokalabfrage_chatgpt
     
     #Alle gezählten Versuche von ChatGPT speichern, für jedes Aussführen
     if "vokale_chatgpt_historie" not in st.session_state.uebung1:
@@ -216,7 +216,7 @@ if st.button("ChatGPT nach Vokalen fragen"):
             "Typ": "Vokale zählen ChatGPT",
             "Frage" : beispielsatz,
             "Antwort": antwort_text,
-            "Vokalabfrage_Anzahl": anzahlergebnisseanzeigen
+            "Vokalabfrage_Anzahl": anzahl_vokal_versuch
         })
     #Speichern der letzten Vokal-Zählung
     st.session_state.uebung1["vokale_chatgpt"] = {
@@ -224,7 +224,7 @@ if st.button("ChatGPT nach Vokalen fragen"):
         "Typ": "Vokale zählen ChatGPT",
         "Frage": beispielsatz,
         "Antwort": antwort_text,
-        "Vokalabfrage_Anzahl": anzahlergebnisseanzeigen
+        "Vokalabfrage_Anzahl": anzahl_vokal_versuch
     }
     
     #Den Teilenhmern das Ergebnis der Übung 2 "Vokale zählen" anzeigen, da in Streamlit beim nächsten Widget, dass darüber schließt
@@ -265,8 +265,8 @@ falscheantworten = ("Für eine Übung musst du nur falsche, aber plausible Antwo
 #Expander im Container, da sonst nach Betätigung des Buttons der Fokus ans Ende der Seite springt
 #Fokusverlust vorwiegend bei Interaktion mit KI, d.h. bei Eingabe von Prompts und Ausgabe der Antworten
 
-containerfokus1 = st.container()
-with containerfokus1:
+container_fokus1 = st.container()
+with container_fokus1:
     #Expander soll offen sein, damit die Teilnehmer die Aufgabe direkt sehen
     with st.expander("Vorgegebene Fragen", expanded=True):
         textzuaufgaben=st.markdown("""
@@ -334,8 +334,8 @@ with containerfokus1:
 
 
                             # Zählen der Teilnehmereingaben bei den vorgegebenen Fragen
-                            st.session_state.anzahleingaben_uebung1_vorgegeben+= 1
-                            anzahleingaben_vorgegeben = st.session_state.anzahleingaben_uebung1_vorgegeben
+                            st.session_state.zaehler_eingaben_vorgegeben+= 1
+                            anzahl_eingaben_vorgegeben = st.session_state.zaehler_eingaben_vorgegeben
 
 
                             #Vorgegebene Fragen anzeigen, die die Teilnehmer eingeben
@@ -357,7 +357,7 @@ with containerfokus1:
                                 "Typ": "Vorgegebene Frage - KI-Interaktion",
                                 "Frage": frage,
                                 "Antwort": antwort_text,
-                                "Anzahl Prompts": anzahleingaben_vorgegeben
+                                "Anzahl Prompts": anzahl_eingaben_vorgegeben
                             })
 
                 #Fehlerbehandlung von OpenAI (z. B. zu viele Anfragen, keine Verbindung zu OpenAI-Schnittstelle)         
@@ -365,8 +365,8 @@ with containerfokus1:
                     hilfsdatei.openai_fehlerbehandlung(error)
 #Aufgabe 4
 #Teilnehmer stellen ChatGPT selbst fragen, der Prompt ist jedoch manipuliert
-containerfokus2 = st.container()
-with containerfokus2:
+container_fokus2 = st.container()
+with container_fokus2:
     textzuaufgaben=st.markdown("""
                                     Jetzt bist du dran!
                                     Stelle ChatGPT eine Frage, die dich interessiert
@@ -394,8 +394,8 @@ with containerfokus2:
                         antwort_text_eigene= antwort.choices[0].message.content
 
                     # Prompt-Zähler aktualisieren
-                    st.session_state.anzahleingaben_uebung1_eigene += 1
-                    anzahleingaben_eigene = st.session_state.anzahleingaben_uebung1_eigene
+                    st.session_state.zaehler_eingaben_eigene += 1
+                    anzahl_eingaben_eigene = st.session_state.zaehler_eingaben_eigene
                     
 
 
@@ -419,7 +419,7 @@ with containerfokus2:
                         "Typ": "Eigene Frage - KI-Interaktion",
                         "Frage": frage_eigene,
                         "Antwort": antwort_text_eigene,
-                        "Anzahl Prompts": anzahleingaben_eigene
+                        "Anzahl Prompts": anzahl_eingaben_eigene
                     })
                 #Fehlerbehandlung von OpenAI
                 except Exception as error:
@@ -429,8 +429,8 @@ with containerfokus2:
 #Trennungslinie
 st.divider()
 #Frage ob die gestellten Antworten richtig sind
-fragevertrauen="Glaubst du, dass diese Antworten richtig sind?"
-antwortvertrauen = st.radio(fragevertrauen,
+frage_vertrauen="Glaubst du, dass diese Antworten richtig sind?"
+antwort_vertrauen = st.radio(frage_vertrauen,
         ("Ja, die Antworten waren richtig",
          "Ja, die Antworten sind wahrscheinlich richtig",
          "Ich bin unsicher",
@@ -441,31 +441,32 @@ antwortvertrauen = st.radio(fragevertrauen,
         index=None,
     )
 #Speichern der Antworten
-if antwortvertrauen:
-    st.write(f"Deine Antwort ist: {antwortvertrauen}")
-    st.session_state.uebung1["antwortvertrauen"] = {
+if antwort_vertrauen:
+    st.write(f"Deine Antwort ist: {antwort_vertrauen}")
+    st.session_state.uebung1["antwort_vertrauen"] = {
     "Bereich": "Übung1",
     "Typ" : "VertrauenKIAntworten",
-    "Frage":   fragevertrauen,
-    "Antwort": antwortvertrauen
+    "Frage":   frage_vertrauen,
+    "Antwort": antwort_vertrauen
      }
 
 frage_unbefriedigend = "Gab es Fälle, in denen ChatGPT keine befriedigende Antwort geben konnte?"
-unbefriedigend = st.radio(frage_unbefriedigend,
-                         ["Ja, häufig",
+antwort_unbefriedigend = st.radio(frage_unbefriedigend,
+                         ("Ja, häufig",
                           "Ja, manchmal", 
                           "Selten",
                           "Nein, nie",
                           "Keine Angabe"
-                         ], index=None, key="unbefriedigend"
+                         ), index=None, key="unbefriedigend"
                         )
 
-if unbefriedigend is not None:
+
+if antwort_unbefriedigend is not None:
     st.session_state.uebung1["unbefriedigend"] = {
         "Bereich": "Übung1",
-        "Typ": "Reflexion",
+        "Typ": "ChatGPT Antworten unbefriedigend",
         "Frage": frage_unbefriedigend,
-        "Antwort": unbefriedigend
+        "Antwort": antwort_unbefriedigend
     }
 
 ####################
@@ -482,11 +483,15 @@ st.progress (3/8)
 
 if st.button("Weiter"):
     unbeantwortet = False
-    if textecht is None:
+    if antwort_text_echt is None:
         st.error ("Bitte beantworte die Frage, ob der Text echt ist.")
         unbeantwortet = True
-    if antwortvertrauen is None:
+    if antwort_vertrauen is None:
         st.error ("Bitte gebe an, ob du den Antworten der KI vertraust.")
         unbeantwortet = True
+    if antwort_unbefriedigend is None:
+        st.error ("Bitte gebe an, ob die Antworten von ChatGPT in Ordnung waren.")
+        unbeantwortet = True 
     if not unbeantwortet:
-        st.switch_page("pages/5_Übung 2.py")
+        naechste_seite="pages/5_Übung 2.py"
+        st.switch_page(naechste_seite)

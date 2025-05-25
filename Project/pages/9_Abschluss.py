@@ -33,11 +33,18 @@ st.progress (8/8)
 
 googlecredentials = json.loads(st.secrets["firestore"]["google_api_key"])
 db=firestore.Client.from_service_account_info(googlecredentials)
-user_id = f"{uuid.uuid4()}"
+
+#uuid.uuid4 generiert eine zufällige UUID
+#user_id = f"{uuid.uuid4()}"
+#wenn der Teilnehmer keine user_id hat, wird eine neue erzeugt
 if "user_id" in st.session_state:
     user_id=st.session_state.user_id
 else:
-    user_id = f"{datetime.datetime.now().isoformat()[:19]}-{uuid.uuid4()}"
+    #
+    teilnehmergruppe = st.session_state.get("teilnehmergruppe_info")
+    zeitstempel = datetime.datetime.now().isoformat()[:19]
+    uuid_generieren= uuid.uuid4()
+    user_id = f"{zeitstempel}-{uuid_generieren}-{teilnehmergruppe}"
     st.session_state["user_id"]=user_id
 
 endzeit = datetime.datetime.now()

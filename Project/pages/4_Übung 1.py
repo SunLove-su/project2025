@@ -19,6 +19,7 @@ try:
 #Fehlermeldung bei fehlendem oder falschem  API-Schlüssel
 except KeyError:
     st.error("Kein API Key für OpenAI vorhanden. Abfragen über OpenAI nicht möglich")
+    
 #Seitentitel
 hilfsdatei.seite("1. Übung")
 #Sicherstellen, dass ein Zugriff der Seiten nur mit Passwort erfolgt, und dass User keine Navigationsseite sehen
@@ -448,6 +449,24 @@ if antwortvertrauen:
     "Frage":   fragevertrauen,
     "Antwort": antwortvertrauen
      }
+
+frage_unbefriedigend = "Gab es Fälle, in denen ChatGPT keine befriedigende Antwort geben konnte?"
+unbefriedigend = st.radio(frage_unbefriedigend,
+                         ["Ja, häufig",
+                          "Ja, manchmal", 
+                          "Selten",
+                          "Nein, nie",
+                          "Keine Angabe"
+                         ], index=None, key="unbefriedigend"
+                        )
+
+if unbefriedigend is not None:
+    st.session_state.uebung1["unbefriedigend"] = {
+        "Bereich": "Übung1",
+        "Typ": "Reflexion",
+        "Frage": frage_unbefriedigend,
+        "Antwort": unbefriedigend
+    }
 
 ####################
 #ENDE DER ÜBUNG

@@ -14,19 +14,23 @@ try:
 except KeyError:
     st.error("Kein API Key für OpenAI vorhanden. Abfragen über OpenAI nicht möglich")
 #Überschrift der Seite 
-hilfsdatei.seite("2. Übung")
+titel_seite = "2. Übung"
+hilfsdatei.seite(titel_seite)
 #Sicherstellen, dass ein Zugriff der Seiten nur mit Passwort erfolgt, und dass User keine Navigationsseite sehen
 hilfsdatei.login()
  
 #Überschrift auf der Seite
-st.markdown("<h4>2. Übung</h4>",unsafe_allow_html=True)
+ueberschrift_seite ="2. Übung"
+st.markdown(f"<h4>{ueberschrift_seite}</h4>",unsafe_allow_html=True)
 
 #Einleitung zur Übung 2
-st.markdown("""
+einleitung_text =("""
                 In dieser Übung sollst du ein Bild bewerten.
                 Du siehst ein Bild einer Person und sollst angeben, ob das Bild
                 von einer echten Person oder von einer KI generiert ist"""
-            )
+                 )
+
+st.markdown(einleitung_text)
 
 #Trennungslinie
 st.divider()
@@ -47,9 +51,9 @@ if "uebung2" not in st.session_state:
     st.session_state.uebung2 ={}
 
 #Frage ob die Teilnehmer glauben, dass die Person auf dem Bild echt ist
-frage_personecht = "Glaubst du die Person auf dem Bild ist echt?"
+frage_person_echt = "Glaubst du die Person auf dem Bild ist echt?"
 
-personecht=st.radio(frage_personecht,
+antwort_person_echt=st.radio(frage_person_echt,
                     ["Ja, ich glaube die Person auf dem Bild ist echt",
                      "Ich bin mir nicht sicher",
                      "Nein, es handelt sich um ein KI-generiertes Bild",
@@ -58,14 +62,14 @@ personecht=st.radio(frage_personecht,
                     
                     )
 #Antworten speichern
-if personecht is not None:
+if antwort_person_echt is not None:
     st.session_state.uebung2["bildeinschaetzung"] = {
     "Bereich": "Übung2",
     "Typ": "Bild-Echt-Einschätzung",
-    "Frage":   frage_personecht,
-    "Antwort": personecht
+    "Frage":   frage_person_echt,
+    "Antwort": antwort_person_echt
      }
-    st.write("Deine Antwort ist:", personecht)
+    st.write(f"Deine Antwort ist: {antwort_person_echt}.")
     st.session_state.uebung2
 
 st.divider()
@@ -76,9 +80,10 @@ st.progress (4/8)
 
 if st.button("Weiter"):
     unbeantwortet = False
-    if personecht is None:
+    if antwort_person_echt is None:
         st.error("Bitte beantworte die Frage, ob die Person auf dem Bild echt ist.")
         unbeantwortet = True
     
     if not unbeantwortet:
-        st.switch_page("pages/6_Übung 3.py")
+        naechste_seite = "pages/6_Übung 3.py"
+        st.switch_page(naechste_seite)

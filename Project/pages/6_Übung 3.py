@@ -188,4 +188,4 @@ if st.button("Weiter"):
         unbeantwortet = True
     
     if not unbeantwortet:
-        st.switch_page("pages/7_Übung4.py")
+        st.switch_page("pages/7_Übung 4.py")

@@ -52,6 +52,7 @@ else:
 
 user_data = {
     "dauerUmfrageSekunden": dauerUmfrageSekunden,
+    "teilnehmergruppe": st.session_state.get("teilnehmergruppe_info"),
     "Einstiegstumfrage": st.session_state.get("einstiegsumfrage"),
     "Grundwissen_KI": st.session_state.get("grundwissen_ki"),
     "Uebung1": st.session_state.get("uebung1"),

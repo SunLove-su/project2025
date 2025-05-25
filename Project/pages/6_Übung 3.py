@@ -33,6 +33,28 @@ st.markdown("""
             
             Für KI-generierte Bilder wird der Deep Learning Algorithmus Generative Adversarial Networks (GAN) verwendet.
             """)
+
+fragebildreal="Wie realistisch fandest du das Bild von der vorherigen Übung?"
+bildreal=st.radio(fragebildreal,
+                                  ["Sehr realisitisch",
+                                   "Eher realisitisch",
+                                   "Mittelmäßig",
+                                   "Eher unrealistisch",
+                                   "Sehr unrealisitisch",
+                                   "Keine Angabe"
+                                   ], index=None
+                        )
+if bildreal is not None:
+        
+        st.session_state.uebung3["bildreal"]={
+            "Bereich":"Übung3",
+            "Typ": "KI Bild Real",
+            "Frage": fragebildreal,
+            "Antwort": bildreal
+        }
+        st.write("Deine Antwort ist:",bildreal)
+
+
 #Aufgabenstellung für die Teilnehmer
 st.markdown("""
             Jetzt erstellst du selbst Bilder mit der KI-Anwendung DALL E.
@@ -151,6 +173,7 @@ if datenschutz is not None:
         "Antwort": datenschutz
     }
     st.write("Deine Antwort ist:",datenschutz)
+
 frageurheberrecht="Findest du es in Ordnung, dass Bilder im Stil von bekannten Firmen und Künstlern innerhalb von Minuten generiert werden, obwohl diese Jahre lang daran arbeiten?"
 urheberrecht=st.radio(frageurheberrecht,
                                   ["Ja, ich finde es in Ordnung",
@@ -159,6 +182,27 @@ urheberrecht=st.radio(frageurheberrecht,
                                    "Keine Angabe"
                                    ], index=None
                         )
+
+
+frage_unterscheidung = "Wie einfach oder schwierig ist es deiner Meinung nach, KI-generierte Bilder von echten zu unterscheiden?"
+unterscheidung = st.radio(frage_unterscheidung,
+                                ["Sehr einfach",
+                                "Eher einfach",
+                                "Teils/teils", 
+                                "Eher schwierig",
+                                "Sehr schwierig",
+                                "Keine Angabe"
+                                ], index=None, key="unterscheidung"
+                            )
+    
+if unterscheidung is not None:
+    st.session_state.uebung3["unterscheidung"] = {
+        "Bereich": "Übung3", 
+        "Typ": "Bewertung",
+        "Frage": frage_unterscheidung,
+        "Antwort": unterscheidung
+    }
+
 if urheberrecht is not None:
         
         st.session_state.uebung3["urheberrecht"]={
@@ -177,9 +221,15 @@ st.markdown("Aktueller Fortschritt in der gesamten Lerneinheit: 5 von 8")
 st.progress (5/8)
 if st.button("Weiter"):
     unbeantwortet = False
+    if bildreal is None:
+        st.error("Bitte beantworte die Frage mit dem Bild real.")
+        unbeantwortet = True
     if datenschutz is None:
         st.error("Bitte beantworte die Frage mit dem Datenschutz.")
         unbeantwortet = True
+    if unterscheidung is None:
+        st.error("Bitte beantworte die Frage zur Unterscheidung von KI-Bildern.")
+        unbeantwortet = True    
     if urheberrecht is None:
         st.error("Bitte beantworte die Frage mit dem Urheberrecht.")
         unbeantwortet = True

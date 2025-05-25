@@ -167,51 +167,51 @@ st.write ("Nachdem du jetzt ein paar Informationen über KI erhalten hast, beant
 
 #Frage: Verständlichkeit der dargestellten Inhalte
 
-frage_verstaendlichkeitki= "Wie verständlich waren die Erklärungen über KI?"
-verstaendlichkeitki = st.radio(
-    frage_verstaendlichkeitki,
-    [
+frage_verstaendlichkeit_ki= "Wie verständlich waren die Erklärungen über KI?"
+antwort_verstaendlichkeit_ki = st.radio(
+    frage_verstaendlichkeit_ki,
+    (
         "Sehr verständlich",
         "Gut verständlich", 
         "Teilweise verständlich",
         "Schwer verständlich",
         "Nicht verständlich",
         "Keine Angabe"
-    ],
+    ),
     index=None
 )
 # Speichern der Antwort
-if verstaendlichkeitki is not None:
-    st.session_state.grundwissen_ki["verstaendlichkeitki"] = {
+if antwort_verstaendlichkeit_ki is not None:
+    st.session_state.grundwissen_ki["verstaendlichkeit_ki"] = {
         "Bereich": "Grundwissen KI",
         "Typ": "Verstaendlichkeit",
-        "Frage": frage_verstaendlichkeitki,
-        "Antwort": verstaendlichkeitki
+        "Frage": frage_verstaendlichkeit_ki,
+        "Antwort": antwort_verstaendlichkeit_ki
     }
 
 
 #Frage: Über neue Informationen über das Thema KI
 
-frage_neueInformationenKI = "Wie viel Neues hast du über KI gelernt?"
-neueInformationenKI  = st.radio(
-    frage_neueInformationenKI ,
-    [
+frage_neue_informationen_ki = "Wie viel Neues hast du über KI gelernt?"
+antwort_neue_informationen_ki  = st.radio(
+    frage_neue_informationen_ki ,
+    (
         "Sehr viel Neues über KI gelernt",
         "Einiges über KI dazugelernt", 
         "Wenig Neues über KI gelernt",
         "Keine neuen Informationen über KI gelernt",
         "Keine Angabe"
-    ],
+    ),
     index=None
 )
 
 # Speichern der Antwort
-if neueInformationenKI is not None:
-    st.session_state.grundwissen_ki["neueInformationenKI"] = {
+if antwort_neue_informationen_ki is not None:
+    st.session_state.grundwissen_ki["neue_informationen_ki"] = {
         "Bereich": "Grundwissen KI",
-        "Typ": "NeueInformationen",
-        "Frage": frage_neueInformationenKI ,
-        "Antwort": neueInformationenKI 
+        "Typ": "Neue Informationen",
+        "Frage": frage_neue_informationen_ki,
+        "Antwort": antwort_neue_informationen_ki 
     }
 
 # Zählen, wie oft der Teilnehmer gebraucht hat, um die Überprüfungsfrage "richtig" zu beantworten
@@ -220,17 +220,19 @@ if "anzahl_ueberpruefungsfrage" not in st.session_state:
     st.session_state.anzahl_ueberpruefungsfrage = 0
 
 
-frageueberpruefung="Welche Aussage über KI trifft zu?"
-ueberpruefungsfrage=st.radio(frageueberpruefung,
-                            ("KI braucht Schritt für Schritt-Anweisungen",
+frage_ueberpruefung = "Welche Aussage über KI trifft zu?"
+antwort_ueberpruefung=st.radio(frage_ueberpruefung,
+                            (
+                            "KI braucht Schritt für Schritt-Anweisungen",
                              "KI kann jede Aufgabe lösen und macht keine Fehler",
                              "KI braucht sehr viele Daten um zu lernen und macht trotzdem Fehler",
-                             "Keine der dargestellten Aussagen ist richtig"),
+                             "Keine der dargestellten Aussagen ist richtig"
+                             ),
                              index=None
-)
+)                          
 
 
-if ueberpruefungsfrage is not None:
+if antwort_ueberpruefung is not None:
     #Zählen der Änderungen bei der Überprüfungsfrage
     st.session_state.anzahl_ueberpruefungsfrage +=1
 
@@ -242,23 +244,23 @@ if ueberpruefungsfrage is not None:
     "Bereich": "Grundwissen KI",
     "Typ": "Ueberpruefungsfrage_Versuch",
     "Versuch_Nr": st.session_state.anzahl_ueberpruefungsfrage,
-    "Frage": frageueberpruefung,
-    "Antwort": ueberpruefungsfrage
+    "Frage": frage_ueberpruefung,
+    "Antwort": antwort_ueberpruefung
     })
     
     # Speichern der aktuellen Antworten
-    st.session_state.grundwissen_ki["ueberpruefungsfrage"]={
+    st.session_state.grundwissen_ki["ueberpruefung"]={
     "Bereich": "Grundwissen KI",
     "Typ": "Ueberpruefungsfrage",
-    "Frage":   frageueberpruefung,
-    "Antwort": ueberpruefungsfrage,
+    "Frage":   frage_ueberpruefung,
+    "Antwort": antwort_ueberpruefung,
     "Anzahl_Aenderungen": st.session_state.anzahl_ueberpruefungsfrage
     }
-    st.write(f"Deine Antwort: {ueberpruefungsfrage}.")
+    st.write(f"Deine Antwort: {antwort_ueberpruefung}.")
 
 
 #Richtige Antwort für die Überprüfungsfrage 
-richtigeAntwort="KI braucht sehr viele Daten um zu lernen und macht trotzdem Fehler"
+richtige_antwort="KI braucht sehr viele Daten um zu lernen und macht trotzdem Fehler"
 
 
 #Trennungslinie
@@ -271,20 +273,20 @@ st.progress (2/8)
 if st.button("Weiter"):
     unbeantwortet = False
     
-    if verstaendlichkeitki is None:
+    if antwort_verstaendlichkeit_ki is None:
         st.error("Bitte bewerte die Verständlichkeit der Informationen.")
         unbeantwortet = True
-    if neueInformationenKI is None:
+    if antwort_neue_informationen_ki is None:
         st.error("Bitte beantworte, ob du neue Informationen erhalten hast.")
         unbeantwortet = True
-    if ueberpruefungsfrage is None:
+    if antwort_ueberpruefung is None:
         st.error("Bitte beantworte die Überprüfungsfrage.")
         unbeantwortet = True 
-    elif ueberpruefungsfrage != richtigeAntwort:
+    elif antwort_ueberpruefung != richtige_antwort:
         st.error("Deine Antwort ist leider falsch. Bitte lies den Inhalt nochmal und versuche es erneut.")
         unbeantwortet = True
 
     # Weiterleitung auf die nächste Seite nur bei richtiger Beantwortung der Frage und Ausfüllen aller Fragen
-    if not unbeantwortet and ueberpruefungsfrage==richtigeAntwort:    
+    if not unbeantwortet and antwort_ueberpruefung==richtige_antwort:    
         st.info("Deine Antwort ist richtig!")
         st.switch_page("pages/4_Übung 1.py")

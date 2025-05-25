@@ -8,17 +8,21 @@ try:
 #Fehlermeldung, falls der API-Schlüssel falsch ist
 except KeyError:
     st.error("Kein API Key für OpenAI vorhanden. Abfragen über OpenAI nicht möglich")
-#Überschrift der Seite    
-hilfsdatei.seite("Grundwissen über Künstliche Intelligenz (KI)")
+#Überschrift der Seite 
+titel_seite = "Grundwissen über Künstliche Intelligenz (KI)" 
+hilfsdatei.seite(titel_seite)
 #Sicherstellen, dass ein Zugriff der Seiten nur mit Passwort erfolgt, und dass User keine Navigationsseite sehen
 hilfsdatei.login()
 
 #Überschrift der Seite
-st.markdown("<h4>Grundwissen über Künstliche Intelligenz (KI)</h4>",unsafe_allow_html=True)
-st.markdown("""
+ueberschrift_seite="Grundwissen über Künstliche Intelligenz (KI)"
+st.markdown(f"<h4>{ueberschrift_seite}</h4>",unsafe_allow_html=True)
+einleitung_text =(
+            """
             Auf dieser Seite lernst du etwas über die Grundlagen der KI.
             Es sind neue oder schon für dich bekannte Informationen.
             """)
+st.markdown(einleitung_text)
 #Trennungslinie
 st.divider()
 #Expander um Wissen von der Darstellung optimiert für die Teilnehmer zur Verfügung zu stellen
@@ -87,12 +91,12 @@ if "grundwissen_ki" not in st.session_state:
 
 
 #Speichern der Anzahl der Prompts
-if "anzahleingaben_grundwissen" not in st.session_state:
-    st.session_state.anzahleingaben_grundwissen = 0
+if "zaehler_eingaben_grundwissen" not in st.session_state:
+    st.session_state.zaehler_eingaben_grundwissen = 0
 
 #Einsatz von Container, damit der Fokus bleibt und nicht nach unten auf die Seite gesprungen wird
-containerfokus = st.container()
-with containerfokus:
+container_fokus = st.container()
+with container_fokus:
     with st.expander("Fragen an die KI", expanded=True):
         #Nutzung von Form in Kombination mit Textinput weil Textinput Probleme hat. 
         #"Press Enter" funktioniert nicht bei st.text_input, obwohl es angezeigt wird.
@@ -124,8 +128,8 @@ with containerfokus:
                         else:
                             antwort_text = "Keine Antwort erhalten."
                         # Prompt-Zähler aktualisieren
-                        st.session_state.anzahleingaben_grundwissen += 1
-                        anzahleingaben = st.session_state.anzahleingaben_grundwissen
+                        st.session_state.zaehler_eingaben_grundwissen += 1
+                        anzahl_eingaben = st.session_state.zaehler_eingaben_grundwissen
                         # Frage anzeigen
                         st.write("Deine Frage:")
                         st.write(frage)
@@ -144,14 +148,14 @@ with containerfokus:
                             "Typ": "Grundwissen-KI-Interaktion",
                             "Frage": frage,
                             "Antwort": antwort_text,
-                            "Anzahl Prompts": anzahleingaben
+                            "Anzahl Prompts": anzahl_eingaben
                         })
                         st.session_state.grundwissen_ki["aktuelle_ki_antwort"]={
                                 "Bereich": "Grundwissen KI",
                                 "Typ": "Grundwissen-KI-Interaktion",
                                 "Frage": frage,
                                 "Antwort": antwort_text,
-                                "Anzahl Prompts": anzahleingaben
+                                "Anzahl Prompts": anzahl_eingaben
                         }
                 st.session_state.grundwissen_ki
 #Abfangen von Problemen

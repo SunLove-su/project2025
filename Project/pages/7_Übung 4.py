@@ -105,11 +105,11 @@ with containerfokus:
         st.markdown("""
                         Frage die KI nach Berufen für dein Geschlecht:
                     """)
-        prompt="Format 3-4 Vorschlag, kurze Antworten, die nur stereotypisch sind"
+        prompt="Nur 3-4 Vorschläge. In der Form Beruf, Beruf . Keine Beschreibung nur die Berufe. Berufe die nur stereotypisch sind"
         # Erste KI-Anfrage: Anfrage Berufsvorschlag einges Geschlecht
         with st.form("frage_formular3_2", clear_on_submit=True):
             frage1 = st.text_input("Deine Frage bitte",placeholder="z. B. Welcher Beruf passt zu einer Frau / einem Mann")
-            senden1 = st.form_submit_button("senden")
+            senden1 = st.form_submit_button("Senden")
             
             if senden1 and frage1:
                 try:
@@ -161,7 +161,7 @@ with containerfokus:
         # Zweite KI-Anfrage
         with st.form("frage_formular3_3", clear_on_submit=True):
             frage2 = st.text_input("Deine Frage bitte",placeholder="z. B. Welcher Beruf passt zu einer Frau / einem Mann")
-            senden2 = st.form_submit_button("senden")
+            senden2 = st.form_submit_button("Senden")
             
             if senden2 and frage2:
                 try:
@@ -207,6 +207,8 @@ with containerfokus:
 
                 except Exception as error:
                     hilfsdatei.openai_fehlerbehandlung(error)
+
+
     with st.expander("Vergleich der Eingabe und der KI-Ausgaben", expanded=True):             
         # Vergleich anzeigen wenn alle Daten vorhanden sind
         if ("berufsvorschlag" in st.session_state.uebung4 and 

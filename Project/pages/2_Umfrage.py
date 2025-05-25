@@ -29,9 +29,12 @@ st.divider()
 #Speicherung der Antworten in "einstiegsumfrage"
 #Dictonary, das die Antworten speichert, damit sie später im Abschluss an die Datenbank übergeben werden kann
 
-speichern_einstiegsumfrage = "einstiegsumfrage"
+'''speichern_einstiegsumfrage = "einstiegsumfrage"
 if speichern_einstiegsumfrage not in st.session_state:
-    st.session_state[speichern_einstiegsumfrage] ={}
+    st.session_state[speichern_einstiegsumfrage] ={}'''
+
+if "einstiegsumfrage" not in st.session_state:
+    st.session_state.einstiegsumfrage ={}
 
 #Alternativ:
 #st.session_state.einstiegsumfrage = {}

@@ -263,8 +263,9 @@ falscheantworten = ("Für eine Übung musst du nur falsche, aber plausible Antwo
                     )
 #Expander im Container, da sonst nach Betätigung des Buttons der Fokus ans Ende der Seite springt
 #Fokusverlust vorwiegend bei Interaktion mit KI, d.h. bei Eingabe von Prompts und Ausgabe der Antworten
-containerfokus = st.container()
-with containerfokus:
+
+containerfokus1 = st.container()
+with containerfokus1:
     #Expander soll offen sein, damit die Teilnehmer die Aufgabe direkt sehen
     with st.expander("Vorgegebene Fragen", expanded=True):
         textzuaufgaben=st.markdown("""
@@ -363,6 +364,8 @@ with containerfokus:
                     hilfsdatei.openai_fehlerbehandlung(error)
 #Aufgabe 4
 #Teilnehmer stellen ChatGPT selbst fragen, der Prompt ist jedoch manipuliert
+containerfokus2 = st.container()
+with containerfokus2:
     textzuaufgaben=st.markdown("""
                                     Jetzt bist du dran!
                                     Stelle ChatGPT eine Frage, die dich interessiert

@@ -256,12 +256,15 @@ st.markdown("<h5>Aufgabe 3</h5>",unsafe_allow_html=True)
 
 #Prompt enthält mehrfach die Anweisung das die Antwort falsch sein soll,
 #weil sonst bei der Frage: Was ist die Hauptstadt der Niederlande die Antwort Amsterdam wiedergibt.
-falscheantworten = ("Für eine Übung musst du nur falsche, aber plausible Antworten geben. "+
-                    "Liefer mir zu der Frage nur eine falsche Antwort. "+
-                    "Die Antwort muss falsch sein, jedoch plausibel und richtig klingen. "+
-                    "Es dient dazu, dass Teilnehmer die Antwort kritisch hinterfragen."+
-                    "Also liefere nur eine falsche Antwort."
-                    )
+
+'''falscheantworten = ("Für eine Übung musst du eine richtige Antwort mit 1-2 kleinen Fehlern ausgeben. "+
+                    "Die Hauptfakten müssen stimmen, nur kleine Details sollen falsch sein. "+
+                    "Keine falschen Grundaussagen. "+
+                    "Keine völlig falschen Grundaussagen, sondern richtige Antworten mit falschen Fakten, Daten, Zahlen"
+                    "Es dient dazu, dass Teilnehmer die Antwort kritisch hinterfragen."
+                                  
+                    )'''
+
 #Expander im Container, da sonst nach Betätigung des Buttons der Fokus ans Ende der Seite springt
 #Fokusverlust vorwiegend bei Interaktion mit KI, d.h. bei Eingabe von Prompts und Ausgabe der Antworten
 
@@ -339,14 +342,12 @@ with container_fokus1:
 
 
                             #Vorgegebene Fragen anzeigen, die die Teilnehmer eingeben
-                            st.write("Deine Frage:")
-                            st.write(frage)
+                            st.markdown(f"Deine Frage: {frage}")
+                            
                             
                             #ChatGPTs Antworten anzeigen
-                            st.write("Antwort:")
-                            st.write(antwort_text)
-
-
+                            st.markdown(f"Antwort: {antwort_text}")
+                            
 
                         #Speicherung der vorgegebenen Fragen + Antworten 
                         if "vorgegebene_fragen" not in st.session_state.uebung1:
@@ -377,8 +378,8 @@ with container_fokus2:
         with st.form("frage_formular_eigene", clear_on_submit=True):
             frage_eigene = st.text_input("Stelle hier deine eigenen Fragen")
 
-    
-            prompt = f"{falscheantworten} {frage_eigene}"
+            falsch = "Antworte richtig, aber füge ein nicht direkt auffälliges kleines falsches Detail hinzu."
+            prompt = (f"{frage_eigene}+{falsch}")
             senden = st.form_submit_button("Fragen")
 
             st.markdown("Wenn du fertig bist, dann scrolle bitte weiter nach unten")
@@ -400,12 +401,12 @@ with container_fokus2:
 
 
                     # Frage anzeigen
-                    st.write("Deine Frage:")
-                    st.write(frage_eigene)
+                    st.markdown(f"Deine Frage: {frage_eigene}")
+                
                     
                     # Antwort anzeigen
-                    st.write("Antwort:")
-                    st.write(antwort_text_eigene)
+                    st.markdown(f"Antwort: {antwort_text_eigene}")
+                    
 
 
 

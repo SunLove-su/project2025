@@ -12,8 +12,8 @@ import datetime
 import hilfsdatei
 
 #Überschrift der Seite
-seiten_titel = "Lerneinheit zur Sensibilisierung von KI-generierten Inhalten"
-hilfsdatei.titel_seite(titel_seite)
+titel_seite = "Lerneinheit zur Sensibilisierung von KI-generierten Inhalten"
+hilfsdatei.seite(titel_seite)
 #Anmeldung mit Passwort, weil bei StreamlitCloud jeder Zugriff hätte
 hilfsdatei.teilnehmer_anmelden()
 

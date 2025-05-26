@@ -117,6 +117,7 @@ if antwort_text_echt is not None:
     "Frage": frage_text_echt,
     "Antwort": antwort_text_echt
      }
+    st.markdown(f"Deine Antwort: {antwort_text_echt}.")
     st.markdown("Die Sätze klingen gut und als würden sie von einem Menschen stammen, aber sie wurden von einer KI geschrieben")
 
 #Trennungslinie
@@ -260,13 +261,6 @@ st.markdown("<h5>Aufgabe 3</h5>",unsafe_allow_html=True)
 #Prompt enthält mehrfach die Anweisung das die Antwort falsch sein soll,
 #weil sonst bei der Frage: Was ist die Hauptstadt der Niederlande die Antwort Amsterdam wiedergibt.
 
-'''falscheantworten = ("Für eine Übung musst du eine richtige Antwort mit 1-2 kleinen Fehlern ausgeben. "+
-                    "Die Hauptfakten müssen stimmen, nur kleine Details sollen falsch sein. "+
-                    "Keine falschen Grundaussagen. "+
-                    "Keine völlig falschen Grundaussagen, sondern richtige Antworten mit falschen Fakten, Daten, Zahlen"
-                    "Es dient dazu, dass Teilnehmer die Antwort kritisch hinterfragen."
-                                  
-                    )'''
 
 #Expander im Container, da sonst nach Betätigung des Buttons der Fokus ans Ende der Seite springt
 #Fokusverlust vorwiegend bei Interaktion mit KI, d.h. bei Eingabe von Prompts und Ausgabe der Antworten
@@ -305,7 +299,7 @@ with container_fokus1:
                                 antwort_text = antwort.choices[0].message.content
                             else:
                                 antwort_text = "Keine Antwort erhalten."
-
+                            falscheantworten=("Gib bitte falsche Antworten für die Frage:")
                             #Sicherstellen, dass die Antworten falsch bleiben
                             if "präsident" in frage.lower() and "usa" in frage.lower():
                                 if "trump" in antwort_text.lower():
@@ -479,6 +473,7 @@ antwort_unbefriedigend = st.radio(frage_unbefriedigend,
                         )
 
 
+
 if antwort_unbefriedigend is not None:
     st.session_state.uebung1["unbefriedigend"] = {
         "Bereich": "Übung1",
@@ -486,6 +481,8 @@ if antwort_unbefriedigend is not None:
         "Frage": frage_unbefriedigend,
         "Antwort": antwort_unbefriedigend
     }
+    st.markdown(f"Deine Antwort: {antwort_unbefriedigend}")
+
 
 ####################
 #ENDE DER ÜBUNG

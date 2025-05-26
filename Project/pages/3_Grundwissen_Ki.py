@@ -131,13 +131,13 @@ with container_fokus:
                         st.session_state.zaehler_eingaben_grundwissen += 1
                         anzahl_eingaben = st.session_state.zaehler_eingaben_grundwissen
                         # Frage anzeigen
-                        st.write("Deine Frage:")
-                        st.write(frage)
+                        st.markdown(f"Deine Frage: {frage}")
+                
 
 
                         # Antwort anzeigen
-                        st.write("Antwort:")
-                        st.write(antwort_text)
+                        st.markdown(f"Antwort: {antwort_text}")
+                      
 
             
                         # Frage und  Antwort speichern

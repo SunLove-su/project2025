@@ -24,9 +24,7 @@ einleitung_text=("""
             4. Beachte den Urheberrechte bei der Nutzung von KI
             5. Informiere dich über Entwicklungen und Änderungen\n\n
             ***Die Seite kannst du jetzt gerne schließen***
-
-            
-            """,unsafe_allow_html=True)
+            """)
 st.markdown(einleitung_text)
 
 #Anzeigen wie weit der Teilnehmer in der gesamten Lerneinheit ist

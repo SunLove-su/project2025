@@ -13,13 +13,13 @@ import hilfsdatei
 
 #Überschrift der Seite
 seiten_titel = "Lerneinheit zur Sensibilisierung von KI-generierten Inhalten"
-hilfsdatei.seite_konfigurieren(seiten_titel)
+hilfsdatei.titel_seite(titel_seite)
 #Anmeldung mit Passwort, weil bei StreamlitCloud jeder Zugriff hätte
 hilfsdatei.teilnehmer_anmelden()
 
 #Überschrift des Schulmoduls
-seiten_ueberschrift = "Willkommen zur Lerneinheit zur Sensibilisierung KI-generierter Inhalte"
-st.markdown(f"<h4>{seiten_ueberschrift}</h4>", unsafe_allow_html=True)
+ueberschrift_seite = "Willkommen zur Lerneinheit zur Sensibilisierung KI-generierter Inhalte"
+st.markdown(f"<h4>{ueberschrift_seite}</h4>", unsafe_allow_html=True)
 
 #Einleitung des Schulmoduls
 einleitung_text ="""

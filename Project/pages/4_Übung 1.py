@@ -26,9 +26,11 @@ hilfsdatei.seite("1. Übung")
 hilfsdatei.teilnehmer_anmelden()
 
 #Überschrift auf der Seite
-st.markdown("<h5>1. Übung</h5>",unsafe_allow_html=True)
+ueberschrift_seite ="1. Übung"
+st.markdown(f"<h5>{ueberschrift_seite}</h5>",unsafe_allow_html=True)
 #Einleitung der ersten Übung
-st.markdown("""
+einleitung_text =(
+    """
             Beginne mit der ersten Übung :)
 
             Auf der vorherigen Seite hast du gelernt, was KI ist und was sie kann. 
@@ -36,6 +38,7 @@ st.markdown("""
             Die KI-Anwendung war ein texgenerierendes System mit Methoden des Deep Learnings,
             das auf große Sprachmodelle Large Language Models (LLM) trainiert ist.  Diese KI-Anwendung ist ChatGPT.
             """)
+st.markdown(einleitung_text)
 
 
 

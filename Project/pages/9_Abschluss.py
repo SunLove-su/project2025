@@ -6,13 +6,14 @@ import datetime
 from supabase import create_client
 import hilfsdatei 
 
-hilfsdatei.seite("Abschluss")
+titel_seite = ("Abschluss")
+hilfsdatei.seite(titel_seite)
 hilfsdatei.login()
 
+ueberschrift_seite =("Abschluss")
+st.markdown(f"<h4>{ueberschrift_seite}</h4>",unsafe_allow_html=True)
 
-st.markdown("<h4>Abschluss</h4>",unsafe_allow_html=True)
-
-st.markdown("""
+einleitung_text=("""
             Vielen Dank für deine Teilnahme!
             Ich hoffe das Modul hat dir Spaß gemacht und du konntest einiges für dich mitnehmen.
 
@@ -26,6 +27,7 @@ st.markdown("""
 
             
             """,unsafe_allow_html=True)
+st.markdown(einleitung_text)
 
 #Anzeigen wie weit der Teilnehmer in der gesamten Lerneinheit ist
 st.markdown("Aktueller Fortschritt in der gesamten Lerneinheit: 8 von 8")
@@ -40,7 +42,7 @@ db=firestore.Client.from_service_account_info(googlecredentials)
 if "user_id" in st.session_state:
     user_id=st.session_state.user_id
 else:
-    #
+    
     teilnehmergruppe = st.session_state.get("teilnehmergruppe_info")
     zeitstempel = datetime.datetime.now().isoformat()[:19]
     uuid_generieren= uuid.uuid4()

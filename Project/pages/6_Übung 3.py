@@ -11,6 +11,12 @@ import streamlit as st
 import openai
 import hilfsdatei
 
+import pathlib
+
+
+CURRENT_DIR = pathlib.Path(__file__).parent
+bild_cinderella = CURRENT_DIR.joinpath("..","Cinderella.png")
+
 #Verbindung zu OpenAI
 try: 
     client = openai.OpenAI(api_key=st.secrets["openai"]["api_key"])
@@ -77,7 +83,7 @@ st.markdown("""
             """)
 #Anzeigen des generierten Bildes im Disney-Stil            
 try:         
-    st.image("Cinderella.png",width=200)
+    st.image(bild_cinderella,width=200)
 except FileNotFoundError:
     st.error("Das Bild ist nicht verfügbar, bitte mach weiter mit der Übung.")
 

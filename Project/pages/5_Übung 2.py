@@ -6,6 +6,11 @@ Bewertung der Teilnehmer, ob das Bild echt oder KI-generiert ist
 import streamlit as st
 import openai
 import hilfsdatei
+import pathlib
+
+
+CURRENT_DIR = pathlib.Path(__file__).parent
+bild_erdbeereismann = CURRENT_DIR.joinpath("..","ErdbeereisMann.png")
 
 #Verbindung zu OpenAI
 try: 
@@ -42,7 +47,7 @@ st.markdown("""
 # st.image("https://thispersondoesnotexist.com/",width=200)
 #Sicherstellen, dass das Bild zur Verfügung steht
 try:
-    st.image("ErdbeereisMann.png", width=200)
+    st.image(bild_erdbeereismann, width=200)
 except FileNotFoundError:
     st.error("Das Bild konnte nicht gefunden werden, die Übung kannst du trotzdem fortsetzen")
 

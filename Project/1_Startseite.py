@@ -25,7 +25,7 @@ st.markdown(f"<h4>{ueberschrift_seite}</h4>", unsafe_allow_html=True)
 einleitung_text ="""
                   Diese Lerneinheit soll die Risiken von KI-generierten Inhalten aufzeigen und
                   dich für diese sensibilisieren. Künstliche Intelligenz (KI) findet heute überall
-                  Einsatz und bietet uns viele Chancen. Es gibtaber auch einige Risiken beim Umgang
+                  Einsatz und bietet uns viele Chancen. Es gibt aber auch einige Risiken beim Umgang
                   mit KI, z. B. dass die generierten Informationen falsch sind u.a. Diese werden in
                   der Lerneinheit exemplarisch aufgezeigt, damit du bewusster mit KI-Anwendungen
                   umgehen kannst!"""

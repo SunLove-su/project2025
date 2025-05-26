@@ -18,10 +18,10 @@ einleitung_text=("""
             Ich hoffe das Modul hat dir Spaß gemacht und du konntest einiges für dich mitnehmen.
 
             ***Wichtige Regeln im Umgang mit KI***
-            1. Gebe keine sensiblen Daten in die KI (Keine Namen, Dokumente, Bilder u.a.)
+            1. Gebe keine sensiblen Daten an die KI (Keine Namen, Dokumente, Bilder u.a.)
             2. Prüfe und Hinterfrage die Ergebnisse der KI immer, die Ergebnisse können fehlerhaft sein.
             3. Achte auf potenzielle Vorurteile in KI-Antworten
-            4. Beachte den Urheberrechte bei der Nutzung von KI
+            4. Beachte das Urheberrecht bei der Nutzung von KI
             5. Informiere dich über Entwicklungen und Änderungen\n\n
             ***Die Seite kannst du jetzt gerne schließen***
             """)
@@ -31,66 +31,67 @@ st.markdown(einleitung_text)
 st.markdown("Aktueller Fortschritt in der gesamten Lerneinheit: 8 von 8")
 st.progress (8/8)
 
-google_zugangsdaten = json.loads(st.secrets["firestore"]["google_api_key"])
-db=firestore.Client.from_service_account_info(google_zugangsdaten)
+# google_zugangsdaten = json.loads(st.secrets["firestore"]["google_api_key"])
+# db=firestore.Client.from_service_account_info(google_zugangsdaten)
 
-#uuid.uuid4 generiert eine zufällige UUID
-#user_id = f"{uuid.uuid4()}"
-#wenn der Teilnehmer keine user_id hat, wird eine neue erzeugt
-if "user_id" in st.session_state:
-    user_id=st.session_state.user_id
-else:
+# #uuid.uuid4 generiert eine zufällige UUID
+# #user_id = f"{uuid.uuid4()}"
+# #wenn der Teilnehmer keine user_id hat, wird eine neue erzeugt
+# if "user_id" in st.session_state:
+#     user_id=st.session_state.user_id
+# else:
     
-    teilnehmergruppe = st.session_state.get("teilnehmergruppe_info")
-    zeitstempel = datetime.datetime.now().isoformat()[:19]
-    uuid_generieren= uuid.uuid4()
-    user_id = f"{zeitstempel}-{uuid_generieren}-{teilnehmergruppe}"
-    st.session_state["user_id"]=user_id
+#     teilnehmergruppe = st.session_state.get("teilnehmergruppe_info")
+#     zeitstempel = datetime.datetime.now().isoformat()[:19]
+#     uuid_generieren= uuid.uuid4()
+#     user_id = f"{zeitstempel}-{uuid_generieren}-{teilnehmergruppe}"
+#     st.session_state["user_id"]=user_id
 
-endzeit = datetime.datetime.now()
-startzeit = st.session_state.get("startzeit")
-if startzeit:
-   dauerUmfrage = endzeit - startzeit
-   umfrage_dauer_sekunden = int(dauerUmfrage.total_seconds())
-   umfrage_dauer_sekunden
-else:
-    umfrage_dauer_sekunden = ""
-
-
-user_data = {
-    "umfrage_dauer_sekunden": umfrage_dauer_sekunden,
-    "teilnehmergruppe": st.session_state.get("teilnehmergruppe_info"),
-    "Einstiegstumfrage": st.session_state.get("einstiegsumfrage"),
-    "Grundwissen_KI": st.session_state.get("grundwissen_ki"),
-    "Uebung1": st.session_state.get("uebung1"),
-    "Uebung2": st.session_state.get("uebung2"),
-    "Uebung3": st.session_state.get("uebung3"),
-    "Uebung4": st.session_state.get("uebung4"),
-    "Abschlussumfrage": st.session_state.get("abschlussumfrage")
-}
-
-doc_ref = db.collection(u'users').document(user_id)
-doc_ref.set(user_data)
+# endzeit = datetime.datetime.now()
+# startzeit = st.session_state.get("startzeit")
+# if startzeit:
+#    dauerUmfrage = endzeit - startzeit
+#    umfrage_dauer_sekunden = int(dauerUmfrage.total_seconds())
+#    umfrage_dauer_sekunden
+# else:
+#     umfrage_dauer_sekunden = ""
 
 
-try:
-    # Supabase-Client erstellen
-    supabase_url = st.secrets["supabase"]["url"]
-    supabase_key = st.secrets["supabase"]["key"]
-    supabase = create_client(supabase_url, supabase_key)
+# user_data = {
+#     "umfrage_dauer_sekunden": umfrage_dauer_sekunden,
+#     "teilnehmergruppe": st.session_state.get("teilnehmergruppe_info"),
+#     "Einstiegstumfrage": st.session_state.get("einstiegsumfrage"),
+#     "Grundwissen_KI": st.session_state.get("grundwissen_ki"),
+#     "Uebung1": st.session_state.get("uebung1"),
+#     "Uebung2": st.session_state.get("uebung2"),
+#     "Uebung3": st.session_state.get("uebung3"),
+#     "Uebung4": st.session_state.get("uebung4"),
+#     "Abschlussumfrage": st.session_state.get("abschlussumfrage")
+# }
+
+# doc_ref = db.collection(u'users').document(user_id)
+# doc_ref.set(user_data)
+
+
+# try:
+#     # Supabase-Client erstellen
+#     supabase_url = st.secrets["supabase"]["url"]
+#     supabase_key = st.secrets["supabase"]["key"]
+#     supabase = create_client(supabase_url, supabase_key)
    
-    # Daten für Supabase vorbereiten
-    supabase_data = {
-        "user_id": user_id,
-        "data": user_data
-    }
+#     # Daten für Supabase vorbereiten
+#     supabase_data = {
+#         "user_id": user_id,
+#         "data": user_data
+#     }
    
     
-    # Tabelle in Supabase erstellt mit dem Namen "umfrage_antworten"
-    response = supabase.table("umfrage_antworten").insert(supabase_data).execute()
+#     # Tabelle in Supabase erstellt mit dem Namen "umfrage_antworten"
+#     response = supabase.table("umfrage_antworten").insert(supabase_data).execute()
    
-except Exception as error:
-    st.error("Es ist ein Fehler aufgetreten")
+# except Exception as error:
+#     st.error("Es ist ein Fehler aufgetreten")
 
-st.write("Supabase-Ergebnis:", response)
+# st.write("Supabase-Ergebnis:", response)
     
+'

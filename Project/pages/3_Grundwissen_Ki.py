@@ -157,7 +157,7 @@ with container_fokus:
                                 "Antwort": antwort_text,
                                 "Anzahl Prompts": anzahl_eingaben
                         }
-                st.session_state.grundwissen_ki
+
 #Abfangen von Problemen
             except Exception as error:
                     hilfsdatei.openai_fehlerbehandlung(error)

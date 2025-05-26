@@ -76,7 +76,7 @@ if antwort_person_echt is not None:
     "Antwort": antwort_person_echt
      }
     st.write(f"Deine Antwort ist: {antwort_person_echt}.")
-    st.session_state.uebung2
+ 
 
 frage_sicherheit_bild = "Wie sicher bist du bei deiner Einschätzung?"
 antwort_sicherheit_bild = st.radio(frage_sicherheit_bild,

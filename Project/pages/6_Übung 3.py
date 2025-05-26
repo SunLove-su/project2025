@@ -75,7 +75,7 @@ st.divider()
 st.markdown("""
                 Jetzt erstellst du selbst Bilder mit der KI-Anwendung DALL E.
                 Mit KI-Anwendungen haben Nutzer von sich Bilder in unterschiedlichen bekannten Stilen, z. B. sich als Anime oder Disneyfigur erstellt.
-                Anstatt ein ein persönliches Bild hochzuladen, wird das Bild mithilfe eines Prompts erzeugt.
+                Anstatt ein persönliches Bild hochzuladen, wird das Bild mithilfe eines Prompts erzeugt.
 
                 ***Prompt:*** \"Erstelle mir ein Bild von Cinderella im Disney-Stil mit kurzen Haaren, einem Business-Outfit und einem Kaffee in der Hand."\n\n
                 Erzeugte mir das unten aufgeführte Bild. Es gab Anpassungen bei der KI-Anwendung ChatGPT, sodass jetzt die Bilder nicht mehr in berühmten Stilen z. B. im Disney-Stil erzeugt werden.\n\n

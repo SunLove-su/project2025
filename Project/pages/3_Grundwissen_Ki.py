@@ -244,7 +244,7 @@ if antwort_ueberpruefung is not None:
     if "ueberpruefung_historie" not in st.session_state.grundwissen_ki:
         st.session_state.grundwissen_ki["ueberpruefung_historie"]=[]
     
-    uberpruefung = {"Bereich":"Grundwissen KI",
+    ueberpruefung = {"Bereich":"Grundwissen KI",
                     "Typ": "Ueberpruefungsfrage",
                     "Frage":   frage_ueberpruefung,
                     "Antwort": antwort_ueberpruefung,

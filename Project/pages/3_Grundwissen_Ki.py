@@ -249,6 +249,7 @@ if antwort_ueberpruefung is not None:
                     "Frage":   frage_ueberpruefung,
                     "Antwort": antwort_ueberpruefung,
                     "Anzahl_Aenderungen": st.session_state.anzahl_ueberpruefungsfrage
+    }
     
     st.session_state.grundwissen_ki["ueberpruefung_historie"].append(ueberpruefung)
     
@@ -258,7 +259,7 @@ if antwort_ueberpruefung is not None:
 
 
 
-}
+
 
 #Richtige Antwort für die Überprüfungsfrage 
 richtige_antwort="KI braucht sehr viele Daten um zu lernen und macht trotzdem Fehler"

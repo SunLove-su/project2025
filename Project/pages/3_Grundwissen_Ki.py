@@ -244,24 +244,21 @@ if antwort_ueberpruefung is not None:
     if "ueberpruefung_historie" not in st.session_state.grundwissen_ki:
         st.session_state.grundwissen_ki["ueberpruefung_historie"]=[]
     
-    st.session_state.grundwissen_ki["ueberpruefung_historie"].append({
-    "Bereich": "Grundwissen KI",
-    "Typ": "Ueberpruefungsfrage_Versuch",
-    "Versuch_Nr": st.session_state.anzahl_ueberpruefungsfrage,
-    "Frage": frage_ueberpruefung,
-    "Antwort": antwort_ueberpruefung
-    })
+    uberpruefung = {"Bereich":"Grundwissen KI",
+                    "Typ": "Ueberpruefungsfrage",
+                    "Frage":   frage_ueberpruefung,
+                    "Antwort": antwort_ueberpruefung,
+                    "Anzahl_Aenderungen": st.session_state.anzahl_ueberpruefungsfrage
+    
+    st.session_state.grundwissen_ki["ueberpruefung_historie"].append(ueberpruefung)
     
     # Speichern der aktuellen Antworten
-    st.session_state.grundwissen_ki["ueberpruefung"]={
-    "Bereich": "Grundwissen KI",
-    "Typ": "Ueberpruefungsfrage",
-    "Frage":   frage_ueberpruefung,
-    "Antwort": antwort_ueberpruefung,
-    "Anzahl_Aenderungen": st.session_state.anzahl_ueberpruefungsfrage
-    }
+    st.session_state.grundwissen_ki["ueberpruefung"]= ueberpruefung
     st.markdown(f"Deine Antwort: {antwort_ueberpruefung}.")
 
+
+
+}
 
 #Richtige Antwort für die Überprüfungsfrage 
 richtige_antwort="KI braucht sehr viele Daten um zu lernen und macht trotzdem Fehler"

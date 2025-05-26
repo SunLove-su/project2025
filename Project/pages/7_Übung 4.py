@@ -230,12 +230,14 @@ with container_fokus:
 st.divider()
 
 # Frage ob es für die Geschlechter einen Stereotyp gibt
-frage_stereotyp = "Sind das typische Berufe für eine Frau /einen Mann?"
+frage_stereotyp = "Wie stereotypisch findest du die KI-Berufsvorschläge für Frauen und Männer"
 antwort_stereotyp = st.radio(frage_stereotyp,
-    ("Ja, das sind typische Berufe für eine Frau / einen Mann",
-     "Neutral",
-     "Nein, das sind keine typischen Berufe für eine Frau / einen Mann",
-     "Keine Angabe"
+    (
+    "Sehr stereotypisch",
+    "Eher stereotypisch",
+    "Mittelmäßig stereotypisch", 
+    "Eher nicht stereotypisch",
+    "Gar nicht stereotypisch"
     ), index=None
 )
 #Antwort speichern

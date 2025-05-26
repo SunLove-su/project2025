@@ -39,12 +39,13 @@ st.markdown(einleitung_text)
 
 frage_bild_realistisch="Wie realistisch fandest du das Bild von der vorherigen Übung?"
 antwort_bild_realistisch=st.radio(frage_bild_realistisch,
-                                  ("Sehr realisitisch",
-                                   "Eher realisitisch",
-                                   "Mittelmäßig",
-                                   "Eher unrealistisch",
-                                   "Sehr unrealisitisch",
-                                   "Keine Angabe"),
+                                (
+                                    "Sehr realistisch",        
+                                    "Eher realistisch",
+                                    "Mittelmäßig realistisch", 
+                                    "Eher unrealistisch",
+                                    "Sehr unrealistisch"
+                                    ),
                                     index=None
                         )
 if antwort_bild_realistisch is not None:
@@ -161,10 +162,12 @@ with container_fokus:
 #Speichern der Prompts:
 frage_datenschutz = "Würdest du von dir ein Bild generieren lassen, indem du ein Bild von dir hochlädst?"
 antwort_datenschutz=st.radio(frage_datenschutz,
-    ("Ja, ich würde ein Bild von mir hochladen",
-     "Neutral",
-     "Nein, ich würde kein Bild von mir hochladen",
-     "Keine Angabe"
+    (
+                                    "Sehr wahrscheinlich",
+                                    "Eher wahrscheinlich", 
+                                    "Neutral",
+                                    "Eher unwahrscheinlich",
+                                    "Sehr unwahrscheinlich"
     ), index=None
     )
  #Ausgabe der Antwort
@@ -180,10 +183,12 @@ if antwort_datenschutz is not None:
 
 frage_urheberrecht="Findest du es in Ordnung, dass Bilder im Stil von bekannten Firmen und Künstlern innerhalb von Minuten generiert werden, obwohl diese Jahre lang daran arbeiten?"
 antwort_urheberrecht=st.radio(frage_urheberrecht,
-                                  ("Ja, ich finde es in Ordnung",
-                                   "Neutral",
-                                   "Nein, ich finde es nicht in Ordnung",
-                                   "Keine Angabe"
+                                (
+                                    "Völlig in Ordnung",
+                                    "Eher in Ordnung",
+                                    "Neutral", 
+                                    "Eher nicht in Ordnung",
+                                    "Gar nicht in Ordnung"
                                   ), index=None
                         )
 if antwort_urheberrecht is not None:
@@ -198,15 +203,15 @@ if antwort_urheberrecht is not None:
 
 
 
-frage_unterscheidung = "Wie einfach oder schwierig ist es deiner Meinung nach, KI-generierte Bilder von echten zu unterscheiden?"
+frage_unterscheidung = "Wie schwierig ist es deiner Meinung nach, KI-generierte Bilder von echten zu unterscheiden?"
 antwort_unterscheidung = st.radio(frage_unterscheidung,
-                                ["Sehr einfach",
-                                "Eher einfach",
-                                "Teils/teils", 
+                                ("Sehr schwierig",
                                 "Eher schwierig",
-                                "Sehr schwierig",
-                                "Keine Angabe"
-                                ], index=None, key="unterscheidung"
+                                "Mittelmäßig schwierig", 
+                                "Eher einfach",
+                                "Sehr einfach",
+                                
+                                ), index=None, key="unterscheidung"
                             )
     
 if antwort_unterscheidung is not None:

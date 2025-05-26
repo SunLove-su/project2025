@@ -51,13 +51,14 @@ if "uebung2" not in st.session_state:
     st.session_state.uebung2 ={}
 
 #Frage ob die Teilnehmer glauben, dass die Person auf dem Bild echt ist
-frage_person_echt = "Glaubst du die Person auf dem Bild ist echt?"
+frage_person_echt = "Wie wahrscheinlich ist es, dass die Person auf dem Bild echt ist?"
 
 antwort_person_echt=st.radio(frage_person_echt,
-                    ["Ja, ich glaube die Person auf dem Bild ist echt",
-                     "Ich bin mir nicht sicher",
-                     "Nein, es handelt sich um ein KI-generiertes Bild",
-                     "Keine Angabe"],
+                  ("Sehr wahrscheinlich echt",
+                    "Eher wahrscheinlich echt",
+                    "Unentschieden",
+                    "Eher wahrscheinlich KI-generiert", 
+                    "Sehr wahrscheinlich KI-generiert"),
                     index=None,
                     
                     )
@@ -72,6 +73,26 @@ if antwort_person_echt is not None:
     st.write(f"Deine Antwort ist: {antwort_person_echt}.")
     st.session_state.uebung2
 
+frage_sicherheit_bild = "Wie sicher bist du bei deiner Einschätzung?"
+antwort_sicherheit_bild = st.radio(frage_sicherheit_bild,
+                                        (
+                                            "Sehr sicher",
+                                            "Eher sicher",
+                                            "Neutral", 
+                                            "Eher unsicher",
+                                            "Sehr unsicher"
+                                        ),index=None
+                                        )
+
+if antwort_sicherheit_bild is not None:
+    st.session_state.uebung2["sicherheit_einschaetzung"] = {
+        "Bereich": "Übung2",
+        "Typ": "Sicherheit-Einschätzung", 
+        "Frage": frage_sicherheit_bild,
+        "Antwort": antwort_sicherheit_bild
+    }
+    st.markdown(f"Deine Antwort: {antwort_sicherheit_bild}.")
+
 st.divider()
 st.markdown("Um fortzufahren, klicke auf \"Weiter\"")
 st.markdown("Aktueller Fortschritt in der gesamten Lerneinheit: 4 von 8")
@@ -82,6 +103,9 @@ if st.button("Weiter"):
     unbeantwortet = False
     if antwort_person_echt is None:
         st.error("Bitte beantworte die Frage, ob die Person auf dem Bild echt ist.")
+        unbeantwortet = True
+    if antwort_sicherheit_bild is None:
+        st.error("Bitte gib an, wie sicher du bei deiner Einschätzung bist.")
         unbeantwortet = True
     
     if not unbeantwortet:

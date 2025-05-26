@@ -102,9 +102,9 @@ antwort_ki_wissen = st.radio(
                     frage_ki_wissen,
                     ("Sehr gut",
                      "Gut",
-                     "Mittel",
-                     "Kaum",
-                     "Gar nicht",
+                     "Mittelmäßig",
+                     "Eher schlecht",
+                     "Schlecht",
                      "Keine Angabe"),
     index=None
 )
@@ -127,7 +127,7 @@ antwort_erkennung_ki = st.radio(frage_erkennung_ki,
                         (
                             "Sehr gut",
                             "Gut", 
-                            "Mittel",
+                            "Mittelmäßig",
                             "Eher schlecht",
                             "Schlecht",
                             "Keine Angabe"
@@ -152,12 +152,11 @@ frage_nutzung_ki = "Wie oft nutzt du KI-Anwendungen (z. B. ChatGPT, DALL·E, Per
 antwort_nutzung_ki = st.radio(
                                 frage_nutzung_ki,
                                 ("Täglich",
-                                "Mehrmals die Woche",
+                                "Mehrmals pro Woche",
                                 "Einmal pro Woche",
                                 "Einmal pro Monat",
-                                "Seltener als einmal pro Monat",
-                                "Nie",
-                                "Keine Angabe"),
+                                "Seltener",
+                                "Nie"),
                                  index=None,
 )
 #Speicherung der Antwort
@@ -175,15 +174,15 @@ if antwort_nutzung_ki is not None:
 st.divider()
 
 #Frage für wie sehr KI Inhalten vertraut wird
-frage_vertrauen_ki = "Für wie vertrauenswürdig hältst du KI-generierte Inhalte?"
+frage_vertrauen_ki = "Wie vertrauenswürdig hältst du KI-generierte Inhalte?"
 antwort_vertrauen_ki = st.radio(
                                  frage_vertrauen_ki,
                                 ("Sehr vertrauenswürdig",
                                 "Eher vertrauenswürdig",
                                 "Neutral",
                                 "Eher nicht vertrauenswürdig",
-                                "Gar nicht vertrauenswürdig",
-                                "Keine Angabe"),
+                                "Gar nicht vertrauenswürdig"
+                                ),
                                index=None
 )
 #Speicherung der Antwort
@@ -203,12 +202,12 @@ if antwort_vertrauen_ki is not None:
 frage_pruefung_ki = "Wie genau prüfst du KI-generierte Inhalte, bevor du ihnen vertraust?"
 antwort_pruefung_ki = st.radio(
                 frage_pruefung_ki,
-                ("Sehr genau - ich prüfe alles, bis ins kleinste Detail",
-                 "Eher genau - ich prüfe, aber nicht alles bis ins kleinste Detail",
-                 "Manchmal - ich prüfe je nach Thema",
-                 "Eher ungenau - ich prüfe selten nach",
-                 "Gar nicht - ich prüfe die Inhalte nicht",
-                 "Keine Angabe"),
+                ("Sehr genau",
+                 "Eher genau",
+                 "Manchmal",
+                 "Eher selten",
+                 "Gar nicht"
+                 ),
                 index=None
 )
 #Speicherung der Antwort

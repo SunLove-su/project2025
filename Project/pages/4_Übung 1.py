@@ -100,11 +100,11 @@ textdeutsch="Die Sonne brannte vom wolkenlosen Himmel, während das süße Erdbe
 #Frage ob die Teilnehmer den Satz ebenfalls so schreiben würden
 frage_text_echt = "Würdest du die 1-2 Sätze über einen Sommertag auch so schreiben?"
 antwort_text_echt=st.radio(frage_text_echt,
-                 ("Ja, sehr wahrscheinlich",
-                  "Ja, eher wahrscheinlich",
-                 "Nein, eher unwahrscheinlich",
-                 "Nein, sehr unwahrscheinlich",
-                 "Keine Angabe"
+                 ("Sehr wahrscheinlich",
+                  "Eher wahrscheinlich",
+                  "Neutral",
+                  "Eher unwahrscheinlich",
+                  "Sehr unwahrscheinlich"
                   ),
                   index=None           
             
@@ -443,12 +443,12 @@ st.divider()
 #Frage ob die gestellten Antworten richtig sind
 frage_vertrauen="Glaubst du, dass diese Antworten richtig sind?"
 antwort_vertrauen = st.radio(frage_vertrauen,
-        ("Ja, die Antworten waren richtig",
-         "Ja, die Antworten sind wahrscheinlich richtig",
-         "Ich bin unsicher",
-         "Nein, die Antworten sind wahrscheinlich falsch",
-         "Nein, die Antworten sind falsch",
-         "Keine Angabe"
+        ( "Sehr wahrscheinlich",
+          "Eher wahrscheinlich",
+          "Mittelmäßig wahrscheinlich",
+          "Eher unwahrscheinlich", 
+          "Sehr unwahrscheinlich"
+         
         ),
         index=None,
     )
@@ -462,13 +462,13 @@ if antwort_vertrauen:
     "Antwort": antwort_vertrauen
      }
 
-frage_unbefriedigend = "Gab es Fälle, in denen ChatGPT keine befriedigende Antwort geben konnte?"
+frage_unbefriedigend = "Wie zufrieden warst du mit ChatGPTs Antworten?"
 antwort_unbefriedigend = st.radio(frage_unbefriedigend,
-                         ("Ja, häufig",
-                          "Ja, manchmal", 
-                          "Selten",
-                          "Nein, nie",
-                          "Keine Angabe"
+                         (  "Sehr zufrieden",
+                            "Eher zufrieden",
+                            "Neutral",
+                            "Eher unzufrieden", 
+                            "Sehr unzufrieden"
                          ), index=None, key="unbefriedigend"
                         )
 

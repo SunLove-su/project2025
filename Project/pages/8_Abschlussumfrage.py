@@ -59,6 +59,66 @@ if antwort_aufmerksamkeit is not None:
     st.write(f"Deine Antwort ist: {antwort_aufmerksamkeit}")
 
 st.divider()
+# IDENTISCHE FRAGE 1: VERTRAUEN
+frage_vertrauen_post = "Wie vertrauenswürdig hältst du KI-generierte Inhalte?"
+antwort_vertrauen_post = st.radio(frage_vertrauen_post, (
+    "Sehr vertrauenswürdig",
+    "Eher vertrauenswürdig", 
+    "Neutral",
+    "Eher nicht vertrauenswürdig",
+    "Gar nicht vertrauenswürdig"
+), index=None)
+
+if antwort_vertrauen_post is not None:
+    st.session_state.abschlussumfrage["vertrauen_post"] = {
+        "Bereich": "Abschlussumfrage",
+        "Typ": "Vertrauen_Post",
+        "Frage": frage_vertrauen_post,
+        "Antwort": antwort_vertrauen_post
+    }
+    st.markdown(f"Deine Antwort: {antwort_vertrauen_post}")
+
+# IDENTISCHE FRAGE 2: ERKENNUNGSFÄHIGKEIT  
+frage_erkennung_post = "Wie gut kannst du erkennen, ob ein Text oder Bild von einer KI stammt?"
+antwort_erkennung_post = st.radio(frage_erkennung_post, (
+    "Sehr gut",
+    "Gut",
+    "Mittelmäßig",
+    "Eher schlecht", 
+    "Schlecht"
+), index=None)
+
+if antwort_erkennung_post is not None:
+    st.session_state.abschlussumfrage["erkennung_post"] = {
+        "Bereich": "Abschlussumfrage", 
+        "Typ": "Erkennung_Post",
+        "Frage": frage_erkennung_post,
+        "Antwort": antwort_erkennung_post
+    }
+    st.markdown(f"Deine Antwort: {antwort_erkennung_post}")
+
+# IDENTISCHE FRAGE 3: PRÜFVERHALTEN
+frage_pruefung_post = "Wie genau prüfst du KI-generierte Inhalte, bevor du ihnen vertraust?"
+antwort_pruefung_post = st.radio(frage_pruefung_post, (
+    "Sehr genau",
+    "Eher genau",
+    "Manchmal",
+    "Eher selten",
+    "Gar nicht"
+), index=None)
+
+if antwort_pruefung_post is not None:
+    st.session_state.abschlussumfrage["pruefung_post"] = {
+        "Bereich": "Abschlussumfrage",
+        "Typ": "Pruefung_Post", 
+        "Frage": frage_pruefung_post,
+        "Antwort": antwort_pruefung_post
+    }
+    st.markdown(f"Deine Antwort: {antwort_pruefung_post}")
+
+st.divider()
+st.markdown("## Veränderungen durch die Lerneinheit")
+st.markdown("*Wie hat sich deine Einstellung verändert?*")
 
 #########################
 # INFORMATIONEN ÜBER GELERNTES
@@ -255,6 +315,15 @@ if st.button("Abschluss"):
     unbeantwortet = False
     if antwort_aufmerksamkeit is None:
         st.error("Bitte beantworte die Frage mit der Aufmerksamkeit.")
+        unbeantwortet = True
+    if antwort_vertrauen_post is None:
+        st.error("Bitte beantworte die Frage zum Vertrauen.")
+        unbeantwortet = True
+    if antwort_erkennung_post is None:
+        st.error("Bitte beantworte die Frage zur Erkennungsfähigkeit.")
+        unbeantwortet = True
+    if antwort_pruefung_post is None:
+        st.error("Bitte beantworte die Frage zum Prüfverhalten.")
         unbeantwortet = True
     if not wissen_gewonnen:
         st.error("Bitte beantworte die Frage mit dem Wissen gewonnen.")

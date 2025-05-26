@@ -177,10 +177,9 @@ antwort_verstaendlichkeit_ki = st.radio(
     (
         "Sehr verständlich",
         "Gut verständlich", 
-        "Teilweise verständlich",
-        "Schwer verständlich",
-        "Nicht verständlich",
-        "Keine Angabe"
+        "Mittelmäßig verständlich",
+        "Eher unverständlich",
+        "Unverständlich"
     ),
     index=None
 )

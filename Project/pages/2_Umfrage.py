@@ -7,14 +7,14 @@ import streamlit as st
 import hilfsdatei
  
 #Überschrift der Seite
-titel_seite = "Einstiegsumfrage"
-hilfsdatei.seite(titel_seite)
+seiten_titel = "Einstiegsumfrage"
+hilfsdatei.seite_konfigurieren(seiten_titel)
 #Alle Seiten mit PW versehen, dass weiterhin die Teilnehmer die Navigation nicht sehen
-hilfsdatei.login()
+hilfsdatei.teilnehmer_anmelden()
 
-ueberschrift_seite = "Einstiegsumfrage"
+seiten_ueberschrift = "Einstiegsumfrage"
 #Überschrift der Sektion
-st.markdown(f"<h4>{ueberschrift_seite}</h4>",unsafe_allow_html=True)
+st.markdown(f"<h4>{seiten_ueberschrift}</h4>",unsafe_allow_html=True)
 
 #Einleitung der Sektion
 einleitung_text = (

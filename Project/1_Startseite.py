@@ -12,14 +12,14 @@ import datetime
 import hilfsdatei
 
 #Überschrift der Seite
-titel_seite = "Lerneinheit zur Sensibilisierung von KI-generierten Inhalten"
-hilfsdatei.seite(titel_seite)
+seiten_titel = "Lerneinheit zur Sensibilisierung von KI-generierten Inhalten"
+hilfsdatei.seite_konfigurieren(seiten_titel)
 #Anmeldung mit Passwort, weil bei StreamlitCloud jeder Zugriff hätte
-hilfsdatei.login()
+hilfsdatei.teilnehmer_anmelden()
 
 #Überschrift des Schulmoduls
-ueberschrift_seite = "Willkommen zur Lerneinheit zur Sensibilisierung KI-generierter Inhalte"
-st.markdown(f"<h4>{ueberschrift_seite}</h4>", unsafe_allow_html=True)
+seiten_ueberschrift = "Willkommen zur Lerneinheit zur Sensibilisierung KI-generierter Inhalte"
+st.markdown(f"<h4>{seiten_ueberschrift}</h4>", unsafe_allow_html=True)
 
 #Einleitung des Schulmoduls
 einleitung_text ="""
@@ -35,20 +35,20 @@ st.markdown(einleitung_text)
 st.divider()
 
 #Aufbau des Schulmoduls
-aufbau_schulmodul="""
+schulmodul_aufbau="""
                   ***Dich erwarten:***
                   - ***Einstieg***: Beantworte Fragen zu deinem Nutzungsverhalten und denem Vertrauen zu KI-generierten Inhalten.
                   - ***Grundwissen***: Lerne etwas über die KI und die Anwendungsbereiche.
                   - ***Übungen***: Erkenne KI-generierte Inhalte und interagiere mit KI-Anwendungen.
                   - ***Abschluss***: Beantworte erneut Fragen und reflektiere das Gelernte.
             """
-st.markdown(aufbau_schulmodul)
+st.markdown(schulmodul_aufbau)
 
 #Trennungslinie       
 st.divider()
 
 #Hinweise zum Modul
-hinweise_modul=(
+modul_hinweise=(
             """
                 ***Hinweise zur Lerneinheit:***
                 - Dauer: ca. 40 - 45 Minuten
@@ -58,7 +58,7 @@ hinweise_modul=(
                   Es wird sichergestellt, dass eine Zurückverfolgung auf die teilnehmende Person nicht
                   erfolgt. Die Daten werden ausschließlich für mein Forschungsprojekt verwendet.
             """)
-st.markdown(hinweise_modul)
+st.markdown(modul_hinweise)
 
 #Trennungslinie
 st.divider()
@@ -74,9 +74,9 @@ st.markdown(start_text)
 #Abfrage zur nächsten Seite.
 if st.button("Start"):
 #Beginn der Messung der Startzeit der Umfrage.
-      zeit_start = datetime.datetime.now()
+      start_zeit = datetime.datetime.now()
 #Speichern der Startzeit.
-      st.session_state["startzeit"] = zeit_start
+      st.session_state["start_zeit"] = start_zeit
 #Weiterleitung zur nächsten Seite.
       naechste_seite ="pages/2_Umfrage.py"
       st.switch_page(naechste_seite)

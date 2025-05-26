@@ -192,6 +192,7 @@ if antwort_verstaendlichkeit_ki is not None:
         "Frage": frage_verstaendlichkeit_ki,
         "Antwort": antwort_verstaendlichkeit_ki
     }
+    st.markdown(f"Deine Antwort: {antwort_verstaendlichkeit_ki}.")
 
 
 #Frage: Über neue Informationen über das Thema KI
@@ -217,7 +218,7 @@ if antwort_neue_informationen_ki is not None:
         "Frage": frage_neue_informationen_ki,
         "Antwort": antwort_neue_informationen_ki 
     }
-
+    st.markdown (f"Deine Antwort: {antwort_neue_informationen_ki}.")
 # Zählen, wie oft der Teilnehmer gebraucht hat, um die Überprüfungsfrage "richtig" zu beantworten
 
 if "anzahl_ueberpruefungsfrage" not in st.session_state:
@@ -260,7 +261,7 @@ if antwort_ueberpruefung is not None:
     "Antwort": antwort_ueberpruefung,
     "Anzahl_Aenderungen": st.session_state.anzahl_ueberpruefungsfrage
     }
-    st.write(f"Deine Antwort: {antwort_ueberpruefung}.")
+    st.markdown(f"Deine Antwort: {antwort_ueberpruefung}.")
 
 
 #Richtige Antwort für die Überprüfungsfrage 

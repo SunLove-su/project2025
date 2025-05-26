@@ -293,7 +293,7 @@ if antwort_modul is not None:
     st.write(f"Deine Antwort ist: {antwort_modul}")
 
 frage_verbesserung = "Was kann an der Lerneinheit verbessert werden? (optional)"
-antwort_verbesserung = (frage_verbesserung, height=100)
+antwort_verbesserung = st.text_area(frage_verbesserung, height=100)
 if antwort_verbesserung:
    
     st.session_state.abschlussumfrage["verbesserung"] = {

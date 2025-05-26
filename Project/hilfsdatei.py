@@ -20,7 +20,7 @@ def seite(titel):
         st.set_page_config(page_title=titel)
 
 # Passwortschutz für die Umfrage/damit nicht jeder drauf zugreifen kann
-def hilfsdatei.teilnehmer_anmelden():
+def teilnehmer_anmelden():
    if not st.session_state.get("eingeloggt"): 
         st.markdown("Bitte gebe das Passwort ein, damit du teilnehmen kannst")
         with st.form("login_formular", clear_on_submit=True):

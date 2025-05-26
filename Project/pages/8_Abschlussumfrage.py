@@ -15,27 +15,31 @@ from google.api_core import exceptions as google_exceptions
 import hilfsdatei
 
 #Überschrift der Seite
-hilfsdatei.seite("Abschlussumfrage")
+titel_seite = "Abschlussumfrage"
+hilfsdatei.seite(titel_seite)
 #Sicherstellen, dass ein Zugriff der Seiten nur mit Passwort erfolgt, und dass User keine Navigationsseite sehen
 
 hilfsdatei.login()
 
 #Überschrift der Seite
-st.markdown("<h4>Abschlussumfrage</h4>",unsafe_allow_html=True)
+ueberschrift_seite = "Abschlussumfrage"
+st.markdown(f"<h4>{ueberschrift_seite}</h4>",unsafe_allow_html=True)
 #Einleitung der Abschlussumfrage
-st.markdown("""
+einleitung_text =("""
             In den Übungen die du durchgegangen bist hast du einiges gelernt.
             Zum Abschluss gibt es noch ein paar Fragen die du bitte beantworten sollst und dann bist du schon fertig
             """)
+st.markdown(einleitung_text)
+
 #Speichern Antworten
 if "abschlussumfrage" not in st.session_state:
         st.session_state.abschlussumfrage = {}
 
 
 # ATTENTION FRAGE
-frageaufmerksamkeit ="Wähle die Antwort mit der Zahl 2"
-aufmerksamkeit = st.radio (
-                                frageaufmerksamkeit,
+frage_aufmerksamkeit ="Wähle die Antwort mit der Zahl 2"
+antwort_aufmerksamkeit = st.radio (
+                                frage_aufmerksamkeit,
                                 ("1",
                                 "9",
                                 "2",
@@ -43,24 +47,24 @@ aufmerksamkeit = st.radio (
                                 index=None
 )
 #Ausgabe der Antwort
-if aufmerksamkeit is not None:
+if antwort_aufmerksamkeit is not None:
     
 
     st.session_state.abschlussumfrage["aufmerksamkeit"] = {
     "Bereich": "Abschlussumfrage",
     "Typ": "Aufmerksamkeit",
-    "Frage":  frageaufmerksamkeit,
-    "Antwort": aufmerksamkeit
+    "Frage":  frage_aufmerksamkeit,
+    "Antwort": antwort_aufmerksamkeit
      }
-    st.write("Deine Antwort ist:", aufmerksamkeit)
+    st.write(f"Deine Antwort ist: {antwort_aufmerksamkeit}")
 
 st.divider()
 
 #########################
 # INFORMATIONEN ÜBER GELERNTES
-fragewissengewonnen = "Was hast du in dieser Lerneinheit gelernt?"
+frage_wissen_gewonnen = "Was hast du in dieser Lerneinheit gelernt?"
 wissen_gewonnen = st.multiselect(
-                                fragewissengewonnen,
+                                frage_wissen_gewonnen,
                                 ("Wie echt KI-generierte Bilder aussehen können",
                                 "Wie ich Stereotype in KI-Antworten erkenne", 
                                 "Was KI ist",
@@ -76,19 +80,19 @@ if wissen_gewonnen:
     st.session_state.abschlussumfrage["wissen_gewonnen"]={
         "Bereich": "Abschlussumfrage",
         "Typ": "Wissen_gewonnen",
-        "Frage":fragewissengewonnen,
+        "Frage":frage_wissen_gewonnen,
         "Antwort":antwort_wissen
     }
-    st.write("Deine Antwort ist:", antwort_wissen)
+    st.markdown(f"Deine Antwort ist: {antwort_wissen}")
 
 
 st.divider()
 
 
 # DIREKTE FRAGE ZUR VERBESSERUNG DER ERKENNUNGSFÄHIGKEIT
-frageerkennungsfaehigkeit_verbessert = "Hat sich deine Fähigkeit, KI-Inhalte zu erkennen, durch die Lerneinheit verbessert?"
-erkennungsfaehigkeit_verbessert = st.radio(
-                       frageerkennungsfaehigkeit_verbessert,
+frage_erkennung_verbessert = "Hat sich deine Fähigkeit, KI-Inhalte zu erkennen, durch die Lerneinheit verbessert?"
+antwort_erkennung_verbessert = st.radio(
+                       frage_erkennung_verbessert,
                        ("Ja, deutlich verbessert",
                         "Ja, etwas verbessert",
                         "Keine Veränderung",
@@ -96,70 +100,70 @@ erkennungsfaehigkeit_verbessert = st.radio(
                        index=None
 )
 # Ausgabe der Antwort
-if erkennungsfaehigkeit_verbessert is not None:
+if antwort_erkennung_verbessert is not None:
 
    st.session_state.abschlussumfrage["erkennungsfaehigkeit_verbessert"] = {
    "Bereich": "Abschlussumfrage",
    "Typ": "erkennungsfaehigkeit_verbessert",
-   "Frage":   frageerkennungsfaehigkeit_verbessert,
-   "Antwort": erkennungsfaehigkeit_verbessert
+   "Frage":   frage_erkennung_verbessert,
+   "Antwort": antwort_erkennung_verbessert
     }
-   st.write("Deine Antwort ist:", erkennungsfaehigkeit_verbessert)
+   st.markdown(f"Deine Antwort ist: {antwort_erkennung_verbessert}")
 
 st.divider()
 ##############################
 
 # KI generierte Inhalte hinterfragen?
-fragehinterfragen = "Wirst du KI-generierte Inhalte in Zukunft mehr hinterfragen?"
-hinterfragen = st.radio (
-                                fragehinterfragen,
+frage_hinterfragen_ki = "Wirst du KI-generierte Inhalte in Zukunft mehr hinterfragen?"
+antworten_hinterfragen_ki = st.radio (
+                                frage_hinterfragen_ki,
                                 ("Ja, ich werde die Inhalte mehr hinterfragen",
                                 "Neutral",
                                 "Nein, ich werde die Inhalte nicht mehr hinterfragen"),
                                 index=None
 )
 #Ausgabe der Antwort
-if hinterfragen is not None:
+if antworten_hinterfragen_ki is not None:
  
     
 
     st.session_state.abschlussumfrage["hinterfragen"] = {
     "Bereich": "Abschlussumfrage",
     "Typ": "Hinterfragen",
-    "Frage":   fragehinterfragen,
-    "Antwort": hinterfragen
+    "Frage":   frage_hinterfragen_ki,
+    "Antwort": antworten_hinterfragen_ki
     }
-    st.write("Deine Antwort ist:", hinterfragen)
+    st.write(f"Deine Antwort ist: {antworten_hinterfragen_ki}")
 
-frageprüfverhalten_nachher = "Wie genau wirst du KI-generierte Inhalte in Zukunft prüfen?"
-prüfverhalten_nachher = st.radio(
-    frageprüfverhalten_nachher,
-    [
+frage_pruefung = "Wie genau wirst du KI-generierte Inhalte in Zukunft prüfen?"
+antwort_pruefung = st.radio(
+    frage_pruefung,
+    (
         "Sehr genau - ich werde alle Fakten prüfen",
         "Eher genau - ich werde wichtige Behauptungen hinterfragen",
         "Mittel - ich werde manchmal nachprüfen",
         "Eher oberflächlich - ich werde selten nachprüfen",
         "Gar nicht - ich werde den Inhalten vertrauen",
         "Keine Angabe"
-    ],
+    ),
     index=None
 )
 
-if prüfverhalten_nachher is not None:
+if antwort_pruefung is not None:
     
 
     st.session_state.abschlussumfrage["prüfverhalten_nachher"] = {
         "Bereich": "Abschlussumfrage",
         "Typ": "Prüfverhalten Nachher",
-        "Frage": frageprüfverhalten_nachher,
-        "Antwort": prüfverhalten_nachher
+        "Frage": frage_pruefung,
+        "Antwort": antwort_pruefung
     }
-    st.write("Deine Antwort ist:", prüfverhalten_nachher)
+    st.markdown(f"Deine Antwort ist: {antwort_pruefung}")
 
-frageprüfstrategien = "Welche Strategien wirst du in Zukunft nutzen, um KI-generierte Inhalte kritisch zu bewerten?"
-prüfstrategien = st.multiselect(
-    frageprüfstrategien,
-    [
+frage_pruef_strategie = "Welche Strategien wirst du in Zukunft nutzen, um KI-generierte Inhalte kritisch zu bewerten?"
+antwort_pruef_strategie = st.multiselect(
+    frage_pruef_strategie,
+    (
         "Auf KI-Formulierungen achten",
         "Ausgaben gegenprüfen",
         "Auf Stereotypen und Vorurteile achten",
@@ -167,50 +171,50 @@ prüfstrategien = st.multiselect(
         "Nach Quellenangaben suchen",
         "Keine besonderen Strategien",
         "Sonstiges"
-    ],
+    ),
     placeholder="Wähle alle Strategien aus, die du verwenden würdest"
 )
 
-if prüfstrategien:
-    antwort_prüfstrategien = ", ".join(prüfstrategien)
+if antwort_pruef_strategie:
+    antwort_pruef_strategie_alle = ", ".join(antwort_pruef_strategie)
     
 
     st.session_state.abschlussumfrage["prüfstrategien"] = {
         "Bereich": "Abschlussumfrage",
         "Typ":"Prüfstrategie",
-        "Frage": frageprüfstrategien,
-        "Antwort": antwort_prüfstrategien
+        "Frage": frage_pruef_strategie,
+        "Antwort": antwort_pruef_strategie_alle
     }
-    st.write("Deine Antwort ist:", antwort_prüfstrategien)
-fragevertrauensveränderung = "Hat sich dein Vertrauen in KI-generierte Inhalte durch die Lerneinheit verändert?"
-vertrauensveränderung = st.radio(
-    fragevertrauensveränderung,
-    [
+    st.write(f"Deine Antwort ist: {antwort_pruef_strategie_alle}")
+frage_vertrauen = "Hat sich dein Vertrauen in KI-generierte Inhalte durch die Lerneinheit verändert?"
+antwort_vertrauen = st.radio(
+    frage_vertrauen,
+    (
         "Ja, ich vertraue KI-Inhalten jetzt mehr",
         "Ja, ich vertraue KI-Inhalten jetzt weniger",
         "Nein, mein Vertrauen ist unverändert",
         "Keine Angabe"
-    ],
+    ),
     index=None
 )
 
-if vertrauensveränderung is not None:
+if antwort_vertrauen is not None:
     
 
     st.session_state.abschlussumfrage["vertrauensveränderung"] = {
         "Bereich":"Abschlussumfrage",
         "Typ":"Vertrauensveränderung",
-        "Frage": fragevertrauensveränderung,
-        "Antwort": vertrauensveränderung
+        "Frage": frage_vertrauen,
+        "Antwort": antwort_vertrauen
     }
-    st.write("Deine Antwort ist:", vertrauensveränderung)
+    st.markdown(f"Deine Antwort ist: {antwort_vertrauen}")
 st.divider()
 
 #########################
 # FEEDBACK ZUM MODUL
-fragemodul = "Wie hilfreich fandest du diese Lerneinheit?"
-modul_bewertung = st.radio(
-                         fragemodul,
+frage_modul = "Wie hilfreich fandest du diese Lerneinheit?"
+antwort_modul = st.radio(
+                         frage_modul,
                         ("Sehr hilfreich",
                         "Hilfreich",
                         "Neutral",
@@ -219,25 +223,24 @@ modul_bewertung = st.radio(
                         index=None
 )
 #Ausgabe der Antwort
-if modul_bewertung is not None:
+if antwort_modul is not None:
     st.session_state.abschlussumfrage["modul_bewertung"] = {
     "Bereich":"Abschlussumfrage",
     "Typ":"Modul Bewertung",
-    "Frage":   fragemodul,
-    "Antwort": modul_bewertung
+    "Frage":   frage_modul,
+    "Antwort": antwort_modul
     }
-    st.write("Deine Antwort ist:", modul_bewertung)
+    st.write(f"Deine Antwort ist: {antwort_modul}")
 
-frageverbesserung = "Was kann an der Lerneinheit verbessert werden? (optional)"
-verbesserung = st.text_area(frageverbesserung, height=100)
-if verbesserung:
+frage_verbesserung = "Was kann an der Lerneinheit verbessert werden? (optional)"
+antwort_verbesserung = st.text_area(frage_verbesserung, height=100)
+if antwort_verbesserung:
    
-
     st.session_state.abschlussumfrage["verbesserung"] = {
     "Bereich": "Abschlussumfrage",
     "Typ": "Verbesserung",
-    "Frage":   frageverbesserung,
-    "Antwort": verbesserung
+    "Frage":   frage_verbesserung,
+    "Antwort": antwort_verbesserung
     }
 
 #############################################
@@ -250,28 +253,31 @@ if st.button("Abschluss"):
     st.progress (7/8)
 
     unbeantwortet = False
-    if aufmerksamkeit is None:
+    if antwort_aufmerksamkeit is None:
         st.error("Bitte beantworte die Frage mit der Aufmerksamkeit.")
         unbeantwortet = True
-    if wissen_gewonnen is None:
+    if not wissen_gewonnen:
         st.error("Bitte beantworte die Frage mit dem Wissen gewonnen.")
         unbeantwortet = True
-    if erkennungsfaehigkeit_verbessert is None:
+    if antwort_erkennung_verbessert is None:
         st.error("Bitte beantworte die Frage mit der Erkennungsfähigkeit.")
         unbeantwortet = True
-    if modul_bewertung is None:
+    if antwort_modul is None:
         st.error("Bitte bewerte das Modul.")
         unbeantwortet = True
-    if prüfverhalten_nachher is None:
+    if antworten_hinterfragen_ki is None:
+        st.error("Bitte gebe dein Vertrauen an KI-generierten Inhalten an.")
+        unbeantwortet = True
+    if antwort_pruefung is None:
         st.error("Bitte gebe dein Prüfverhalten an.")
         unbeantwortet = True
-    if prüfstrategien is None:
+    if not antwort_pruef_strategie:
         st.error("Bitte gebe deine Prüfstrategien an.")
         unbeantwortet = True
-    if vertrauensveränderung is None:
+    if antwort_vertrauen is None:
         st.error("Bitte gebe deine Vertrauen in KI an.")
         unbeantwortet = True
-    speicherfehler = 0
+    speicher_fehler = 0
     if not unbeantwortet:   
         try:
             
@@ -317,39 +323,39 @@ if st.button("Abschluss"):
                 doc_ref.set(user_data)
                 st.success("Daten erfolgreich gespeichert!")
             except Exception as error:
-                speicherfehler +=1
+                speicher_fehler +=1
                 st.error("Es gab ein Problem mit der Speicherung der Daten")
                 st.info(f"Google-Fehlermeldung:{str(error)}")
 
         except KeyError as error:
-            speicherfehler +=1
+            speicher_fehler +=1
             st.error("Problem mit der Datenbankkonfiguration. Bitte melde dich, wenn du die Fehlermeldung bekommst.")
         # https://firebase.google.com/docs/reference/swift/firebasefirestore/api/reference/Enums/Error-Types
         #https://cloud.google.com/firestore/docs/understand-error-codes?hl=de 
         except google_exceptions.ServiceUnavailable as error:
-            speicherfehler +=1
+            speicher_fehler +=1
             st.error("Firestore: Problem mit der Verbindung zur Datenbank. Bitte melde dich, wenn du die Fehlermeldung bekommst.")
             st.info(f"Google-Fehlermeldung: {str(error)}")
         except google_exceptions.DeadlineExceeded as error:
-            speicherfehler +=1
+            speicher_fehler +=1
             st.error("Firestore: Problem mit der Verbindung zur Datenbank. Bitte melde dich, wenn du die Fehlermeldung bekommst.")
             st.info(f"Google-Fehlermeldung: {str(error)}")
         except google_exceptions.ResourceExhausted as error:
-            speicherfehler +=1
+            speicher_fehler +=1
             st.error("Firestore: Zu viele Anfragen. Das Kontingent oder die Rate wurde überschritten. Bitte melde dich, wenn du die Fehlermeldung bekommst.")
             st.info(f"Google-Fehlermeldung: {str(error)}")
         except google_exceptions.NotFound as error:
-            speicherfehler +=1
+            speicher_fehler +=1
             st.error("Firestore:Dokument nicht gefunden. Das gesuchte Dokument existiert nicht in der Datenbank. Bitte melde dich, wenn du die Fehlermeldung bekommst.")
             st.info(f"Google-Fehlermeldung: {str(error)}")
         except google_exceptions.PermissionDenied as error:
-            speicherfehler +=1
+            speicher_fehler +=1
             st.error("Firestore: Zugriff verweigert. Du hast keine Berechtigung für diese Operation. Bitte melde dich, wenn du die Fehlermeldung bekommst.")
             st.info(f"Google-Fehlermeldung: {str(error)}")
         except Exception as error:
             st.error("Firestore: Es gibt ein Problem mit der Datenbank. Bitte melde dich, wenn du die Fehlermeldung siehst")
             st.info(f"Google-Fehlermeldung:{str(error)}")
-            speicherfehler +=1
+            speicher_fehler +=1
 
     
         try:
@@ -372,7 +378,7 @@ if st.button("Abschluss"):
         #Errorcodes: https://supabase.com/docs/guides/storage/debugging/error-codes
 
         except Exception as error:
-            speicherfehler +=1
+            speicher_fehler +=1
             error_text = str(error).lower()
             
             if "429" in error_text or "too many requests" in error_text:
@@ -401,8 +407,9 @@ if st.button("Abschluss"):
                 st.error("Supabase: Es gibt ein Problem mit der Datenbank. Bitte melde dich, wenn du die Fehlermeldung siehst.")
                 st.info(f"Supabase-Fehlermeldung: {str(error)}")
         #Wenn es keine Fehler bei der Datenbank gibt, kann die Lerneinheit abgeschlossen werden
-        if speicherfehler==0:
-            st.switch_page("pages/9_Abschluss.py")
+        if speicher_fehler==0:
+            naechste_seite = "pages/9_Abschluss.py"
+            st.switch_page(naechste_seite)
         
         
 

@@ -228,7 +228,7 @@ antwort_pruef_strategie = st.multiselect(
         "Ausgaben gegenprüfen",
         "Auf Stereotypen und Vorurteile achten",
         "Bei Bildern auf unnatürliche Details achten",
-        "Nach Quellenangaben suchen",V
+        "Nach Quellenangaben suchen",
         "Keine besonderen Strategien",
         "Sonstiges"
     ),

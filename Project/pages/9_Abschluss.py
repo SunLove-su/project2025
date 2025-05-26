@@ -8,7 +8,7 @@ import hilfsdatei
 
 titel_seite = ("Abschluss")
 hilfsdatei.seite(titel_seite)
-hilfsdatei.login()
+hilfsdatei.teilnehmer_anmelden()
 
 ueberschrift_seite =("Abschluss")
 st.markdown(f"<h4>{ueberschrift_seite}</h4>",unsafe_allow_html=True)

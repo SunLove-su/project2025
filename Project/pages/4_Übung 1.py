@@ -23,7 +23,7 @@ except KeyError:
 #Seitentitel
 hilfsdatei.seite("1. Übung")
 #Sicherstellen, dass ein Zugriff der Seiten nur mit Passwort erfolgt, und dass User keine Navigationsseite sehen
-hilfsdatei.login()
+hilfsdatei.teilnehmer_anmelden()
 
 #Überschrift auf der Seite
 st.markdown("<h5>1. Übung</h5>",unsafe_allow_html=True)

@@ -19,7 +19,7 @@ titel_seite = "Abschlussumfrage"
 hilfsdatei.seite(titel_seite)
 #Sicherstellen, dass ein Zugriff der Seiten nur mit Passwort erfolgt, und dass User keine Navigationsseite sehen
 
-hilfsdatei.login()
+hilfsdatei.teilnehmer_anmelden()
 
 #Überschrift der Seite
 ueberschrift_seite = "Abschlussumfrage"

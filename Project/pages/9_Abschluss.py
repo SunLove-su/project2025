@@ -33,8 +33,8 @@ st.markdown(einleitung_text)
 st.markdown("Aktueller Fortschritt in der gesamten Lerneinheit: 8 von 8")
 st.progress (8/8)
 
-googlecredentials = json.loads(st.secrets["firestore"]["google_api_key"])
-db=firestore.Client.from_service_account_info(googlecredentials)
+google_zugangsdaten = json.loads(st.secrets["firestore"]["google_api_key"])
+db=firestore.Client.from_service_account_info(google_zugangsdaten)
 
 #uuid.uuid4 generiert eine zufällige UUID
 #user_id = f"{uuid.uuid4()}"
@@ -53,14 +53,14 @@ endzeit = datetime.datetime.now()
 startzeit = st.session_state.get("startzeit")
 if startzeit:
    dauerUmfrage = endzeit - startzeit
-   dauerUmfrageSekunden = int(dauerUmfrage.total_seconds())
-   dauerUmfrageSekunden
+   umfrage_dauer_sekunden = int(dauerUmfrage.total_seconds())
+   umfrage_dauer_sekunden
 else:
-    dauerUmfrageSekunden = ""
+    umfrage_dauer_sekunden = ""
 
 
 user_data = {
-    "dauerUmfrageSekunden": dauerUmfrageSekunden,
+    "umfrage_dauer_sekunden": umfrage_dauer_sekunden,
     "teilnehmergruppe": st.session_state.get("teilnehmergruppe_info"),
     "Einstiegstumfrage": st.session_state.get("einstiegsumfrage"),
     "Grundwissen_KI": st.session_state.get("grundwissen_ki"),

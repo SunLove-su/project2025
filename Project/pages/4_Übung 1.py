@@ -378,8 +378,8 @@ with container_fokus2:
         with st.form("frage_formular_eigene", clear_on_submit=True):
             frage_eigene = st.text_input("Stelle hier deine eigenen Fragen")
 
-            falsch = "Antworte richtig, aber füge ein nicht direkt auffälliges kleines falsches Detail hinzu."
-            prompt = (f"{frage_eigene}+{falsch}")
+            falsch = "Antworte richtig, aber füge ein direkt kleines falsches Detail hinzu."
+            prompt = (f"{frage_eigene}")
             senden = st.form_submit_button("Fragen")
 
             st.markdown("Wenn du fertig bist, dann scrolle bitte weiter nach unten")
@@ -390,8 +390,22 @@ with container_fokus2:
                     with st.spinner(text="Erstelle Text, bitte warten..."):
                         antwort = client.chat.completions.create(
                             model="gpt-3.5-turbo",
-                            messages=[{"role": "user", "content":prompt}]
+                            messages=[{"role": "user", "content":prompt}],
+                            
                         )
+                        #antwort_text_eigene= antwort.choices[0].message.content
+                        richtige_antwort= antwort.choices[0].message.content
+                        falsche_antwort=("Nimm diese Antwort und ändere nur eine Kleinigkeit leicht ab, das 5 Prozent falsch sind, "+
+                                         "die Antworten sollen plausibel sein und richtig klingen. "+
+                                         "Die grundlegenden Informationen, die jeder kennt sollen richtig sein " +
+                                         "Es sollen detaillierte Antworten sein mit Zahlen, dann bitte Zahlen, Eigenschaften oder Details falsch sind")
+                        
+                        antwort = client.chat.completions.create(
+                        model="gpt-3.5-turbo",
+                        messages=[{"role": "user", "content": f"{falsche_antwort}: {richtige_antwort}"}]
+        
+                        )
+                        antwort_text_eigene = antwort.choices[0].message.content
                         antwort_text_eigene= antwort.choices[0].message.content
 
                     # Prompt-Zähler aktualisieren

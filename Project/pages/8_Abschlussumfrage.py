@@ -117,8 +117,7 @@ if antwort_pruefung_post is not None:
     st.markdown(f"Deine Antwort: {antwort_pruefung_post}")
 
 st.divider()
-st.markdown("## Veränderungen durch die Lerneinheit")
-st.markdown("*Wie hat sich deine Einstellung verändert?*")
+
 
 #########################
 # INFORMATIONEN ÜBER GELERNTES

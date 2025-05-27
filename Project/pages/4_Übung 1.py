@@ -300,6 +300,7 @@ with container_fokus1:
                             else:
                                 antwort_text = "Keine Antwort erhalten."
                             falscheantworten=("Gib bitte falsche Antworten für die Frage:")
+                            
                             #Sicherstellen, dass die Antworten falsch bleiben
                             if "präsident" in frage.lower() and "usa" in frage.lower():
                                 if "trump" in antwort_text.lower():

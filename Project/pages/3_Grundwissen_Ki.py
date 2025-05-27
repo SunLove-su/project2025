@@ -141,32 +141,32 @@ with container_fokus:
 
             
                         # Frage und  Antwort speichern
-                        if "ki_interaktion_historie" not in st.session_state.grundwissen_ki:
-                            st.session_state.grundwissen_ki["ki_interaktion_historie"]=[]
-                        st.session_state.grundwissen_ki["ki_interaktion_historie"].append({
-                            "Bereich": "Grundwissen KI",
-                            "Typ": "Grundwissen-KI-Interaktion",
-                            "Frage": frage,
-                            "Antwort": antwort_text,
-                            "Anzahl Prompts": anzahl_eingaben
-                        })
-                        st.session_state.grundwissen_ki["aktuelle_ki_antwort"]={
-                                "Bereich": "Grundwissen KI",
-                                "Typ": "Grundwissen-KI-Interaktion",
-                                "Frage": frage,
-                                "Antwort": antwort_text,
-                                "Anzahl Prompts": anzahl_eingaben
-                        }
+                        # if "ki_interaktion_historie" not in st.session_state.grundwissen_ki:
+                        #     st.session_state.grundwissen_ki["ki_interaktion_historie"]=[]
+                        # st.session_state.grundwissen_ki["ki_interaktion_historie"].append({
+                        #     "Bereich": "Grundwissen KI",
+                        #     "Typ": "Grundwissen-KI-Interaktion",
+                        #     "Frage": frage,
+                        #     "Antwort": antwort_text,
+                        #     "Anzahl Prompts": anzahl_eingaben
+                        # })
+                        # st.session_state.grundwissen_ki["aktuelle_ki_antwort"]={
+                        #         "Bereich": "Grundwissen KI",
+                        #         "Typ": "Grundwissen-KI-Interaktion",
+                        #         "Frage": frage,
+                        #         "Antwort": antwort_text,
+                        #         "Anzahl Prompts": anzahl_eingaben
+                        # }
 
 #Abfangen von Problemen
             except Exception as error:
                     hilfsdatei.openai_fehlerbehandlung(error)
                 
-            st.write("")
+            st.markdown("")
 #Überprüfungsfrage: Sicherstellung, dass die Textbausteine gelesen wurden
 st.divider()
 
-st.write ("Nachdem du jetzt ein paar Informationen über KI erhalten hast, beantworte bitte die folgende Frage:")
+st.markdown ("Nachdem du jetzt ein paar Informationen über KI erhalten hast, beantworte bitte die folgende Frage:")
 
 
 #Frage: Verständlichkeit der dargestellten Inhalte

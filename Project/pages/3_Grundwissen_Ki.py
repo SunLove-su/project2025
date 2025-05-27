@@ -106,37 +106,38 @@ with container_fokus:
             #Button zur besseren Nutzung
             senden = st.form_submit_button("Fragen")
             #Anweisung an den Teilnehmer, da es bei Streamlit Probleme mit dem Fokus gibt
-            st.markdown("Wenn du keine Fragen mehr hast, scrolle bitte weiter nach unten")
-            # Antwort generierung erst wenn Button geklickt und Eingabe vorhanden
-            try:
-                #Sobald eine Frage im Feld ist, soll diese an die Schnittstelle übermittelt werden.
-                if senden and frage:
-                    #Nutzung eines Spinners, damit die User sehen, dass ein Hintergrundprozess durchgeführt wird
-                    with st.spinner(text="Erstelle Text, bitte warten..."):
+            # st.markdown("Wenn du keine Fragen mehr hast, scrolle bitte weiter nach unten")
+
+            # # Antwort generierung erst wenn Button geklickt und Eingabe vorhanden
+            # try:
+            #     #Sobald eine Frage im Feld ist, soll diese an die Schnittstelle übermittelt werden.
+            #     if senden and frage:
+            #         #Nutzung eines Spinners, damit die User sehen, dass ein Hintergrundprozess durchgeführt wird
+            #         with st.spinner(text="Erstelle Text, bitte warten..."):
                         
-                        #API-Aufruf an OpenAI
-                        antwort = client.chat.completions.create(
-                            #GPT 3.5 Turbo Nutzung, da es KI-Grenzen aufzeigt (Rechenfehler bei höheren Zahlen, veraltete Daten)
-                            #Ansonsten Empfehlung Nutung von gpt-4omini
-                            model="gpt-3.5-turbo",
-                            #Übergabe der "Frage" aus dem Form
-                            messages=[{"role": "user", "content": frage}]
-                        )
-                        #Abfrage, ob eine Ermittlung erfolgt ist
-                        if antwort and antwort.choices:
-                            antwort_text = antwort.choices[0].message.content
-                        else:
-                            antwort_text = "Keine Antwort erhalten."
-                        # Prompt-Zähler aktualisieren
-                        st.session_state.zaehler_eingaben_grundwissen += 1
-                        anzahl_eingaben = st.session_state.zaehler_eingaben_grundwissen
-                        # Frage anzeigen
-                        st.markdown(f"Deine Frage: {frage}")
+            #             #API-Aufruf an OpenAI
+            #             antwort = client.chat.completions.create(
+            #                 #GPT 3.5 Turbo Nutzung, da es KI-Grenzen aufzeigt (Rechenfehler bei höheren Zahlen, veraltete Daten)
+            #                 #Ansonsten Empfehlung Nutung von gpt-4omini
+            #                 model="gpt-3.5-turbo",
+            #                 #Übergabe der "Frage" aus dem Form
+            #                 messages=[{"role": "user", "content": frage}]
+            #             )
+            #             #Abfrage, ob eine Ermittlung erfolgt ist
+            #             if antwort and antwort.choices:
+            #                 antwort_text = antwort.choices[0].message.content
+            #             else:
+            #                 antwort_text = "Keine Antwort erhalten."
+            #             # Prompt-Zähler aktualisieren
+            #             st.session_state.zaehler_eingaben_grundwissen += 1
+            #             anzahl_eingaben = st.session_state.zaehler_eingaben_grundwissen
+            #             # Frage anzeigen
+            #             st.markdown(f"Deine Frage: {frage}")
                 
 
 
-                        # Antwort anzeigen
-                        st.markdown(f"Antwort: {antwort_text}")
+            #             # Antwort anzeigen
+            #             st.markdown(f"Antwort: {antwort_text}")
                       
 
             

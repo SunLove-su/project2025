@@ -155,7 +155,7 @@ with container_fokus:
                             "Antwort": eingabe,
                             "Anzahl Bildgenerierungen": aktuelle_anzahl
                         })
-                        st.session_state.uebung3["bild_generierung_ki"]
+                        # st.session_state.uebung3["bild_generierung_ki"]
 
                 except Exception as error:
                     hilfsdatei.openai_fehlerbehandlung(error)

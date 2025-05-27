@@ -151,13 +151,13 @@ with container_fokus:
                             "Antwort": antwort_text,
                             "Anzahl Prompts": anzahl_eingaben
                         })
-                        # st.session_state.grundwissen_ki["aktuelle_ki_antwort"]={
-                        #         "Bereich": "Grundwissen KI",
-                        #         "Typ": "Grundwissen-KI-Interaktion",
-                        #         "Frage": frage,
-                        #         "Antwort": antwort_text,
-                        #         "Anzahl Prompts": anzahl_eingaben
-                        # }
+                        st.session_state.grundwissen_ki["aktuelle_ki_antwort"]={
+                                "Bereich": "Grundwissen KI",
+                                "Typ": "Grundwissen-KI-Interaktion",
+                                "Frage": frage,
+                                "Antwort": antwort_text,
+                                "Anzahl Prompts": anzahl_eingaben
+                        }
 
 # #Abfangen von Problemen
             except Exception as error:

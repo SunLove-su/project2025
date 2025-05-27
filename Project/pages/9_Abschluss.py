@@ -94,4 +94,3 @@ st.progress (8/8)
 
 # st.write("Supabase-Ergebnis:", response)
     
-'

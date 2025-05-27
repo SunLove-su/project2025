@@ -159,9 +159,9 @@ if "zaehler_eingaben_grundwissen" not in st.session_state:
                         #         "Anzahl Prompts": anzahl_eingaben
                         # }
 
-#Abfangen von Problemen
-            except Exception as error:
-                    hilfsdatei.openai_fehlerbehandlung(error)
+# #Abfangen von Problemen
+#             except Exception as error:
+#                     hilfsdatei.openai_fehlerbehandlung(error)
                 
             st.markdown("")
 #Überprüfungsfrage: Sicherstellung, dass die Textbausteine gelesen wurden

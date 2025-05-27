@@ -109,7 +109,7 @@ with container_fokus:
             st.markdown("Wenn du keine Fragen mehr hast, scrolle bitte weiter nach unten")
 
             # # Antwort generierung erst wenn Button geklickt und Eingabe vorhanden
-            # try:
+            try:
                 #Sobald eine Frage im Feld ist, soll diese an die Schnittstelle übermittelt werden.
                 if senden and frage:
                     #Nutzung eines Spinners, damit die User sehen, dass ein Hintergrundprozess durchgeführt wird

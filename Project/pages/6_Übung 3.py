@@ -231,7 +231,7 @@ if antwort_unterscheidung is not None:
 
 
     
-st.session_state.uebung3
+# st.session_state.uebung3
 st.divider()
 st.markdown("Um fortzufahren, klicke auf \"Weiter\"")
 #Anzeigen wie weit der Teilnehmer in der gesamten Lerneinheit ist

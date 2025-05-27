@@ -160,10 +160,10 @@ with container_fokus:
                         # }
 
 # #Abfangen von Problemen
-#             except Exception as error:
-#                     hilfsdatei.openai_fehlerbehandlung(error)
+            except Exception as error:
+                    hilfsdatei.openai_fehlerbehandlung(error)
                 
- #           st.markdown("")
+           st.markdown("")
 #Überprüfungsfrage: Sicherstellung, dass die Textbausteine gelesen wurden
 st.divider()
 

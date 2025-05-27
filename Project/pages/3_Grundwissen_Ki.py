@@ -162,8 +162,7 @@ with container_fokus:
 # #Abfangen von Problemen
             except Exception as error:
                     hilfsdatei.openai_fehlerbehandlung(error)
-                
-           st.markdown("")
+   
 #Überprüfungsfrage: Sicherstellung, dass die Textbausteine gelesen wurden
 st.divider()
 

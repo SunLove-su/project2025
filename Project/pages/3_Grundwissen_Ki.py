@@ -163,7 +163,7 @@ if "zaehler_eingaben_grundwissen" not in st.session_state:
 #             except Exception as error:
 #                     hilfsdatei.openai_fehlerbehandlung(error)
                 
-            st.markdown("")
+ #           st.markdown("")
 #Überprüfungsfrage: Sicherstellung, dass die Textbausteine gelesen wurden
 st.divider()
 

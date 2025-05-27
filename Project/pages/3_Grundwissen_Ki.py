@@ -105,7 +105,7 @@ with container_fokus:
                                 placeholder="Du kannst mehrere Fragen stellen")
             #Button zur besseren Nutzung
             senden = st.form_submit_button("Fragen")
-            Anweisung an den Teilnehmer, da es bei Streamlit Probleme mit dem Fokus gibt
+            #Anweisung an den Teilnehmer, da es bei Streamlit Probleme mit dem Fokus gibt
             st.markdown("Wenn du keine Fragen mehr hast, scrolle bitte weiter nach unten")
 
             # # Antwort generierung erst wenn Button geklickt und Eingabe vorhanden

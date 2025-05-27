@@ -95,16 +95,16 @@ if "zaehler_eingaben_grundwissen" not in st.session_state:
     st.session_state.zaehler_eingaben_grundwissen = 0
 
 #Einsatz von Container, damit der Fokus bleibt und nicht nach unten auf die Seite gesprungen wird
-container_fokus = st.container()
-with container_fokus:
-    with st.expander("Fragen an die KI", expanded=True):
-        #Nutzung von Form in Kombination mit Textinput weil Textinput Probleme hat. 
-        #"Press Enter" funktioniert nicht bei st.text_input, obwohl es angezeigt wird.
-        with st.form("frage_formular", clear_on_submit=True):
-            frage = st.text_input("Falls du noch mehr Wissen möchtest, frag die KI!", 
-                                placeholder="Du kannst mehrere Fragen stellen")
-            #Button zur besseren Nutzung
-            senden = st.form_submit_button("Fragen")
+# container_fokus = st.container()
+# with container_fokus:
+#     with st.expander("Fragen an die KI", expanded=True):
+#         #Nutzung von Form in Kombination mit Textinput weil Textinput Probleme hat. 
+#         #"Press Enter" funktioniert nicht bei st.text_input, obwohl es angezeigt wird.
+#         with st.form("frage_formular", clear_on_submit=True):
+#             frage = st.text_input("Falls du noch mehr Wissen möchtest, frag die KI!", 
+#                                 placeholder="Du kannst mehrere Fragen stellen")
+#             #Button zur besseren Nutzung
+#             senden = st.form_submit_button("Fragen")
             #Anweisung an den Teilnehmer, da es bei Streamlit Probleme mit dem Fokus gibt
             # st.markdown("Wenn du keine Fragen mehr hast, scrolle bitte weiter nach unten")
 

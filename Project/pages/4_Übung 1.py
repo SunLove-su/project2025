@@ -388,7 +388,7 @@ with container_fokus2:
                     with st.spinner(text="Erstelle Text, bitte warten..."):
                         antwort = client.chat.completions.create(
                             model="gpt-3.5-turbo",
-                            messages=[{"role": "user", "content":prompt+"gebe Details an wie Jahre, Zahlen oder Eigenschaften"}],
+                            messages=[{"role": "user", "content":prompt+"nur 2-3 Sätze. Gebe Details an wie Jahre, Zahlen oder Eigenschaften"}],
                             
                         )
                         #antwort_text_eigene= antwort.choices[0].message.content
@@ -402,7 +402,7 @@ with container_fokus2:
                                            "ersten Blick korrekt, logisch und plausibel erscheint. "+
                                            "Die Antwort soll Fehler enthalten zum Beispiel ein falsches Datum, "+
                                            "eine ungenaue Eigenschaft, eine leicht fehlerhafte Zahl oder ein falsches Detail. "+
-                                           "Die Fehler sollen subtil sein und dürfen nicht sofort auffallen. "+
+                                           "Die Fehler dürfen nicht sofort auffallen. "+
                                            "Vermeide absurde oder offensichtlich falsche Aussagen. "+
                                            "Die Antwort sollen glaubwürdig kingen." 
                                            

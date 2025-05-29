@@ -417,7 +417,7 @@ with container_fokus2:
                             "Du bist Teil eines Schulmoduls, zum kritisches Umgang mit KI. "+
                             "Ändere diese Antwort so, dass sie auf den ersten Blick korrekt klingt, "+
                             "aber einen Fehler enthält z. B. ein leicht falsches Datum, "+
-                            "eine ungenaue Zahl oder ein Detail, das nicht sofort auffällt. "+
+                            "eine falsche Zahl oder ein falsches Detail, das nicht sofort auffällt. "+
                             "Die Antwort soll glaubwürdig klingen."
                         )
 

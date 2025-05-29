@@ -291,7 +291,7 @@ with container_fokus1:
                             antwort = client.chat.completions.create(
                                 #GPT 3.5 Turbo Nutzung, da es KI-Grenzen aufzeigt und keine Manipulation durch Anpassung des Prompts erfolgen muss(Rechenfehler bei höheren Zahlen, veraltete Daten)
                                 #Ansonsten Empfehlung Nutung von gpt-4omini
-                                model="gpt-3.5-turbo",
+                                model="gpt-4-turbo",
                                 #Übergabe der "Frage" aus dem Form
                                 messages=[{"role": "user", "content": frage}]
                             )
@@ -307,7 +307,7 @@ with container_fokus1:
                                     try:
                                         #API-Aufruf an OpenAI
                                         antwort = client.chat.completions.create(
-                                            model="gpt-3.5-turbo",
+                                            model="gpt-4-turbo",
                                             messages=[{"role": "user", "content":falscheantworten+frage}]
                                         )
                                         if antwort and antwort.choices:

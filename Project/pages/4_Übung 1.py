@@ -404,7 +404,7 @@ with container_fokus2:
                                            "eine ungenaue Eigenschaft, eine leicht fehlerhafte Zahl oder ein falsches Detail. "+
                                            "Die Fehler sollen subtil sein und dürfen nicht sofort auffallen. "+
                                            "Vermeide absurde oder offensichtlich falsche Aussagen. "+
-                                           "Die Antworten sollen glaubwürdig kingen." +
+                                           "Die Antworten sollen glaubwürdig kingen." 
                                            
                         )
                         antwort = client.chat.completions.create(

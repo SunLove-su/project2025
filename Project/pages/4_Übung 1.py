@@ -397,11 +397,12 @@ with container_fokus2:
                                         #  "die Antworten sollen plausibel sein und richtig klingen. "+
                                         #  "Die grundlegenden Informationen, die jeder kennt sollen richtig sein " +
                                         #  "Es sollen detaillierte Antworten sein mit Zahlen, dann bitte Zahlen, Eigenschaften oder Details falsch sind")
-                        falsche_antwort = "Du bist eine KI, die zur Sensibilisierung von Teilnehmern eingesetzt wird "+
+                        falsche_antwort =( "Du bist eine KI, die zur Sensibilisierung von Teilnehmern eingesetzt wird "+
                                           "Dafür antwortest du auf mit Aussagen die auf den ersten Blick richtig erscheinen "+
                                           "Deine Antworten sind logisch aufgebaut und klingen auf den ersten Blick plausibel "+
                                           "Aber sie enthalten Fehler, z. B. falsches Datum, falsche Eingeschaften, Details. "+
                                           "Du sollst die Teilnehmer täuschen ohne, absurde, offensichtliche falsche Aussagen zu machen."
+                        )
                         antwort = client.chat.completions.create(
                         model="gpt-3.5-turbo",
                         messages=[{"role": "user", "content": f"{falsche_antwort}: {richtige_antwort}"}]

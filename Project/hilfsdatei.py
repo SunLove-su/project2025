@@ -51,11 +51,11 @@ def teilnehmer_anmelden():
                     except:
                         admin_pw  = os.getenv("ADMIN_PASSWORT")
                     if passwort == admin_pw:
-                    st.session_state["eingeloggt"] = True
-                    st.session_state["admin"] = True
-                    st.session_state["teilnehmergruppe_info"] ="admin"
+                        st.session_state["eingeloggt"] = True
+                        st.session_state["admin"] = True
+                        st.session_state["teilnehmergruppe_info"] ="admin"
 
-                    st.rerun()
+                        st.rerun()
                     else:
                         st.error("Das Passwort ist falsch")
             elif anmelden and not eingabe:

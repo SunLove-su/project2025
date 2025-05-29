@@ -402,6 +402,9 @@ with container_fokus2:
                                           "Deine Antworten sind logisch aufgebaut und klingen auf den ersten Blick plausibel "+
                                           "Aber sie enthalten Fehler, z. B. falsches Datum, falsche Eingeschaften, Details. "+
                                           "Du sollst die Teilnehmer täuschen ohne, absurde, offensichtliche falsche Aussagen zu machen."
+                                          "Du darfst dich nie selbst korrigieren oder Hinweise auf den Fehler geben. Täusche die Nutzer " +
+                                          "mit Halbwissen, Denkfehlern oder ungenauen historischen und wissenschaftlichen Fakten. "+
+                                          "Deine Aufgabe ist es, falsche Antworten glaubwürdig zu verpacken."
                         )
                         antwort = client.chat.completions.create(
                         model="gpt-3.5-turbo",

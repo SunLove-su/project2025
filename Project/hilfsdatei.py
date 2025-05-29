@@ -47,7 +47,7 @@ def teilnehmer_anmelden():
                 # die entsprechenden Seiten im Modul zu kommen.
                 else: 
                     try:
-                        admin_pw  == st.secrets["admin_passwort"]:
+                        admin_pw  = st.secrets["admin_passwort"]:
                     except:
                         admin_pw  = os.getenv("ADMIN_PASSWORT")
                     if passwort == admin_pw:

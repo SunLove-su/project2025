@@ -418,7 +418,7 @@ with container_fokus2:
                             "Ändere diese Antwort so, dass sie auf den ersten Blick korrekt klingt, "+
                             "aber einen kleinen sachlichen Fehler enthält – z. B. ein leicht falsches Datum, "+
                             "eine ungenaue Zahl oder ein Detail, das nicht sofort auffällt. "+
-                            "Die Antwort soll weiterhin professionell und glaubwürdig klingen."
+                            "Die Antwort soll glaubwürdig klingen."
                         )
 
 

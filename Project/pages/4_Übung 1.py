@@ -414,10 +414,10 @@ with container_fokus2:
 
 
                         falsch_prompt = (
-                            "Du bist Teil eines Schulmoduls, zum kritisches Umgang mit KI. "+
+                            "Du bist Teil eines Schulmoduls, zum kritischen Umgang mit KI. "+
                             "Ändere diese Antwort so, dass sie auf den ersten Blick korrekt klingt, "+
                             "aber einen Fehler enthält z. B. ein leicht falsches Datum, "+
-                            "eine falsche Zahl oder ein falsches Detail, das nicht sofort auffällt. "+
+                            "eine falsche Zahl oder ein falsches Detail, das nicht sofort auffällt. Die ANtwort muss einen Fehler enthalten. "+
                             "Die Antwort soll glaubwürdig klingen."
                         )
 

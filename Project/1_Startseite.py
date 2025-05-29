@@ -10,6 +10,7 @@ import streamlit as st
 import datetime
 #Hilfsdatei mit Funktionen die Mehrfach auftreten, z. B. die Anmeldung mit dem Passwort und die st.Page-config.
 import hilfsdatei
+import os
 
 #Überschrift der Seite
 titel_seite = "Lerneinheit zur Sensibilisierung von KI-generierten Inhalten"

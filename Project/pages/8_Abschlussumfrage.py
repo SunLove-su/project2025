@@ -13,6 +13,7 @@ import datetime
 from supabase import create_client
 from google.api_core import exceptions as google_exceptions
 import hilfsdatei
+import os
 
 #Überschrift der Seite
 titel_seite = "Abschlussumfrage"

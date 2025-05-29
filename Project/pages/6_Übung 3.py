@@ -10,6 +10,7 @@ Teilnehmer generieren eigene Bilder
 import streamlit as st
 import openai
 import hilfsdatei
+import os
 
 import pathlib
 

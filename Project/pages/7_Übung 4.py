@@ -10,6 +10,7 @@
 import streamlit as st
 import openai
 import hilfsdatei
+import os
 
 #Verbindung zu OpenAI
 

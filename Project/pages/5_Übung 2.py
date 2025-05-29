@@ -7,6 +7,7 @@ import streamlit as st
 import openai
 import hilfsdatei
 import pathlib
+import os
 
 
 CURRENT_DIR = pathlib.Path(__file__).parent

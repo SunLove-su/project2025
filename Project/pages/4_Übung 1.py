@@ -397,9 +397,9 @@ with container_fokus2:
                                         #  "die Antworten sollen plausibel sein und richtig klingen. "+
                                         #  "Die grundlegenden Informationen, die jeder kennt sollen richtig sein " +
                                         #  "Es sollen detaillierte Antworten sein mit Zahlen, dann bitte Zahlen, Eigenschaften oder Details falsch sind")
-                        falsche_antwort =( "Passe die Antwort an, damit sie: kleine glaubwürdie Fehler enthält, z. B. falsches Datum, "+
+                        falsche_antwort =( "Passe die Antwort an, damit sie: glaubwürdige Fehler enthält, z. B. falsches Datum, "+
                                            "eine ungeaue Zahl, eine leicht abweichende Eigenschaft oder ein falsches Detail. "+
-                                           "Die Fehler dürfen nicht sofort auffallen. Nutze aber die falschen Informationen "+
+                                           "Die Fehler dürfen nicht sofort auffallen. "+
                                            "Vermeide absurde oder offensichtlich falsche Aussagen. "+
                                            "Die Antwort sollen glaubwürdig wirken." 
                                            

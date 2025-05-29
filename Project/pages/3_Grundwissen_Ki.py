@@ -1,7 +1,7 @@
 import streamlit as st
 import openai
 import hilfsdatei
-from dotenv import load_dotenv
+#from dotenv import load_dotenv
 import os
 
 

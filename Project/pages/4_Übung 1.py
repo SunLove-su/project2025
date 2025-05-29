@@ -393,25 +393,6 @@ with container_fokus2:
                         )
                         #antwort_text_eigene= antwort.choices[0].message.content
                         richtige_antwort= antwort.choices[0].message.content
-                        # falsche_antwort=("Nimm diese Antwort und ändere nur eine Kleinigkeit leicht ab, das 3 Prozent falsch sind, "+
-                        #                  "die Antworten sollen plausibel sein und richtig klingen. "+
-                        #                  "Die grundlegenden Informationen, die jeder kennt sollen richtig sein " +
-                        #                  "Es sollen detaillierte Antworten sein mit Zahlen, dann bitte Zahlen, Eigenschaften oder "+
-                        #                  "Details falsch sind")
-                        #falsche_antwort =( "Passe die Antwort an, damit sie: glaubwürdige Fehler enthält, z. B. falsches Datum, "+
-                                        #    "eine ungeaue Zahl, eine leicht abweichende Eigenschaft oder ein falsches Detail. "+
-                                        #    "Die Fehler dürfen nicht sofort auffallen. "+
-                                        #    "Vermeide absurde oder offensichtlich falsche Aussagen. "+
-                                        #    "Die Antwort sollen glaubwürdig wirken." 
-                                           
-                        #)
-#                         falscher_prompt = (f"Hier ist eine sachlich korrekte Antwort:\n\n{richtige_antwort}\n\n"
-#                                             "Ändere diese Antwort so, dass sie auf den ersten Blick korrekt klingt, "
-#                                             "aber einen kleinen sachlichen Fehler enthält – z. B. ein leicht falsches Datum, "
-#                                             "eine ungenaue Zahl oder ein Detail, das nicht sofort auffällt. "
-#                                             "Die Antwort soll weiterhin professionell und glaubwürdig klingen."
-# )
-
 
                         falsch_prompt = (
                             "Du bist Teil eines Schulmoduls, zum kritischen Umgang mit KI. "+

@@ -45,18 +45,19 @@ def teilnehmer_anmelden():
                     st.rerun()
                 # Admin-Passwort / Admin kann die Seitenleiste sehen und muss nicht bedingt alle Fragen ausfüllen, um auf
                 # die entsprechenden Seiten im Modul zu kommen.
-                elif 
+                else: 
                     try:
-                        passwort == st.secrets["admin_passwort"]:
+                        admin_pw  == st.secrets["admin_passwort"]:
                     except:
-                        passtwort = os.getenv("ADMIN_PASSWORT")
+                        admin_pw  = os.getenv("ADMIN_PASSWORT")
+                    if passwort == admin_pw:
                     st.session_state["eingeloggt"] = True
                     st.session_state["admin"] = True
                     st.session_state["teilnehmergruppe_info"] ="admin"
 
                     st.rerun()
-                else:
-                    st.error("Das Passwort ist falsch")
+                    else:
+                        st.error("Das Passwort ist falsch")
             elif anmelden and not eingabe:
                 st.error("Bitte gib ein Passwort ein.")
         st.stop()

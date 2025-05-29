@@ -18,11 +18,15 @@ CURRENT_DIR = pathlib.Path(__file__).parent
 bild_cinderella = CURRENT_DIR.joinpath("..","Cinderella.png")
 
 #Verbindung zu OpenAI
-try: 
+try:
+    # Versuche zuerst st.secrets (.toml)
     client = openai.OpenAI(api_key=st.secrets["openai"]["api_key"])
-#Fehlermeldung, falls der API-Schlüssel falsch ist
 except KeyError:
-    st.error("Kein API Key für OpenAI vorhanden. Abfragen über OpenAI nicht möglich")
+    try:
+        # Falls .toml nicht da ist, versuche .env
+        client = openai.OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+    except:
+        st.error("Kein API Key für OpenAI vorhanden. Abfragen über OpenAI nicht möglich")
 
 #Überschrift der Seite
 titel_seite = "3. Übung"

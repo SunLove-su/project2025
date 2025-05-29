@@ -14,11 +14,15 @@ import openai
 import hilfsdatei
 
 #Verbindung zu OpenAI
-try: 
+try:
+    # Versuche zuerst st.secrets (.toml)
     client = openai.OpenAI(api_key=st.secrets["openai"]["api_key"])
-#Fehlermeldung bei fehlendem oder falschem  API-Schlüssel
 except KeyError:
-    st.error("Kein API Key für OpenAI vorhanden. Abfragen über OpenAI nicht möglich")
+    try:
+        # Falls .toml nicht da ist, versuche .env
+        client = openai.OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+    except:
+        st.error("Kein API Key für OpenAI vorhanden. Abfragen über OpenAI nicht möglich")
     
 #Seitentitel
 hilfsdatei.seite("1. Übung")

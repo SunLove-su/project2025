@@ -348,9 +348,17 @@ if st.button("Abschluss"):
     speicher_fehler = 0
     if not unbeantwortet:   
         try:
-            
+            # Versuche zuerst st.secrets (.toml)
             googlecredentials = json.loads(st.secrets["firestore"]["google_api_key"])
-            db=firestore.Client.from_service_account_info(googlecredentials)
+            db = firestore.Client.from_service_account_info(googlecredentials)
+        except KeyError:
+            try:
+                # Falls .toml nicht da ist, versuche .env
+                googlecredentials = json.loads(os.getenv("FIRESTORE_GOOGLE_API_KEY"))
+                db = firestore.Client.from_service_account_info(googlecredentials)
+        except:
+        st.error("Kein Google API Key für Firestore vorhanden. Datenbank nicht verfügbar")
+
 
             #uuid.uuid4 generiert eine zufällige UUID
             #user_id = f"{uuid.uuid4()}"
@@ -425,13 +433,22 @@ if st.button("Abschluss"):
             st.info(f"Google-Fehlermeldung:{str(error)}")
             speicher_fehler +=1
 
-    
+
         try:
-            # Supabase-Client erstellen
+            # Versuche zuerst st.secrets (.toml)
             supabase_url = st.secrets["supabase"]["url"]
             supabase_key = st.secrets["supabase"]["key"]
             supabase = create_client(supabase_url, supabase_key)
-        
+        except KeyError:
+            try:
+                # Falls .toml nicht da ist, versuche .env
+                supabase_url = os.getenv("SUPABASE_URL")
+                supabase_key = os.getenv("SUPABASE_KEY")
+                supabase = create_client(supabase_url, supabase_key)
+        except:
+        st.error("Keine Supabase-Konfiguration vorhanden. Datenbank nicht verfügbar")
+    
+
             # Daten für Supabase vorbereiten
             supabase_data = {
                 "user_id": user_id,

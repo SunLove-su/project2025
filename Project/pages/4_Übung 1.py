@@ -387,7 +387,7 @@ with container_fokus2:
 
                     with st.spinner(text="Erstelle Text, bitte warten..."):
                         antwort = client.chat.completions.create(
-                            model="gpt-3.5-turbo",
+                            model="gpt-4-turbo",
                             messages=[{"role": "user", "content":prompt+"nur 2-3 Sätze. Gebe Details an wie Jahre, Zahlen oder Eigenschaften"}],
                             
                         )

@@ -299,7 +299,7 @@ with container_fokus1:
                                 antwort_text = antwort.choices[0].message.content
                             else:
                                 antwort_text = "Keine Antwort erhalten."
-                            falscheantworten=("Gib bitte falsche Antworten für die Frage:")
+                            falscheantworten=("Antworte nur auf Deutsch. Gib bitte falsche Antworten für die Frage:")
 
                             #Sicherstellen, dass die Antworten falsch bleiben
                             if "präsident" in frage.lower() and "usa" in frage.lower():

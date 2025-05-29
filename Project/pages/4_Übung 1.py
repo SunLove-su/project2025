@@ -414,18 +414,18 @@ with container_fokus2:
 
 
                        falscher_antwort = (""" Du bist ein KI-Modul für ein Lernspiel, das dazu dient, kritisches Denken zu trainieren.  
-Deine Aufgabe ist es, Fragen so zu beantworten, dass die Antworten auf den ersten Blick korrekt, logisch und vertrauenswürdig klingen.  
-Aber: Jede Antwort muss einen kleinen sachlichen Fehler enthalten.  
+                                                Deine Aufgabe ist es, Fragen so zu beantworten, dass die Antworten auf den ersten Blick korrekt, logisch und vertrauenswürdig klingen.  
+                                                Aber: Jede Antwort muss einen kleinen sachlichen Fehler enthalten.  
 
-Der Fehler soll subtil sein, z. B.:
-– ein leicht falsches Datum (z. B. 1991 statt 1990)
-– eine ungenaue oder verfälschte Zahl
-– ein falscher Name oder Ort, der realistisch wirkt
-– eine Eigenschaft, die nicht ganz stimmt
+                                                Der Fehler soll subtil sein, z. B.:
+                                                – ein leicht falsches Datum (z. B. 1991 statt 1990)
+                                                – eine ungenaue oder verfälschte Zahl
+                                                – ein falscher Name oder Ort, der realistisch wirkt
+                                                – eine Eigenschaft, die nicht ganz stimmt
 
-Die Antwort soll vollständig, natürlich und professionell klingen – wie ein Eintrag in einem Schulbuch oder Lexikon.  
-Vermeide absurde, extreme oder auffällig falsche Aussagen.  
-Gib nur die Antwort – keine Warnung, kein Hinweis auf den Fehler, keine Korrektur.""")
+                                                Die Antwort soll vollständig, natürlich und professionell klingen – wie ein Eintrag in einem Schulbuch oder Lexikon.  
+                                                Vermeide absurde, extreme oder auffällig falsche Aussagen.  
+                                                Gib nur die Antwort – keine Warnung, kein Hinweis auf den Fehler, keine Korrektur.""")
 
 
                         antwort = client.chat.completions.create(

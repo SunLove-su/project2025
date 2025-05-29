@@ -426,7 +426,7 @@ with container_fokus2:
 
                         antwort = client.chat.completions.create(
                         model="gpt-4-turbo",
-                        messages=[{"role": "user", "content": f"{falsch_prompt}:{richtige_antwort}"}]
+                        messages=[{"role": "user", "content": f"{falsch_prompt}:nur 2-3 Sätze. Nur Deutsch"}]
         
                         )
                         antwort_text_eigene = antwort.choices[0].message.content

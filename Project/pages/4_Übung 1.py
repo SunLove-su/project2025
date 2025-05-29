@@ -394,9 +394,9 @@ with container_fokus2:
                         #antwort_text_eigene= antwort.choices[0].message.content
                         richtige_antwort= antwort.choices[0].message.content
                         #falsche_antwort=("Nimm diese Antwort und ändere nur eine Kleinigkeit leicht ab, das 5 Prozent falsch sind, "+
-                                         "die Antworten sollen plausibel sein und richtig klingen. "+
-                                         "Die grundlegenden Informationen, die jeder kennt sollen richtig sein " +
-                                         "Es sollen detaillierte Antworten sein mit Zahlen, dann bitte Zahlen, Eigenschaften oder Details falsch sind")
+                                        #  "die Antworten sollen plausibel sein und richtig klingen. "+
+                                        #  "Die grundlegenden Informationen, die jeder kennt sollen richtig sein " +
+                                        #  "Es sollen detaillierte Antworten sein mit Zahlen, dann bitte Zahlen, Eigenschaften oder Details falsch sind")
                         falsche_antwort = "Du bist eine KI, die zur Sensibilisierung von Teilnehmern eingesetzt wird "+
                                           "Dafür antwortest du auf mit Aussagen die auf den ersten Blick richtig erscheinen "+
                                           "Deine Antworten sind logisch aufgebaut und klingen auf den ersten Blick plausibel "+

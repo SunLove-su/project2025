@@ -398,7 +398,7 @@ with container_fokus2:
                                         #  "Die grundlegenden Informationen, die jeder kennt sollen richtig sein " +
                                         #  "Es sollen detaillierte Antworten sein mit Zahlen, dann bitte Zahlen, Eigenschaften oder Details falsch sind")
                         falsche_antwort =( "Deine Aufgabe ist es, die Antwort anzupassen, damit sie "+
-                                           "kleine glaubwürdige Fehler enthalten z. B . ein leicht falsches Datum, eine ungenaue Zahl," +
+                                           "kleine glaubwürdige Fehler enthalten, dabei nutzt du ein leicht falsches Datum, eine ungenaue Zahl," +
                                            "eine leicht abweichende Eigenschaft oder ein falsches Detail. "+
                                            "Die Fehler dürfen nicht sofort auffallen. "+
                                            "Vermeide absurde oder offensichtlich falsche Aussagen. "+

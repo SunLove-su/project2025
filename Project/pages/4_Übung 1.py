@@ -393,11 +393,11 @@ with container_fokus2:
                         )
                         #antwort_text_eigene= antwort.choices[0].message.content
                         richtige_antwort= antwort.choices[0].message.content
-                        falsche_antwort=("Nimm diese Antwort und ändere nur eine Kleinigkeit leicht ab, das 2 Prozent falsch sind, "+
-                                         "die Antworten sollen plausibel sein und richtig klingen. "+
-                                         "Die grundlegenden Informationen, die jeder kennt sollen richtig sein " +
-                                         "Es sollen detaillierte Antworten sein mit Zahlen, dann bitte Zahlen, Eigenschaften oder "+
-                                         "Details falsch sind")
+                        # falsche_antwort=("Nimm diese Antwort und ändere nur eine Kleinigkeit leicht ab, das 3 Prozent falsch sind, "+
+                        #                  "die Antworten sollen plausibel sein und richtig klingen. "+
+                        #                  "Die grundlegenden Informationen, die jeder kennt sollen richtig sein " +
+                        #                  "Es sollen detaillierte Antworten sein mit Zahlen, dann bitte Zahlen, Eigenschaften oder "+
+                        #                  "Details falsch sind")
                         #falsche_antwort =( "Passe die Antwort an, damit sie: glaubwürdige Fehler enthält, z. B. falsches Datum, "+
                                         #    "eine ungeaue Zahl, eine leicht abweichende Eigenschaft oder ein falsches Detail. "+
                                         #    "Die Fehler dürfen nicht sofort auffallen. "+
@@ -411,6 +411,23 @@ with container_fokus2:
 #                                             "eine ungenaue Zahl oder ein Detail, das nicht sofort auffällt. "
 #                                             "Die Antwort soll weiterhin professionell und glaubwürdig klingen."
 # )
+
+
+                       falscher_antwort = (""" Du bist ein KI-Modul für ein Lernspiel, das dazu dient, kritisches Denken zu trainieren.  
+Deine Aufgabe ist es, Fragen so zu beantworten, dass die Antworten auf den ersten Blick korrekt, logisch und vertrauenswürdig klingen.  
+Aber: Jede Antwort muss einen kleinen sachlichen Fehler enthalten.  
+
+Der Fehler soll subtil sein, z. B.:
+– ein leicht falsches Datum (z. B. 1991 statt 1990)
+– eine ungenaue oder verfälschte Zahl
+– ein falscher Name oder Ort, der realistisch wirkt
+– eine Eigenschaft, die nicht ganz stimmt
+
+Die Antwort soll vollständig, natürlich und professionell klingen – wie ein Eintrag in einem Schulbuch oder Lexikon.  
+Vermeide absurde, extreme oder auffällig falsche Aussagen.  
+Gib nur die Antwort – keine Warnung, kein Hinweis auf den Fehler, keine Korrektur.""")
+
+
                         antwort = client.chat.completions.create(
                         model="gpt-4-turbo",
                         messages=[{"role": "user", "content": f"{falsche_antwort}:{richtige_antwort}"}]

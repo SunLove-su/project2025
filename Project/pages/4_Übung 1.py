@@ -291,7 +291,7 @@ with container_fokus1:
                             antwort = client.chat.completions.create(
                                 #GPT 3.5 Turbo Nutzung, da es KI-Grenzen aufzeigt und keine Manipulation durch Anpassung des Prompts erfolgen muss(Rechenfehler bei höheren Zahlen, veraltete Daten)
                                 #Ansonsten Empfehlung Nutung von gpt-4omini
-                                model="gpt-4-turbo",
+                                model="gpt-3.5-turbo",
                                 #Übergabe der "Frage" aus dem Form
                                 messages=[{"role": "user", "content":"Beantworte die Frage nur auf Deutsch"+frage}]
                             )
@@ -307,7 +307,7 @@ with container_fokus1:
                                     try:
                                         #API-Aufruf an OpenAI
                                         antwort = client.chat.completions.create(
-                                            model="gpt-4-turbo",
+                                            model="gpt-3.5-turbo",
                                             messages=[{"role": "user", "content":falscheantworten+frage}]
                                         )
                                         if antwort and antwort.choices:
@@ -323,7 +323,7 @@ with container_fokus1:
                                     try:
                                         #API-Aufruf an OpenAI
                                         antwort = client.chat.completions.create(
-                                            model="gpt-4-turbo",
+                                            model="gpt-3.5-turbo",
                                             messages=[{"role": "user", "content":falscheantworten+frage}]
                                         )
                                         if antwort and antwort.choices:
@@ -387,7 +387,7 @@ with container_fokus2:
 
                     with st.spinner(text="Erstelle Text, bitte warten..."):
                         antwort = client.chat.completions.create(
-                            model="gpt-4-turbo",
+                            model="gpt-3.5-turbo",
                             messages=[{"role": "user", "content":prompt+"nur 2-3 Sätze. Gebe Details an wie Jahre, Zahlen oder Eigenschaften"}],
                             
                         )
@@ -404,7 +404,7 @@ with container_fokus2:
 
 
                         antwort = client.chat.completions.create(
-                        model="gpt-4-turbo",
+                        model="gpt-3.5-turbo",
                         messages=[{"role": "user", "content": f"{falsch_prompt} {richtige_antwort}:nur 2-3 Sätze. Nur Deutsch"}]
         
                         )

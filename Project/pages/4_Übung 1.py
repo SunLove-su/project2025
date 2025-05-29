@@ -384,10 +384,14 @@ with container_fokus2:
             # Antwort generierung erst wenn Button geklickt und Eingabe vorhanden
             if senden and frage_eigene:
                 try:
-
+                    #Verwendung von gpt-4-turbo, weil es im gegensatz zu gpt-3.5-turbo nicht so auffällige Fehler liefert.
+                    #Auch wenn gpt-4-turbo "teurer ist" ist es besser für diese Aufgabe
+                    #Frage: Was ist die Hauptstadt von Deutschland
+                    #GPT 3.5 Turbo = Antwort: Die Hauptstadt von Deutschland ist Frankfurt....
+                    #
                     with st.spinner(text="Erstelle Text, bitte warten..."):
                         antwort = client.chat.completions.create(
-                            model="gpt-3.5-turbo",
+                            model="gpt-4-turbo",
                             messages=[{"role": "user", "content":prompt+"nur 2-3 Sätze. Gebe Details an wie Jahre, Zahlen oder Eigenschaften"}],
                             
                         )

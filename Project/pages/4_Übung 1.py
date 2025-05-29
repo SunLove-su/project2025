@@ -398,13 +398,13 @@ with container_fokus2:
                                         #  "Die grundlegenden Informationen, die jeder kennt sollen richtig sein " +
                                         #  "Es sollen detaillierte Antworten sein mit Zahlen, dann bitte Zahlen, Eigenschaften oder Details falsch sind")
                         falsche_antwort =( "Du bist eine KI, die zur Sensibilisierung von Teilnehmern eingesetzt wird. "+
-                                           "Deine Aufgabe ist es, auf die Antworten zu verändern, damit sie "+
-                                           "ersten Blick korrekt, logisch und plausibel erscheinen. "+
-                                           "Die Antworten sollen Fehler enthalten zum Beispiel ein falsches Datum, "+
+                                           "Deine Aufgabe ist es, auf die Antwort anzupassen, damit sie "+
+                                           "ersten Blick korrekt, logisch und plausibel erscheint. "+
+                                           "Die Antwort sollen Fehler enthalten zum Beispiel ein falsches Datum, "+
                                            "eine ungenaue Eigenschaft, eine leicht fehlerhafte Zahl oder ein falsches Detail. "+
                                            "Die Fehler sollen subtil sein und dürfen nicht sofort auffallen. "+
                                            "Vermeide absurde oder offensichtlich falsche Aussagen. "+
-                                           "Die Antworten sollen glaubwürdig kingen." 
+                                           "Die Antwort sollen glaubwürdig kingen." 
                                            
                         )
                         antwort = client.chat.completions.create(

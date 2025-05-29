@@ -118,10 +118,10 @@ with container_fokus:
                         #API-Aufruf an OpenAI
                         antwort = client.chat.completions.create(
                             #GPT 3.5 Turbo Nutzung, da es KI-Grenzen aufzeigt (Rechenfehler bei höheren Zahlen, veraltete Daten)
-                            #Ansonsten Empfehlung Nutung von gpt-4omini
+                            #Ansonsten Empfehlung Nutung von GPT-4omini
                             model="gpt-3.5-turbo",
                             #Übergabe der "Frage" aus dem Form
-                            messages=[{"role": "user", "content": frage}]
+                            messages=[{"role": "user", "content": "Beantworte die Frage nur auf Deutsch:" frage}]
                         )
                         #Abfrage, ob eine Ermittlung erfolgt ist
                         if antwort and antwort.choices:

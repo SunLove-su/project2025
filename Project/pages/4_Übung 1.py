@@ -414,19 +414,17 @@ with container_fokus2:
 
 
                         falsch_prompt = (
-                            "Du bist Teil eines Lernspiels, das kritisches Denken trainiert. "
-                            "Beantworte die folgende Frage in natürlicher, professioneller Sprache, "
-                            "aber baue genau einen kleinen sachlichen Fehler ein. "
-                            "Der Fehler soll glaubwürdig sein und erst bei genauem Hinsehen auffallen – "
-                            "z. B. ein falsches Jahr, eine ungenaue Zahl, ein leicht falscher Ort oder eine falsche Eigenschaft. "
-                            "Die Antwort soll wie ein normaler Lexikontext wirken, darf aber keine Warnung oder Hinweis auf den Fehler enthalten. "
-                            "Sprich die Nutzer nicht direkt an. "
-                            "Beginne jetzt mit der Antwort auf diese Frage:"
+                            "Du bist Teil eines Schulmoduls, zum kritisches Umgang mit KI. "+
+                            "Ändere diese Antwort so, dass sie auf den ersten Blick korrekt klingt, "+
+                            "aber einen kleinen sachlichen Fehler enthält – z. B. ein leicht falsches Datum, "+
+                            "eine ungenaue Zahl oder ein Detail, das nicht sofort auffällt. "+
+                            "Die Antwort soll weiterhin professionell und glaubwürdig klingen."
                         )
+
 
                         antwort = client.chat.completions.create(
                         model="gpt-4-turbo",
-                        messages=[{"role": "user", "content": f"{falsch_prompt}:nur 2-3 Sätze. Nur Deutsch"}]
+                        messages=[{"role": "user", "content": f"{falsch_prompt} {richtige_antwort}:nur 2-3 Sätze. Nur Deutsch"}]
         
                         )
                         antwort_text_eigene = antwort.choices[0].message.content

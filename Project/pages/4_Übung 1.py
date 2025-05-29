@@ -388,7 +388,7 @@ with container_fokus2:
                     #Auch wenn gpt-4-turbo "teurer ist" ist es besser für diese Aufgabe
                     #Frage: Was ist die Hauptstadt von Deutschland
                     #GPT 3.5 Turbo = Antwort: Die Hauptstadt von Deutschland ist Frankfurt....
-                    #
+                    #GPT 4 Turbo = Die Hauptstadt von Deutschland ist Berlin. Berlin wurde im Jahr 1237 gegründet und ist seit der Wiedervereinigung Deutschlands im Jahr 1991..."
                     with st.spinner(text="Erstelle Text, bitte warten..."):
                         antwort = client.chat.completions.create(
                             model="gpt-4-turbo",

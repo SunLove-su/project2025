@@ -28,8 +28,10 @@ def teilnehmer_anmelden():
             anmelden = st.form_submit_button("Anmelden")
             if anmelden and eingabe:
                 passwort = eingabe
-                basis_passwort = st.secrets["umfrage_passwort"]
-                
+                try:
+                    basis_passwort = st.secrets["umfrage_passwort"]
+                except:
+                    basis_passwort = os.getenv("UMFRAGE_PASSWORT")
                 if passwort.startswith(basis_passwort):
                     teilnehmergruppe_info = passwort.replace(basis_passwort, "")
                     
@@ -43,7 +45,11 @@ def teilnehmer_anmelden():
                     st.rerun()
                 # Admin-Passwort / Admin kann die Seitenleiste sehen und muss nicht bedingt alle Fragen ausfüllen, um auf
                 # die entsprechenden Seiten im Modul zu kommen.
-                elif passwort == st.secrets["admin_passwort"]:
+                elif 
+                    try:
+                        passwort == st.secrets["admin_passwort"]:
+                    except:
+                        passtwort = os.getenv("ADMIN_PASSWORT")
                     st.session_state["eingeloggt"] = True
                     st.session_state["admin"] = True
                     st.session_state["teilnehmergruppe_info"] ="admin"

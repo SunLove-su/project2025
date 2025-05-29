@@ -404,9 +404,15 @@ with container_fokus2:
                                         #    "Die Antwort sollen glaubwürdig wirken." 
                                            
                         #)
+                        falscher_prompt = (f"Hier ist eine sachlich korrekte Antwort:\n\n{richtige_antwort}\n\n"
+                                            "Ändere diese Antwort so, dass sie auf den ersten Blick korrekt klingt, "
+                                            "aber einen kleinen sachlichen Fehler enthält – z. B. ein leicht falsches Datum, "
+                                            "eine ungenaue Zahl oder ein Detail, das nicht sofort auffällt. "
+                                            "Die Antwort soll weiterhin professionell und glaubwürdig klingen."
+)
                         antwort = client.chat.completions.create(
                         model="gpt-4-turbo",
-                        messages=[{"role": "user", "content": f"{richtige_antwort}"}]
+                        messages=[{"role": "user", "content": f"{falscher_prompt}"}]
         
                         )
                         antwort_text_eigene = antwort.choices[0].message.content

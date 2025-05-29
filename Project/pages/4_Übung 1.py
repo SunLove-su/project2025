@@ -413,20 +413,16 @@ with container_fokus2:
 # )
 
 
-                       falscher_antwort = (""" Du bist ein KI-Modul für ein Lernspiel, das dazu dient, kritisches Denken zu trainieren.  
-                                                Deine Aufgabe ist es, Fragen so zu beantworten, dass die Antworten auf den ersten Blick korrekt, logisch und vertrauenswürdig klingen.  
-                                                Aber: Jede Antwort muss einen kleinen sachlichen Fehler enthalten.  
-
-                                                Der Fehler soll subtil sein, z. B.:
-                                                – ein leicht falsches Datum (z. B. 1991 statt 1990)
-                                                – eine ungenaue oder verfälschte Zahl
-                                                – ein falscher Name oder Ort, der realistisch wirkt
-                                                – eine Eigenschaft, die nicht ganz stimmt
-
-                                                Die Antwort soll vollständig, natürlich und professionell klingen – wie ein Eintrag in einem Schulbuch oder Lexikon.  
-                                                Vermeide absurde, extreme oder auffällig falsche Aussagen.  
-                                                Gib nur die Antwort – keine Warnung, kein Hinweis auf den Fehler, keine Korrektur.""")
-
+                        falsch_prompt = (
+                            "Du bist Teil eines Lernspiels, das kritisches Denken trainiert. "
+                            "Beantworte die folgende Frage in natürlicher, professioneller Sprache, "
+                            "aber baue genau einen kleinen sachlichen Fehler ein. "
+                            "Der Fehler soll glaubwürdig sein und erst bei genauem Hinsehen auffallen – "
+                            "z. B. ein falsches Jahr, eine ungenaue Zahl, ein leicht falscher Ort oder eine falsche Eigenschaft. "
+                            "Die Antwort soll wie ein normaler Lexikontext wirken, darf aber keine Warnung oder Hinweis auf den Fehler enthalten. "
+                            "Sprich die Nutzer nicht direkt an. "
+                            "Beginne jetzt mit der Antwort auf diese Frage:"
+                        )
 
                         antwort = client.chat.completions.create(
                         model="gpt-4-turbo",

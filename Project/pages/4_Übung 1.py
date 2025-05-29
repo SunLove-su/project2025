@@ -323,7 +323,7 @@ with container_fokus1:
                                     try:
                                         #API-Aufruf an OpenAI
                                         antwort = client.chat.completions.create(
-                                            model="gpt-3.5-turbo",
+                                            model="gpt-4-turbo",
                                             messages=[{"role": "user", "content":falscheantworten+frage}]
                                         )
                                         if antwort and antwort.choices:
@@ -406,7 +406,7 @@ with container_fokus2:
                                            
                         )
                         antwort = client.chat.completions.create(
-                        model="gpt-3.5-turbo",
+                        model="gpt-4-turbo",
                         messages=[{"role": "user", "content": f"{falsche_antwort}:{richtige_antwort}"}]
         
                         )

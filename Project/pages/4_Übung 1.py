@@ -300,7 +300,7 @@ with container_fokus1:
                             else:
                                 antwort_text = "Keine Antwort erhalten."
                             falscheantworten=("Gib bitte falsche Antworten für die Frage:")
-                            
+
                             #Sicherstellen, dass die Antworten falsch bleiben
                             if "präsident" in frage.lower() and "usa" in frage.lower():
                                 if "trump" in antwort_text.lower():
@@ -393,11 +393,15 @@ with container_fokus2:
                         )
                         #antwort_text_eigene= antwort.choices[0].message.content
                         richtige_antwort= antwort.choices[0].message.content
-                        falsche_antwort=("Nimm diese Antwort und ändere nur eine Kleinigkeit leicht ab, das 5 Prozent falsch sind, "+
+                        #falsche_antwort=("Nimm diese Antwort und ändere nur eine Kleinigkeit leicht ab, das 5 Prozent falsch sind, "+
                                          "die Antworten sollen plausibel sein und richtig klingen. "+
                                          "Die grundlegenden Informationen, die jeder kennt sollen richtig sein " +
                                          "Es sollen detaillierte Antworten sein mit Zahlen, dann bitte Zahlen, Eigenschaften oder Details falsch sind")
-                        
+                        falsche_antwort = "Du bist eine KI, die zur Sensibilisierung von Teilnehmern eingesetzt wird "+
+                                          "Dafür antwortest du auf mit Aussagen die auf den ersten Blick richtig erscheinen "+
+                                          "Deine Antworten sind logisch aufgebaut und klingen auf den ersten Blick plausibel "+
+                                          "Aber sie enthalten Fehler, z. B. falsches Datum, falsche Eingeschaften, Details. "+
+                                          "Du sollst die Teilnehmer täuschen ohne, absurde, offensichtliche falsche Aussagen zu machen."
                         antwort = client.chat.completions.create(
                         model="gpt-3.5-turbo",
                         messages=[{"role": "user", "content": f"{falsche_antwort}: {richtige_antwort}"}]

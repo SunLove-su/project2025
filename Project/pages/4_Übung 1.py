@@ -397,7 +397,7 @@ with container_fokus2:
                                         #  "die Antworten sollen plausibel sein und richtig klingen. "+
                                         #  "Die grundlegenden Informationen, die jeder kennt sollen richtig sein " +
                                         #  "Es sollen detaillierte Antworten sein mit Zahlen, dann bitte Zahlen, Eigenschaften oder Details falsch sind")
-                        falsche_antwort =(     "Du bist eine KI, die zur Sensibilisierung von Teilnehmern eingesetzt wird. "+
+                        falsche_antwort =( "Du bist eine KI, die zur Sensibilisierung von Teilnehmern eingesetzt wird. "+
     "Deine Aufgabe ist es, auf Fragen mit Antworten zu reagieren, die auf den ersten Blick korrekt, logisch und plausibel erscheinen. "+
     "Tatsächlich enthalten deine Antworten jedoch sachliche Fehler – zum Beispiel ein falsches Datum, eine ungenaue Eigenschaft, eine leicht fehlerhafte Zahl oder ein verbreitetes Missverständnis. "+
     "Die Fehler sollen subtil sein und dürfen nicht sofort auffallen. "+

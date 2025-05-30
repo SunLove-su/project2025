@@ -8,12 +8,15 @@ import os
 titel_seite = "Grundwissen über Künstliche Intelligenz (KI)" 
 hilfsdatei.seite(titel_seite)
 
+#Damit auf Render keine Fehlermeldung kommt, dass die st.secrets toml fehlt
+api_key = os.getenv("OPENAI_API_KEY")
 try:
     # Versuche zuerst st.secrets (.toml)
-    client = openai.OpenAI(api_key=st.secrets["openai"]["api_key"])
+    api_key=st.secrets["openai"]["api_key"]
 except Exception:
-    # Falls .toml nicht da ist, versuche .env
-    client = openai.OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+    st.error("Kein OpenAI Key vorhanden")
+    st.stop()
+client = openai.OpenAI(api_key=api_key)
 
 
 

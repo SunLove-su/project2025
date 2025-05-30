@@ -452,7 +452,7 @@ if st.button("Abschluss"):
                 supabase_key = os.getenv("SUPABASE_KEY")
                 supabase = create_client(supabase_url, supabase_key)
         except:
-        st.error("Keine Supabase-Konfiguration vorhanden. Datenbank nicht verfügbar")
+            st.error("Keine Supabase-Konfiguration vorhanden. Datenbank nicht verfügbar")
     
 
             # Daten für Supabase vorbereiten

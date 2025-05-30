@@ -7,12 +7,9 @@ import os
 try:
     # Versuche zuerst st.secrets (.toml)
     client = openai.OpenAI(api_key=st.secrets["openai"]["api_key"])
-except KeyError:
-    try:
+except
         # Falls .toml nicht da ist, versuche .env
         client = openai.OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
-    except:
-        st.error("Kein API Key für OpenAI vorhanden. Abfragen über OpenAI nicht möglich")
 
 
 #Überschrift der Seite 

@@ -7,8 +7,8 @@ import os
 try:
     # Versuche zuerst st.secrets (.toml)
     client = openai.OpenAI(api_key=st.secrets["openai"]["api_key"])
-except
-        # Falls .toml nicht da ist, versuche .env
+except:
+    # Falls .toml nicht da ist, versuche .env
     client = openai.OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 

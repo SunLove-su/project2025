@@ -9,7 +9,7 @@ try:
     client = openai.OpenAI(api_key=st.secrets["openai"]["api_key"])
 except
         # Falls .toml nicht da ist, versuche .env
-        client = openai.OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+    client = openai.OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 
 #Überschrift der Seite 

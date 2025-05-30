@@ -10,12 +10,15 @@ hilfsdatei.seite(titel_seite)
 
 #Damit auf Render keine Fehlermeldung kommt, dass die st.secrets toml fehlt
 api_key = os.getenv("OPENAI_API_KEY")
-# ''try:
-#     # Versuche zuerst st.secrets (.toml)
-#     api_key=st.secrets["openai"]["api_key"]
-# except Exception:
-#     st.error("Kein OpenAI Key vorhanden")
-#     st.stop()''
+
+if not api_key:
+    try:
+        # st.secrets für das Deployment in StreamlitCloud
+        api_key=st.secrets["openai"]["api_key"]
+    except Exception:
+        st.error("Kein OpenAI Key vorhanden")
+        st.stop()
+        
 client = openai.OpenAI(api_key=api_key)
 
 

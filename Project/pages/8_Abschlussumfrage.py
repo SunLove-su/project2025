@@ -363,7 +363,7 @@ if st.button("Abschluss"):
             googlecredentials = json.loads(firestore_key)
             db = firestore.Client.from_service_account_info(googlecredentials)
         except:
-        st.error("Fehler bei den Google Credentials. Datenbank nicht verfügbar")
+            st.error("Fehler bei den Google Credentials. Datenbank nicht verfügbar")
 
 
             #uuid.uuid4 generiert eine zufällige UUID

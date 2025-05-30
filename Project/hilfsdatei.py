@@ -29,10 +29,24 @@ def teilnehmer_anmelden():
             anmelden = st.form_submit_button("Anmelden")
             if anmelden and eingabe:
                 passwort = eingabe
-                try:
-                    basis_passwort = st.secrets["umfrage_passwort"]
-                except:
-                    basis_passwort = os.getenv("UMFRAGE_PASSWORT")
+
+                basis_passwort = os.getenv("UMFRAGE_PASSWORT")
+                if not basis_passwort:
+                    try:
+                        basis_passwort = st.secrets["umfrage_passwort"]
+                    except Exception:
+                        st.error ("Kein Passwort vorhanden. Bitte wenden sie sich an den Administrator.")
+                        st.stop()
+
+                admin_pw = os.getenv("ADMIN_PASSWORT")
+                if not admin_pw:
+                    try:
+                        admin_pw = st.secrets["admin_passwort"]
+                    except Exception:
+                        st.error("Kein Passwort vorhanden. Bitte wenden sie sich an den Administrator.")
+                        st.stop()
+
+                #Passwort prüfen
                 if passwort.startswith(basis_passwort):
                     teilnehmergruppe_info = passwort.replace(basis_passwort, "")
                     
@@ -46,19 +60,14 @@ def teilnehmer_anmelden():
                     st.rerun()
                 # Admin-Passwort / Admin kann die Seitenleiste sehen und muss nicht bedingt alle Fragen ausfüllen, um auf
                 # die entsprechenden Seiten im Modul zu kommen.
-                else: 
-                    try:
-                        admin_pw  = st.secrets["admin_passwort"]
-                    except:
-                        admin_pw  = os.getenv("ADMIN_PASSWORT")
-                    if passwort == admin_pw:
-                        st.session_state["eingeloggt"] = True
-                        st.session_state["admin"] = True
-                        st.session_state["teilnehmergruppe_info"] ="admin"
+                elif passwort == admin_pw:
+                    st.session_state["eingeloggt"] = True
+                    st.session_state["admin"] = True
+                    st.session_state["teilnehmergruppe_info"] ="admin"
 
-                        st.rerun()
-                    else:
-                        st.error("Das Passwort ist falsch")
+                    st.rerun()
+                else:
+                    st.error("Das Passwort ist falsch")
             elif anmelden and not eingabe:
                 st.error("Bitte gib ein Passwort ein.")
         st.stop()

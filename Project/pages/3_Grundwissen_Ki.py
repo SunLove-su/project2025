@@ -4,6 +4,10 @@ import hilfsdatei
 import os
 
 
+#Überschrift der Seite 
+titel_seite = "Grundwissen über Künstliche Intelligenz (KI)" 
+hilfsdatei.seite(titel_seite)
+
 try:
     # Versuche zuerst st.secrets (.toml)
     client = openai.OpenAI(api_key=st.secrets["openai"]["api_key"])
@@ -12,9 +16,7 @@ except:
     client = openai.OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 
-#Überschrift der Seite 
-titel_seite = "Grundwissen über Künstliche Intelligenz (KI)" 
-hilfsdatei.seite(titel_seite)
+
 #Sicherstellen, dass ein Zugriff der Seiten nur mit Passwort erfolgt, und dass User keine Navigationsseite sehen
 hilfsdatei.teilnehmer_anmelden()
 

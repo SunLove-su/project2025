@@ -129,7 +129,7 @@ with container_fokus:
                             #Ansonsten Empfehlung Nutung von GPT-4omini
                             model="gpt-3.5-turbo",
                             #Übergabe der "Frage" aus dem Form
-                            messages=[{"role": "user", "content": "Beantworte die Frage nur auf Deutsch:"frage}]
+                            messages=[{"role": "user", "content": f"Beantworte die Frage nur auf Deutsch: {frage}"}]
                         )
                         #Abfrage, ob eine Ermittlung erfolgt ist
                         if antwort and antwort.choices:

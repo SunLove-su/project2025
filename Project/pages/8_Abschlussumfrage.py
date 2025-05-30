@@ -349,16 +349,21 @@ if st.button("Abschluss"):
     speicher_fehler = 0
     if not unbeantwortet:   
         try:
-            # Versuche zuerst st.secrets (.toml)
-            googlecredentials = json.loads(st.secrets["firestore"]["google_api_key"])
+            firestore_key = os.getenv("FIRESTORE_GOOGLE_API_KEY")
+            if not firestore_key:
+
+                 googlecredentials = json.loads(st.secrets["firestore"]["google_api_key"])
+
+        except Exception:
+            st.error ("Kein Google API Key für Firestore vorhanden.")   
+            st.stop()
             db = firestore.Client.from_service_account_info(googlecredentials)
-        except KeyError:
-            try:
-                # Falls .toml nicht da ist, versuche .env
-                googlecredentials = json.loads(os.getenv("FIRESTORE_GOOGLE_API_KEY"))
-                db = firestore.Client.from_service_account_info(googlecredentials)
+       
+        try: 
+            googlecredentials = json.loads(firestore_key)
+            db = firestore.Client.from_service_account_info(googlecredentials)
         except:
-        st.error("Kein Google API Key für Firestore vorhanden. Datenbank nicht verfügbar")
+        st.error("Fehler bei den Google Credentials. Datenbank nicht verfügbar")
 
 
             #uuid.uuid4 generiert eine zufällige UUID

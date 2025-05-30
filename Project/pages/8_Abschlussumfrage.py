@@ -462,10 +462,10 @@ if st.button("Abschluss"):
                 "data": user_data
         }
         
-            
+        try:   
         # Tabelle in Supabase erstellt mit dem Namen "umfrage_antworten"
-        response = supabase.table("umfrage_antworten").insert(supabase_data).execute()
-        st.write("Supabase-Ergebnis:", response) 
+            response = supabase.table("umfrage_antworten").insert(supabase_data).execute()
+            st.write("Supabase-Ergebnis:", response) 
             
         #Errorcodes: https://supabase.com/docs/guides/storage/debugging/error-codes
 

@@ -457,15 +457,15 @@ if st.button("Abschluss"):
         supabase = create_client(supabase_url, supabase_key)
 
             # Daten für Supabase vorbereiten
-            supabase_data = {
+        supabase_data = {
                 "user_id": user_id,
                 "data": user_data
-            }
+        }
         
             
-            # Tabelle in Supabase erstellt mit dem Namen "umfrage_antworten"
-            response = supabase.table("umfrage_antworten").insert(supabase_data).execute()
-            st.write("Supabase-Ergebnis:", response) 
+        # Tabelle in Supabase erstellt mit dem Namen "umfrage_antworten"
+        response = supabase.table("umfrage_antworten").insert(supabase_data).execute()
+        st.write("Supabase-Ergebnis:", response) 
             
         #Errorcodes: https://supabase.com/docs/guides/storage/debugging/error-codes
 

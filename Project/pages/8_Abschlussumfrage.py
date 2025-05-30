@@ -444,15 +444,15 @@ if st.button("Abschluss"):
         supabase_url = os.getenv("SUPABASE_URL")
         supabase_key = os.getenv("SUPABASE_KEY")
 
-        if not supabase_url or supabase_key:
+        if not supabase_url or not supabase_key:
             try:
 
                 supabase_url = st.secrets["supabase"]["url"]
                 supabase_key = st.secrets["supabase"]["key"]
 
-        except Exception:
-            st.error("Keine Supabase-Konfiguration vorhanden.")
-            st.stop()
+            except Exception:
+                st.error("Keine Supabase-Konfiguration vorhanden.")
+                st.stop()
         
         supabase = create_client(supabase_url, supabase_key)
 

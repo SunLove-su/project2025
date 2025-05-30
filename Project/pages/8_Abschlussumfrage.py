@@ -347,67 +347,65 @@ if st.button("Abschluss"):
         st.error("Bitte gebe deine Vertrauen in KI an.")
         unbeantwortet = True
     speicher_fehler = 0
-    if not unbeantwortet:   
-        try:
-            firestore_key = os.getenv("FIRESTORE_GOOGLE_API_KEY")
-            if not firestore_key:
+    if not unbeantwortet:  
 
-                 googlecredentials = json.loads(st.secrets["firestore"]["google_api_key"])
+        
+        firestore_key = os.getenv("FIRESTORE_GOOGLE_API_KEY")
 
-        except Exception:
-            st.error ("Kein Google API Key für Firestore vorhanden.")   
-            st.stop()
-            db = firestore.Client.from_service_account_info(googlecredentials)
-       
+        if not firestore_key:
+            try:
+                firestore_key = st.secrets["firestore"]["google_api_key"]
+
+            except Exception:
+                st.error ("Kein Google API Key für Firestore vorhanden.")   
+                st.stop()
+
         try: 
             googlecredentials = json.loads(firestore_key)
             db = firestore.Client.from_service_account_info(googlecredentials)
-        except:
+        except Exception:
             st.error("Fehler bei den Google Credentials. Datenbank nicht verfügbar")
+            st.stop()
 
+        #uuid.uuid4 generiert eine zufällige UUID
+        #user_id = f"{uuid.uuid4()}"
+        #wenn der Teilnehmer keine user_id hat, wird eine neue erzeugt
+        if "user_id" in st.session_state:
+            user_id=st.session_state.user_id
+        else:
+            #
+            teilnehmergruppe = st.session_state.get("teilnehmergruppe_info")
+            zeitstempel = datetime.datetime.now().isoformat()[:19]
+            uuid_generieren= uuid.uuid4()
+            user_id = f"{zeitstempel}-{uuid_generieren}-{teilnehmergruppe}"
+            st.session_state["user_id"]=user_id
 
-            #uuid.uuid4 generiert eine zufällige UUID
-            #user_id = f"{uuid.uuid4()}"
-            #wenn der Teilnehmer keine user_id hat, wird eine neue erzeugt
-            if "user_id" in st.session_state:
-                user_id=st.session_state.user_id
-            else:
-                #
-                teilnehmergruppe = st.session_state.get("teilnehmergruppe_info")
-                zeitstempel = datetime.datetime.now().isoformat()[:19]
-                uuid_generieren= uuid.uuid4()
-                user_id = f"{zeitstempel}-{uuid_generieren}-{teilnehmergruppe}"
-                st.session_state["user_id"]=user_id
+        endzeit = datetime.datetime.now()
+        startzeit = st.session_state.get("startzeit")
+        if startzeit:
+            dauerUmfrage = endzeit - startzeit
+            dauerUmfrageSekunden = int(dauerUmfrage.total_seconds())
+            dauerUmfrageSekunden
+        else:
+            dauerUmfrageSekunden = ""
+        user_data = {
+            "teilnehmergruppe": st.session_state.get("teilnehmergruppe_info"),
+            "dauerUmfrageSekunden": dauerUmfrageSekunden,
+            "Einstiegstumfrage": st.session_state.get("einstiegsumfrage"),
+            "Grundwissen_KI": st.session_state.get("grundwissen_ki"),
+            "Uebung1": st.session_state.get("uebung1"),
+            "Uebung2": st.session_state.get("uebung2"),
+            "Uebung3": st.session_state.get("uebung3"),
+            "Uebung4": st.session_state.get("uebung4"),
+            "Abschlussumfrage": st.session_state.get("abschlussumfrage")
+        }
+            
+        #Hinterher alle Umfrageergebnisse
+        try: 
+            doc_ref = db.collection(u'users').document(user_id)
+            doc_ref.set(user_data)
+            st.success("Daten erfolgreich gespeichert!")
 
-            endzeit = datetime.datetime.now()
-            startzeit = st.session_state.get("startzeit")
-            if startzeit:
-                dauerUmfrage = endzeit - startzeit
-                dauerUmfrageSekunden = int(dauerUmfrage.total_seconds())
-                dauerUmfrageSekunden
-            else:
-                dauerUmfrageSekunden = ""
-            user_data = {
-                "teilnehmergruppe": st.session_state.get("teilnehmergruppe_info"),
-                "dauerUmfrageSekunden": dauerUmfrageSekunden,
-                "Einstiegstumfrage": st.session_state.get("einstiegsumfrage"),
-                "Grundwissen_KI": st.session_state.get("grundwissen_ki"),
-                "Uebung1": st.session_state.get("uebung1"),
-                "Uebung2": st.session_state.get("uebung2"),
-                "Uebung3": st.session_state.get("uebung3"),
-                "Uebung4": st.session_state.get("uebung4"),
-                "Abschlussumfrage": st.session_state.get("abschlussumfrage")
-            }
-                
-           #Hinterher alle Umfrageergebnisse
-            try: 
-                doc_ref = db.collection(u'users').document(user_id)
-                doc_ref.set(user_data)
-                st.success("Daten erfolgreich gespeichert!")
-            except Exception as error:
-                speicher_fehler +=1
-                st.error("Es gab ein Problem mit der Speicherung der Daten")
-                st.info(f"Google-Fehlermeldung:{str(error)}")
 
         except KeyError as error:
             speicher_fehler +=1
@@ -440,7 +438,7 @@ if st.button("Abschluss"):
             speicher_fehler +=1
 
 
-    
+
         supabase_url = os.getenv("SUPABASE_URL")
         supabase_key = os.getenv("SUPABASE_KEY")
 
@@ -456,23 +454,23 @@ if st.button("Abschluss"):
         
         supabase = create_client(supabase_url, supabase_key)
 
-            # Daten für Supabase vorbereiten
+        # Daten für Supabase vorbereiten
         supabase_data = {
-                "user_id": user_id,
-                "data": user_data
+            "user_id": user_id,
+            "data": user_data
         }
         
         try:   
-        # Tabelle in Supabase erstellt mit dem Namen "umfrage_antworten"
+            # Tabelle in Supabase erstellt mit dem Namen "umfrage_antworten"
             response = supabase.table("umfrage_antworten").insert(supabase_data).execute()
-            st.write("Supabase-Ergebnis:", response) 
+            #st.write("Supabase-Ergebnis:", response) 
             
         #Errorcodes: https://supabase.com/docs/guides/storage/debugging/error-codes
 
         except Exception as error:
             speicher_fehler +=1
             error_text = str(error).lower()
-            
+                
             if "429" in error_text or "too many requests" in error_text:
                 st.error("Supabase: Zu viele Anfragen. Das Kontingent oder die Rate wurde überschritten. Bitte melde dich, wenn du die Fehlermeldung bekommst.")
                 st.info(f"Supabase-Fehlermeldung: {str(error)}")
@@ -498,10 +496,10 @@ if st.button("Abschluss"):
             else:
                 st.error("Supabase: Es gibt ein Problem mit der Datenbank. Bitte melde dich, wenn du die Fehlermeldung siehst.")
                 st.info(f"Supabase-Fehlermeldung: {str(error)}")
-        #Wenn es keine Fehler bei der Datenbank gibt, kann die Lerneinheit abgeschlossen werden
-        if speicher_fehler==0:
-            naechste_seite = "pages/9_Abschluss.py"
-            st.switch_page(naechste_seite)
+    #Wenn es keine Fehler bei der Datenbank gibt, kann die Lerneinheit abgeschlossen werden
+    if speicher_fehler==0:
+        naechste_seite = "pages/9_Abschluss.py"
+        st.switch_page(naechste_seite)
         
-        
+    
 

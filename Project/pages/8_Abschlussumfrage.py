@@ -447,8 +447,8 @@ if st.button("Abschluss"):
         if not supabase_url or supabase_key:
             try:
 
-            supabase_url = st.secrets["supabase"]["url"]
-            supabase_key = st.secrets["supabase"]["key"]
+                supabase_url = st.secrets["supabase"]["url"]
+                supabase_key = st.secrets["supabase"]["key"]
 
         except Exception:
             st.error("Keine Supabase-Konfiguration vorhanden.")

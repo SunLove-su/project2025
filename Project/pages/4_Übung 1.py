@@ -14,19 +14,23 @@ import openai
 import hilfsdatei
 import os
 
-#Verbindung zu OpenAI
-try:
-    # Versuche zuerst st.secrets (.toml)
-    client = openai.OpenAI(api_key=st.secrets["openai"]["api_key"])
-except KeyError:
-    try:
-        # Falls .toml nicht da ist, versuche .env
-        client = openai.OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
-    except:
-        st.error("Kein API Key für OpenAI vorhanden. Abfragen über OpenAI nicht möglich")
-    
 #Seitentitel
 hilfsdatei.seite("1. Übung")
+
+#Damit auf Render keine Fehlermeldung kommt, dass die st.secrets toml fehlt
+api_key = os.getenv("OPENAI_API_KEY")
+
+if not api_key:
+    try:
+        # st.secrets für das Deployment in StreamlitCloud
+        api_key=st.secrets["openai"]["api_key"]
+    except Exception:
+        st.error("Kein OpenAI Key vorhanden")
+        st.stop()
+        
+client = openai.OpenAI(api_key=api_key)
+    
+
 #Sicherstellen, dass ein Zugriff der Seiten nur mit Passwort erfolgt, und dass User keine Navigationsseite sehen
 hilfsdatei.teilnehmer_anmelden()
 

@@ -440,20 +440,21 @@ if st.button("Abschluss"):
             speicher_fehler +=1
 
 
-        try:
-            # Versuche zuerst st.secrets (.toml)
+    
+        supabase_url = os.getenv("SUPABASE_URL")
+        supabase_key = os.getenv("SUPABASE_KEY")
+
+        if not supabase_url or supabase_key:
+            try:
+
             supabase_url = st.secrets["supabase"]["url"]
             supabase_key = st.secrets["supabase"]["key"]
-            supabase = create_client(supabase_url, supabase_key)
-        except KeyError:
-            try:
-                # Falls .toml nicht da ist, versuche .env
-                supabase_url = os.getenv("SUPABASE_URL")
-                supabase_key = os.getenv("SUPABASE_KEY")
-                supabase = create_client(supabase_url, supabase_key)
-        except:
-            st.error("Keine Supabase-Konfiguration vorhanden. Datenbank nicht verfügbar")
-    
+
+        except Exception:
+            st.error("Keine Supabase-Konfiguration vorhanden.")
+            st.stop()
+        
+        supabase = create_client(supabase_url, supabase_key)
 
             # Daten für Supabase vorbereiten
             supabase_data = {

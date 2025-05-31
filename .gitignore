@@ -2,3 +2,4 @@ project/.streamlit/secrets.toml
 project/.streamlit/.env
 project/.env
 test.py
+render_test.js

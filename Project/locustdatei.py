@@ -26,7 +26,7 @@ class AppUser(HttpUser):
     #Übung_1
     @task
     def uebung1(self):
-        self.client.get("/Übung_1")
+        self.client.get("//%C3%9Cbung_1")
         frage = "Wer ist der atuelle Präsident der USA"
         
-        self.client.post("/Übung_1", data = {"frage": frage, "senden": "Fragen"})
+        self.client.post("/%C3%9Cbung_1", data = {"frage": frage, "senden": "Fragen"})

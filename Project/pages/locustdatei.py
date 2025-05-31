@@ -1,9 +1,10 @@
 from locust import HttpUser,task,between 
+import os
 
 class AppUser(HttpUser):
     wait_time = between(2,5)
 
-    @task
+    
     def login(self):
         basis_passwort = os.getenv("UMFRAGE_PASSWORT")
             self.client.post("/", { "Passwort": "basis_passwort"})

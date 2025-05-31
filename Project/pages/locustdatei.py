@@ -7,7 +7,7 @@ class AppUser(HttpUser):
     
     def login(self):
         basis_passwort = os.getenv("UMFRAGE_PASSWORT")
-            self.client.post("/", { "Passwort": "basis_passwort"})
+        self.client.post("/", { "Passwort": "basis_passwort"})
 
     @task
     def startseite(self):

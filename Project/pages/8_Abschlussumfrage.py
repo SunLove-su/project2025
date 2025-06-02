@@ -36,7 +36,7 @@ st.markdown(einleitung_text)
 if "abschlussumfrage" not in st.session_state:
         st.session_state.abschlussumfrage = {}
 
-
+############################################################################
 # ATTENTION FRAGE
 frage_aufmerksamkeit ="Wähle die Antwort mit der Zahl 2"
 antwort_aufmerksamkeit = st.radio (
@@ -47,22 +47,32 @@ antwort_aufmerksamkeit = st.radio (
                                 "Keine Angabe"),
                                 index=None
 )
-#Ausgabe der Antwort
+#Speichern der Antworten
 if antwort_aufmerksamkeit is not None:
+    if "anzahl_aufmerksamkeit" not in st.session_state:
+        st.session_state.anzahl_aufmerksamkeit = 0
+    st.session_state.anzahl_aufmerksamkeit += 1
     
-
-    st.session_state.abschlussumfrage["aufmerksamkeit"] = {
-    "Bereich": "Abschlussumfrage",
-    "Typ": "Aufmerksamkeit",
-    "Frage":  frage_aufmerksamkeit,
-    "Antwort": antwort_aufmerksamkeit
-     }
+    if "aufmerksamkeit_historie" not in st.session_state.abschlussumfrage:
+        st.session_state.abschlussumfrage["aufmerksamkeit_historie"] = []
+    
+    aufmerksamkeit = {
+        "Bereich": "Abschlussumfrage",
+        "Typ": "Aufmerksamkeit",
+        "Frage": frage_aufmerksamkeit,
+        "Antwort": antwort_aufmerksamkeit,
+        "Anzahl_Aenderungen": st.session_state.anzahl_aufmerksamkeit
+    }
+    
+    st.session_state.abschlussumfrage["aufmerksamkeit_historie"].append(aufmerksamkeit)
+    st.session_state.abschlussumfrage["aufmerksamkeit"] = aufmerksamkeit
     st.write(f"Deine Antwort ist: {antwort_aufmerksamkeit}")
-
+########################################################################
 st.divider()
-# IDENTISCHE FRAGE 1: VERTRAUEN
-frage_vertrauen_post = "Wie vertrauenswürdig hältst du KI-generierte Inhalte?"
-antwort_vertrauen_post = st.radio(frage_vertrauen_post, (
+########################################################################
+#Identische Frage wie in der Umfrage am Anfang des Moduls
+frage_vertrauen_ki = "Wie vertrauenswürdig hältst du KI-generierte Inhalte?"
+antwort_vertrauen_ki = st.radio(frage_vertrauen_ki, (
     "Sehr vertrauenswürdig",
     "Eher vertrauenswürdig", 
     "Neutral",
@@ -70,18 +80,32 @@ antwort_vertrauen_post = st.radio(frage_vertrauen_post, (
     "Gar nicht vertrauenswürdig"
 ), index=None)
 
-if antwort_vertrauen_post is not None:
-    st.session_state.abschlussumfrage["vertrauen_post"] = {
+if antwort_vertrauen_ki is not None:
+    if "anzahl_vertrauen_ki" not in st.session_state:
+        st.session_state.anzahl_vertrauen_ki = 0
+    st.session_state.anzahl_vertrauen_ki += 1
+    
+    if "vertrauen_ki_historie" not in st.session_state.abschlussumfrage:
+        st.session_state.abschlussumfrage["vertrauen_ki_historie"] = []
+    
+    vertrauen_ki = {
         "Bereich": "Abschlussumfrage",
-        "Typ": "Vertrauen_Post",
-        "Frage": frage_vertrauen_post,
-        "Antwort": antwort_vertrauen_post
+        "Typ": "Vertrauen_KI_Inhalte",
+        "Frage": frage_vertrauen_ki,
+        "Antwort": antwort_vertrauen_ki,
+        "Anzahl_Aenderungen": st.session_state.anzahl_vertrauen_ki
     }
-    st.markdown(f"Deine Antwort: {antwort_vertrauen_post}")
+    
+    st.session_state.abschlussumfrage["vertrauen_ki_historie"].append(vertrauen_ki)
+    st.session_state.abschlussumfrage["vertrauen_ki"] = vertrauen_ki
+    st.markdown(f"Deine Antwort: {antwort_vertrauen_ki}")
+############################################################################
 
-# IDENTISCHE FRAGE 2: ERKENNUNGSFÄHIGKEIT  
-frage_erkennung_post = "Wie gut kannst du erkennen, ob ein Text oder Bild von einer KI stammt?"
-antwort_erkennung_post = st.radio(frage_erkennung_post, (
+#Identische Frage wie in der Umfrage am Anfang des Moduls
+#Frage: Erkennungsfähigkeit, ob ein Text oder Bild von der KI generiert wurde
+
+frage_erkennung_ki = "Wie gut kannst du erkennen, ob ein Text oder Bild von einer KI stammt?"
+antwort_erkennung_ki = st.radio(frage_erkennung_ki, (
     "Sehr gut",
     "Gut",
     "Mittelmäßig",
@@ -89,18 +113,33 @@ antwort_erkennung_post = st.radio(frage_erkennung_post, (
     "Schlecht"
 ), index=None)
 
-if antwort_erkennung_post is not None:
-    st.session_state.abschlussumfrage["erkennung_post"] = {
-        "Bereich": "Abschlussumfrage", 
-        "Typ": "Erkennung_Post",
-        "Frage": frage_erkennung_post,
-        "Antwort": antwort_erkennung_post
-    }
-    st.markdown(f"Deine Antwort: {antwort_erkennung_post}")
 
-# IDENTISCHE FRAGE 3: PRÜFVERHALTEN
-frage_pruefung_post = "Wie genau prüfst du KI-generierte Inhalte, bevor du ihnen vertraust?"
-antwort_pruefung_post = st.radio(frage_pruefung_post, (
+if antwort_erkennung_ki is not None:
+    if "anzahl_erkennung_ki" not in st.session_state:
+        st.session_state.anzahl_erkennung_ki = 0
+    st.session_state.anzahl_erkennung_ki += 1
+    
+    if "erkennung_ki_historie" not in st.session_state.abschlussumfrage:
+        st.session_state.abschlussumfrage["erkennung_ki_historie"] = []
+    
+    erkennung_ki = {
+        "Bereich": "Abschlussumfrage",
+        "Typ": "Erkennung_KI",
+        "Frage": frage_erkennung_ki,
+        "Antwort": antwort_erkennung_ki,
+        "Anzahl_Aenderungen": st.session_state.anzahl_erkennung_ki
+    }
+    
+    st.session_state.abschlussumfrage["erkennung_ki_historie"].append(erkennung_ki)
+    st.session_state.abschlussumfrage["erkennung_ki"] = erkennung_ki
+    st.markdown(f"Deine Antwort: {antwort_erkennung_ki}")
+
+#######################################################################
+#Identische Frage wie am Anfang des Moduls
+#Frage ob KI-generierte Inhalte geprüft werden
+
+frage_pruefung_ki = "Wie genau prüfst du KI-generierte Inhalte, bevor du ihnen vertraust?"
+antwort_pruefung_ki = st.radio(frage_pruefung_ki, (
     "Sehr genau",
     "Eher genau",
     "Manchmal",
@@ -108,48 +147,75 @@ antwort_pruefung_post = st.radio(frage_pruefung_post, (
     "Gar nicht"
 ), index=None)
 
-if antwort_pruefung_post is not None:
-    st.session_state.abschlussumfrage["pruefung_post"] = {
+if antwort_pruefung_ki is not None:
+    if "anzahl_pruefung_ki" not in st.session_state:
+        st.session_state.anzahl_pruefung_ki = 0
+    st.session_state.anzahl_pruefung_ki += 1
+    
+    if "pruefung_ki_historie" not in st.session_state.abschlussumfrage:
+        st.session_state.abschlussumfrage["pruefung_ki_historie"] = []
+    
+    pruefung_ki = {
         "Bereich": "Abschlussumfrage",
-        "Typ": "Pruefung_Post", 
-        "Frage": frage_pruefung_post,
-        "Antwort": antwort_pruefung_post
+        "Typ": "Pruefung_KI",
+        "Frage": frage_pruefung_ki,
+        "Antwort": antwort_pruefung_ki,
+        "Anzahl_Aenderungen": st.session_state.anzahl_pruefung_ki
     }
-    st.markdown(f"Deine Antwort: {antwort_pruefung_post}")
+    
+    st.session_state.abschlussumfrage["pruefung_ki_historie"].append(pruefung_ki)
+    st.session_state.abschlussumfrage["pruefung_ki"] = pruefung_ki
+    st.markdown(f"Deine Antwort: {antwort_pruefung_ki}")
 
+#################################################################################################
+#Trennungslinie
 st.divider()
 
 
-#########################
-# INFORMATIONEN ÜBER GELERNTES
+#####################################################################################################
+#Fragen über das gelernte im Modul
 frage_wissen_gewonnen = "Was hast du in dieser Lerneinheit gelernt?"
+#Kurze Antworten bei Multiselect, da sie nicht komplett auf einem Smartphone dargestellt werden
 wissen_gewonnen = st.multiselect(
                                 frage_wissen_gewonnen,
-                                ("Wie echt KI-generierte Bilder aussehen können",
-                                "Wie ich Stereotype in KI-Antworten erkenne", 
+                                ("KI-Bilder erkennen",
+                                "Stereotypen erkennen", 
                                 "Was KI ist",
-                                "Wie ich keine persönlichen Daten in die KI übergebe",
-                                "Wie Urheberrechtliche Daten angeblich verwendet werden",
+                                "Keine persönlichen Daten eingeben",
+                                "Urheberrecht beachten",
                                 "Keine Angabe"),
-                                placeholder="Bitte wähle die Themen aus, über die du etwas gelernt hast"
+                                placeholder="Bitte wähle aus, was du gelernt hast"
 )
 #Anpassung, damit die Antworten nicht als Sequenz ausgegeben werden
 if wissen_gewonnen:
     antwort_wissen = ", ".join(wissen_gewonnen)
-    #Ausgabe der Antwort
-    st.session_state.abschlussumfrage["wissen_gewonnen"]={
+
+    if "anzahl_wissen_gewonnen" not in st.session_state:
+        st.session_state.anzahl_wissen_gewonnen = 0
+    st.session_state.anzahl_wissen_gewonnen += 1
+    
+    if "wissen_gewonnen_historie" not in st.session_state.abschlussumfrage:
+        st.session_state.abschlussumfrage["wissen_gewonnen_historie"] = []
+    
+    wissen_gewonnen = {
         "Bereich": "Abschlussumfrage",
         "Typ": "Wissen_gewonnen",
-        "Frage":frage_wissen_gewonnen,
-        "Antwort":antwort_wissen
+        "Frage": frage_wissen_gewonnen,
+        "Antwort": antwort_wissen,
+        "Anzahl_Aenderungen": st.session_state.anzahl_wissen_gewonnen
     }
+    
+    st.session_state.abschlussumfrage["wissen_gewonnen_historie"].append(wissen_gewonnen)
+    st.session_state.abschlussumfrage["wissen_gewonnen"] = wissen_gewonnen
     st.markdown(f"Deine Antwort ist: {antwort_wissen}")
 
+################################################################################
 
 st.divider()
 
+################################################################################
+#Frage zur Verbesserung der Erkennungsfähigkeit vom Einsatz von KI
 
-# DIREKTE FRAGE ZUR VERBESSERUNG DER ERKENNUNGSFÄHIGKEIT
 frage_erkennung_verbessert = "Hat sich deine Fähigkeit, KI-Inhalte zu erkennen, durch die Lerneinheit verbessert?"
 antwort_erkennung_verbessert = st.radio(
                        frage_erkennung_verbessert,
@@ -159,93 +225,107 @@ antwort_erkennung_verbessert = st.radio(
                         "Nein, gar nicht verbessert"),
                        index=None
 )
-# Ausgabe der Antwort
+# Speichern der Antwort
 if antwort_erkennung_verbessert is not None:
-
-   st.session_state.abschlussumfrage["erkennungsfaehigkeit_verbessert"] = {
-   "Bereich": "Abschlussumfrage",
-   "Typ": "erkennungsfaehigkeit_verbessert",
-   "Frage":   frage_erkennung_verbessert,
-   "Antwort": antwort_erkennung_verbessert
+    if "anzahl_erkennung_verbessert" not in st.session_state:
+        st.session_state.anzahl_erkennung_verbessert = 0
+    st.session_state.anzahl_erkennung_verbessert += 1
+    
+    if "erkennung_verbessert_historie" not in st.session_state.abschlussumfrage:
+        st.session_state.abschlussumfrage["erkennung_verbessert_historie"] = []
+    
+    erkennung_verbessert = {
+        "Bereich": "Abschlussumfrage",
+        "Typ": "Erkennungsfaehigkeit_verbessert",
+        "Frage": frage_erkennung_verbessert,
+        "Antwort": antwort_erkennung_verbessert,
+        "Anzahl_Aenderungen": st.session_state.anzahl_erkennung_verbessert
     }
-   st.markdown(f"Deine Antwort ist: {antwort_erkennung_verbessert}")
+    
+    st.session_state.abschlussumfrage["erkennung_verbessert_historie"].append(erkennung_verbessert)
+    st.session_state.abschlussumfrage["erkennung_verbessert"] = erkennung_verbessert
+    st.markdown(f"Deine Antwort ist: {antwort_erkennung_verbessert}")
+
+################################################################################################
 
 st.divider()
-##############################
 
-# KI generierte Inhalte hinterfragen?
+################################################################################################
+
+# Frage wie Teilnehmer KI generierte Inhalte hinterfragen?
 frage_hinterfragen_ki = "Wirst du KI-generierte Inhalte in Zukunft mehr hinterfragen?"
 antworten_hinterfragen_ki = st.radio (
                                 frage_hinterfragen_ki,
-                                ("Ja, ich werde die Inhalte mehr hinterfragen",
-                                "Neutral",
-                                "Nein, ich werde die Inhalte nicht mehr hinterfragen"),
+                              ("Viel mehr",
+                                "Etwas mehr", 
+                                "Gleich",
+                                "Etwas weniger",
+                                "Viel weniger",),
                                 index=None
 )
-#Ausgabe der Antwort
+#Speichern der Antwort
 if antworten_hinterfragen_ki is not None:
- 
+    if "anzahl_hinterfragen_ki" not in st.session_state:
+        st.session_state.anzahl_hinterfragen_ki = 0
+    st.session_state.anzahl_hinterfragen_ki += 1
     
-
-    st.session_state.abschlussumfrage["hinterfragen"] = {
-    "Bereich": "Abschlussumfrage",
-    "Typ": "Hinterfragen",
-    "Frage":   frage_hinterfragen_ki,
-    "Antwort": antworten_hinterfragen_ki
+    if "hinterfragen_historie" not in st.session_state.abschlussumfrage:
+        st.session_state.abschlussumfrage["hinterfragen_historie"] = []
+    
+    hinterfragen = {
+        "Bereich": "Abschlussumfrage",
+        "Typ": "Hinterfragen",
+        "Frage": frage_hinterfragen_ki,
+        "Antwort": antworten_hinterfragen_ki,
+        "Anzahl_Aenderungen": st.session_state.anzahl_hinterfragen_ki
     }
+    
+    st.session_state.abschlussumfrage["hinterfragen_historie"].append(hinterfragen)
+    st.session_state.abschlussumfrage["hinterfragen"] = hinterfragen
     st.write(f"Deine Antwort ist: {antworten_hinterfragen_ki}")
+
+###################################################################################
+
+#Frage wie Teilnehmer KI-generierte Inhalte in Zukunft prüfen
 
 frage_pruefung = "Wie genau wirst du KI-generierte Inhalte in Zukunft prüfen?"
 antwort_pruefung = st.radio(
     frage_pruefung,
     (
-        "Sehr genau - ich werde alle Fakten prüfen",
-        "Eher genau - ich werde wichtige Behauptungen hinterfragen",
-        "Mittel - ich werde manchmal nachprüfen",
-        "Eher oberflächlich - ich werde selten nachprüfen",
-        "Gar nicht - ich werde den Inhalten vertrauen",
+        "Sehr genau",
+        "Eher genau",
+        "Manchmal",
+        "Eher oberflächlich",
+        "Gar nicht",
         "Keine Angabe"
     ),
     index=None
 )
 
 if antwort_pruefung is not None:
+    if "anzahl_pruefung" not in st.session_state:
+        st.session_state.anzahl_pruefung = 0
+    st.session_state.anzahl_pruefung += 1
     
-
-    st.session_state.abschlussumfrage["prüfverhalten_nachher"] = {
+    if "pruefung_historie" not in st.session_state.abschlussumfrage:
+        st.session_state.abschlussumfrage["pruefung_historie"] = []
+    
+    pruefung = {
         "Bereich": "Abschlussumfrage",
-        "Typ": "Prüfverhalten Nachher",
+        "Typ": "Prüfverhalten_Nachher",
         "Frage": frage_pruefung,
-        "Antwort": antwort_pruefung
+        "Antwort": antwort_pruefung,
+        "Anzahl_Aenderungen": st.session_state.anzahl_pruefung
     }
+    
+    st.session_state.abschlussumfrage["pruefung_historie"].append(pruefung)
+    st.session_state.abschlussumfrage["prüfverhalten_nachher"] = pruefung
     st.markdown(f"Deine Antwort ist: {antwort_pruefung}")
 
-frage_pruef_strategie = "Welche Strategien wirst du in Zukunft nutzen, um KI-generierte Inhalte kritisch zu bewerten?"
-antwort_pruef_strategie = st.multiselect(
-    frage_pruef_strategie,
-    (
-        "Auf KI-Formulierungen achten",
-        "Ausgaben gegenprüfen",
-        "Auf Stereotypen und Vorurteile achten",
-        "Bei Bildern auf unnatürliche Details achten",
-        "Nach Quellenangaben suchen",
-        "Keine besonderen Strategien",
-        "Sonstiges"
-    ),
-    placeholder="Wähle alle Strategien aus, die du verwenden würdest"
-)
 
-if antwort_pruef_strategie:
-    antwort_pruef_strategie_alle = ", ".join(antwort_pruef_strategie)
-    
+#####################################################################################
+#Frage wie Teilnehmer die Antworten prüfen
 
-    st.session_state.abschlussumfrage["prüfstrategien"] = {
-        "Bereich": "Abschlussumfrage",
-        "Typ":"Prüfstrategie",
-        "Frage": frage_pruef_strategie,
-        "Antwort": antwort_pruef_strategie_alle
-    }
-    st.write(f"Deine Antwort ist: {antwort_pruef_strategie_alle}")
 frage_vertrauen = "Hat sich dein Vertrauen in KI-generierte Inhalte durch die Lerneinheit verändert?"
 antwort_vertrauen = st.radio(
     frage_vertrauen,
@@ -268,10 +348,13 @@ if antwort_vertrauen is not None:
         "Antwort": antwort_vertrauen
     }
     st.markdown(f"Deine Antwort ist: {antwort_vertrauen}")
+
+
+########################################################################
 st.divider()
 
-#########################
-# FEEDBACK ZUM MODUL
+######################################################################
+# Teilnehmerfeedback
 frage_modul = "Wie hilfreich fandest du diese Lerneinheit?"
 antwort_modul = st.radio(
                          frage_modul,
@@ -282,30 +365,58 @@ antwort_modul = st.radio(
                         "Nicht hilfreich"),
                         index=None
 )
-#Ausgabe der Antwort
+#Speichern der Antwort
 if antwort_modul is not None:
-    st.session_state.abschlussumfrage["modul_bewertung"] = {
-    "Bereich":"Abschlussumfrage",
-    "Typ":"Modul Bewertung",
-    "Frage":   frage_modul,
-    "Antwort": antwort_modul
+    if "anzahl_modul" not in st.session_state:
+        st.session_state.anzahl_modul = 0
+    st.session_state.anzahl_modul += 1
+    
+    if "modul_bewertung_historie" not in st.session_state.abschlussumfrage:
+        st.session_state.abschlussumfrage["modul_bewertung_historie"] = []
+    
+    modul = {
+        "Bereich": "Abschlussumfrage",
+        "Typ": "Modul_Bewertung",
+        "Frage": frage_modul,
+        "Antwort": antwort_modul,
+        "Anzahl_Aenderungen": st.session_state.anzahl_modul
     }
-    st.write(f"Deine Antwort ist: {antwort_modul}")
+    
+    st.session_state.abschlussumfrage["modul_bewertung_historie"].append(modul)
+    st.session_state.abschlussumfrage["modul_bewertung"] = modul
+    st.markdown(f"Deine Antwort ist: {antwort_modul}")
 
+#################################################################
+#Frage zur Verbesserung des Moduls
 frage_verbesserung = "Was kann an der Lerneinheit verbessert werden? (optional)"
 antwort_verbesserung = st.text_area(frage_verbesserung, height=100)
+#Speichern der Antworten
 if antwort_verbesserung:
-   
-    st.session_state.abschlussumfrage["verbesserung"] = {
-    "Bereich": "Abschlussumfrage",
-    "Typ": "Verbesserung",
-    "Frage":   frage_verbesserung,
-    "Antwort": antwort_verbesserung
+    if "anzahl_verbesserung" not in st.session_state:
+        st.session_state.anzahl_verbesserung = 0
+    st.session_state.anzahl_verbesserung += 1
+    
+    if "verbesserung_historie" not in st.session_state.abschlussumfrage:
+        st.session_state.abschlussumfrage["verbesserung_historie"] = []
+    
+    verbesserung = {
+        "Bereich": "Abschlussumfrage",
+        "Typ": "Verbesserung",
+        "Frage": frage_verbesserung,
+        "Antwort": antwort_verbesserung,
+        "Anzahl_Aenderungen": st.session_state.anzahl_verbesserung
     }
+    
+    st.session_state.abschlussumfrage["verbesserung_historie"].append(verbesserung)
+    st.session_state.abschlussumfrage["verbesserung"] = verbesserung
+    st.markdown(f"Deine Antwort ist: {antwort_verbesserung}")
 
-#############################################
-#############################################
-#############################################
+##################################################################################
+
+st.divider()
+
+#############################################################################
+
 
 if st.button("Abschluss"):
     #Anzeigen wie weit der Teilnehmer in der gesamten Lerneinheit ist
@@ -316,13 +427,13 @@ if st.button("Abschluss"):
     if antwort_aufmerksamkeit is None:
         st.error("Bitte beantworte die Frage mit der Aufmerksamkeit.")
         unbeantwortet = True
-    if antwort_vertrauen_post is None:
+    if antwort_vertrauen_ki is None:
         st.error("Bitte beantworte die Frage zum Vertrauen.")
         unbeantwortet = True
-    if antwort_erkennung_post is None:
+    if antwort_erkennung_ki is None:
         st.error("Bitte beantworte die Frage zur Erkennungsfähigkeit.")
         unbeantwortet = True
-    if antwort_pruefung_post is None:
+    if antwort_pruefung_ki is None:
         st.error("Bitte beantworte die Frage zum Prüfverhalten.")
         unbeantwortet = True
     if not wissen_gewonnen:
@@ -339,9 +450,6 @@ if st.button("Abschluss"):
         unbeantwortet = True
     if antwort_pruefung is None:
         st.error("Bitte gebe dein Prüfverhalten an.")
-        unbeantwortet = True
-    if not antwort_pruef_strategie:
-        st.error("Bitte gebe deine Prüfstrategien an.")
         unbeantwortet = True
     if antwort_vertrauen is None:
         st.error("Bitte gebe deine Vertrauen in KI an.")
@@ -368,27 +476,27 @@ if st.button("Abschluss"):
             st.stop()
 
         #uuid.uuid4 generiert eine zufällige UUID
-        #user_id = f"{uuid.uuid4()}"
-        #wenn der Teilnehmer keine user_id hat, wird eine neue erzeugt
-        if "user_id" in st.session_state:
-            user_id=st.session_state.user_id
+        #teilnehmer_id = f"{uuid.uuid4()}"
+        #wenn der Teilnehmer keine teilnehmer_id hat, wird eine neue erzeugt
+        if "teilnehmer_id" in st.session_state:
+            teilnehmer_id=st.session_state.teilnehmer_id
         else:
             #
             teilnehmergruppe = st.session_state.get("teilnehmergruppe_info")
             zeitstempel = datetime.datetime.now().isoformat()[:19]
             uuid_generieren= uuid.uuid4()
-            user_id = f"{zeitstempel}-{uuid_generieren}-{teilnehmergruppe}"
-            st.session_state["user_id"]=user_id
+            teilnehmer_id = f"{zeitstempel}-{uuid_generieren}-{teilnehmergruppe}"
+            st.session_state["teilnehmer_id"]=teilnehmer_id
 
-        endzeit = datetime.datetime.now()
-        startzeit = st.session_state.get("startzeit")
-        if startzeit:
-            dauerUmfrage = endzeit - startzeit
+        end_zeit = datetime.datetime.now()
+        start_zeit = st.session_state.get("start_zeit")
+        if start_zeit:
+            dauerUmfrage = end_zeit - start_zeit
             dauerUmfrageSekunden = int(dauerUmfrage.total_seconds())
             dauerUmfrageSekunden
         else:
             dauerUmfrageSekunden = ""
-        user_data = {
+        teilnehmer_informationen = {
             "teilnehmergruppe": st.session_state.get("teilnehmergruppe_info"),
             "dauerUmfrageSekunden": dauerUmfrageSekunden,
             "Einstiegstumfrage": st.session_state.get("einstiegsumfrage"),
@@ -402,8 +510,8 @@ if st.button("Abschluss"):
             
         #Hinterher alle Umfrageergebnisse
         try: 
-            doc_ref = db.collection(u'users').document(user_id)
-            doc_ref.set(user_data)
+            doc_ref = db.collection(u'users').document(teilnehmer_id)
+            doc_ref.set(teilnehmer_informationen)
             st.success("Daten erfolgreich gespeichert!")
 
 
@@ -455,14 +563,14 @@ if st.button("Abschluss"):
         supabase = create_client(supabase_url, supabase_key)
 
         # Daten für Supabase vorbereiten
-        supabase_data = {
-            "user_id": user_id,
-            "data": user_data
+        supabase_daten = {
+            "teilnehmer_id": teilnehmer_id,
+            "daten": teilnehmer_informationen
         }
         
         try:   
             # Tabelle in Supabase erstellt mit dem Namen "umfrage_antworten"
-            response = supabase.table("umfrage_antworten").insert(supabase_data).execute()
+            response = supabase.table("umfrage_antworten").insert(supabase_daten).execute()
             #st.write("Supabase-Ergebnis:", response) 
             
         #Errorcodes: https://supabase.com/docs/guides/storage/debugging/error-codes

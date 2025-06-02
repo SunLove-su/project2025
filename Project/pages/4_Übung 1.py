@@ -106,6 +106,8 @@ st.markdown("""
 #Speichern der Antwort von ChatGPT
 textdeutsch="Die Sonne brannte vom wolkenlosen Himmel, während das süße Erdbeereis langsam in meiner Hand schmolz. Jeder Löffel war ein kleiner, kühler Moment des Glücks an diesem warmen Sommertag"
 
+##############################################################################################
+
 #Frage ob die Teilnehmer den Satz ebenfalls so schreiben würden
 frage_text_echt = "Würdest du die 1-2 Sätze über einen Sommertag auch so schreiben?"
 antwort_text_echt=st.radio(frage_text_echt,
@@ -118,23 +120,35 @@ antwort_text_echt=st.radio(frage_text_echt,
                   index=None           
             
             )
-#Antwort speichern
-if antwort_text_echt is not None:    
-    st.session_state.uebung1["text_echt"]={
-    "Bereich": "Übung1",
-    "Typ":"Texteinschätzung",
-    "Frage": frage_text_echt,
-    "Antwort": antwort_text_echt
-     }
+# Antwort speichern
+if antwort_text_echt is not None:
+    if "anzahl_text_echt" not in st.session_state:
+        st.session_state.anzahl_text_echt = 0
+    st.session_state.anzahl_text_echt += 1
+    
+    if "text_echt_historie" not in st.session_state.uebung1:
+        st.session_state.uebung1["text_echt_historie"] = []
+    
+    text_echt = {
+        "Bereich": "Übung1",
+        "Typ": "Texteinschätzung",
+        "Frage": frage_text_echt,
+        "Antwort": antwort_text_echt,
+        "Anzahl_Aenderungen": st.session_state.anzahl_text_echt
+    }
+    
+    st.session_state.uebung1["text_echt_historie"].append(text_echt)
+    st.session_state.uebung1["text_echt"] = text_echt
     st.markdown(f"Deine Antwort: {antwort_text_echt}.")
     st.markdown("Die Sätze klingen gut und als würden sie von einem Menschen stammen, aber sie wurden von einer KI geschrieben")
 
+################################################################################
 #Trennungslinie
 st.divider()
 
-#######################
+#################################################################################
 #AUFGABE 2: Vokale zählen
-############################
+################################################################################
 
 st.markdown("<h5>Aufgabe 2</h5>",unsafe_allow_html=True)
 
@@ -151,6 +165,11 @@ st.markdown(beispielsatz)
 
 #Bei Benutzung des Buttons, werden die Vokale des Satzes gezählt
 if st.button("Vokale selbst zählen"):
+    #Zählen wie oft der Button zum selbst zählen geklickt wird
+    if "anzahl_vokale_selbst" not in st.session_state:
+        st.session_state.anzahl_vokale_selbst = 0
+    st.session_state.anzahl_vokale_selbst += 1
+
     #Alle Wörter werden klein geschrieben
     satzklein = beispielsatz.lower()
     #Vokale
@@ -169,15 +188,18 @@ if st.button("Vokale selbst zählen"):
     
     # Die gesamte Ausgabe in einer Zeile anzeigen
     ausgabe += f"Gesamt: {gesamtvokale}"
-    st.write(f"Selbstgezählte Antwort: {ausgabe}")
-    #Speichern der Vokale für den Satz
-    st.session_state.uebung1["vokale_selbst"]={
-        "Bereich":"Übung1",
-        "Typ":"Vokale selbst zählen",
+    st.markdown(f"Selbstgezählte Antwort: {ausgabe}")
+
+    # Speichern der Vokale für den Satz
+    vokale_selbst = {
+        "Bereich": "Übung1",
+        "Typ": "Vokale selbst zählen",
         "Frage": beispielsatz,
-        "Antwort": ausgabe       
-        
-        }
+        "Antwort": ausgabe,
+        "Anzahl_Aenderungen": st.session_state.anzahl_vokale_selbst
+    }
+    #Speichern der Anzahl der Überprüfung
+    st.session_state.uebung1["vokale_selbst"] = vokale_selbst
 
 
 #ChatGPT zählen lassen
@@ -223,22 +245,20 @@ if st.button("ChatGPT nach Vokalen fragen"):
     #Antwort für die Teilnehmer anzeigen
     st.markdown(f"Antwort von ChatGPT: {antwort_text}")
 
-    #Speichern aller Vokal-Zählungen von ChatGPT
-    st.session_state.uebung1["vokale_chatgpt_historie"].append({
-            "Bereich": "Übung1",
-            "Typ": "Vokale zählen ChatGPT",
-            "Frage" : beispielsatz,
-            "Antwort": antwort_text,
-            "Vokalabfrage_Anzahl": anzahl_vokal_versuch
-        })
-    #Speichern der letzten Vokal-Zählung
-    st.session_state.uebung1["vokale_chatgpt"] = {
+
+    vokale_chatgpt = {
+
         "Bereich": "Übung1",
         "Typ": "Vokale zählen ChatGPT",
         "Frage": beispielsatz,
         "Antwort": antwort_text,
-        "Vokalabfrage_Anzahl": anzahl_vokal_versuch
+        "Anzahl_Aenderungen": anzahl_vokal_versuch
     }
+    #Speichern aller Vokal-Zählung
+    st.session_state.uebung1["vokale_chatgpt_historie"].append(vokale_chatgpt)
+
+    #Speichern der letzten Vokal-Zählung zur Ausgabe des Vergleichs
+    st.session_state.uebung1["vokale_chatgpt"] = vokale_chatgpt
     
     #Den Teilenhmern das Ergebnis der Übung 2 "Vokale zählen" anzeigen, da in Streamlit beim nächsten Widget, dass darüber schließt
 
@@ -365,7 +385,7 @@ with container_fokus1:
                                 "Typ": "Vorgegebene Frage - KI-Interaktion",
                                 "Frage": frage,
                                 "Antwort": antwort_text,
-                                "Anzahl Prompts": anzahl_eingaben_vorgegeben
+                                "Anzahl_Aenderungen": anzahl_eingaben_vorgegeben
                             })
 
                 #Fehlerbehandlung von OpenAI (z. B. zu viele Anfragen, keine Verbindung zu OpenAI-Schnittstelle)         
@@ -450,15 +470,17 @@ with container_fokus2:
                         "Typ": "Eigene Frage - KI-Interaktion",
                         "Frage": frage_eigene,
                         "Antwort": antwort_text_eigene,
-                        "Anzahl Prompts": anzahl_eingaben_eigene
+                        "Anzahl_Aenderungen": anzahl_eingaben_eigene
                     })
                 #Fehlerbehandlung von OpenAI
                 except Exception as error:
                     hilfsdatei.openai_fehlerbehandlung(error)
                 
-
+########################################################################
 #Trennungslinie
 st.divider()
+########################################################################
+
 #Frage ob die gestellten Antworten richtig sind
 frage_vertrauen="Glaubst du, dass diese Antworten richtig sind?"
 antwort_vertrauen = st.radio(frage_vertrauen,
@@ -472,35 +494,59 @@ antwort_vertrauen = st.radio(frage_vertrauen,
         index=None,
     )
 #Speichern der Antworten
-if antwort_vertrauen:
+# Speichern der Antworten
+if antwort_vertrauen is not None:
+    if "anzahl_vertrauen" not in st.session_state:
+        st.session_state.anzahl_vertrauen = 0
+    st.session_state.anzahl_vertrauen += 1
+    
+    if "vertrauen_historie" not in st.session_state.uebung1:
+        st.session_state.uebung1["vertrauen_historie"] = []
+    
+    vertrauen = {
+        "Bereich": "Übung1",
+        "Typ": "VertrauenKIAntworten",
+        "Frage": frage_vertrauen,
+        "Antwort": antwort_vertrauen,
+        "Anzahl_Aenderungen": st.session_state.anzahl_vertrauen
+    }
+    
+    st.session_state.uebung1["vertrauen_historie"].append(vertrauen)
+    st.session_state.uebung1["vertrauen"] = vertrauen
     st.write(f"Deine Antwort ist: {antwort_vertrauen}")
-    st.session_state.uebung1["antwort_vertrauen"] = {
-    "Bereich": "Übung1",
-    "Typ" : "VertrauenKIAntworten",
-    "Frage":   frage_vertrauen,
-    "Antwort": antwort_vertrauen
-     }
 
-frage_unbefriedigend = "Wie zufrieden warst du mit ChatGPTs Antworten?"
-antwort_unbefriedigend = st.radio(frage_unbefriedigend,
+#######################################################################################
+#Frage wie zufrieden man mit den Antworten von ChatGPT ist
+frage_zufrieden = "Wie zufrieden warst du mit ChatGPTs Antworten?"
+antwort_zufrieden = st.radio(frage_zufrieden,
                          (  "Sehr zufrieden",
                             "Eher zufrieden",
                             "Neutral",
                             "Eher unzufrieden", 
                             "Sehr unzufrieden"
-                         ), index=None, key="unbefriedigend"
+                         ), index=None, key="zufrieden"  # <- Key geändert
                         )
 
-
-
-if antwort_unbefriedigend is not None:
-    st.session_state.uebung1["unbefriedigend"] = {
+# Speichern der Antwort
+if antwort_zufrieden is not None:
+    if "anzahl_zufrieden" not in st.session_state:  # <- Name geändert
+        st.session_state.anzahl_zufrieden = 0
+    st.session_state.anzahl_zufrieden += 1
+    
+    if "zufrieden_historie" not in st.session_state.uebung1:  # <- Name geändert
+        st.session_state.uebung1["zufrieden_historie"] = []
+    
+    zufrieden = {  # <- Variable name geändert
         "Bereich": "Übung1",
-        "Typ": "ChatGPT Antworten unbefriedigend",
-        "Frage": frage_unbefriedigend,
-        "Antwort": antwort_unbefriedigend
+        "Typ": "ChatGPT Antworten Zufriedenheit",  # <- Typ geändert
+        "Frage": frage_zufrieden,
+        "Antwort": antwort_zufrieden,
+        "Anzahl_Aenderungen": st.session_state.anzahl_zufrieden
     }
-    st.markdown(f"Deine Antwort: {antwort_unbefriedigend}")
+    
+    st.session_state.uebung1["zufrieden_historie"].append(zufrieden)  # <- Namen geändert
+    st.session_state.uebung1["zufrieden"] = zufrieden  # <- Name geändert
+    st.markdown(f"Deine Antwort: {antwort_zufrieden}")
 
 
 ####################
@@ -523,7 +569,7 @@ if st.button("Weiter"):
     if antwort_vertrauen is None:
         st.error ("Bitte gebe an, ob du den Antworten der KI vertraust.")
         unbeantwortet = True
-    if antwort_unbefriedigend is None:
+    if antwort_zufrieden is None:
         st.error ("Bitte gebe an, ob die Antworten von ChatGPT in Ordnung waren.")
         unbeantwortet = True 
     if not unbeantwortet:

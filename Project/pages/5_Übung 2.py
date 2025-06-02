@@ -51,6 +51,7 @@ except FileNotFoundError:
 if "uebung2" not in st.session_state:
     st.session_state.uebung2 ={}
 
+#######################################################################
 #Frage ob die Teilnehmer glauben, dass die Person auf dem Bild echt ist
 frage_person_echt = "Wie wahrscheinlich ist es, dass die Person auf dem Bild echt ist?"
 
@@ -65,15 +66,26 @@ antwort_person_echt=st.radio(frage_person_echt,
                     )
 #Antworten speichern
 if antwort_person_echt is not None:
-    st.session_state.uebung2["bildeinschaetzung"] = {
-    "Bereich": "Übung2",
-    "Typ": "Bild-Echt-Einschätzung",
-    "Frage":   frage_person_echt,
-    "Antwort": antwort_person_echt
-     }
-    st.write(f"Deine Antwort ist: {antwort_person_echt}.")
- 
-
+    if "anzahl_person_echt" not in st.session_state:
+        st.session_state.anzahl_person_echt = 0
+    st.session_state.anzahl_person_echt += 1
+    
+    if "bildeinschaetzung_historie" not in st.session_state.uebung2:
+        st.session_state.uebung2["bildeinschaetzung_historie"] = []
+    
+    bildeinschaetzung = {
+        "Bereich": "Übung2",
+        "Typ": "Bild-Echt-Einschätzung",
+        "Frage": frage_person_echt,
+        "Antwort": antwort_person_echt,
+        "Anzahl_Aenderungen": st.session_state.anzahl_person_echt
+    }
+    
+    st.session_state.uebung2["bildeinschaetzung_historie"].append(bildeinschaetzung)
+    st.session_state.uebung2["bildeinschaetzung"] = bildeinschaetzung
+    st.markdown(f"Deine Antwort ist: {antwort_person_echt}.")
+###########################################################
+#Frage wie sicher die Teilnehmer bei der Antwort sind
 frage_sicherheit_bild = "Wie sicher bist du bei deiner Einschätzung?"
 antwort_sicherheit_bild = st.radio(frage_sicherheit_bild,
                                         (
@@ -86,12 +98,23 @@ antwort_sicherheit_bild = st.radio(frage_sicherheit_bild,
                                         )
 
 if antwort_sicherheit_bild is not None:
-    st.session_state.uebung2["sicherheit_einschaetzung"] = {
-        "Bereich": "Übung2",
-        "Typ": "Sicherheit-Einschätzung", 
+    if "anzahl_sicherheit" not in st.session_state:
+        st.session_state.anzahl_sicherheit = 0
+    st.session_state.anzahl_sicherheit += 1
+    
+    if "sicherheit_historie" not in st.session_state.uebung2:
+        st.session_state.uebung2["sicherheit_historie"] = []
+    
+    sicherheit = {
+        "Bereich": "Übung2", 
+        "Typ": "Sicherheit-Einschätzung",
         "Frage": frage_sicherheit_bild,
-        "Antwort": antwort_sicherheit_bild
+        "Antwort": antwort_sicherheit_bild,
+        "Anzahl_Aenderungen": st.session_state.anzahl_sicherheit
     }
+    
+    st.session_state.uebung2["sicherheit_historie"].append(sicherheit)
+    st.session_state.uebung2["sicherheit_einschaetzung"] = sicherheit
     st.markdown(f"Deine Antwort: {antwort_sicherheit_bild}.")
 
 st.divider()

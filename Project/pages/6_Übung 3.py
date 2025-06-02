@@ -53,6 +53,11 @@ einleitung_text =("""
             """)
 st.markdown(einleitung_text)
 
+
+if "uebung3" not in st.session_state:
+    st.session_state.uebung3 ={}
+
+######################################################################
 frage_bild_realistisch="Wie realistisch fandest du das Bild von der vorherigen Übung?"
 antwort_bild_realistisch=st.radio(frage_bild_realistisch,
                                 (
@@ -65,22 +70,30 @@ antwort_bild_realistisch=st.radio(frage_bild_realistisch,
                                     index=None
                         )
 if antwort_bild_realistisch is not None:
-        
-        st.session_state.uebung3["bild_realistisch"]={
-            "Bereich":"Übung3",
-            "Typ": "KI Bild Realistisch",
-            "Frage": frage_bild_realistisch,
-            "Antwort": antwort_bild_realistisch
-        }
-        st.write(f"Deine Antwort ist: {antwort_bild_realistisch}.")
+    if "anzahl_bild_realistisch" not in st.session_state:
+        st.session_state.anzahl_bild_realistisch = 0
+    st.session_state.anzahl_bild_realistisch += 1
+    
+    if "bild_realistisch_historie" not in st.session_state.uebung3:
+        st.session_state.uebung3["bild_realistisch_historie"] = []
+    
+    bild_realistisch_data = {
+        "Bereich": "Übung3",
+        "Typ": "KI Bild Realistisch",
+        "Frage": frage_bild_realistisch,
+        "Antwort": antwort_bild_realistisch,
+        "Anzahl_Aenderungen": st.session_state.anzahl_bild_realistisch
+    }
+    
+    st.session_state.uebung3["bild_realistisch_historie"].append(bild_realistisch_data)
+    st.session_state.uebung3["bild_realistisch"] = bild_realistisch_data
+    st.markdown(f"Deine Antwort ist: {antwort_bild_realistisch}.")
 
+
+##############################################
 st.divider()
 
-#Aufgabenstellung für die Teilnehmer
-
-      
-st.divider()
-
+#Aufgabenstellung Teilnehmer
 #Beispiel eines KI-generierten Bildes im Disney-Stil
 st.markdown("""
                 Jetzt erstellst du selbst Bilder mit der KI-Anwendung DALL E.
@@ -98,17 +111,10 @@ except FileNotFoundError:
     st.error("Das Bild ist nicht verfügbar, bitte mach weiter mit der Übung.")
 
 st.markdown("Versuche es selbst, kriegst du kein Bild, dann musst du deinen Prompt anpassen.")
-        
+
+##########################################################################        
 st.divider()
-
-#Speichern der Eingaben und Antworten:
-
-if "uebung3" not in st.session_state:
-    st.session_state.uebung3 ={}
-
-if "zaehler_bildgenerierung" not in st.session_state:
-    st.session_state.zaehler_bildgenerierung = 0
-
+####################################################################
 
 #Container um den Fokus zu behalten
 container_fokus = st.container()
@@ -136,6 +142,10 @@ with container_fokus:
                     with st.spinner(text="Generiere Bild, bitte warten..."):
                     
                         #Zählen wie oft der Teilnehmer Bilder generiert
+                        
+                        if "zaehler_bildgenerierung" not in st.session_state:
+                             st.session_state.zaehler_bildgenerierung = 0
+                             
                         st.session_state.zaehler_bildgenerierung += 1
                         aktuelle_anzahl = st.session_state.zaehler_bildgenerierung
                         
@@ -155,16 +165,24 @@ with container_fokus:
                         st.image(generiertesBild, width=200)
                         
                         #Speichern der Daten
-                        if "bild_generierung_ki" not in st.session_state.uebung3:
-                            st.session_state.uebung3["bild_generierung_ki"] = []
-                        
-                        st.session_state.uebung3["bild_generierung_ki"].append({
+                        if "bild_generierung_ki_historie" not in st.session_state.uebung3:
+                            st.session_state.uebung3["bild_generierung_ki_historie"] = []
+
+                        bild_generierung_ki = {
                             "Bereich": "Übung3",
                             "Typ": "DALL-E Bilderstellung",
                             "Frage": "Bitte beschreibe, wie dein Bild generiert werden soll",
                             "Antwort": eingabe,
-                            "Anzahl Bildgenerierungen": aktuelle_anzahl
-                        })
+                            "Anzahl_Aenderungen": aktuelle_anzahl
+
+                        }
+                        
+                        st.session_state.uebung3["bild_generierung_ki_historie"].append(bild_generierung_ki)
+                        st.session_state.uebung3["bild_generierung_ki"] = bild_generierung_ki
+
+                           
+                        st.markdown(f"Deine Antwort: {eingabe}.")
+
                         # st.session_state.uebung3["bild_generierung_ki"]
 
                 except Exception as error:
@@ -175,7 +193,8 @@ with container_fokus:
                     Siehst du, du hast ein Bild generieren lassen.
 
                     """)
-#Speichern der Prompts:
+############################################################################
+Frage ob Teilnehmer Bilder von sich hochladen würden, um Bilder generieren zu lassen
 frage_datenschutz = "Würdest du von dir ein Bild generieren lassen, indem du ein Bild von dir hochlädst?"
 antwort_datenschutz=st.radio(frage_datenschutz,
     (
@@ -186,16 +205,30 @@ antwort_datenschutz=st.radio(frage_datenschutz,
                                     "Sehr unwahrscheinlich"
     ), index=None
     )
- #Ausgabe der Antwort
+#Speichern der Antwort
 if antwort_datenschutz is not None:
+    if "anzahl_datenschutz" not in st.session_state:
+        st.session_state.anzahl_datenschutz = 0
+    st.session_state.anzahl_datenschutz += 1
     
-    st.session_state.uebung3["datenschutz"] = {
-        "Bereich":"Übung3",
-        "Typ" : "Datenschutz",
-        "Frage" : frage_datenschutz,
-        "Antwort": antwort_datenschutz
+    if "datenschutz_historie" not in st.session_state.uebung3:
+        st.session_state.uebung3["datenschutz_historie"] = []
+    
+    datenschutz_data = {
+        "Bereich": "Übung3",
+        "Typ": "Datenschutz",
+        "Frage": frage_datenschutz,
+        "Antwort": antwort_datenschutz,
+        "Anzahl_Aenderungen": st.session_state.anzahl_datenschutz
     }
+    
+    st.session_state.uebung3["datenschutz_historie"].append(datenschutz_data)
+    st.session_state.uebung3["datenschutz"] = datenschutz_data
     st.markdown(f"Deine Antwort ist: {antwort_datenschutz}")
+
+
+
+######################################################
 
 frage_urheberrecht="Findest du es in Ordnung, dass Bilder im Stil von bekannten Firmen und Künstlern innerhalb von Minuten generiert werden, obwohl diese Jahre lang daran arbeiten?"
 antwort_urheberrecht=st.radio(frage_urheberrecht,
@@ -208,16 +241,26 @@ antwort_urheberrecht=st.radio(frage_urheberrecht,
                                   ), index=None
                         )
 if antwort_urheberrecht is not None:
-        
-        st.session_state.uebung3["urheberrecht"]={
-            "Bereich":"Übung3",
-            "Typ": "Urheberrecht",
-            "Frage": frage_urheberrecht,
-            "Antwort": antwort_urheberrecht
-        }
-        st.markdown(f"Deine Antwort ist: {antwort_urheberrecht}")
+    if "anzahl_urheberrecht" not in st.session_state:
+        st.session_state.anzahl_urheberrecht = 0
+    st.session_state.anzahl_urheberrecht += 1
+    
+    if "urheberrecht_historie" not in st.session_state.uebung3:
+        st.session_state.uebung3["urheberrecht_historie"] = []
+    
+    urheberrecht_data = {
+        "Bereich": "Übung3",
+        "Typ": "Urheberrecht",
+        "Frage": frage_urheberrecht,
+        "Antwort": antwort_urheberrecht,
+        "Anzahl_Aenderungen": st.session_state.anzahl_urheberrecht
+    }
+    
+    st.session_state.uebung3["urheberrecht_historie"].append(urheberrecht_data)
+    st.session_state.uebung3["urheberrecht"] = urheberrecht_data
+    st.markdown(f"Deine Antwort ist: {antwort_urheberrecht}")
 
-
+########################################################################
 
 frage_unterscheidung = "Wie schwierig ist es deiner Meinung nach, KI-generierte Bilder von echten zu unterscheiden?"
 antwort_unterscheidung = st.radio(frage_unterscheidung,
@@ -231,18 +274,30 @@ antwort_unterscheidung = st.radio(frage_unterscheidung,
                             )
     
 if antwort_unterscheidung is not None:
-    st.session_state.uebung3["unterscheidung"] = {
-        "Bereich": "Übung3", 
+    if "anzahl_unterscheidung" not in st.session_state:
+        st.session_state.anzahl_unterscheidung = 0
+    st.session_state.anzahl_unterscheidung += 1
+    
+    if "unterscheidung_historie" not in st.session_state.uebung3:
+        st.session_state.uebung3["unterscheidung_historie"] = []
+    
+    unterscheidung_data = {
+        "Bereich": "Übung3",
         "Typ": "Bewertung",
         "Frage": frage_unterscheidung,
-        "Antwort": antwort_unterscheidung
+        "Antwort": antwort_unterscheidung,
+        "Anzahl_Aenderungen": st.session_state.anzahl_unterscheidung
     }
+    
+    st.session_state.uebung3["unterscheidung_historie"].append(unterscheidung_data)
+    st.session_state.uebung3["unterscheidung"] = unterscheidung_data
     st.markdown(f"Deine Antwort ist: {antwort_unterscheidung}")
 
-
-    
+#Anzeigen aller Speicherungen in der Datenbank auf der Seite
 # st.session_state.uebung3
+##########################################################################
 st.divider()
+############################################################################
 st.markdown("Um fortzufahren, klicke auf \"Weiter\"")
 #Anzeigen wie weit der Teilnehmer in der gesamten Lerneinheit ist
 st.markdown("Aktueller Fortschritt in der gesamten Lerneinheit: 5 von 8")

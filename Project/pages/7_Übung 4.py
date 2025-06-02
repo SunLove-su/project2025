@@ -79,42 +79,41 @@ with container_fokus:
         st.markdown("Deine Berufsvorschläge:")
         frage_berufsvorschlag = "Welchen Beruf würdest du gerne ausüben?"
         with st.form("frage_formular3_1", clear_on_submit=True):     
-            berufsvorschlag = st.text_input("Deine Berufsvorschläge:")
+            berufsvorschlag_eingabe = st.text_input("Deine Berufsvorschläge:")
             
             speichern = st.form_submit_button("Speichern")
-            if speichern and berufsvorschlag:
+            if speichern and berufsvorschlag_eingabe:
                 #Anzahl an eigenen Berufsvorschlägen erhöhen
                 st.session_state.zaehler_berufsvorschlag += 1
                 zaehler_berufsvorschlag = st.session_state.zaehler_berufsvorschlag
                 #Ausgabe des eigenen Berufvorschlags
-                st.markdown(f"Deine Antwort ist: {berufsvorschlag}")
+                st.markdown(f"Deine Antwort ist: {berufsvorschlag_eingabe}")
                 
                 
                  # Initialisiere die Historie-Liste, falls sie nicht existiert
                 if "berufsvorschlag_historie" not in st.session_state.uebung4:
                     st.session_state.uebung4["berufsvorschlag_historie"] = []
+
+                berufsvorschlag = {
+                    "Bereich": "Übung4",
+                    "Typ": "Eigener Berufsvorschlag",
+                    "Frage": frage_berufsvorschlag,
+                    "Antwort": berufsvorschlag_eingabe,
+                    "Anzahl_Aenderungen": zaehler_berufsvorschlag
+
+                }
                 
                 # Füge zur Historie hinzu
-                st.session_state.uebung4["berufsvorschlag_historie"].append({
-                    "Bereich": "Übung4",
-                    "Typ": "Eigener Berufsvorschlag",
-                    "Frage": frage_berufsvorschlag,
-                    "Antwort": berufsvorschlag,
-                    "Anzahl": zaehler_berufsvorschlag
-                })
+                st.session_state.uebung4["berufsvorschlag_historie"].append(berufsvorschlag)
                 
-                # Speichere aktuellen Eintrag
-                st.session_state.uebung4["berufsvorschlag"] = {
-                    "Bereich": "Übung4",
-                    "Typ": "Eigener Berufsvorschlag",
-                    "Frage": frage_berufsvorschlag,
-                    "Antwort": berufsvorschlag,
-                    "Anzahl": zaehler_berufsvorschlag
-                }
+                # Speichern der aktuellen Antworten
+                st.session_state.uebung4["berufsvorschlag"]= berufsvorschlag
+                
+                
                 # Wenn bereits KI-Antwort für das eigene Geschlecht vorhanden, zeige Vergleich
                 if "antwort_ki_1" in st.session_state.uebung4:
                     st.markdown("VERGLEICH DER ANTWORTEN:")
-                    st.markdown(f"**Deine Antwort:** {berufsvorschlag}")
+                    st.markdown(f"**Deine Antwort:** {berufsvorschlag_eingabe}")
                     st.markdown(f"**ChatGPT Antwort:** {st.session_state.uebung4['antwort_ki_1']['Antwort']}")
 
 
@@ -148,23 +147,25 @@ with container_fokus:
                         if "antwort_ki_1_historie" not in st.session_state.uebung4:
                             st.session_state.uebung4["antwort_ki_1_historie"] = []
 
-                        # Füge zur Historie hinzu
-                        st.session_state.uebung4["antwort_ki_1_historie"].append({
+                        antwort_ki_1 ={
                             "Bereich": "Übung4",
                             "Typ": "Berufsvorschlag_Eigenes_Geschlecht_KI_Interaktion_1",
                             "Frage": frage1,
                             "Antwort": antwort_text,
-                            "Anzahl": zaehler_eigenes_geschlecht
-                        })
+                            "Anzahl_Aenderungen": zaehler_eigenes_geschlecht
+                        }
+
+                        # Füge zur Historie hinzu
+                        st.session_state.uebung4["antwort_ki_1_historie"].append(antwort_ki_1)
+
                         
                         # Speichere aktuellen Eintrag
-                        st.session_state.uebung4["antwort_ki_1"] = {
-                            "Bereich": "Übung4",
-                            "Typ": "Berufsvorschlag_Eigenes_Geschlecht_KI_Interaktion_1",
-                            "Frage": frage1,
-                            "Antwort": antwort_text,
-                            "Anzahl": zaehler_eigenes_geschlecht
-                        }
+                        st.session_state.uebung4["antwort_ki_1"] = antwort_ki_1
+
+                        
+
+                        
+
 
                 except Exception as error:
                     hilfsdatei.openai_fehlerbehandlung(error)
@@ -202,23 +203,18 @@ with container_fokus:
                         if "antwort_ki_2_historie" not in st.session_state.uebung4:
                             st.session_state.uebung4["antwort_ki_2_historie"] = []
                             
-                        # Füge zur Historie hinzu
-                        st.session_state.uebung4["antwort_ki_2_historie"].append({
+                        antwort_ki_2 = {
                             "Bereich":"Übung4",
                             "Typ":"Berufsvorschlag_Anderes_Geschlecht_KI_Interaktion_2",
                             "Frage": frage2,
                             "Antwort": antwort_text,
-                            "Anzahl": zaehler_anderes_geschlecht
-                        })
+                            "Anzahl_Aenderungen": zaehler_anderes_geschlecht
+                        }
+                        # Füge zur Historie hinzu
+                        st.session_state.uebung4["antwort_ki_2_historie"].append(antwort_ki_2)
                         
                         # Speichere aktuellen Eintrag
-                        st.session_state.uebung4["antwort_ki_2"] = {
-                            "Bereich":"Übung4",
-                            "Typ":"Berufsvorschlag_Anderes_Geschlecht_KI_Interaktion_2",
-                            "Frage": frage2,
-                            "Antwort": antwort_text,
-                            "Anzahl": zaehler_anderes_geschlecht
-                        }
+                        st.session_state.uebung4["antwort_ki_2"] =antwort_ki_2
 
 
                 except Exception as error:
@@ -237,9 +233,10 @@ with container_fokus:
         else:
             st.info("Fülle bitte oben alle Felder aus!")
 
+####################################################################################################################
 #Trennungslinie
 st.divider()
-
+###################################################################################################################
 # Frage ob es für die Geschlechter einen Stereotyp gibt
 frage_stereotyp = "Wie stereotypisch findest du die KI-Berufsvorschläge für Frauen und Männer"
 antwort_stereotyp = st.radio(frage_stereotyp,
@@ -253,16 +250,30 @@ antwort_stereotyp = st.radio(frage_stereotyp,
 )
 #Antwort speichern
 if antwort_stereotyp is not None:
-    st.session_state.uebung4["stereotyp"] = {
-        "Bereich":"Übung4",
-        "Typ":"Stereotyp-Einschätzung",
+    if "anzahl_stereotyp" not in st.session_state:
+        st.session_state.anzahl_stereotyp = 0
+    st.session_state.anzahl_stereotyp += 1
+    
+    if "stereotyp_historie" not in st.session_state.uebung4:
+        st.session_state.uebung4["stereotyp_historie"] = []
+    
+    stereotyp = {
+        "Bereich": "Übung4",
+        "Typ": "Stereotyp-Einschätzung",
         "Frage": frage_stereotyp,
-        "Antwort": antwort_stereotyp
+        "Antwort": antwort_stereotyp,
+        "Anzahl_Aenderungen": st.session_state.anzahl_stereotyp
     }
+    
+    st.session_state.uebung4["stereotyp_historie"].append(stereotyp)
+    st.session_state.uebung4["stereotyp"] = stereotyp
     st.markdown(f"Deine Antwort ist: {antwort_stereotyp}")
 
-# Weiter-Button
+
+################################################################################################################################
 st.divider()
+
+################################################################################################################################
 st.markdown("Um fortzufahren, klicke auf \"Weiter\"")
 #Anzeigen wie weit der Teilnehmer in der gesamten Lerneinheit ist
 st.markdown("Aktueller Fortschritt in der gesamten Lerneinheit: 6 von 8")

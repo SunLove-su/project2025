@@ -596,7 +596,7 @@ if st.button("Abschluss"):
         except Exception as error:
             st.error("Firestore: Es gibt ein Problem mit der Datenbank. Bitte melde dich, wenn du die Fehlermeldung siehst")
             st.info(f"Google-Fehlermeldung:{str(error)}")
-             speicher_fehler_firestore +=1
+            speicher_fehler_firestore +=1
 
 
         supabase_url = os.getenv("SUPABASE_URL")

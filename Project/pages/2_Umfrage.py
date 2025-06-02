@@ -106,12 +106,13 @@ antwort_geschlecht = st.radio(frage_geschlecht,
 )
 if "anzahl_geschlecht" not in st.session_state:
     st.session_state.anzahl_geschlecht = 0
+if "geschlecht_alt" not in st.session_state:
+    st.session_state.geschlecht_alt = None
+if "geschlecht_historie" not in st.session_state.einstiegsumfrage:
+    st.session_state.einstiegsumfrage["geschlecht_historie"]=[]
 #Speicherung der Antwort
-if antwort_geschlecht is not None:
+if antwort_geschlecht is not None and antwort_geschlecht != st.session_state.geschlecht_alt:
     st.session_state.anzahl_geschlecht += 1
-
-    if "geschlecht_historie" not in st.session_state.einstiegsumfrage:
-        st.session_state.einstiegsumfrage["geschlecht_historie"]=[]
 
     geschlecht = {
         "Bereich":"Einstiegsumfrage",
@@ -122,6 +123,9 @@ if antwort_geschlecht is not None:
  }
     st.session_state.einstiegsumfrage["geschlecht_historie"].append(geschlecht)
     st.session_state.einstiegsumfrage["geschlecht"]=geschlecht
+    #
+    st.session_state.geschlecht_alt = antwort_geschlecht
+
     st.markdown(f"Deine Antwort: {antwort_geschlecht}.")
 
 ################################################################################

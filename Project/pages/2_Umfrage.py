@@ -89,8 +89,6 @@ if antwort_alter is not None and antwort_alter != st.session_state.alter_alt:
 
     # Antwort anzeigen für den Teilnehmer
     st.markdown(f"Deine Antwort: {antwort_alter}.")
-#Überprüfung für den Eintrag in der Datenbank
-st.session_state.einstiegsumfrage
 
 ###############################################################################################
 
@@ -130,7 +128,6 @@ if antwort_geschlecht is not None and antwort_geschlecht != st.session_state.ges
 
     st.markdown(f"Deine Antwort: {antwort_geschlecht}.")
 
-st.session_state.einstiegsumfrage
 
 ################################################################################
 
@@ -346,7 +343,7 @@ if antwort_pruefung_ki is not None and antwort_pruefung_ki != st.session_state.p
 ####################################################################################################
 
 #Anzeigen der gespeicherten Eingaben, zur Überprüfung
-#st.session_state.einstiegsumfrage
+st.session_state.einstiegsumfrage
 #####################################################################################################
 #Trennungslinie
 st.divider()

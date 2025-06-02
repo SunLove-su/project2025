@@ -60,27 +60,30 @@ antwort_alter = st.radio (frage_alter,
 )
 #Speicherung der Antwort
 if antwort_alter is not None:
-    if "anzahl_alter" not in st.session_state:
-        st.session_state.anzahl_alter = 0
-    st.session_state.anzahl_alter +=1
+    if "alter_saved" not in st.session_state:
+        if "anzahl_alter" not in st.session_state:
+            st.session_state.anzahl_alter = 0
+        st.session_state.anzahl_alter +=1
 
-    #Speicherung aller Antworten
-    if "alter_historie" not in st.session_state.einstiegsumfrage:
-        st.session_state.einstiegsumfrage["alter_historie"]=[]
-    #Festlegung der Speichervariablen
-    alter = {
-        "Bereich": "Einstiegsumfrage",
-        "Typ": "Alter",
-        "Frage":   frage_alter,
-        "Antwort": antwort_alter,
-        "Anzahl_Aenderungen":st.session_state.anzahl_alter
+        #Speicherung aller Antworten
+        if "alter_historie" not in st.session_state.einstiegsumfrage:
+            st.session_state.einstiegsumfrage["alter_historie"]=[]
+        #Festlegung der Speichervariablen
+        alter = {
+            "Bereich": "Einstiegsumfrage",
+            "Typ": "Alter",
+            "Frage":   frage_alter,
+            "Antwort": antwort_alter,
+            "Anzahl_Aenderungen":st.session_state.anzahl_alter
 
-    }
-    #Hinzufügen aller Einträge
-    st.session_state.einstiegsumfrage["alter_historie"].append(alter)
+        }
+        #Hinzufügen aller Einträge
+        st.session_state.einstiegsumfrage["alter_historie"].append(alter)
 
-    #Speichern des letzten Eintrags
-    st.session_state.einstiegsumfrage["alter"]= alter
+        #Speichern des letzten Eintrags
+        st.session_state.einstiegsumfrage["alter"]= alter
+        st.session_state["alter_saved"] = True
+
     st.markdown(f"Deine Antwort: {antwort_alter}.")
 
 ###############################################################################################

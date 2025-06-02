@@ -66,7 +66,11 @@ if "alter_alt" not in st.session_state:
 if "alter_historie" not in st.session_state.einstiegsumfrage:
     st.session_state.einstiegsumfrage["alter_historie"] = []
 
-# Nur zählen, wenn sich die Antwort wirklich ändert
+#Vorheriges Problem: Nach jedem Laden der Seite oder bei der Auswahl anderer Radio-Buttons
+#wurde die Anzahl der Änderungen erhöht,auch wenn keine tatsächliche Änderung an den
+#vorherigen Fragen erfolgte. Mit zusätzlichen Variablen wird sichergestellt, dass sich die Anzahl
+#verändert, wenn der Teilnehmer wirklich eine Aktion ausführt
+
 if antwort_alter is not None and antwort_alter != st.session_state.alter_alt:
     st.session_state.anzahl_alter += 1
 
@@ -80,11 +84,12 @@ if antwort_alter is not None and antwort_alter != st.session_state.alter_alt:
 
     st.session_state.einstiegsumfrage["alter_historie"].append(alter)
     st.session_state.einstiegsumfrage["alter"] = alter
-    st.session_state.alter_alt = antwort_alter  # aktuelle Antwort merken
+    # aktuelle Antwort merken
+    st.session_state.alter_alt = antwort_alter
 
-# Anzeige
+# Antwort anzeigen für den Teilnehmer
 st.markdown(f"Deine Antwort: {antwort_alter}.")
-
+#Überprüfung für den Eintrag in der Datenbank
 st.session_state.einstiegsumfrage
 
 ###############################################################################################

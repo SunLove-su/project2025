@@ -121,13 +121,16 @@ antwort_text_echt=st.radio(frage_text_echt,
             
             )
 # Antwort speichern
-if antwort_text_echt is not None:
-    if "anzahl_text_echt" not in st.session_state:
-        st.session_state.anzahl_text_echt = 0
+if "anzahl_text_echt" not in st.session_state:
+    st.session_state.anzahl_text_echt = 0
+if "text_echt_alt" not in st.session_state: 
+    st.session_state.text_echt_alt = None  
+if "text_echt_historie" not in st.session_state.uebung1:
+    st.session_state.uebung1["text_echt_historie"] = []
+
+# Speicherung nur bei Änderung der Antwort
+if antwort_text_echt is not None and antwort_text_echt != st.session_state.text_echt_alt:
     st.session_state.anzahl_text_echt += 1
-    
-    if "text_echt_historie" not in st.session_state.uebung1:
-        st.session_state.uebung1["text_echt_historie"] = []
     
     text_echt = {
         "Bereich": "Übung1",
@@ -139,7 +142,11 @@ if antwort_text_echt is not None:
     
     st.session_state.uebung1["text_echt_historie"].append(text_echt)
     st.session_state.uebung1["text_echt"] = text_echt
+    # Aktuelle Antwort merken 
+    st.session_state.text_echt_alt = antwort_text_echt
+    
     st.markdown(f"Deine Antwort: {antwort_text_echt}.")
+
     st.markdown("Die Sätze klingen gut und als würden sie von einem Menschen stammen, aber sie wurden von einer KI geschrieben")
 
 ################################################################################
@@ -494,14 +501,16 @@ antwort_vertrauen = st.radio(frage_vertrauen,
         index=None,
     )
 #Speichern der Antworten
-# Speichern der Antworten
-if antwort_vertrauen is not None:
-    if "anzahl_vertrauen" not in st.session_state:
-        st.session_state.anzahl_vertrauen = 0
+if "anzahl_vertrauen" not in st.session_state:
+    st.session_state.anzahl_vertrauen = 0
+if "vertrauen_alt" not in st.session_state:
+    st.session_state.vertrauen_alt = None 
+if "vertrauen_historie" not in st.session_state.uebung1:
+    st.session_state.uebung1["vertrauen_historie"] = []
+
+# Speicherung nur bei Änderung der Antwort
+if antwort_vertrauen is not None and antwort_vertrauen != st.session_state.vertrauen_alt:
     st.session_state.anzahl_vertrauen += 1
-    
-    if "vertrauen_historie" not in st.session_state.uebung1:
-        st.session_state.uebung1["vertrauen_historie"] = []
     
     vertrauen = {
         "Bereich": "Übung1",
@@ -513,7 +522,9 @@ if antwort_vertrauen is not None:
     
     st.session_state.uebung1["vertrauen_historie"].append(vertrauen)
     st.session_state.uebung1["vertrauen"] = vertrauen
-    st.write(f"Deine Antwort ist: {antwort_vertrauen}")
+    # Aktuelle Antwort merken
+    st.session_state.vertrauen_alt = antwort_vertrauen
+    st.markdown(f"Deine Antwort ist: {antwort_vertrauen}")
 
 #######################################################################################
 #Frage wie zufrieden man mit den Antworten von ChatGPT ist
@@ -524,30 +535,35 @@ antwort_zufrieden = st.radio(frage_zufrieden,
                             "Neutral",
                             "Eher unzufrieden", 
                             "Sehr unzufrieden"
-                         ), index=None, key="zufrieden"  # <- Key geändert
+                         ), index=None, 
                         )
 
 # Speichern der Antwort
-if antwort_zufrieden is not None:
-    if "anzahl_zufrieden" not in st.session_state:  # <- Name geändert
-        st.session_state.anzahl_zufrieden = 0
+if "anzahl_zufrieden" not in st.session_state:
+    st.session_state.anzahl_zufrieden = 0
+if "zufrieden_alt" not in st.session_state:
+    st.session_state.zufrieden_alt = None 
+if "zufrieden_historie" not in st.session_state.uebung1:
+    st.session_state.uebung1["zufrieden_historie"] = []
+
+# Speicherung nur bei Änderung der Antwort
+if antwort_zufrieden is not None and antwort_zufrieden != st.session_state.zufrieden_alt:
     st.session_state.anzahl_zufrieden += 1
     
-    if "zufrieden_historie" not in st.session_state.uebung1:  # <- Name geändert
-        st.session_state.uebung1["zufrieden_historie"] = []
-    
-    zufrieden = {  # <- Variable name geändert
+    zufrieden = {
         "Bereich": "Übung1",
-        "Typ": "ChatGPT Antworten Zufriedenheit",  # <- Typ geändert
+        "Typ": "ChatGPT Antworten Zufriedenheit",
         "Frage": frage_zufrieden,
         "Antwort": antwort_zufrieden,
         "Anzahl_Aenderungen": st.session_state.anzahl_zufrieden
     }
     
-    st.session_state.uebung1["zufrieden_historie"].append(zufrieden)  # <- Namen geändert
-    st.session_state.uebung1["zufrieden"] = zufrieden  # <- Name geändert
+    st.session_state.uebung1["zufrieden_historie"].append(zufrieden)
+    st.session_state.uebung1["zufrieden"] = zufrieden
+    # Aktuelle Antwort merken
+    st.session_state.zufrieden_alt = antwort_zufrieden
+    
     st.markdown(f"Deine Antwort: {antwort_zufrieden}")
-
 
 ####################
 #ENDE DER ÜBUNG

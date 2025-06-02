@@ -385,3 +385,6 @@ if st.button("Weiter"):
     if not unbeantwortet:
         naechste_seite ="pages/3_Grundwissen_Ki.py"
         st.switch_page(naechste_seite)
+
+
+        

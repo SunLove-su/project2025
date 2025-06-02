@@ -160,22 +160,22 @@ if "ki_wissen_alt" not in st.session_state:
 if "ki_wissen_historie" not in st.session_state.einstiegsumfrage:
     st.session_state.einstiegsumfrage["ki_wissen_historie"] = []
 
-
-if antwort_ki_wissen is not None antwort_ki_wissen !=st.session.state.ki_wissen_alt:
+# Speicherung bei Änderung der Antwort
+if antwort_ki_wissen is not None and antwort_ki_wissen != st.session_state.ki_wissen_alt:
     st.session_state.anzahl_ki_wissen += 1
-
     ki_wissen = {
-        "Bereich":"Einstiegsumfrage",
+        "Bereich": "Einstiegsumfrage",
         "Typ": "KI-Wissen",
         "Frage": frage_ki_wissen,
         "Antwort": antwort_ki_wissen,
         "Anzahl_Aenderungen": st.session_state.anzahl_ki_wissen
-    
     }
     st.session_state.einstiegsumfrage["ki_wissen_historie"].append(ki_wissen)
     st.session_state.einstiegsumfrage["ki_wissen"] = ki_wissen
-    
-st.markdown (f"Deine Antwort: {antwort_ki_wissen}.")
+    # Aktuelle Antwort merken
+    st.session_state.ki_wissen_alt = antwort_ki_wissen
+
+st.markdown(f"Deine Antwort: {antwort_ki_wissen}.")
 #########################################################################################
 
 #Frage: Erkennungsfähigkeit, ob ein Text oder Bild von der KI generiert wurde

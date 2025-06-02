@@ -76,42 +76,7 @@ if antwort_aufmerksamkeit is not None and antwort_aufmerksamkeit != st.session_s
 ########################################################################
 st.divider()
 ########################################################################
-#Identische Frage wie in der Umfrage am Anfang des Moduls
-frage_vertrauen_ki = "Wie vertrauenswürdig hältst du KI-generierte Inhalte?"
-antwort_vertrauen_ki = st.radio(frage_vertrauen_ki, (
-    "Sehr vertrauenswürdig",
-    "Eher vertrauenswürdig", 
-    "Neutral",
-    "Eher nicht vertrauenswürdig",
-    "Gar nicht vertrauenswürdig"
-), index=None)
 
-if "anzahl_vertrauen_ki" not in st.session_state:
-    st.session_state.anzahl_vertrauen_ki = 0
-if "vertrauen_ki_alt" not in st.session_state:
-    st.session_state.vertrauen_ki_alt = None   
-if "vertrauen_ki_historie" not in st.session_state.abschlussumfrage:
-    st.session_state.abschlussumfrage["vertrauen_ki_historie"] = []
-
-# Speicherung nur bei Änderung der Antwort
-if antwort_vertrauen_ki is not None and antwort_vertrauen_ki != st.session_state.vertrauen_ki_alt:
-    st.session_state.anzahl_vertrauen_ki += 1
-    
-    vertrauen_ki = {
-        "Bereich": "Abschlussumfrage",
-        "Typ": "Vertrauen_KI_Inhalte",
-        "Frage": frage_vertrauen_ki,
-        "Antwort": antwort_vertrauen_ki,
-        "Anzahl_Aenderungen": st.session_state.anzahl_vertrauen_ki
-    }
-    
-    st.session_state.abschlussumfrage["vertrauen_ki_historie"].append(vertrauen_ki)
-    st.session_state.abschlussumfrage["vertrauen_ki"] = vertrauen_ki
-    # Aktuelle Antwort merken
-    st.session_state.vertrauen_ki_alt = antwort_vertrauen_ki
-    
-    st.markdown(f"Deine Antwort: {antwort_vertrauen_ki}")
-############################################################################
 
 #Identische Frage wie in der Umfrage am Anfang des Moduls
 #Frage: Erkennungsfähigkeit, ob ein Text oder Bild von der KI generiert wurde
@@ -152,7 +117,47 @@ if antwort_erkennung_ki is not None and antwort_erkennung_ki != st.session_state
     
     st.markdown(f"Deine Antwort: {antwort_erkennung_ki}")
 
-#######################################################################
+
+
+##################################################################
+#Identische Frage wie in der Umfrage am Anfang des Moduls
+frage_vertrauen_ki = "Wie vertrauenswürdig hältst du KI-generierte Inhalte?"
+antwort_vertrauen_ki = st.radio(frage_vertrauen_ki, (
+    "Sehr vertrauenswürdig",
+    "Eher vertrauenswürdig", 
+    "Neutral",
+    "Eher nicht vertrauenswürdig",
+    "Gar nicht vertrauenswürdig"
+), index=None)
+
+if "anzahl_vertrauen_ki" not in st.session_state:
+    st.session_state.anzahl_vertrauen_ki = 0
+if "vertrauen_ki_alt" not in st.session_state:
+    st.session_state.vertrauen_ki_alt = None   
+if "vertrauen_ki_historie" not in st.session_state.abschlussumfrage:
+    st.session_state.abschlussumfrage["vertrauen_ki_historie"] = []
+
+# Speicherung nur bei Änderung der Antwort
+if antwort_vertrauen_ki is not None and antwort_vertrauen_ki != st.session_state.vertrauen_ki_alt:
+    st.session_state.anzahl_vertrauen_ki += 1
+    
+    vertrauen_ki = {
+        "Bereich": "Abschlussumfrage",
+        "Typ": "Vertrauen_KI_Inhalte",
+        "Frage": frage_vertrauen_ki,
+        "Antwort": antwort_vertrauen_ki,
+        "Anzahl_Aenderungen": st.session_state.anzahl_vertrauen_ki
+    }
+    
+    st.session_state.abschlussumfrage["vertrauen_ki_historie"].append(vertrauen_ki)
+    st.session_state.abschlussumfrage["vertrauen_ki"] = vertrauen_ki
+    # Aktuelle Antwort merken
+    st.session_state.vertrauen_ki_alt = antwort_vertrauen_ki
+    
+    st.markdown(f"Deine Antwort: {antwort_vertrauen_ki}")
+############################################################################
+
+
 #Identische Frage wie am Anfang des Moduls
 #Frage ob KI-generierte Inhalte geprüft werden
 

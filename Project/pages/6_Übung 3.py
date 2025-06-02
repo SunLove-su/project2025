@@ -15,8 +15,8 @@ import os
 import pathlib
 
 
-CURRENT_DIR = pathlib.Path(__file__).parent
-bild_cinderella = CURRENT_DIR.joinpath("..","Cinderella.png")
+# CURRENT_DIR = pathlib.Path(__file__).parent
+# bild_cinderella = CURRENT_DIR.joinpath("..","Cinderella.png")
 
 #Überschrift der Seite
 titel_seite = "3. Übung"
@@ -111,8 +111,9 @@ st.markdown("""
                 
             """)
 #Anzeigen des generierten Bildes im Disney-Stil            
-try:         
-    st.image(bild_cinderella,width=200)
+try:
+    #Das Bild muss im Root Folder des Git-Repositories liegen, damit das so funktioniert         
+    st.image("bild_cinderella.png",width=200)
 except FileNotFoundError:
     st.error("Das Bild ist nicht verfügbar, bitte mach weiter mit der Übung.")
 

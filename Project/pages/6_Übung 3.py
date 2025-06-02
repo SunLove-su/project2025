@@ -113,7 +113,7 @@ st.markdown("""
 #Anzeigen des generierten Bildes im Disney-Stil            
 try:
     #Das Bild muss im Root Folder des Git-Repositories liegen, damit das so funktioniert         
-    st.image("bild_cinderella.png",width=200)
+    st.image("Cinderella.png",width=200)
 except FileNotFoundError:
     st.error("Das Bild ist nicht verfügbar, bitte mach weiter mit der Übung.")
 

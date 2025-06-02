@@ -64,14 +64,17 @@ antwort_person_echt=st.radio(frage_person_echt,
                     index=None,
                     
                     )
-#Antworten speichern
-if antwort_person_echt is not None:
-    if "anzahl_person_echt" not in st.session_state:
-        st.session_state.anzahl_person_echt = 0
+
+if "anzahl_person_echt" not in st.session_state:
+    st.session_state.anzahl_person_echt = 0
+if "person_echt_alt" not in st.session_state:  
+    st.session_state.person_echt_alt = None    
+if "bildeinschaetzung_historie" not in st.session_state.uebung2:
+    st.session_state.uebung2["bildeinschaetzung_historie"] = []
+
+# Speicherung nur bei Änderung der Antwort
+if antwort_person_echt is not None and antwort_person_echt != st.session_state.person_echt_alt:
     st.session_state.anzahl_person_echt += 1
-    
-    if "bildeinschaetzung_historie" not in st.session_state.uebung2:
-        st.session_state.uebung2["bildeinschaetzung_historie"] = []
     
     bildeinschaetzung = {
         "Bereich": "Übung2",
@@ -83,7 +86,11 @@ if antwort_person_echt is not None:
     
     st.session_state.uebung2["bildeinschaetzung_historie"].append(bildeinschaetzung)
     st.session_state.uebung2["bildeinschaetzung"] = bildeinschaetzung
+    # Aktuelle Antwort merken
+    st.session_state.person_echt_alt = antwort_person_echt
+    
     st.markdown(f"Deine Antwort ist: {antwort_person_echt}.")
+
 ###########################################################
 #Frage wie sicher die Teilnehmer bei der Antwort sind
 frage_sicherheit_bild = "Wie sicher bist du bei deiner Einschätzung?"
@@ -97,13 +104,16 @@ antwort_sicherheit_bild = st.radio(frage_sicherheit_bild,
                                         ),index=None
                                         )
 
-if antwort_sicherheit_bild is not None:
-    if "anzahl_sicherheit" not in st.session_state:
-        st.session_state.anzahl_sicherheit = 0
+if "anzahl_sicherheit" not in st.session_state:
+    st.session_state.anzahl_sicherheit = 0
+if "sicherheit_bild_alt" not in st.session_state:
+    st.session_state.sicherheit_bild_alt = None
+if "sicherheit_historie" not in st.session_state.uebung2:
+    st.session_state.uebung2["sicherheit_historie"] = []
+
+# Speicherung nur bei Änderung der Antwort
+if antwort_sicherheit_bild is not None and antwort_sicherheit_bild != st.session_state.sicherheit_bild_alt:
     st.session_state.anzahl_sicherheit += 1
-    
-    if "sicherheit_historie" not in st.session_state.uebung2:
-        st.session_state.uebung2["sicherheit_historie"] = []
     
     sicherheit = {
         "Bereich": "Übung2", 
@@ -115,9 +125,13 @@ if antwort_sicherheit_bild is not None:
     
     st.session_state.uebung2["sicherheit_historie"].append(sicherheit)
     st.session_state.uebung2["sicherheit_einschaetzung"] = sicherheit
+    # Aktuelle Antwort merken
+    st.session_state.sicherheit_bild_alt = antwort_sicherheit_bild
+    
     st.markdown(f"Deine Antwort: {antwort_sicherheit_bild}.")
-
+################################################################################################
 st.divider()
+##############################################################################################
 st.markdown("Um fortzufahren, klicke auf \"Weiter\"")
 st.markdown("Aktueller Fortschritt in der gesamten Lerneinheit: 4 von 8")
 st.progress (4/8)

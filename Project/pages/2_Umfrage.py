@@ -110,7 +110,9 @@ if "geschlecht_alt" not in st.session_state:
     st.session_state.geschlecht_alt = None
 if "geschlecht_historie" not in st.session_state.einstiegsumfrage:
     st.session_state.einstiegsumfrage["geschlecht_historie"]=[]
-#Speicherung der Antwort
+
+#Speicherung der Antwort, eine Antwort gegeben ist und wenn diese sich von der vorherigen Auswahl unterscheidet. 
+#Führt dazu, dass die Mehrfachspeicherung der Antworten nicht erfolgt.
 if antwort_geschlecht is not None and antwort_geschlecht != st.session_state.geschlecht_alt:
     st.session_state.anzahl_geschlecht += 1
 
@@ -126,7 +128,7 @@ if antwort_geschlecht is not None and antwort_geschlecht != st.session_state.ges
     #
     st.session_state.geschlecht_alt = antwort_geschlecht
 
-    st.markdown(f"Deine Antwort: {antwort_geschlecht}.")
+st.markdown(f"Deine Antwort: {antwort_geschlecht}.")
 
 st.session_state.einstiegsumfrage
 
@@ -151,13 +153,16 @@ antwort_ki_wissen = st.radio(
 )
 
 #Speicherung der Antwort
-if antwort_ki_wissen is not None:
-    if "anzahl_ki_wissen" not in st.session_state:
-        st.session_state.anzahl_ki_wissen = 0
-    st.session_state.anzahl_ki_wissen += 1
+if "anzahl_ki_wissen" not in st.session_state:
+    st.session_state.anzahl_ki_wissen = 0
+if "ki_wissen_alt" not in st.session_state:
+    st.session_state.ki_wissen_alt = None
+if "ki_wissen_historie" not in st.session_state.einstiegsumfrage:
+    st.session_state.einstiegsumfrage["ki_wissen_historie"] = []
 
-    if "ki_wissen_historie" not in st.session_state.einstiegsumfrage:
-        st.session_state.einstiegsumfrage["ki_wissen_historie"] = []
+
+if antwort_ki_wissen is not None antwort_ki_wissen !=st.session.state.ki_wissen_alt:
+    st.session_state.anzahl_ki_wissen += 1
 
     ki_wissen = {
         "Bereich":"Einstiegsumfrage",
@@ -169,7 +174,8 @@ if antwort_ki_wissen is not None:
     }
     st.session_state.einstiegsumfrage["ki_wissen_historie"].append(ki_wissen)
     st.session_state.einstiegsumfrage["ki_wissen"] = ki_wissen
-    st.markdown (f"Deine Antwort: {antwort_ki_wissen}.")
+    
+st.markdown (f"Deine Antwort: {antwort_ki_wissen}.")
 #########################################################################################
 
 #Frage: Erkennungsfähigkeit, ob ein Text oder Bild von der KI generiert wurde

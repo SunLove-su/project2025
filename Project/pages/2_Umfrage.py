@@ -193,14 +193,16 @@ antwort_erkennung_ki = st.radio(frage_erkennung_ki,
                         index=None
                     )
 #Speicherung der Antwort
-if antwort_erkennung_ki is not None:
-    if "anzahl_erkennung_ki" not in st.session_state:
-        st.session_state.anzahl_erkennung_ki = 0
-    st.session_state.anzahl_erkennung_ki += 1
-    
-    if "erkennung_ki_historie" not in st.session_state.einstiegsumfrage:
-        st.session_state.einstiegsumfrage["erkennung_ki_historie"] = []
+if "anzahl_erkennung_ki" not in st.session_state:
+    st.session_state.anzahl_erkennung_ki = 0
+if "erkennung_ki_alt" not in st.session_state:
+    st.session_state.erkennung_ki_alt = None
+if "erkennung_ki_historie" not in st.session_state.einstiegsumfrage:
+    st.session_state.einstiegsumfrage["erkennung_ki_historie"] = []
 
+# Speicherung nur bei Änderung der Antwort
+if antwort_erkennung_ki is not None and antwort_erkennung_ki != st.session_state.erkennung_ki_alt:
+    st.session_state.anzahl_erkennung_ki += 1
     erkennung_ki = {
         "Bereich": "Einstiegsumfrage",
         "Typ": "Erkennungsfähigkeit",
@@ -210,7 +212,10 @@ if antwort_erkennung_ki is not None:
     }
     st.session_state.einstiegsumfrage["erkennung_ki_historie"].append(erkennung_ki)
     st.session_state.einstiegsumfrage["erkennung_ki"] = erkennung_ki
-    st.markdown(f"Deine Antwort: {antwort_erkennung_ki}.")
+    # Aktuelle Antwort merken
+    st.session_state.erkennung_ki_alt = antwort_erkennung_ki
+
+st.markdown(f"Deine Antwort: {antwort_erkennung_ki}.")
 
 ##################################################################################
 
@@ -229,14 +234,16 @@ antwort_nutzung_ki = st.radio(
 )
 
 # Speicherung der Antwort
-if antwort_nutzung_ki is not None:
-    if "anzahl_nutzung_ki" not in st.session_state:
-        st.session_state.anzahl_nutzung_ki = 0
+if "anzahl_nutzung_ki" not in st.session_state:
+    st.session_state.anzahl_nutzung_ki = 0
+if "nutzung_ki_alt" not in st.session_state:
+    st.session_state.nutzung_ki_alt = None
+if "nutzung_ki_historie" not in st.session_state.einstiegsumfrage:
+    st.session_state.einstiegsumfrage["nutzung_ki_historie"] = []
+
+# Speicherung nur bei tatsächlicher Änderung der Antwort
+if antwort_nutzung_ki is not None and antwort_nutzung_ki != st.session_state.nutzung_ki_alt:
     st.session_state.anzahl_nutzung_ki += 1
-    
-    if "nutzung_ki_historie" not in st.session_state.einstiegsumfrage:
-        st.session_state.einstiegsumfrage["nutzung_ki_historie"] = []
-    
     nutzung_ki = {
         "Bereich": "Einstiegsumfrage",
         "Typ": "Häufigkeitsnutzung",
@@ -244,10 +251,12 @@ if antwort_nutzung_ki is not None:
         "Antwort": antwort_nutzung_ki,
         "Anzahl_Aenderungen": st.session_state.anzahl_nutzung_ki
     }
-    
     st.session_state.einstiegsumfrage["nutzung_ki_historie"].append(nutzung_ki)
     st.session_state.einstiegsumfrage["nutzung_ki"] = nutzung_ki
-    st.markdown(f"Deine Antwort: {antwort_nutzung_ki}")
+    # Aktuelle Antwort merken
+    st.session_state.nutzung_ki_alt = antwort_nutzung_ki
+
+st.markdown(f"Deine Antwort: {antwort_nutzung_ki}.")
 
 #############################################################################
 
@@ -271,14 +280,16 @@ antwort_vertrauen_ki = st.radio(
 
 
 # Speicherung der Antwort
-if antwort_vertrauen_ki is not None:
-    if "anzahl_vertrauen_ki" not in st.session_state:
-        st.session_state.anzahl_vertrauen_ki = 0
+if "anzahl_vertrauen_ki" not in st.session_state:
+    st.session_state.anzahl_vertrauen_ki = 0
+if "vertrauen_ki_alt" not in st.session_state:
+    st.session_state.vertrauen_ki_alt = None
+if "vertrauen_ki_historie" not in st.session_state.einstiegsumfrage:
+    st.session_state.einstiegsumfrage["vertrauen_ki_historie"] = []
+
+# Speicherung nur bei tatsächlicher Änderung der Antwort
+if antwort_vertrauen_ki is not None and antwort_vertrauen_ki != st.session_state.vertrauen_ki_alt:
     st.session_state.anzahl_vertrauen_ki += 1
-    
-    if "vertrauen_ki_historie" not in st.session_state.einstiegsumfrage:
-        st.session_state.einstiegsumfrage["vertrauen_ki_historie"] = []
-    
     vertrauen_ki = {
         "Bereich": "Einstiegsumfrage",
         "Typ": "Vertrauen KI Inhalte",
@@ -286,10 +297,12 @@ if antwort_vertrauen_ki is not None:
         "Antwort": antwort_vertrauen_ki,
         "Anzahl_Aenderungen": st.session_state.anzahl_vertrauen_ki
     }
-    
     st.session_state.einstiegsumfrage["vertrauen_ki_historie"].append(vertrauen_ki)
     st.session_state.einstiegsumfrage["vertrauen_ki"] = vertrauen_ki
-    st.markdown(f"Deine Antwort: {antwort_vertrauen_ki}")
+    # Aktuelle Antwort merken
+    st.session_state.vertrauen_ki_alt = antwort_vertrauen_ki
+
+st.markdown(f"Deine Antwort: {antwort_vertrauen_ki}.")
 
 ###################################################################
 
@@ -303,18 +316,18 @@ antwort_pruefung_ki = st.radio(
                  "Manchmal",
                  "Eher selten",
                  "Gar nicht"
-                 ),
-                index=None
-)
-# Speicherung der Antwort
-if antwort_pruefung_ki is not None:
-    if "anzahl_pruefung_ki" not in st.session_state:
-        st.session_state.anzahl_pruefung_ki = 0
+                 ), index = none)
+                 
+if "anzahl_pruefung_ki" not in st.session_state:
+    st.session_state.anzahl_pruefung_ki = 0
+if "pruefung_ki_alt" not in st.session_state:
+    st.session_state.pruefung_ki_alt = None
+if "pruefung_ki_historie" not in st.session_state.einstiegsumfrage:
+    st.session_state.einstiegsumfrage["pruefung_ki_historie"] = []
+
+# Speicherung nur bei tatsächlicher Änderung der Antwort
+if antwort_pruefung_ki is not None and antwort_pruefung_ki != st.session_state.pruefung_ki_alt:
     st.session_state.anzahl_pruefung_ki += 1
-    
-    if "pruefung_ki_historie" not in st.session_state.einstiegsumfrage:
-        st.session_state.einstiegsumfrage["pruefung_ki_historie"] = []
-    
     pruefung_ki = {
         "Bereich": "Einstiegsumfrage",
         "Typ": "Prüfung KI",
@@ -322,11 +335,12 @@ if antwort_pruefung_ki is not None:
         "Antwort": antwort_pruefung_ki,
         "Anzahl_Aenderungen": st.session_state.anzahl_pruefung_ki
     }
-    
     st.session_state.einstiegsumfrage["pruefung_ki_historie"].append(pruefung_ki)
     st.session_state.einstiegsumfrage["pruefung_ki"] = pruefung_ki
-    st.markdown(f"Deine Antwort: {antwort_pruefung_ki}")
+    # Aktuelle Antwort merken
+    st.session_state.pruefung_ki_alt = antwort_pruefung_ki
 
+st.markdown(f"Deine Antwort: {antwort_pruefung_ki}.")
 ####################################################################################################
 
 #Anzeigen der gespeicherten Eingaben, zur Überprüfung

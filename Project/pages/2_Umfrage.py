@@ -100,10 +100,10 @@ antwort_geschlecht = st.radio(frage_geschlecht,
                                    ),
                                    index=None
 )
+if "anzahl_geschlecht" not in st.session_state:
+    st.session_state.anzahl_geschlecht = 0
 #Speicherung der Antwort
 if antwort_geschlecht is not None:
-    if "anzahl_geschlecht" not in st.session_state:
-        st.session_state.anzahl_geschlecht = 0
     st.session_state.anzahl_geschlecht += 1
 
     if "geschlecht_historie" not in st.session_state.einstiegsumfrage:

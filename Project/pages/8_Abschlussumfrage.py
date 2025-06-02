@@ -48,13 +48,16 @@ antwort_aufmerksamkeit = st.radio (
                                 index=None
 )
 #Speichern der Antworten
-if antwort_aufmerksamkeit is not None:
-    if "anzahl_aufmerksamkeit" not in st.session_state:
-        st.session_state.anzahl_aufmerksamkeit = 0
+if "anzahl_aufmerksamkeit" not in st.session_state:
+    st.session_state.anzahl_aufmerksamkeit = 0
+if "aufmerksamkeit_alt" not in st.session_state:
+    st.session_state.aufmerksamkeit_alt = None
+if "aufmerksamkeit_historie" not in st.session_state.abschlussumfrage:
+    st.session_state.abschlussumfrage["aufmerksamkeit_historie"] = []
+
+# Speicherung nur bei Änderung der Antwort
+if antwort_aufmerksamkeit is not None and antwort_aufmerksamkeit != st.session_state.aufmerksamkeit_alt:
     st.session_state.anzahl_aufmerksamkeit += 1
-    
-    if "aufmerksamkeit_historie" not in st.session_state.abschlussumfrage:
-        st.session_state.abschlussumfrage["aufmerksamkeit_historie"] = []
     
     aufmerksamkeit = {
         "Bereich": "Abschlussumfrage",
@@ -66,6 +69,9 @@ if antwort_aufmerksamkeit is not None:
     
     st.session_state.abschlussumfrage["aufmerksamkeit_historie"].append(aufmerksamkeit)
     st.session_state.abschlussumfrage["aufmerksamkeit"] = aufmerksamkeit
+    # Aktuelle Antwort merken
+    st.session_state.aufmerksamkeit_alt = antwort_aufmerksamkeit
+    
     st.write(f"Deine Antwort ist: {antwort_aufmerksamkeit}")
 ########################################################################
 st.divider()
@@ -80,13 +86,16 @@ antwort_vertrauen_ki = st.radio(frage_vertrauen_ki, (
     "Gar nicht vertrauenswürdig"
 ), index=None)
 
-if antwort_vertrauen_ki is not None:
-    if "anzahl_vertrauen_ki" not in st.session_state:
-        st.session_state.anzahl_vertrauen_ki = 0
+if "anzahl_vertrauen_ki" not in st.session_state:
+    st.session_state.anzahl_vertrauen_ki = 0
+if "vertrauen_ki_alt" not in st.session_state:
+    st.session_state.vertrauen_ki_alt = None   
+if "vertrauen_ki_historie" not in st.session_state.abschlussumfrage:
+    st.session_state.abschlussumfrage["vertrauen_ki_historie"] = []
+
+# Speicherung nur bei Änderung der Antwort
+if antwort_vertrauen_ki is not None and antwort_vertrauen_ki != st.session_state.vertrauen_ki_alt:
     st.session_state.anzahl_vertrauen_ki += 1
-    
-    if "vertrauen_ki_historie" not in st.session_state.abschlussumfrage:
-        st.session_state.abschlussumfrage["vertrauen_ki_historie"] = []
     
     vertrauen_ki = {
         "Bereich": "Abschlussumfrage",
@@ -98,6 +107,9 @@ if antwort_vertrauen_ki is not None:
     
     st.session_state.abschlussumfrage["vertrauen_ki_historie"].append(vertrauen_ki)
     st.session_state.abschlussumfrage["vertrauen_ki"] = vertrauen_ki
+    # Aktuelle Antwort merken
+    st.session_state.vertrauen_ki_alt = antwort_vertrauen_ki
+    
     st.markdown(f"Deine Antwort: {antwort_vertrauen_ki}")
 ############################################################################
 
@@ -114,13 +126,16 @@ antwort_erkennung_ki = st.radio(frage_erkennung_ki, (
 ), index=None)
 
 
-if antwort_erkennung_ki is not None:
-    if "anzahl_erkennung_ki" not in st.session_state:
-        st.session_state.anzahl_erkennung_ki = 0
+if "anzahl_erkennung_ki" not in st.session_state:
+    st.session_state.anzahl_erkennung_ki = 0
+if "erkennung_ki_alt" not in st.session_state: 
+    st.session_state.erkennung_ki_alt = None 
+if "erkennung_ki_historie" not in st.session_state.abschlussumfrage:
+    st.session_state.abschlussumfrage["erkennung_ki_historie"] = []
+
+# Speicherung nur bei Änderung der Antwort
+if antwort_erkennung_ki is not None and antwort_erkennung_ki != st.session_state.erkennung_ki_alt:
     st.session_state.anzahl_erkennung_ki += 1
-    
-    if "erkennung_ki_historie" not in st.session_state.abschlussumfrage:
-        st.session_state.abschlussumfrage["erkennung_ki_historie"] = []
     
     erkennung_ki = {
         "Bereich": "Abschlussumfrage",
@@ -132,6 +147,9 @@ if antwort_erkennung_ki is not None:
     
     st.session_state.abschlussumfrage["erkennung_ki_historie"].append(erkennung_ki)
     st.session_state.abschlussumfrage["erkennung_ki"] = erkennung_ki
+    # Aktuelle Antwort merken
+    st.session_state.erkennung_ki_alt = antwort_erkennung_ki
+    
     st.markdown(f"Deine Antwort: {antwort_erkennung_ki}")
 
 #######################################################################
@@ -147,13 +165,16 @@ antwort_pruefung_ki = st.radio(frage_pruefung_ki, (
     "Gar nicht"
 ), index=None)
 
-if antwort_pruefung_ki is not None:
-    if "anzahl_pruefung_ki" not in st.session_state:
-        st.session_state.anzahl_pruefung_ki = 0
+if "anzahl_pruefung_ki" not in st.session_state:
+    st.session_state.anzahl_pruefung_ki = 0
+if "pruefung_ki_alt" not in st.session_state: 
+    st.session_state.pruefung_ki_alt = None    
+if "pruefung_ki_historie" not in st.session_state.abschlussumfrage:
+    st.session_state.abschlussumfrage["pruefung_ki_historie"] = []
+
+# Speicherung nur bei Änderung der Antwort
+if antwort_pruefung_ki is not None and antwort_pruefung_ki != st.session_state.pruefung_ki_alt:
     st.session_state.anzahl_pruefung_ki += 1
-    
-    if "pruefung_ki_historie" not in st.session_state.abschlussumfrage:
-        st.session_state.abschlussumfrage["pruefung_ki_historie"] = []
     
     pruefung_ki = {
         "Bereich": "Abschlussumfrage",
@@ -165,6 +186,9 @@ if antwort_pruefung_ki is not None:
     
     st.session_state.abschlussumfrage["pruefung_ki_historie"].append(pruefung_ki)
     st.session_state.abschlussumfrage["pruefung_ki"] = pruefung_ki
+    # Aktuelle Antwort merken
+    st.session_state.pruefung_ki_alt = antwort_pruefung_ki
+    
     st.markdown(f"Deine Antwort: {antwort_pruefung_ki}")
 
 #################################################################################################
@@ -226,13 +250,16 @@ antwort_erkennung_verbessert = st.radio(
                        index=None
 )
 # Speichern der Antwort
-if antwort_erkennung_verbessert is not None:
-    if "anzahl_erkennung_verbessert" not in st.session_state:
-        st.session_state.anzahl_erkennung_verbessert = 0
+if "anzahl_erkennung_verbessert" not in st.session_state:
+    st.session_state.anzahl_erkennung_verbessert = 0
+if "erkennung_verbessert_alt" not in st.session_state:
+    st.session_state.erkennung_verbessert_alt = None  
+if "erkennung_verbessert_historie" not in st.session_state.abschlussumfrage:
+    st.session_state.abschlussumfrage["erkennung_verbessert_historie"] = []
+
+# Speicherung nur bei Änderung der Antwort
+if antwort_erkennung_verbessert is not None and antwort_erkennung_verbessert != st.session_state.erkennung_verbessert_alt:
     st.session_state.anzahl_erkennung_verbessert += 1
-    
-    if "erkennung_verbessert_historie" not in st.session_state.abschlussumfrage:
-        st.session_state.abschlussumfrage["erkennung_verbessert_historie"] = []
     
     erkennung_verbessert = {
         "Bereich": "Abschlussumfrage",
@@ -244,8 +271,10 @@ if antwort_erkennung_verbessert is not None:
     
     st.session_state.abschlussumfrage["erkennung_verbessert_historie"].append(erkennung_verbessert)
     st.session_state.abschlussumfrage["erkennung_verbessert"] = erkennung_verbessert
+    # Aktuelle Antwort merken
+    st.session_state.erkennung_verbessert_alt = antwort_erkennung_verbessert
+    
     st.markdown(f"Deine Antwort ist: {antwort_erkennung_verbessert}")
-
 ################################################################################################
 
 st.divider()
@@ -264,13 +293,16 @@ antworten_hinterfragen_ki = st.radio (
                                 index=None
 )
 #Speichern der Antwort
-if antworten_hinterfragen_ki is not None:
-    if "anzahl_hinterfragen_ki" not in st.session_state:
-        st.session_state.anzahl_hinterfragen_ki = 0
+if "anzahl_hinterfragen_ki" not in st.session_state:
+    st.session_state.anzahl_hinterfragen_ki = 0
+if "hinterfragen_ki_alt" not in st.session_state:
+    st.session_state.hinterfragen_ki_alt = None
+if "hinterfragen_historie" not in st.session_state.abschlussumfrage:
+    st.session_state.abschlussumfrage["hinterfragen_historie"] = []
+
+# Speicherung nur bei Änderung der Antwort
+if antworten_hinterfragen_ki is not None and antworten_hinterfragen_ki != st.session_state.hinterfragen_ki_alt:
     st.session_state.anzahl_hinterfragen_ki += 1
-    
-    if "hinterfragen_historie" not in st.session_state.abschlussumfrage:
-        st.session_state.abschlussumfrage["hinterfragen_historie"] = []
     
     hinterfragen = {
         "Bereich": "Abschlussumfrage",
@@ -282,6 +314,9 @@ if antworten_hinterfragen_ki is not None:
     
     st.session_state.abschlussumfrage["hinterfragen_historie"].append(hinterfragen)
     st.session_state.abschlussumfrage["hinterfragen"] = hinterfragen
+    # Aktuelle Antwort merken
+    st.session_state.hinterfragen_ki_alt = antworten_hinterfragen_ki
+    
     st.write(f"Deine Antwort ist: {antworten_hinterfragen_ki}")
 
 ###################################################################################
@@ -302,13 +337,16 @@ antwort_pruefung = st.radio(
     index=None
 )
 
-if antwort_pruefung is not None:
-    if "anzahl_pruefung" not in st.session_state:
-        st.session_state.anzahl_pruefung = 0
+if "anzahl_pruefung" not in st.session_state:
+    st.session_state.anzahl_pruefung = 0
+if "pruefung_alt" not in st.session_state:
+    st.session_state.pruefung_alt = None
+if "pruefung_historie" not in st.session_state.abschlussumfrage:
+    st.session_state.abschlussumfrage["pruefung_historie"] = []
+
+# Speicherung nur bei Änderung der Antwort
+if antwort_pruefung is not None and antwort_pruefung != st.session_state.pruefung_alt:
     st.session_state.anzahl_pruefung += 1
-    
-    if "pruefung_historie" not in st.session_state.abschlussumfrage:
-        st.session_state.abschlussumfrage["pruefung_historie"] = []
     
     pruefung = {
         "Bereich": "Abschlussumfrage",
@@ -320,6 +358,9 @@ if antwort_pruefung is not None:
     
     st.session_state.abschlussumfrage["pruefung_historie"].append(pruefung)
     st.session_state.abschlussumfrage["prüfverhalten_nachher"] = pruefung
+    # Aktuelle Antwort merken
+    st.session_state.pruefung_alt = antwort_pruefung
+    
     st.markdown(f"Deine Antwort ist: {antwort_pruefung}")
 
 
@@ -366,13 +407,16 @@ antwort_modul = st.radio(
                         index=None
 )
 #Speichern der Antwort
-if antwort_modul is not None:
-    if "anzahl_modul" not in st.session_state:
-        st.session_state.anzahl_modul = 0
+if "anzahl_modul" not in st.session_state:
+    st.session_state.anzahl_modul = 0
+if "modul_alt" not in st.session_state:
+    st.session_state.modul_alt = None
+if "modul_bewertung_historie" not in st.session_state.abschlussumfrage:
+    st.session_state.abschlussumfrage["modul_bewertung_historie"] = []
+
+# Speicherung nur bei Änderung der Antwort
+if antwort_modul is not None and antwort_modul != st.session_state.modul_alt:
     st.session_state.anzahl_modul += 1
-    
-    if "modul_bewertung_historie" not in st.session_state.abschlussumfrage:
-        st.session_state.abschlussumfrage["modul_bewertung_historie"] = []
     
     modul = {
         "Bereich": "Abschlussumfrage",
@@ -384,6 +428,9 @@ if antwort_modul is not None:
     
     st.session_state.abschlussumfrage["modul_bewertung_historie"].append(modul)
     st.session_state.abschlussumfrage["modul_bewertung"] = modul
+    # Aktuelle Antwort merken
+    st.session_state.modul_alt = antwort_modul
+    
     st.markdown(f"Deine Antwort ist: {antwort_modul}")
 
 #################################################################

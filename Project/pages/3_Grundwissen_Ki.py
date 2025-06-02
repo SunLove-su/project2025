@@ -194,13 +194,16 @@ antwort_verstaendlichkeit_ki = st.radio(
     index=None
 )
 # Speichern der Antwort
-if antwort_verstaendlichkeit_ki is not None:
-    if "anzahl_verstaendlichkeit_ki" not in st.session_state:
-        st.session_state.anzahl_verstaendlichkeit_ki = 0
+if "anzahl_verstaendlichkeit_ki" not in st.session_state:
+    st.session_state.anzahl_verstaendlichkeit_ki = 0
+if "verstaendlichkeit_ki_alt" not in st.session_state:
+    st.session_state.verstaendlichkeit_ki_alt = None 
+if "verstaendlichkeit_ki_historie" not in st.session_state.grundwissen_ki:
+    st.session_state.grundwissen_ki["verstaendlichkeit_ki_historie"] = []
+
+# Speicherung nur bei Änderung der Antwort
+if antwort_verstaendlichkeit_ki is not None and antwort_verstaendlichkeit_ki != st.session_state.verstaendlichkeit_ki_alt:
     st.session_state.anzahl_verstaendlichkeit_ki += 1
-    
-    if "verstaendlichkeit_ki_historie" not in st.session_state.grundwissen_ki:
-        st.session_state.grundwissen_ki["verstaendlichkeit_ki_historie"] = []
     
     verstaendlichkeit_ki = {
         "Bereich": "Grundwissen KI",
@@ -212,6 +215,9 @@ if antwort_verstaendlichkeit_ki is not None:
     
     st.session_state.grundwissen_ki["verstaendlichkeit_ki_historie"].append(verstaendlichkeit_ki)
     st.session_state.grundwissen_ki["verstaendlichkeit_ki"] = verstaendlichkeit_ki
+    # Aktuelle Antwort merken
+    st.session_state.verstaendlichkeit_ki_alt = antwort_verstaendlichkeit_ki
+    
     st.markdown(f"Deine Antwort: {antwort_verstaendlichkeit_ki}.")
 
 ###############################################################################
@@ -232,13 +238,16 @@ antwort_neue_informationen_ki  = st.radio(
 )
 
 # Speichern der Antwort
-if antwort_neue_informationen_ki is not None:
-    if "anzahl_neue_informationen_ki" not in st.session_state:
-        st.session_state.anzahl_neue_informationen_ki = 0
+if "anzahl_neue_informationen_ki" not in st.session_state:
+    st.session_state.anzahl_neue_informationen_ki = 0
+if "neue_informationen_ki_alt" not in st.session_state: 
+    st.session_state.neue_informationen_ki_alt = None  
+if "neue_informationen_ki_historie" not in st.session_state.grundwissen_ki:
+    st.session_state.grundwissen_ki["neue_informationen_ki_historie"] = []
+
+# Speicherung nur bei Änderung der Antwort
+if antwort_neue_informationen_ki is not None and antwort_neue_informationen_ki != st.session_state.neue_informationen_ki_alt:
     st.session_state.anzahl_neue_informationen_ki += 1
-    
-    if "neue_informationen_ki_historie" not in st.session_state.grundwissen_ki:
-        st.session_state.grundwissen_ki["neue_informationen_ki_historie"] = []
     
     neue_informationen_ki = {
         "Bereich": "Grundwissen KI",
@@ -250,6 +259,9 @@ if antwort_neue_informationen_ki is not None:
     
     st.session_state.grundwissen_ki["neue_informationen_ki_historie"].append(neue_informationen_ki)
     st.session_state.grundwissen_ki["neue_informationen_ki"] = neue_informationen_ki
+    # Aktuelle Antwort merken
+    st.session_state.neue_informationen_ki_alt = antwort_neue_informationen_ki
+    
     st.markdown(f"Deine Antwort: {antwort_neue_informationen_ki}.")
 ##############################################################################################################
 
@@ -267,24 +279,31 @@ antwort_ueberpruefung=st.radio(frage_ueberpruefung,
 )                          
 
 # Speichern der Antwort
-if antwort_ueberpruefung is not None:
-    if "anzahl_ueberpruefung" not in st.session_state:  # <- Konsistenter Name
-        st.session_state.anzahl_ueberpruefung = 0
+
+if "anzahl_ueberpruefung" not in st.session_state:
+    st.session_state.anzahl_ueberpruefung = 0
+if "ueberpruefung_alt" not in st.session_state:
+    st.session_state.ueberpruefung_alt = None
+if "ueberpruefung_historie" not in st.session_state.grundwissen_ki:
+    st.session_state.grundwissen_ki["ueberpruefung_historie"] = []
+
+# Speicherung nur bei Änderung der Antwort  
+if antwort_ueberpruefung is not None and antwort_ueberpruefung != st.session_state.ueberpruefung_alt:
     st.session_state.anzahl_ueberpruefung += 1
-    
-    if "ueberpruefung_historie" not in st.session_state.grundwissen_ki:
-        st.session_state.grundwissen_ki["ueberpruefung_historie"] = []
     
     ueberpruefung = {
         "Bereich": "Grundwissen KI",
         "Typ": "Ueberpruefungsfrage",
         "Frage": frage_ueberpruefung,
         "Antwort": antwort_ueberpruefung,
-        "Anzahl_Aenderungen": st.session_state.anzahl_ueberpruefung  # <- Konsistent
+        "Anzahl_Aenderungen": st.session_state.anzahl_ueberpruefung
     }
     
     st.session_state.grundwissen_ki["ueberpruefung_historie"].append(ueberpruefung)
     st.session_state.grundwissen_ki["ueberpruefung"] = ueberpruefung
+    # Aktuelle Antwort merken 
+    st.session_state.ueberpruefung_alt = antwort_ueberpruefung
+    
     st.markdown(f"Deine Antwort: {antwort_ueberpruefung}.")
 
 

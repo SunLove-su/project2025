@@ -128,6 +128,8 @@ if antwort_geschlecht is not None and antwort_geschlecht != st.session_state.ges
 
     st.markdown(f"Deine Antwort: {antwort_geschlecht}.")
 
+st.session_state.einstiegsumfrage
+
 ################################################################################
 
 #Trennungslinie

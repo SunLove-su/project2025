@@ -24,29 +24,21 @@ einleitung_text = (
                 Die Antworten werden nur im Rahmen dieser Arbeit ausgewertet.           
            """)
 st.markdown(einleitung_text)
-##########################################################################################
 #Trennungslinie
 st.divider()
-#########################################################################################
+#Speicherung der Antworten in "einstiegsumfrage"
+#Dictonary, das die Antworten speichert, damit sie später im Abschluss an die Datenbank übergeben werden kann
+
+#speichern_einstiegsumfrage = "einstiegsumfrage"
+#if speichern_einstiegsumfrage not in st.session_state:
+#   st.session_state[speichern_einstiegsumfrage] ={}'''
 
 if "einstiegsumfrage" not in st.session_state:
     st.session_state.einstiegsumfrage ={}
 
-#Zur Speicherung der Anzahl der Auswahlmögochkeit
-if "anzahl_alter" not in st.session_state:
-    st.session_state.anzahl_alter = 0
-if "anzahl_geschlecht" not in st.session_state:
-    st.session_state.anzahl_geschlecht = 0
-if "anzahl_ki_wissen" not in st.session_state:
-    st.session_state.anzahl_ki_wissen = 0
-if "anzahl_erkennung_ki" not in st.session_state:
-    st.session_state.anzahl_erkennung_ki = 0
-if "anzahl_nutzung_ki" not in st.session_state:
-    st.session_state.anzahl_nutzung_ki = 0
-if "anzahl_vertrauen_ki" not in st.session_state:
-    st.session_state.anzahl_vertrauen_ki = 0
-if "anzahl_pruefung_ki" not in st.session_state:
-    st.session_state.anzahl_pruefung_ki = 0
+#Alternativ:
+#st.session_state.einstiegsumfrage = {}
+
 
 # Demografische Daten
 
@@ -66,26 +58,31 @@ antwort_alter = st.radio (frage_alter,
                                 # index= None, damit nicht schon eine "Vorauswahl" besteht.
                                 index=None
 )
+#
+if "anzahl_alter" not in st.session_state:
+    st.session_state.anzahl_alter = 0
+if "alter_alt" not in st.session_state:
+    st.session_state.alter_alt = None
+if "alter_historie" not in st.session_state.einstiegsumfrage:
+    st.session_state.einstiegsumfrage["alter_historie"] = []
 
-#Speicherung der Antwort
-if antwort_alter is not None:
-    st.session_state.anzahl_alter +=1
-    #Speicherung aller Antworten
-    if "alter_historie" not in st.session_state.einstiegsumfrage:
-        st.session_state.einstiegsumfrage["alter_historie"]=[]
-    #Festlegung der Speichervariablen
+# Nur zählen, wenn sich die Antwort wirklich ändert
+if antwort_alter is not None and antwort_alter != st.session_state.alter_alt:
+    st.session_state.anzahl_alter += 1
+
     alter = {
         "Bereich": "Einstiegsumfrage",
         "Typ": "Alter",
-        "Frage":   frage_alter,
+        "Frage": frage_alter,
         "Antwort": antwort_alter,
-        "Anzahl_Aenderungen":st.session_state.anzahl_alter
+        "Anzahl_Aenderungen": st.session_state.anzahl_alter
     }
-    #Hinzufügen aller Einträge
-    st.session_state.einstiegsumfrage["alter_historie"].append(alter)
-    #Speichern des letzten Eintrags
-    st.session_state.einstiegsumfrage["alter"]= alter
 
+    st.session_state.einstiegsumfrage["alter_historie"].append(alter)
+    st.session_state.einstiegsumfrage["alter"] = alter
+    st.session_state.alter_alt = antwort_alter  # aktuelle Antwort merken
+
+# Anzeige
 st.markdown(f"Deine Antwort: {antwort_alter}.")
 
 st.session_state.einstiegsumfrage
@@ -102,26 +99,31 @@ antwort_geschlecht = st.radio(frage_geschlecht,
                                    ),
                                    index=None
 )
-
+if "anzahl_geschlecht" not in st.session_state:
+    st.session_state.anzahl_geschlecht = 0
 #Speicherung der Antwort
 if antwort_geschlecht is not None:
     st.session_state.anzahl_geschlecht += 1
+
     if "geschlecht_historie" not in st.session_state.einstiegsumfrage:
         st.session_state.einstiegsumfrage["geschlecht_historie"]=[]
+
     geschlecht = {
         "Bereich":"Einstiegsumfrage",
         "Typ":"Geschlecht",
         "Frage": frage_geschlecht,
         "Antwort": antwort_geschlecht,
         "Anzahl_Aenderungen": st.session_state.anzahl_geschlecht 
-    }
+ }
     st.session_state.einstiegsumfrage["geschlecht_historie"].append(geschlecht)
     st.session_state.einstiegsumfrage["geschlecht"]=geschlecht
     st.markdown(f"Deine Antwort: {antwort_geschlecht}.")
 
 ################################################################################
+
 #Trennungslinie
 st.divider()
+
 ################################################################################
 
 # Frage KI-Wissen (Selbsteinschätzung)
@@ -139,23 +141,28 @@ antwort_ki_wissen = st.radio(
 
 #Speicherung der Antwort
 if antwort_ki_wissen is not None:
+    if "anzahl_ki_wissen" not in st.session_state:
+        st.session_state.anzahl_ki_wissen = 0
     st.session_state.anzahl_ki_wissen += 1
+
     if "ki_wissen_historie" not in st.session_state.einstiegsumfrage:
         st.session_state.einstiegsumfrage["ki_wissen_historie"] = []
+
     ki_wissen = {
         "Bereich":"Einstiegsumfrage",
         "Typ": "KI-Wissen",
         "Frage": frage_ki_wissen,
         "Antwort": antwort_ki_wissen,
         "Anzahl_Aenderungen": st.session_state.anzahl_ki_wissen
+    
     }
     st.session_state.einstiegsumfrage["ki_wissen_historie"].append(ki_wissen)
     st.session_state.einstiegsumfrage["ki_wissen"] = ki_wissen
     st.markdown (f"Deine Antwort: {antwort_ki_wissen}.")
-
 #########################################################################################
 
 #Frage: Erkennungsfähigkeit, ob ein Text oder Bild von der KI generiert wurde
+
 frage_erkennung_ki = "Wie gut kannst du erkennen, ob ein Text oder Bild von einer KI stammt?"
 antwort_erkennung_ki = st.radio(frage_erkennung_ki,
                         (
@@ -168,12 +175,15 @@ antwort_erkennung_ki = st.radio(frage_erkennung_ki,
                         ),
                         index=None
                     )
-
 #Speicherung der Antwort
 if antwort_erkennung_ki is not None:
+    if "anzahl_erkennung_ki" not in st.session_state:
+        st.session_state.anzahl_erkennung_ki = 0
     st.session_state.anzahl_erkennung_ki += 1
+    
     if "erkennung_ki_historie" not in st.session_state.einstiegsumfrage:
         st.session_state.einstiegsumfrage["erkennung_ki_historie"] = []
+
     erkennung_ki = {
         "Bereich": "Einstiegsumfrage",
         "Typ": "Erkennungsfähigkeit",
@@ -203,9 +213,13 @@ antwort_nutzung_ki = st.radio(
 
 # Speicherung der Antwort
 if antwort_nutzung_ki is not None:
+    if "anzahl_nutzung_ki" not in st.session_state:
+        st.session_state.anzahl_nutzung_ki = 0
     st.session_state.anzahl_nutzung_ki += 1
+    
     if "nutzung_ki_historie" not in st.session_state.einstiegsumfrage:
         st.session_state.einstiegsumfrage["nutzung_ki_historie"] = []
+    
     nutzung_ki = {
         "Bereich": "Einstiegsumfrage",
         "Typ": "Häufigkeitsnutzung",
@@ -213,13 +227,16 @@ if antwort_nutzung_ki is not None:
         "Antwort": antwort_nutzung_ki,
         "Anzahl_Aenderungen": st.session_state.anzahl_nutzung_ki
     }
+    
     st.session_state.einstiegsumfrage["nutzung_ki_historie"].append(nutzung_ki)
     st.session_state.einstiegsumfrage["nutzung_ki"] = nutzung_ki
     st.markdown(f"Deine Antwort: {antwort_nutzung_ki}")
 
 #############################################################################
+
 #Trennungslinie
 st.divider()
+
 ############################################################################
 
 #Frage für wie sehr KI Inhalten vertraut wird
@@ -235,11 +252,16 @@ antwort_vertrauen_ki = st.radio(
                                index=None
 )
 
+
 # Speicherung der Antwort
 if antwort_vertrauen_ki is not None:
+    if "anzahl_vertrauen_ki" not in st.session_state:
+        st.session_state.anzahl_vertrauen_ki = 0
     st.session_state.anzahl_vertrauen_ki += 1
+    
     if "vertrauen_ki_historie" not in st.session_state.einstiegsumfrage:
         st.session_state.einstiegsumfrage["vertrauen_ki_historie"] = []
+    
     vertrauen_ki = {
         "Bereich": "Einstiegsumfrage",
         "Typ": "Vertrauen KI Inhalte",
@@ -247,6 +269,7 @@ if antwort_vertrauen_ki is not None:
         "Antwort": antwort_vertrauen_ki,
         "Anzahl_Aenderungen": st.session_state.anzahl_vertrauen_ki
     }
+    
     st.session_state.einstiegsumfrage["vertrauen_ki_historie"].append(vertrauen_ki)
     st.session_state.einstiegsumfrage["vertrauen_ki"] = vertrauen_ki
     st.markdown(f"Deine Antwort: {antwort_vertrauen_ki}")
@@ -254,6 +277,7 @@ if antwort_vertrauen_ki is not None:
 ###################################################################
 
 #Frage ob KI-generierte Inhalte geprüft werden
+
 frage_pruefung_ki = "Wie genau prüfst du KI-generierte Inhalte, bevor du ihnen vertraust?"
 antwort_pruefung_ki = st.radio(
                 frage_pruefung_ki,
@@ -265,12 +289,15 @@ antwort_pruefung_ki = st.radio(
                  ),
                 index=None
 )
-
 # Speicherung der Antwort
 if antwort_pruefung_ki is not None:
+    if "anzahl_pruefung_ki" not in st.session_state:
+        st.session_state.anzahl_pruefung_ki = 0
     st.session_state.anzahl_pruefung_ki += 1
+    
     if "pruefung_ki_historie" not in st.session_state.einstiegsumfrage:
         st.session_state.einstiegsumfrage["pruefung_ki_historie"] = []
+    
     pruefung_ki = {
         "Bereich": "Einstiegsumfrage",
         "Typ": "Prüfung KI",
@@ -278,22 +305,27 @@ if antwort_pruefung_ki is not None:
         "Antwort": antwort_pruefung_ki,
         "Anzahl_Aenderungen": st.session_state.anzahl_pruefung_ki
     }
+    
     st.session_state.einstiegsumfrage["pruefung_ki_historie"].append(pruefung_ki)
     st.session_state.einstiegsumfrage["pruefung_ki"] = pruefung_ki
     st.markdown(f"Deine Antwort: {antwort_pruefung_ki}")
 
 ####################################################################################################
+
 #Anzeigen der gespeicherten Eingaben, zur Überprüfung
 #st.session_state.einstiegsumfrage
 #####################################################################################################
 #Trennungslinie
 st.divider()
-#####################################################################################################
 
+#####################################################################################################
 #Button zur nächsten Seite
 st.markdown("Um fortzufahren, klicke auf \"Weiter\"")
 st.markdown("Aktueller Fortschritt in der gesamten Lerneinheit: 1 von 8")
 st.progress (1/8)
+
+#zuvor mit column col1, col2 = st.columns([8,2]) #with col2: den Button rechts auf der Seite dargestellt.
+#bei einer mobilen Ansicht bleibt er jedoch links, deshalb ohne column
 
 if st.button("Weiter"):
     unbeantwortet = False

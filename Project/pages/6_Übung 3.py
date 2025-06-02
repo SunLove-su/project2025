@@ -69,13 +69,16 @@ antwort_bild_realistisch=st.radio(frage_bild_realistisch,
                                     ),
                                     index=None
                         )
-if antwort_bild_realistisch is not None:
-    if "anzahl_bild_realistisch" not in st.session_state:
-        st.session_state.anzahl_bild_realistisch = 0
+if "anzahl_bild_realistisch" not in st.session_state:
+    st.session_state.anzahl_bild_realistisch = 0
+if "bild_realistisch_alt" not in st.session_state:
+    st.session_state.bild_realistisch_alt = None
+if "bild_realistisch_historie" not in st.session_state.uebung3:
+    st.session_state.uebung3["bild_realistisch_historie"] = []
+
+# Speicherung nur bei Änderung der Antwort
+if antwort_bild_realistisch is not None and antwort_bild_realistisch != st.session_state.bild_realistisch_alt:
     st.session_state.anzahl_bild_realistisch += 1
-    
-    if "bild_realistisch_historie" not in st.session_state.uebung3:
-        st.session_state.uebung3["bild_realistisch_historie"] = []
     
     bild_realistisch_data = {
         "Bereich": "Übung3",
@@ -87,6 +90,9 @@ if antwort_bild_realistisch is not None:
     
     st.session_state.uebung3["bild_realistisch_historie"].append(bild_realistisch_data)
     st.session_state.uebung3["bild_realistisch"] = bild_realistisch_data
+    # Aktuelle Antwort merken
+    st.session_state.bild_realistisch_alt = antwort_bild_realistisch
+    
     st.markdown(f"Deine Antwort ist: {antwort_bild_realistisch}.")
 
 
@@ -206,13 +212,16 @@ antwort_datenschutz=st.radio(frage_datenschutz,
     ), index=None
     )
 #Speichern der Antwort
-if antwort_datenschutz is not None:
-    if "anzahl_datenschutz" not in st.session_state:
-        st.session_state.anzahl_datenschutz = 0
+if "anzahl_datenschutz" not in st.session_state:
+    st.session_state.anzahl_datenschutz = 0
+if "datenschutz_alt" not in st.session_state:
+    st.session_state.datenschutz_alt = None
+if "datenschutz_historie" not in st.session_state.uebung3:
+    st.session_state.uebung3["datenschutz_historie"] = []
+
+# Speicherung nur bei Änderung der Antwort
+if antwort_datenschutz is not None and antwort_datenschutz != st.session_state.datenschutz_alt:
     st.session_state.anzahl_datenschutz += 1
-    
-    if "datenschutz_historie" not in st.session_state.uebung3:
-        st.session_state.uebung3["datenschutz_historie"] = []
     
     datenschutz_data = {
         "Bereich": "Übung3",
@@ -224,6 +233,9 @@ if antwort_datenschutz is not None:
     
     st.session_state.uebung3["datenschutz_historie"].append(datenschutz_data)
     st.session_state.uebung3["datenschutz"] = datenschutz_data
+    # Aktuelle Antwort merken
+    st.session_state.datenschutz_alt = antwort_datenschutz
+    
     st.markdown(f"Deine Antwort ist: {antwort_datenschutz}")
 
 
@@ -240,13 +252,17 @@ antwort_urheberrecht=st.radio(frage_urheberrecht,
                                     "Gar nicht in Ordnung"
                                   ), index=None
                         )
-if antwort_urheberrecht is not None:
-    if "anzahl_urheberrecht" not in st.session_state:
-        st.session_state.anzahl_urheberrecht = 0
+
+if "anzahl_urheberrecht" not in st.session_state:
+    st.session_state.anzahl_urheberrecht = 0
+if "urheberrecht_alt" not in st.session_state:
+    st.session_state.urheberrecht_alt = None
+if "urheberrecht_historie" not in st.session_state.uebung3:
+    st.session_state.uebung3["urheberrecht_historie"] = []
+
+# Speicherung nur bei Änderung der Antwort
+if antwort_urheberrecht is not None and antwort_urheberrecht != st.session_state.urheberrecht_alt:
     st.session_state.anzahl_urheberrecht += 1
-    
-    if "urheberrecht_historie" not in st.session_state.uebung3:
-        st.session_state.uebung3["urheberrecht_historie"] = []
     
     urheberrecht_data = {
         "Bereich": "Übung3",
@@ -258,6 +274,9 @@ if antwort_urheberrecht is not None:
     
     st.session_state.uebung3["urheberrecht_historie"].append(urheberrecht_data)
     st.session_state.uebung3["urheberrecht"] = urheberrecht_data
+    # Aktuelle Antwort merken
+    st.session_state.urheberrecht_alt = antwort_urheberrecht
+    
     st.markdown(f"Deine Antwort ist: {antwort_urheberrecht}")
 
 ########################################################################
@@ -273,13 +292,16 @@ antwort_unterscheidung = st.radio(frage_unterscheidung,
                                 ), index=None, key="unterscheidung"
                             )
     
-if antwort_unterscheidung is not None:
-    if "anzahl_unterscheidung" not in st.session_state:
-        st.session_state.anzahl_unterscheidung = 0
+if "anzahl_unterscheidung" not in st.session_state:
+    st.session_state.anzahl_unterscheidung = 0
+if "unterscheidung_alt" not in st.session_state:
+    st.session_state.unterscheidung_alt = None
+if "unterscheidung_historie" not in st.session_state.uebung3:
+    st.session_state.uebung3["unterscheidung_historie"] = []
+
+# Speicherung nur bei Änderung der Antwort
+if antwort_unterscheidung is not None and antwort_unterscheidung != st.session_state.unterscheidung_alt:
     st.session_state.anzahl_unterscheidung += 1
-    
-    if "unterscheidung_historie" not in st.session_state.uebung3:
-        st.session_state.uebung3["unterscheidung_historie"] = []
     
     unterscheidung_data = {
         "Bereich": "Übung3",
@@ -291,6 +313,9 @@ if antwort_unterscheidung is not None:
     
     st.session_state.uebung3["unterscheidung_historie"].append(unterscheidung_data)
     st.session_state.uebung3["unterscheidung"] = unterscheidung_data
+    # Aktuelle Antwort merken
+    st.session_state.unterscheidung_alt = antwort_unterscheidung
+    
     st.markdown(f"Deine Antwort ist: {antwort_unterscheidung}")
 
 #Anzeigen aller Speicherungen in der Datenbank auf der Seite

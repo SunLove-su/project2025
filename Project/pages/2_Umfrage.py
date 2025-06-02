@@ -88,6 +88,8 @@ if antwort_alter is not None:
 
 st.markdown(f"Deine Antwort: {antwort_alter}.")
 
+st.session_state.einstiegsumfrage
+
 ###############################################################################################
 
 # Frage Geschlecht:

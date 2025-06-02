@@ -128,7 +128,7 @@ if antwort_geschlecht is not None and antwort_geschlecht != st.session_state.ges
     #
     st.session_state.geschlecht_alt = antwort_geschlecht
 
-st.markdown(f"Deine Antwort: {antwort_geschlecht}.")
+    st.markdown(f"Deine Antwort: {antwort_geschlecht}.")
 
 st.session_state.einstiegsumfrage
 
@@ -143,13 +143,15 @@ st.divider()
 frage_ki_wissen = "Wie gut kennst du dich mit Künstlicher Intelligenz (KI) aus?"
 antwort_ki_wissen = st.radio(
                     frage_ki_wissen,
-                    ("Sehr gut",
+                    (
+                     "Sehr gut",
                      "Gut",
                      "Mittelmäßig",
                      "Eher schlecht",
                      "Schlecht",
-                     "Keine Angabe"),
-    index=None
+                     "Keine Angabe"
+                     ),
+                     index=None
 )
 
 #Speicherung der Antwort

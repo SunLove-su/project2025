@@ -44,7 +44,7 @@ st.markdown("""
 #Sicherstellen, dass das Bild zur Verfügung steht
 try:
     #st.image(bild_erdbeereismann, width=200)
-    st.image("ErdbeereisMann.png", width=200)
+    st.image("../ErdbeereisMann.png", width=200)
 except FileNotFoundError:
     st.error("Das Bild konnte nicht gefunden werden, die Übung kannst du trotzdem fortsetzen")
 

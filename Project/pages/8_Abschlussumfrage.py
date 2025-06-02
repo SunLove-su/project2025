@@ -456,7 +456,7 @@ if st.button("Abschluss"):
         unbeantwortet = True
     speicher_fehler = 0
     if not unbeantwortet:  
-
+        
         
         firestore_key = os.getenv("FIRESTORE_GOOGLE_API_KEY")
 
@@ -476,27 +476,27 @@ if st.button("Abschluss"):
             st.stop()
 
         #uuid.uuid4 generiert eine zufällige UUID
-        #teilnehmer_id = f"{uuid.uuid4()}"
-        #wenn der Teilnehmer keine teilnehmer_id hat, wird eine neue erzeugt
-        if "teilnehmer_id" in st.session_state:
-            teilnehmer_id=st.session_state.teilnehmer_id
+        #user_id = f"{uuid.uuid4()}"
+        #wenn der Teilnehmer keine user_id hat, wird eine neue erzeugt
+        if "user_id" in st.session_state:
+            user_id=st.session_state.user_id
         else:
             #
             teilnehmergruppe = st.session_state.get("teilnehmergruppe_info")
             zeitstempel = datetime.datetime.now().isoformat()[:19]
             uuid_generieren= uuid.uuid4()
-            teilnehmer_id = f"{zeitstempel}-{uuid_generieren}-{teilnehmergruppe}"
-            st.session_state["teilnehmer_id"]=teilnehmer_id
+            user_id = f"{zeitstempel}-{uuid_generieren}-{teilnehmergruppe}"
+            st.session_state["user_id"]=user_id
 
-        end_zeit = datetime.datetime.now()
-        start_zeit = st.session_state.get("start_zeit")
-        if start_zeit:
-            dauerUmfrage = end_zeit - start_zeit
+        endzeit = datetime.datetime.now()
+        startzeit = st.session_state.get("startzeit")
+        if startzeit:
+            dauerUmfrage = endzeit - startzeit
             dauerUmfrageSekunden = int(dauerUmfrage.total_seconds())
             dauerUmfrageSekunden
         else:
             dauerUmfrageSekunden = ""
-        teilnehmer_informationen = {
+        user_data = {
             "teilnehmergruppe": st.session_state.get("teilnehmergruppe_info"),
             "dauerUmfrageSekunden": dauerUmfrageSekunden,
             "Einstiegstumfrage": st.session_state.get("einstiegsumfrage"),
@@ -510,10 +510,9 @@ if st.button("Abschluss"):
             
         #Hinterher alle Umfrageergebnisse
         try: 
-            doc_ref = db.collection(u'users').document(teilnehmer_id)
-            doc_ref.set(teilnehmer_informationen)
+            doc_ref = db.collection(u'users').document(user_id)
+            doc_ref.set(user_data)
             st.success("Daten erfolgreich gespeichert!")
-
 
         except KeyError as error:
             speicher_fehler +=1
@@ -546,7 +545,6 @@ if st.button("Abschluss"):
             speicher_fehler +=1
 
 
-
         supabase_url = os.getenv("SUPABASE_URL")
         supabase_key = os.getenv("SUPABASE_KEY")
 
@@ -563,14 +561,14 @@ if st.button("Abschluss"):
         supabase = create_client(supabase_url, supabase_key)
 
         # Daten für Supabase vorbereiten
-        supabase_daten = {
-            "teilnehmer_id": teilnehmer_id,
-            "daten": teilnehmer_informationen
+        supabase_data = {
+            "user_id": user_id,
+            "data": user_data
         }
         
         try:   
             # Tabelle in Supabase erstellt mit dem Namen "umfrage_antworten"
-            response = supabase.table("umfrage_antworten").insert(supabase_daten).execute()
+            response = supabase.table("umfrage_antworten").insert(supabase_data).execute()
             #st.write("Supabase-Ergebnis:", response) 
             
         #Errorcodes: https://supabase.com/docs/guides/storage/debugging/error-codes
@@ -608,6 +606,3 @@ if st.button("Abschluss"):
     if speicher_fehler==0:
         naechste_seite = "pages/9_Abschluss.py"
         st.switch_page(naechste_seite)
-        
-    
-

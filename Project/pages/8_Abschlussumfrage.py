@@ -574,23 +574,23 @@ if st.button("Abschluss"):
         # https://firebase.google.com/docs/reference/swift/firebasefirestore/api/reference/Enums/Error-Types
         #https://cloud.google.com/firestore/docs/understand-error-codes?hl=de 
         except google_exceptions.ServiceUnavailable as error:
-             speicher_fehler_firestore +=1
+            speicher_fehler_firestore +=1
             st.error("Firestore: Problem mit der Verbindung zur Datenbank. Bitte melde dich, wenn du die Fehlermeldung bekommst.")
             st.info(f"Google-Fehlermeldung: {str(error)}")
         except google_exceptions.DeadlineExceeded as error:
-             speicher_fehler_firestore +=1
+            speicher_fehler_firestore +=1
             st.error("Firestore: Problem mit der Verbindung zur Datenbank. Bitte melde dich, wenn du die Fehlermeldung bekommst.")
             st.info(f"Google-Fehlermeldung: {str(error)}")
         except google_exceptions.ResourceExhausted as error:
-             speicher_fehler_firestore +=1
+            speicher_fehler_firestore +=1
             st.error("Firestore: Zu viele Anfragen. Das Kontingent oder die Rate wurde überschritten. Bitte melde dich, wenn du die Fehlermeldung bekommst.")
             st.info(f"Google-Fehlermeldung: {str(error)}")
         except google_exceptions.NotFound as error:
-             speicher_fehler_firestore +=1
+            speicher_fehler_firestore +=1
             st.error("Firestore:Dokument nicht gefunden. Das gesuchte Dokument existiert nicht in der Datenbank. Bitte melde dich, wenn du die Fehlermeldung bekommst.")
             st.info(f"Google-Fehlermeldung: {str(error)}")
         except google_exceptions.PermissionDenied as error:
-             speicher_fehler_firestore +=1
+            speicher_fehler_firestore +=1
             st.error("Firestore: Zugriff verweigert. Du hast keine Berechtigung für diese Operation. Bitte melde dich, wenn du die Fehlermeldung bekommst.")
             st.info(f"Google-Fehlermeldung: {str(error)}")
         except Exception as error:

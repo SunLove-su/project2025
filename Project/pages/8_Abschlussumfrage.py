@@ -411,6 +411,7 @@ if antwort_verbesserung:
     st.session_state.abschlussumfrage["verbesserung"] = verbesserung
     st.markdown(f"Deine Antwort ist: {antwort_verbesserung}")
 
+st.session_stage.abschlussumfrage
 ##################################################################################
 
 st.divider()

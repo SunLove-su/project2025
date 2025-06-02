@@ -87,8 +87,8 @@ if antwort_alter is not None and antwort_alter != st.session_state.alter_alt:
     # aktuelle Antwort merken
     st.session_state.alter_alt = antwort_alter
 
-# Antwort anzeigen für den Teilnehmer
-st.markdown(f"Deine Antwort: {antwort_alter}.")
+    # Antwort anzeigen für den Teilnehmer
+    st.markdown(f"Deine Antwort: {antwort_alter}.")
 #Überprüfung für den Eintrag in der Datenbank
 st.session_state.einstiegsumfrage
 
@@ -176,7 +176,7 @@ if antwort_ki_wissen is not None and antwort_ki_wissen != st.session_state.ki_wi
     # Aktuelle Antwort merken
     st.session_state.ki_wissen_alt = antwort_ki_wissen
 
-st.markdown(f"Deine Antwort: {antwort_ki_wissen}.")
+    st.markdown(f"Deine Antwort: {antwort_ki_wissen}.")
 #########################################################################################
 
 #Frage: Erkennungsfähigkeit, ob ein Text oder Bild von der KI generiert wurde
@@ -216,7 +216,7 @@ if antwort_erkennung_ki is not None and antwort_erkennung_ki != st.session_state
     # Aktuelle Antwort merken
     st.session_state.erkennung_ki_alt = antwort_erkennung_ki
 
-st.markdown(f"Deine Antwort: {antwort_erkennung_ki}.")
+    st.markdown(f"Deine Antwort: {antwort_erkennung_ki}.")
 
 ##################################################################################
 
@@ -257,7 +257,7 @@ if antwort_nutzung_ki is not None and antwort_nutzung_ki != st.session_state.nut
     # Aktuelle Antwort merken
     st.session_state.nutzung_ki_alt = antwort_nutzung_ki
 
-st.markdown(f"Deine Antwort: {antwort_nutzung_ki}.")
+    st.markdown(f"Deine Antwort: {antwort_nutzung_ki}.")
 
 #############################################################################
 
@@ -303,7 +303,7 @@ if antwort_vertrauen_ki is not None and antwort_vertrauen_ki != st.session_state
     # Aktuelle Antwort merken
     st.session_state.vertrauen_ki_alt = antwort_vertrauen_ki
 
-st.markdown(f"Deine Antwort: {antwort_vertrauen_ki}.")
+    st.markdown(f"Deine Antwort: {antwort_vertrauen_ki}.")
 
 ###################################################################
 
@@ -342,7 +342,7 @@ if antwort_pruefung_ki is not None and antwort_pruefung_ki != st.session_state.p
     # Aktuelle Antwort merken
     st.session_state.pruefung_ki_alt = antwort_pruefung_ki
 
-st.markdown(f"Deine Antwort: {antwort_pruefung_ki}.")
+    st.markdown(f"Deine Antwort: {antwort_pruefung_ki}.")
 ####################################################################################################
 
 #Anzeigen der gespeicherten Eingaben, zur Überprüfung

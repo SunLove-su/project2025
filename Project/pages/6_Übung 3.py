@@ -194,7 +194,7 @@ with container_fokus:
 
                     """)
 ############################################################################
-Frage ob Teilnehmer Bilder von sich hochladen würden, um Bilder generieren zu lassen
+#Frage ob Teilnehmer Bilder von sich hochladen würden, um Bilder generieren zu lassen
 frage_datenschutz = "Würdest du von dir ein Bild generieren lassen, indem du ein Bild von dir hochlädst?"
 antwort_datenschutz=st.radio(frage_datenschutz,
     (

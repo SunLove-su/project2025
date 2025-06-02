@@ -249,13 +249,16 @@ antwort_stereotyp = st.radio(frage_stereotyp,
     ), index=None
 )
 #Antwort speichern
-if antwort_stereotyp is not None:
-    if "anzahl_stereotyp" not in st.session_state:
-        st.session_state.anzahl_stereotyp = 0
+if "anzahl_stereotyp" not in st.session_state:
+    st.session_state.anzahl_stereotyp = 0
+if "stereotyp_alt" not in st.session_state:
+    st.session_state.stereotyp_alt = None 
+if "stereotyp_historie" not in st.session_state.uebung4:
+    st.session_state.uebung4["stereotyp_historie"] = []
+
+# Speicherung nur bei Änderung der Antwort
+if antwort_stereotyp is not None and antwort_stereotyp != st.session_state.stereotyp_alt:
     st.session_state.anzahl_stereotyp += 1
-    
-    if "stereotyp_historie" not in st.session_state.uebung4:
-        st.session_state.uebung4["stereotyp_historie"] = []
     
     stereotyp = {
         "Bereich": "Übung4",
@@ -267,6 +270,9 @@ if antwort_stereotyp is not None:
     
     st.session_state.uebung4["stereotyp_historie"].append(stereotyp)
     st.session_state.uebung4["stereotyp"] = stereotyp
+    # Aktuelle Antwort merken
+    st.session_state.stereotyp_alt = antwort_stereotyp
+    
     st.markdown(f"Deine Antwort ist: {antwort_stereotyp}")
 
 

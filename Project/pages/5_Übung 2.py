@@ -10,8 +10,8 @@ import pathlib
 import os
 
 
-CURRENT_DIR = pathlib.Path(__file__).parent
-bild_erdbeereismann = CURRENT_DIR.joinpath("..","ErdbeereisMann.png")
+# CURRENT_DIR = pathlib.Path(__file__).parent
+# bild_erdbeereismann = CURRENT_DIR.joinpath("..","ErdbeereisMann.png")
 
 
 #Überschrift der Seite 
@@ -43,7 +43,8 @@ st.markdown("""
 # st.image("https://thispersondoesnotexist.com/",width=200)
 #Sicherstellen, dass das Bild zur Verfügung steht
 try:
-    st.image(bild_erdbeereismann, width=200)
+    #st.image(bild_erdbeereismann, width=200)
+    st.image("ErdbeereisMann.png", width=200)
 except FileNotFoundError:
     st.error("Das Bild konnte nicht gefunden werden, die Übung kannst du trotzdem fortsetzen")
 

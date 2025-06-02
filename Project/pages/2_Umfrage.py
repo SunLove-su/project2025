@@ -316,7 +316,8 @@ antwort_pruefung_ki = st.radio(
                  "Manchmal",
                  "Eher selten",
                  "Gar nicht"
-                 ), index = None)
+                 ), index = None
+    )
 
 if "anzahl_pruefung_ki" not in st.session_state:
     st.session_state.anzahl_pruefung_ki = 0

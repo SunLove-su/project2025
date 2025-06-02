@@ -507,7 +507,8 @@ if st.button("Abschluss"):
     if antwort_vertrauen is None:
         st.error("Bitte gebe deine Vertrauen in KI an.")
         unbeantwortet = True
-    speicher_fehler = 0
+    speicher_fehler_firestore = 0
+    speicher_fehler_supabase = 0
     if not unbeantwortet:  
         
         
@@ -568,34 +569,34 @@ if st.button("Abschluss"):
             st.success("Daten erfolgreich gespeichert!")
 
         except KeyError as error:
-            speicher_fehler +=1
+            speicher_fehler_firestore +=1
             st.error("Problem mit der Datenbankkonfiguration. Bitte melde dich, wenn du die Fehlermeldung bekommst.")
         # https://firebase.google.com/docs/reference/swift/firebasefirestore/api/reference/Enums/Error-Types
         #https://cloud.google.com/firestore/docs/understand-error-codes?hl=de 
         except google_exceptions.ServiceUnavailable as error:
-            speicher_fehler +=1
+             speicher_fehler_firestore +=1
             st.error("Firestore: Problem mit der Verbindung zur Datenbank. Bitte melde dich, wenn du die Fehlermeldung bekommst.")
             st.info(f"Google-Fehlermeldung: {str(error)}")
         except google_exceptions.DeadlineExceeded as error:
-            speicher_fehler +=1
+             speicher_fehler_firestore +=1
             st.error("Firestore: Problem mit der Verbindung zur Datenbank. Bitte melde dich, wenn du die Fehlermeldung bekommst.")
             st.info(f"Google-Fehlermeldung: {str(error)}")
         except google_exceptions.ResourceExhausted as error:
-            speicher_fehler +=1
+             speicher_fehler_firestore +=1
             st.error("Firestore: Zu viele Anfragen. Das Kontingent oder die Rate wurde überschritten. Bitte melde dich, wenn du die Fehlermeldung bekommst.")
             st.info(f"Google-Fehlermeldung: {str(error)}")
         except google_exceptions.NotFound as error:
-            speicher_fehler +=1
+             speicher_fehler_firestore +=1
             st.error("Firestore:Dokument nicht gefunden. Das gesuchte Dokument existiert nicht in der Datenbank. Bitte melde dich, wenn du die Fehlermeldung bekommst.")
             st.info(f"Google-Fehlermeldung: {str(error)}")
         except google_exceptions.PermissionDenied as error:
-            speicher_fehler +=1
+             speicher_fehler_firestore +=1
             st.error("Firestore: Zugriff verweigert. Du hast keine Berechtigung für diese Operation. Bitte melde dich, wenn du die Fehlermeldung bekommst.")
             st.info(f"Google-Fehlermeldung: {str(error)}")
         except Exception as error:
             st.error("Firestore: Es gibt ein Problem mit der Datenbank. Bitte melde dich, wenn du die Fehlermeldung siehst")
             st.info(f"Google-Fehlermeldung:{str(error)}")
-            speicher_fehler +=1
+             speicher_fehler_firestore +=1
 
 
         supabase_url = os.getenv("SUPABASE_URL")
@@ -627,7 +628,7 @@ if st.button("Abschluss"):
         #Errorcodes: https://supabase.com/docs/guides/storage/debugging/error-codes
 
         except Exception as error:
-            speicher_fehler +=1
+            speicher_fehler_supabase +=1
             error_text = str(error).lower()
                 
             if "429" in error_text or "too many requests" in error_text:
@@ -656,6 +657,6 @@ if st.button("Abschluss"):
                 st.error("Supabase: Es gibt ein Problem mit der Datenbank. Bitte melde dich, wenn du die Fehlermeldung siehst.")
                 st.info(f"Supabase-Fehlermeldung: {str(error)}")
     #Wenn es keine Fehler bei der Datenbank gibt, kann die Lerneinheit abgeschlossen werden
-    if speicher_fehler==0:
+    if speicher_fehler_supabase==0 or  speicher_fehler_firestore==0:
         naechste_seite = "pages/9_Abschluss.py"
         st.switch_page(naechste_seite)

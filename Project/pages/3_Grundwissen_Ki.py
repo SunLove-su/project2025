@@ -13,24 +13,22 @@ api_key1 = os.getenv("OPENAI_API_KEY1")
 api_key2 = os.getenv("OPENAI_API_KEY2")
 gemini_key = os.getenv("GEMINI_API_KEY")
 
-if not api_key1 or not api_key2:
-    try:
-        # st.secrets für das Deployment in StreamlitCloud
+# st.secrets für das Deployment in StreamlitCloud
+try:
+    if not api_key1:
         api_key1=st.secrets["openai"]["api_key1"]
+    if not api_key2:
         api_key2=st.secrets["openai"]["api_key2"]
-        
-    except Exception:
-        st.error("Kein OpenAI Key vorhanden")
-        st.stop()
+    if not gemini_key:
+        gemini_key = st.secrets["googleapigemini"]["gemini_api_key"]
+except Exception:
+        pass
+
+if not api_key1 and not gemini_key:
+    st.error("Es gibt zur Zeit Probleme mit den API-Keys!")
+    st.stop()
         
 client = openai.OpenAI(api_key=api_key1)
-
-if not gemini_key:
-    try:
-        gemini_key = st.secrets["googleapigemini"]["gemini_api_key"]
-    except Exception:
-        gemini_key = None
-
 
 
 

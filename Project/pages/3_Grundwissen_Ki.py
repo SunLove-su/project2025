@@ -24,7 +24,7 @@ try:
 except Exception:
         pass
 
-if not api_key1 and not gemini_key:
+if not api_key1 and not api_key2 and not gemini_key:
     st.error("Es gibt zur Zeit Probleme mit den API-Keys!")
     st.stop()
         
@@ -144,32 +144,41 @@ with container_fokus:
                        
                         #API-Aufruf an OpenAI (wenn es zu einem RateLimit kommt, soll der 2.te API-Schlüssel zum Einsatz kommen)
                         try:
-                            antwort = client.chat.completions.create(
-                                model="gpt-3.5-turbo",
-                                messages=[{"role": "user", "content": f"Beantworte die Frage nur auf Deutsch: {frage}"}]
-                            )
-                            antwort_text = antwort.choices[0].message.content
+                            if client:
+                                antwort = client.chat.completions.create(
+                                    model="gpt-3.5-turbo",
+                                    messages=[{"role": "user", "content": f"Beantworte die Frage nur auf Deutsch: {frage}"}]
+                                )
+                                antwort_text = antwort.choices[0].message.content
+                            else:
+                                raise Exception("Kein Client vorhanden.")
                         except openai.RateLimitError:
                             # Key2 verwenden bei Rate Limit
-                            client = openai.OpenAI(api_key=api_key2)
-                            antwort = client.chat.completions.create(
+                            if api_key2: 
+                                client = openai.OpenAI(api_key=api_key2)
+                                antwort = client.chat.completions.create(
                                 model="gpt-3.5-turbo",
                                 messages=[{"role": "user", "content": f"Beantworte die Frage nur auf Deutsch: {frage}"}]
-                            )
-                            antwort_text = antwort.choices[0].message.content
+                                    )
+                                antwort_text = antwort.choices[0].message.content
+                            else:
+                                raise Exception("Kein 2API-Schlüssel vorhanden.")
                         except Exception:
                             try:
                                 #Alternative wenn OpenAI nicht funktioniert
                                 if gemini_key:
+                                    
                                     gemini_client = openai.OpenAI(
                                         api_key=gemini_key,
                                         base_url="https://generativelanguage.googleapis.com/v1beta/openai/"
                                     )
                                     antwort = gemini_client.chat.completions.create(
-                                        model="gemini-2.0-flash",
-                                        messages=[{"role": "user", "content": f"Beantworte die Frage nur auf Deutsch: {frage}"}]
-                                    )
+                                            model="gemini-2.0-flash",
+                                            messages=[{"role": "user", "content": f"Beantworte die Frage nur auf Deutsch: {frage}"}]
+                                        )
                                     antwort_text = antwort.choices[0].message.content
+                                else:
+                                    raise Exception("Kein Cient vorhanden.")
                             except Exception:
                                     st.error("Alle API-Dienste sind momentan nicht verfügbar.")
                                     antwort_text = "Alle API-Dienste sind momentan nicht verfügbar"

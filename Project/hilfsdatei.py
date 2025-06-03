@@ -1,5 +1,7 @@
 import streamlit as st
 import os
+import openai
+import google.generativeai as genai
 
 def seite(titel):
     #set_page muss immer am Anfang der Dateien definiert sein und darf nur einmal auftreten"""
@@ -71,6 +73,55 @@ def teilnehmer_anmelden():
             elif anmelden and not eingabe:
                 st.error("Bitte gib ein Passwort ein.")
         st.stop()
+
+#Verbindung der OpenAI Schnittstelle: API-Schlüssel
+def openai_verbindung():
+    #Damit auf Render keine Fehlermeldung kommt, dass die st.secrets toml fehlt
+    api_key1 = os.getenv("OPENAI_API_KEY1")
+    api_key2 = os.getenv("OPENAI_API_KEY2")
+    gemini_key = os.getenv("GEMINI_API_KEY")
+
+    # st.secrets für das Deployment in StreamlitCloud
+    if not api_key1:
+        try:
+            api_key1 = st.secrets["openai"]["api_key1"]
+        except:
+            pass
+
+    if not api_key2:
+        try:
+            api_key2 = st.secrets["openai"]["api_key2"]
+        except:
+            pass
+
+    if not gemini_key:
+        try:
+            gemini_key = st.secrets["googleapigemini"]["gemini_api_key"]
+        except:
+            pass
+        
+    if not api_key1 and not api_key2 and not gemini_key:
+        st.error("Es gibt zur Zeit Probleme mit den API-Keys!")
+        st.stop()
+            
+    openai_client = None
+    if api_key1:
+        openai_client = openai.OpenAI(api_key=api_key1)
+    elif api_key2:
+        openai_client = openai.OpenAI(api_key=api_key2)
+    
+   #https://www.linkedin.com/pulse/how-create-gemini-pro-chatbot-using-python-streamlit-hafiz-m-ahmed-pxscf 
+    gemini_client = None
+    if gemini_key:
+        genai.configure(api_key=gemini_key)
+        gemini_client = genai.GenerativeModel("gemini-pro")
+        
+
+
+    return openai_client, gemini_client, api_key1, api_key2
+
+
+
     
 #https://platform.openai.com/docs/guides/error-codes/api-errors.
        

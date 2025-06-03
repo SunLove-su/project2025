@@ -8,43 +8,8 @@ import os
 titel_seite = "Grundwissen über Künstliche Intelligenz (KI)" 
 hilfsdatei.seite(titel_seite)
 
-#Damit auf Render keine Fehlermeldung kommt, dass die st.secrets toml fehlt
-api_key1 = os.getenv("OPENAI_API_KEY1")
-api_key2 = os.getenv("OPENAI_API_KEY2")
-gemini_key = os.getenv("GEMINI_API_KEY")
-
-# st.secrets für das Deployment in StreamlitCloud
-if not api_key1:
-    try:
-        api_key1 = st.secrets["openai"]["api_key1"]
-    except:
-        pass
-
-if not api_key2:
-    try:
-        api_key2 = st.secrets["openai"]["api_key2"]
-    except:
-        pass
-
-if not gemini_key:
-    try:
-        gemini_key = st.secrets["googleapigemini"]["gemini_api_key"]
-    except:
-        pass
-    
-if not api_key1 and not api_key2 and not gemini_key:
-    st.error("Es gibt zur Zeit Probleme mit den API-Keys!")
-    st.stop()
-        
-client = None
-if api_key1:
-    client = openai.OpenAI(api_key=api_key1)
-elif api_key2:
-    client = openai.OpenAI(api_key=api_key2)
-
-
-
-
+#API-Verbindung zu OpenAI und zu Gemini aufbauen
+openai_client, gemini_client, api_key1, api_key2  = hilfsdatei.openai_verbindung()
 
 #Sicherstellen, dass ein Zugriff der Seiten nur mit Passwort erfolgt, und dass User keine Navigationsseite sehen
 hilfsdatei.teilnehmer_anmelden()
@@ -152,8 +117,8 @@ with container_fokus:
                        
                         #API-Aufruf an OpenAI (wenn es zu einem RateLimit kommt, soll der 2.te API-Schlüssel zum Einsatz kommen)
                         try:
-                            if client:
-                                antwort = client.chat.completions.create(
+                            if openai_client:
+                                antwort = openai_client.chat.completions.create(
                                     model="gpt-3.5-turbo",
                                     messages=[{"role": "user", "content": f"Beantworte die Frage nur auf Deutsch: {frage}"}]
                                 )
@@ -163,8 +128,8 @@ with container_fokus:
                         except openai.RateLimitError:
                             # Key2 verwenden bei Rate Limit
                             if api_key2: 
-                                client = openai.OpenAI(api_key=api_key2)
-                                antwort = client.chat.completions.create(
+                                openai_client = openai.OpenAI(api_key=api_key2)
+                                antwort = openai_client.chat.completions.create(
                                 model="gpt-3.5-turbo",
                                 messages=[{"role": "user", "content": f"Beantworte die Frage nur auf Deutsch: {frage}"}]
                                     )
@@ -174,17 +139,10 @@ with container_fokus:
                         except Exception:
                             try:
                                 #Alternative wenn OpenAI nicht funktioniert
-                                if gemini_key:
-                                    
-                                    gemini_client = openai.OpenAI(
-                                        api_key=gemini_key,
-                                        base_url="https://generativelanguage.googleapis.com/v1beta/openai/"
-                                    )
-                                    antwort = gemini_client.chat.completions.create(
-                                            model="gemini-2.0-flash",
-                                            messages=[{"role": "user", "content": f"Beantworte die Frage nur auf Deutsch: {frage}"}]
-                                        )
-                                    antwort_text = antwort.choices[0].message.content
+                                if gemini_client:
+                                    antwort = gemini_client.generate_content(f"Beantworte die Frage nur auf Deutsch: {frage}")
+                                
+                                    antwort_text = antwort
                                 else:
                                     raise Exception("Kein Cient vorhanden.")
                             except Exception:

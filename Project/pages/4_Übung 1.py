@@ -386,7 +386,10 @@ with container_fokus1:
                                             antwort_text = "482 x 739 = 355.420"
                                     except Exception as error:
                                         antwort_text = "482 x 739 = 355.420"
-
+                        
+                        #Fehlerbehandlung von OpenAI (z. B. zu viele Anfragen, keine Verbindung zu OpenAI-Schnittstelle)         
+                        except Exception as error:
+                            hilfsdatei.openai_fehlerbehandlung(error)
 
                             # Zählen der Teilnehmereingaben bei den vorgegebenen Fragen
                             st.session_state.zaehler_eingaben_vorgegeben+= 1
@@ -413,9 +416,6 @@ with container_fokus1:
                                 "Anzahl_Aenderungen": anzahl_eingaben_vorgegeben
                             })
 
-                #Fehlerbehandlung von OpenAI (z. B. zu viele Anfragen, keine Verbindung zu OpenAI-Schnittstelle)         
-                except Exception as error:
-                    hilfsdatei.openai_fehlerbehandlung(error)
 #Aufgabe 4
 #Teilnehmer stellen ChatGPT selbst fragen, der Prompt ist jedoch manipuliert
 container_fokus2 = st.container()

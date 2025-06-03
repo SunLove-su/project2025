@@ -257,7 +257,7 @@ if st.button("ChatGPT nach Vokalen fragen"):
         if "Gesamt: 23" in antwort_text.lower() and "a: 2" in antwort_text.lower():
             antwort_text = "a: 4 e: 6 i: 2 o: 3 u: 1 ä: 2 ö: 1 ü: 1 Gesamt: 20"
             
-    except Exception as error:
+    except:
         # Fallback bei Verbindungsproblemen
         antwort_text = "a: 4 e: 6 i: 2 o: 3 u: 1 ä: 2 ö: 1 ü: 1 Gesamt: 20"
 

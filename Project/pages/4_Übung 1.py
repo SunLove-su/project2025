@@ -17,18 +17,9 @@ import os
 #Seitentitel
 hilfsdatei.seite("1. Übung")
 
-#Damit auf Render keine Fehlermeldung kommt, dass die st.secrets toml fehlt
-api_key = os.getenv("OPENAI_API_KEY")
 
-if not api_key:
-    try:
-        # st.secrets für das Deployment in StreamlitCloud
-        api_key=st.secrets["openai"]["api_key"]
-    except Exception:
-        st.error("Kein OpenAI Key vorhanden")
-        st.stop()
-        
-client = openai.OpenAI(api_key=api_key)
+#API-Verbindung zu OpenAI und zu Gemini aufbauen
+openai_client, gemini_client, api_key1, api_key2 = hilfsdatei.openai_verbindung()
     
 
 #Sicherstellen, dass ein Zugriff der Seiten nur mit Passwort erfolgt, und dass User keine Navigationsseite sehen
@@ -232,7 +223,7 @@ if st.button("ChatGPT nach Vokalen fragen"):
         #Nutzung eines Spinners, damit die User sehen, dass ein Hintergrundprozess durchgeführt wird
         with st.spinner(text="Erstelle Text, bitte warten..."):
             #API-Aufruf an OpenAI
-            antwort = client.chat.completions.create(
+            antwort = openai_client.chat.completions.create(
             model="gpt-3.5-turbo",
             messages=[
                       {"role": "user", "content": prompt_vokale+beispielsatz}
@@ -324,7 +315,7 @@ with container_fokus1:
                         #Nutzung eines Spinners, damit die User sehen, dass ein Hintergrundprozess durchgeführt wird
                         with st.spinner(text="Erstelle Text, bitte warten..."):
                             #API-Aufruf an OpenAI
-                            antwort = client.chat.completions.create(
+                            antwort = openai_client.chat.completions.create(
                                 #GPT 3.5 Turbo Nutzung, da es KI-Grenzen aufzeigt und keine Manipulation durch Anpassung des Prompts erfolgen muss(Rechenfehler bei höheren Zahlen, veraltete Daten)
                                 #Ansonsten Empfehlung Nutung von gpt-4omini
                                 model="gpt-3.5-turbo",
@@ -342,7 +333,7 @@ with container_fokus1:
                                 if "trump" in antwort_text.lower():
                                     try:
                                         #API-Aufruf an OpenAI
-                                        antwort = client.chat.completions.create(
+                                        antwort =openai_client.chat.completions.create(
                                             model="gpt-3.5-turbo",
                                             messages=[{"role": "user", "content":falscheantworten+frage}]
                                         )
@@ -358,7 +349,7 @@ with container_fokus1:
                                 if "356198" in antwort_text or "356.198" in antwort_text:
                                     try:
                                         #API-Aufruf an OpenAI
-                                        antwort = client.chat.completions.create(
+                                        antwort = openai_client.chat.completions.create(
                                             model="gpt-3.5-turbo",
                                             messages=[{"role": "user", "content":falscheantworten+frage}]
                                         )
@@ -426,7 +417,7 @@ with container_fokus2:
                     #GPT 3.5 Turbo = Antwort: Die Hauptstadt von Deutschland ist Frankfurt....
                     #GPT 4 Turbo = Die Hauptstadt von Deutschland ist Berlin. Berlin wurde im Jahr 1237 gegründet und ist seit der Wiedervereinigung Deutschlands im Jahr 1991..."
                     with st.spinner(text="Erstelle Text, bitte warten..."):
-                        antwort = client.chat.completions.create(
+                        antwort = openai_client.chat.completions.create(
                             model="gpt-4-turbo",
                             messages=[{"role": "user", "content":prompt+"nur 2-3 Sätze. Gebe Details an wie Jahre, Zahlen oder Eigenschaften"}],
                             
@@ -443,7 +434,7 @@ with container_fokus2:
                         )
 
 
-                        antwort = client.chat.completions.create(
+                        antwort = openai_client.chat.completions.create(
                         model="gpt-3.5-turbo",
                         messages=[{"role": "user", "content": f"{falsch_prompt} {richtige_antwort}:nur 2-3 Sätze. Nur Deutsch"}]
         

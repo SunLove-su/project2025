@@ -118,38 +118,33 @@ with container_fokus:
                        
                         #API-Aufruf an OpenAI (wenn es zu einem RateLimit kommt, soll der 2.te API-Schlüssel zum Einsatz kommen)
                         try:
-                            if openai_client:
-                                antwort = openai_client.chat.completions.create(
+                            antwort = openai_client.chat.completions.create(
                                     model="gpt-3.5-turbo",
                                     messages=[{"role": "user", "content": f"Beantworte die Frage nur auf Deutsch: {frage}"}]
                                 )
-                                antwort_text = antwort.choices[0].message.content
-                            else:
-                                raise Exception("Kein Client vorhanden.")
-                        except openai.RateLimitError:
-                            # Key2 verwenden bei Rate Limit
-                            if api_key2: 
-                                openai_client = openai.OpenAI(api_key=api_key2)
-                                antwort = openai_client.chat.completions.create(
-                                model="gpt-3.5-turbo",
-                                messages=[{"role": "user", "content": f"Beantworte die Frage nur auf Deutsch: {frage}"}]
-                                    )
-                                antwort_text = antwort.choices[0].message.content
-                            else:
-                                raise Exception("Kein 2API-Schlüssel vorhanden.")
-                        except Exception:
-                            try:
-                                #Alternative wenn OpenAI nicht funktioniert
-                                if gemini_client:
-                                    antwort = gemini_client.generate_content(f"Beantworte die Frage nur auf Deutsch: {frage}")
-                                
-                                    antwort_text = antwort
-                                else:
-                                    raise Exception("Kein Cient vorhanden.")
-                            except Exception:
-                                    st.error("Alle API-Dienste sind momentan nicht verfügbar.")
-                                    antwort_text = "Alle API-Dienste sind momentan nicht verfügbar"
+                            antwort_text = antwort.choices[0].message.content
+                        except:
+                            # Key2 verwenden z.B. bei Rate Limit oder wenn Key abgelaufen
+                            if api_key2:
+                                try:
+                                    openai_client = openai.OpenAI(api_key=api_key2)
+                                    antwort = openai_client.chat.completions.create(
+                                            model="gpt-3.5-turbo",
+                                            messages=[{"role": "user", "content": f"Beantworte die Frage nur auf Deutsch: {frage}"}]
+                                        )
+                                    antwort_text = antwort.choices[0].message.content
+                                except:
                                     
+                                    #Alternative wenn OpenAI nicht funktioniert
+                                    if gemini_client:
+                                        try:
+                                            antwort = gemini_client.generate_content(f"Beantworte die Frage nur auf Deutsch: {frage}")
+                                            antwort_text = antwort.text
+                                            
+                                        except Exception:
+                                                st.error("Alle API-Dienste sind momentan nicht verfügbar.")
+                                                antwort_text = "Alle API-Dienste sind momentan nicht verfügbar"
+                                                
 
                         # Prompt-Zähler aktualisieren
                         st.session_state.zaehler_eingaben_grundwissen += 1

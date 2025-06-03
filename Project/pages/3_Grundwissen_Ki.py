@@ -144,6 +144,7 @@ with container_fokus:
                                 model="gpt-3.5-turbo",
                                 messages=[{"role": "user", "content": f"Beantworte die Frage nur auf Deutsch: {frage}"}]
                             )
+                            antwort_text = antwort.choices[0].message.content
                         except openai.RateLimitError:
                             # Key2 verwenden bei Rate Limit
                             client = openai.OpenAI(api_key=api_key2)
@@ -151,12 +152,21 @@ with container_fokus:
                                 model="gpt-3.5-turbo",
                                 messages=[{"role": "user", "content": f"Beantworte die Frage nur auf Deutsch: {frage}"}]
                             )
-            
-                        #Abfrage, ob eine Ermittlung erfolgt ist
-                        if antwort and antwort.choices:
                             antwort_text = antwort.choices[0].message.content
-                        else:
-                            antwort_text = "Keine Antwort erhalten."
+                        except Exception:
+                            try:
+                                #Alternative wenn OpenAI nicht funktioniert
+                                if gemini_key:
+                                    gemini_client = openai.OpenAI(
+                                        api_key=gemini_key,
+                                        base_url="https://generativelanguage.googleapis.com/v1beta/openai/"
+                                    )
+                                    antwort = gemini_client.chat.completions.create(
+                                        model="gemini-2.0-flash",
+                                        messages=[{"role": "user", "content": f"Beantworte die Frage nur auf Deutsch: {frage}"}]
+                                    )
+                                    antwort_text = antwort.choices[0].message.content
+ 
                         # Prompt-Zähler aktualisieren
                         st.session_state.zaehler_eingaben_grundwissen += 1
                         anzahl_eingaben = st.session_state.zaehler_eingaben_grundwissen

@@ -9,7 +9,7 @@ titel_seite = "Grundwissen über Künstliche Intelligenz (KI)"
 hilfsdatei.seite(titel_seite)
 
 #API-Verbindung zu OpenAI und zu Gemini aufbauen
-openai_client, gemini_client, api_key1, api_key2  = hilfsdatei.openai_verbindung()
+openai_client, gemini_client, api_key1, api_key2 = hilfsdatei.openai_verbindung()
 
 #Sicherstellen, dass ein Zugriff der Seiten nur mit Passwort erfolgt, und dass User keine Navigationsseite sehen
 hilfsdatei.teilnehmer_anmelden()

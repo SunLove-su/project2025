@@ -127,7 +127,7 @@ with container_fokus:
                             # Key2 verwenden z.B. bei Rate Limit oder wenn Key abgelaufen
                             if api_key2:
                                 try:
-                                    openai_client = openai.OpenAI(api_key=api_key2)
+                                    #openai_client = openai.OpenAI(api_key=api_key2)
                                     antwort = openai_client.chat.completions.create(
                                             model="gpt-3.5-turbo",
                                             messages=[{"role": "user", "content": f"Beantworte die Frage nur auf Deutsch: {frage}"}]

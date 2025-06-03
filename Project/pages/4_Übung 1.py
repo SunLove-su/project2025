@@ -223,14 +223,35 @@ if st.button("ChatGPT nach Vokalen fragen"):
         #Nutzung eines Spinners, damit die User sehen, dass ein Hintergrundprozess durchgeführt wird
         with st.spinner(text="Erstelle Text, bitte warten..."):
             #API-Aufruf an OpenAI
-            antwort = openai_client.chat.completions.create(
-            model="gpt-3.5-turbo",
-            messages=[
-                      {"role": "user", "content": prompt_vokale+beispielsatz}
-                     ]  )
-       
-        #Antwort in der Variable speichern
-        antwort_text=antwort.choices[0].message.content
+            try:
+                antwort = openai_client.chat.completions.create(
+                model="gpt-3.5-turbo",
+                messages=[
+                        {"role": "user", "content": prompt_vokale+beispielsatz}
+                        ]  )
+        
+                #Antwort in der Variable speichern
+                antwort_text=antwort.choices[0].message.content
+            except:
+
+                if api_key2:
+                    try:
+                        antwort = openai_client.chat.completions.create(
+                         model="gpt-3.5-turbo",
+                         messages=[
+                            {"role": "user", "content": prompt_vokale+beispielsatz}
+                            ])
+                        antwort_text=antwort.choices[0].message.content
+                    except:
+                        if gemini_client:
+                            try:
+                                antwort = gemini_client.generate_content(prompt_vokale+beispielsatz)
+                                antwort_text = antwort.text
+                            except:
+                                st.error("Alle API-Dienste sind momentan nicht verfügbar.")
+                                antwort_text = "Alle API-Dienste sind momentan nicht verfügbar"
+                                                
+
 
         #Falls ChatGPT 3.5 Turbo doch richtig Vokale zählt, soll trotzdem eine falsche Antwort ausgegeben werden
         if "Gesamt: 23" in antwort_text.lower() and "a: 2" in antwort_text.lower():

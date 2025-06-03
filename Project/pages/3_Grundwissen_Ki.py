@@ -23,6 +23,32 @@ try:
         gemini_key = st.secrets["googleapigemini"]["gemini_api_key"]
 except Exception:
         pass
+st.write("🔍 DEBUG - Keys Status:")
+st.write(f"api_key1 vorhanden: {bool(api_key1)}")
+st.write(f"api_key2 vorhanden: {bool(api_key2)}")
+st.write(f"gemini_key vorhanden: {bool(gemini_key)}")
+
+# DEBUG: Secrets verfügbar?
+try:
+    st.write("**Secrets Check:**")
+    st.write(f"st.secrets verfügbar: {hasattr(st, 'secrets')}")
+    if hasattr(st, 'secrets'):
+        st.write(f"secrets keys: {list(st.secrets.keys())}")
+        st.write(f"'openai' section exists: {'openai' in st.secrets}")
+        st.write(f"'googleapigemini' section exists: {'googleapigemini' in st.secrets}")
+        
+        if 'openai' in st.secrets:
+            st.write(f"openai keys: {list(st.secrets['openai'].keys())}")
+        if 'googleapigemini' in st.secrets:
+            st.write(f"googleapigemini keys: {list(st.secrets['googleapigemini'].keys())}")
+except Exception as e:
+    st.write(f"Secrets error: {e}")
+
+# Environment Variables Check
+st.write("**Environment Variables:**")
+st.write(f"OPENAI_API_KEY1 in env: {bool(os.getenv('OPENAI_API_KEY1'))}")
+st.write(f"OPENAI_API_KEY2 in env: {bool(os.getenv('OPENAI_API_KEY2'))}")
+st.write(f"GEMINI_API_KEY in env: {bool(os.getenv('GEMINI_API_KEY'))}")
 
 # Prüfe ob mindestens ein Service verfügbar ist
 if not api_key1 and not api_key2 and not gemini_key:

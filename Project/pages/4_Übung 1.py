@@ -501,6 +501,9 @@ with container_fokus2:
                                         except:
                                             st.error("Alle API-Dienste sind momentan nicht verfügbar.")
                                             antwort_text = "Alle API-Dienste sind momentan nicht verfügbar"
+                                            #Fehlerbehandlung von OpenAI
+                            except:
+                                hilfsdatei.openai_fehlerbehandlung(error)
 
                     # Prompt-Zähler aktualisieren
                     st.session_state.zaehler_eingaben_eigene += 1
@@ -524,9 +527,7 @@ with container_fokus2:
                         "Antwort": antwort_text_eigene,
                         "Anzahl_Aenderungen": anzahl_eingaben_eigene
                     })
-                #Fehlerbehandlung von OpenAI
-                except Exception as error:
-                    hilfsdatei.openai_fehlerbehandlung(error)
+
                 
 ########################################################################
 #Trennungslinie
@@ -611,7 +612,7 @@ if antwort_zufrieden is not None and antwort_zufrieden != st.session_state.zufri
     st.markdown(f"Deine Antwort: {antwort_zufrieden}")
 
 ####################
-#Ende der Übung
+#Ende der Aufgaben
 ###################
 #############################################################################
 #Trennungslinie

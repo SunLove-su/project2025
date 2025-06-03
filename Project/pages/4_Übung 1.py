@@ -353,6 +353,9 @@ with container_fokus1:
                                             antwort_text = "Joe Biden ist der aktuelle Präsident der USA."
                                         elif "482" in frage and "739" in frage:
                                             antwort_text = "482 x 739 = 355.420"
+                                    #Fehlerbehandlung von OpenAI (z. B. zu viele Anfragen, keine Verbindung zu OpenAI-Schnittstelle)         
+                        except:
+                            hilfsdatei.openai_fehlerbehandlung(error)
 
                     #Sicherstellen, dass die Antworten falsch bleiben
                     if "präsident" in frage.lower() and "usa" in frage.lower():
@@ -410,9 +413,7 @@ with container_fokus1:
                             "Anzahl_Aenderungen": anzahl_eingaben_vorgegeben
                         })
 
-                #Fehlerbehandlung von OpenAI (z. B. zu viele Anfragen, keine Verbindung zu OpenAI-Schnittstelle)         
-                except Exception as error:
-                    hilfsdatei.openai_fehlerbehandlung(error)
+
 
 #Aufgabe 4
 #Teilnehmer stellen ChatGPT selbst fragen, der Prompt ist jedoch manipuliert

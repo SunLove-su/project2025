@@ -2,6 +2,7 @@ import streamlit as st
 import openai
 import hilfsdatei
 import os
+import google.generativeai as genai 
 
 
 #Überschrift der Seite 

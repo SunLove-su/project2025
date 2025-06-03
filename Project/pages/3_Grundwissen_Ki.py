@@ -9,17 +9,28 @@ titel_seite = "Grundwissen über Künstliche Intelligenz (KI)"
 hilfsdatei.seite(titel_seite)
 
 #Damit auf Render keine Fehlermeldung kommt, dass die st.secrets toml fehlt
-api_key = os.getenv("OPENAI_API_KEY")
+api_key1 = os.getenv("OPENAI_API_KEY1")
+api_key2 = os.getenv("OPENAI_API_KEY2")
+gemini_key = os.getenv("GEMINI_API_KEY")
 
-if not api_key:
+if not api_key1 or not api_key2:
     try:
         # st.secrets für das Deployment in StreamlitCloud
-        api_key=st.secrets["openai"]["api_key"]
+        api_key1=st.secrets["openai"]["api_key1"]
+        api_key2=st.secrets["openai"]["api_key2"]
+        
     except Exception:
         st.error("Kein OpenAI Key vorhanden")
         st.stop()
         
-client = openai.OpenAI(api_key=api_key)
+client = openai.OpenAI(api_key=api_key1)
+
+if not gemini_key:
+    try:
+        gemini_key = st.secrets["googleapigemini"]["gemini_api_key"]
+    except Exception:
+        gemini_key = None
+
 
 
 
@@ -120,21 +131,27 @@ with container_fokus:
             #Anweisung an den Teilnehmer, da es bei Streamlit Probleme mit dem Fokus gibt
             st.markdown("Wenn du keine Fragen mehr hast, scrolle bitte weiter nach unten")
 
-            # # Antwort generierung erst wenn Button geklickt und Eingabe vorhanden
+            #Antwort generierung erst wenn Button geklickt und Eingabe vorhanden
             try:
                 #Sobald eine Frage im Feld ist, soll diese an die Schnittstelle übermittelt werden.
                 if senden and frage:
                     #Nutzung eines Spinners, damit die User sehen, dass ein Hintergrundprozess durchgeführt wird
                     with st.spinner(text="Erstelle Text, bitte warten..."):
-                        
-                        #API-Aufruf an OpenAI
-                        antwort = client.chat.completions.create(
-                            #GPT 3.5 Turbo Nutzung, da es KI-Grenzen aufzeigt (Rechenfehler bei höheren Zahlen, veraltete Daten)
-                            #Ansonsten Empfehlung Nutung von GPT-4omini
-                            model="gpt-3.5-turbo",
-                            #Übergabe der "Frage" aus dem Form
-                            messages=[{"role": "user", "content": f"Beantworte die Frage nur auf Deutsch: {frage}"}]
-                        )
+                       
+                        #API-Aufruf an OpenAI (wenn es zu einem RateLimit kommt, soll der 2.te API-Schlüssel zum Einsatz kommen)
+                        try:
+                            antwort = client.chat.completions.create(
+                                model="gpt-3.5-turbo",
+                                messages=[{"role": "user", "content": f"Beantworte die Frage nur auf Deutsch: {frage}"}]
+                            )
+                        except openai.RateLimitError:
+                            # Key2 verwenden bei Rate Limit
+                            client = openai.OpenAI(api_key=api_key2)
+                            antwort = client.chat.completions.create(
+                                model="gpt-3.5-turbo",
+                                messages=[{"role": "user", "content": f"Beantworte die Frage nur auf Deutsch: {frage}"}]
+                            )
+            
                         #Abfrage, ob eine Ermittlung erfolgt ist
                         if antwort and antwort.choices:
                             antwort_text = antwort.choices[0].message.content
@@ -145,18 +162,13 @@ with container_fokus:
                         anzahl_eingaben = st.session_state.zaehler_eingaben_grundwissen
                         # Frage anzeigen
                         st.markdown(f"Deine Frage: {frage}")
-                
-
-
+               
                         # Antwort anzeigen
                         st.markdown(f"Antwort: {antwort_text}")
-                      
-
-            
+                     
                         # Frage und  Antwort speichern
                         if "ki_interaktion_historie" not in st.session_state.grundwissen_ki:
                             st.session_state.grundwissen_ki["ki_interaktion_historie"]=[]
-
                         ki_interaktion = {
                             "Bereich": "Grundwissen KI",
                             "Typ": "Grundwissen-KI-Interaktion",
@@ -164,11 +176,10 @@ with container_fokus:
                             "Antwort": antwort_text,
                             "Anzahl Prompts": anzahl_eingaben
                         }
-
                         st.session_state.grundwissen_ki["ki_interaktion_historie"].append(ki_interaktion)
                         st.session_state.grundwissen_ki["ki_interaktion"]=ki_interaktion
 
-# #Abfangen von Problemen
+# #Abfangen von anderen Problemen
             except Exception as error:
                     hilfsdatei.openai_fehlerbehandlung(error)
    

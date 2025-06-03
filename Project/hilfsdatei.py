@@ -116,8 +116,6 @@ def openai_verbindung():
         genai.configure(api_key=gemini_key)
         gemini_client = genai.GenerativeModel("gemini-pro")
         
-
-
     return openai_client, gemini_client, api_key1, api_key2
 
 

@@ -354,8 +354,7 @@ with container_fokus1:
                                         elif "482" in frage and "739" in frage:
                                             antwort_text = "482 x 739 = 355.420"
                                     #Fehlerbehandlung von OpenAI (z. B. zu viele Anfragen, keine Verbindung zu OpenAI-Schnittstelle)         
-                        except:
-                            hilfsdatei.openai_fehlerbehandlung(error)
+
 
                     #Sicherstellen, dass die Antworten falsch bleiben
                     if "präsident" in frage.lower() and "usa" in frage.lower():

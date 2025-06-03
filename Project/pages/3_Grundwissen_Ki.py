@@ -166,7 +166,11 @@ with container_fokus:
                                         messages=[{"role": "user", "content": f"Beantworte die Frage nur auf Deutsch: {frage}"}]
                                     )
                                     antwort_text = antwort.choices[0].message.content
- 
+                            except Exception:
+                                    st.error("Alle API-Dienste sind momentan nicht verfügbar.")
+                                    antwort_text = "Alle API-Dienste sind momentan nicht verfügbar"
+                                    
+
                         # Prompt-Zähler aktualisieren
                         st.session_state.zaehler_eingaben_grundwissen += 1
                         anzahl_eingaben = st.session_state.zaehler_eingaben_grundwissen

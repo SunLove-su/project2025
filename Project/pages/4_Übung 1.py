@@ -332,22 +332,42 @@ with container_fokus1:
             # Antwort generierung erst wenn Button geklickt und Eingabe vorhanden
             
             if senden and frage:
-                try:
-                        #Nutzung eines Spinners, damit die User sehen, dass ein Hintergrundprozess durchgeführt wird
-                        with st.spinner(text="Erstelle Text, bitte warten..."):
-                            #API-Aufruf an OpenAI
-                            antwort = openai_client.chat.completions.create(
+                
+                #Nutzung eines Spinners, damit die User sehen, dass ein Hintergrundprozess durchgeführt wird
+                with st.spinner(text="Erstelle Text, bitte warten..."):
+                        #API-Aufruf an OpenAI
+                        try:
+                                antwort = openai_client.chat.completions.create(
                                 #GPT 3.5 Turbo Nutzung, da es KI-Grenzen aufzeigt und keine Manipulation durch Anpassung des Prompts erfolgen muss(Rechenfehler bei höheren Zahlen, veraltete Daten)
                                 #Ansonsten Empfehlung Nutung von gpt-4omini
                                 model="gpt-3.5-turbo",
                                 #Übergabe der "Frage" aus dem Form
                                 messages=[{"role": "user", "content":"Beantworte die Frage nur auf Deutsch"+frage}]
                             )
-                            if antwort and antwort.choices:
+                            
                                 antwort_text = antwort.choices[0].message.content
-                            else:
-                                antwort_text = "Keine Antwort erhalten."
-                            falscheantworten=("Antworte nur auf Deutsch. Gib bitte falsche Antworten für die Frage:")
+                        except:
+                            if api_key2:
+                                try:
+                                    openai_client2 = openai.OpenAI(api_key=api_key2)
+                                    antwort = openai_client2.chat.completions.create(
+                                        model="gpt-3.5-turbo",
+                                        messages=[{"role": "user", "content":"Beantworte die Frage nur auf Deutsch"+frage}]
+                                    )
+                                     antwort_text = antwort.choices[0].message.content
+                                 except:
+                                    # Versuch 3: Gemini
+                                    if gemini_client:
+                                        try:
+                                            antwort = gemini_client.generate_content("Beantworte die Frage nur auf Deutsch"+frage)
+                                            antwort_text = antwort.text
+                                        except:
+                                            # Feste Antworten als letzter Fallback
+                                            if "präsident" in frage.lower():
+                                                antwort_text = "Joe Biden ist der aktuelle Präsident der USA."
+                                            elif "482" in frage and "739" in frage:
+                                                antwort_text = "482 x 739 = 355.420"
+
 
                             #Sicherstellen, dass die Antworten falsch bleiben
                             if "präsident" in frage.lower() and "usa" in frage.lower():
@@ -431,13 +451,14 @@ with container_fokus2:
             st.markdown("Wenn du fertig bist, dann scrolle bitte weiter nach unten")
             # Antwort generierung erst wenn Button geklickt und Eingabe vorhanden
             if senden and frage_eigene:
-                try:
-                    #Verwendung von gpt-4-turbo, weil es im gegensatz zu gpt-3.5-turbo nicht so auffällige Fehler liefert.
-                    #Auch wenn gpt-4-turbo "teurer ist" ist es besser für diese Aufgabe
-                    #Frage: Was ist die Hauptstadt von Deutschland
-                    #GPT 3.5 Turbo = Antwort: Die Hauptstadt von Deutschland ist Frankfurt....
-                    #GPT 4 Turbo = Die Hauptstadt von Deutschland ist Berlin. Berlin wurde im Jahr 1237 gegründet und ist seit der Wiedervereinigung Deutschlands im Jahr 1991..."
-                    with st.spinner(text="Erstelle Text, bitte warten..."):
+                
+                #Verwendung von gpt-4-turbo, weil es im gegensatz zu gpt-3.5-turbo nicht so auffällige Fehler liefert.
+                #Auch wenn gpt-4-turbo "teurer ist" ist es besser für diese Aufgabe
+                #Frage: Was ist die Hauptstadt von Deutschland
+                #GPT 3.5 Turbo = Antwort: Die Hauptstadt von Deutschland ist Frankfurt....
+                #GPT 4 Turbo = Die Hauptstadt von Deutschland ist Berlin. Berlin wurde im Jahr 1237 gegründet und ist seit der Wiedervereinigung Deutschlands im Jahr 1991..."
+                with st.spinner(text="Erstelle Text, bitte warten..."):
+                    try:
                         antwort = openai_client.chat.completions.create(
                             model="gpt-4-turbo",
                             messages=[{"role": "user", "content":prompt+"nur 2-3 Sätze. Gebe Details an wie Jahre, Zahlen oder Eigenschaften"}],
@@ -462,6 +483,44 @@ with container_fokus2:
                         )
                         antwort_text_eigene = antwort.choices[0].message.content
                         antwort_text_eigene= antwort.choices[0].message.content
+                    except:
+                        if api_key2:
+                            try:
+                                antwort = openai_client.chat.completions.create(
+                                    model="gpt-4-turbo",
+                                    messages=[{"role": "user", "content":prompt+"nur 2-3 Sätze. Gebe Details an wie Jahre, Zahlen oder Eigenschaften"}],
+                                    
+                                )
+                                #antwort_text_eigene= antwort.choices[0].message.content
+                                richtige_antwort= antwort.choices[0].message.content
+
+                                falsch_prompt = (
+                                    "Du bist Teil eines Schulmoduls, zum kritischen Umgang mit KI. "+
+                                    "Ändere diese Antwort so, dass sie auf den ersten Blick korrekt klingt, "+
+                                    "aber einen Fehler enthält z. B. ein leicht falsches Datum, "+
+                                    "eine falsche Zahl oder ein falsches Detail, das nicht sofort auffällt. Die ANtwort muss einen Fehler enthalten. "+
+                                    "Die Antwort soll glaubwürdig klingen."
+                                )
+
+
+                                antwort = openai_client.chat.completions.create(
+                                model="gpt-3.5-turbo",
+                                messages=[{"role": "user", "content": f"{falsch_prompt} {richtige_antwort}:nur 2-3 Sätze. Nur Deutsch"}]
+                
+                                )
+                                antwort_text_eigene = antwort.choices[0].message.content
+                                antwort_text_eigene= antwort.choices[0].message.content
+
+                            except:
+                                if gemini_client:
+                                        try:
+                                            antwort = gemini_client.generate_content(prompt+"nur 2-3 Sätze. Gebe Details an wie Jahre, Zahlen oder Eigenschaften")
+                                            richtige_antwort = antwort.text
+                                        except:
+                                            st.error("Alle API-Dienste sind momentan nicht verfügbar.")
+                                            antwort_text = "Alle API-Dienste sind momentan nicht verfügbar"
+                                                
+
 
                     # Prompt-Zähler aktualisieren
                     st.session_state.zaehler_eingaben_eigene += 1

@@ -336,39 +336,25 @@ with container_fokus1:
                 #Nutzung eines Spinners, damit die User sehen, dass ein Hintergrundprozess durchgeführt wird
                 with st.spinner(text="Erstelle Text, bitte warten..."):
                         #API-Aufruf an OpenAI
+                    if api_key2:
                         try:
-                                antwort = openai_client.chat.completions.create(
-                                #GPT 3.5 Turbo Nutzung, da es KI-Grenzen aufzeigt und keine Manipulation durch Anpassung des Prompts erfolgen muss(Rechenfehler bei höheren Zahlen, veraltete Daten)
-                                #Ansonsten Empfehlung Nutung von gpt-4omini
+                            antwort = openai_client.chat.completions.create(
                                 model="gpt-3.5-turbo",
-                                #Übergabe der "Frage" aus dem Form
                                 messages=[{"role": "user", "content":"Beantworte die Frage nur auf Deutsch"+frage}]
                             )
-                            
-                                antwort_text = antwort.choices[0].message.content
+                            antwort_text = antwort.choices[0].message.content
                         except:
-                            if api_key2:
+                            # Versuch 3: Gemini
+                            if gemini_client:
                                 try:
-                                    openai_client2 = openai.OpenAI(api_key=api_key2)
-                                    antwort = openai_client2.chat.completions.create(
-                                        model="gpt-3.5-turbo",
-                                        messages=[{"role": "user", "content":"Beantworte die Frage nur auf Deutsch"+frage}]
-                                    )
-                                     antwort_text = antwort.choices[0].message.content
-                                 except:
-                                    # Versuch 3: Gemini
-                                    if gemini_client:
-                                        try:
-                                            antwort = gemini_client.generate_content("Beantworte die Frage nur auf Deutsch"+frage)
-                                            antwort_text = antwort.text
-                                        except:
-                                            # Feste Antworten als letzter Fallback
-                                            if "präsident" in frage.lower():
-                                                antwort_text = "Joe Biden ist der aktuelle Präsident der USA."
-                                            elif "482" in frage and "739" in frage:
-                                                antwort_text = "482 x 739 = 355.420"
-
-
+                                    antwort = gemini_client.generate_content("Beantworte die Frage nur auf Deutsch"+frage)
+                                    antwort_text = antwort.text
+                                except:
+                                    # Feste Antworten als letzter Fallback
+                                    if "präsident" in frage.lower():
+                                        antwort_text = "Joe Biden ist der aktuelle Präsident der USA."
+                                    elif "482" in frage and "739" in frage:
+                                        antwort_text = "482 x 739 = 355.420"
                             #Sicherstellen, dass die Antworten falsch bleiben
                             if "präsident" in frage.lower() and "usa" in frage.lower():
                                 if "trump" in antwort_text.lower():

@@ -505,6 +505,10 @@ with container_fokus2:
                                         except:
                                             st.error("Alle API-Dienste sind momentan nicht verfügbar.")
                                             antwort_text = "Alle API-Dienste sind momentan nicht verfügbar"
+
+                    #Fehlerbehandlung von OpenAI
+                    except Exception as error:
+                        hilfsdatei.openai_fehlerbehandlung(error)
                                                 
 
 
@@ -536,9 +540,7 @@ with container_fokus2:
                         "Antwort": antwort_text_eigene,
                         "Anzahl_Aenderungen": anzahl_eingaben_eigene
                     })
-                #Fehlerbehandlung von OpenAI
-                 except Exception as error:
-                    hilfsdatei.openai_fehlerbehandlung(error)
+
                 
 ########################################################################
 #Trennungslinie

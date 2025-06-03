@@ -28,7 +28,13 @@ if not api_key1 and not gemini_key:
     st.error("Es gibt zur Zeit Probleme mit den API-Keys!")
     st.stop()
         
-client = openai.OpenAI(api_key=api_key1)
+client = None
+if api_key1:
+    client = openai.OpenAI(api_key=api_key1)
+elif api_key2:
+    client = openai.OpenAI(api_key=api_key2)
+
+
 
 
 

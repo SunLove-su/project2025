@@ -537,7 +537,7 @@ with container_fokus2:
                         "Anzahl_Aenderungen": anzahl_eingaben_eigene
                     })
                 #Fehlerbehandlung von OpenAI
-                except Exception as error:
+                 except Exception as error:
                     hilfsdatei.openai_fehlerbehandlung(error)
                 
 ########################################################################

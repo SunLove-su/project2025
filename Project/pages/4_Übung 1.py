@@ -319,19 +319,13 @@ with container_fokus1:
             # Antwort generierung erst wenn Button geklickt und Eingabe vorhanden
             
             if senden and frage:
-                
                 #Nutzung eines Spinners, damit die User sehen, dass ein Hintergrundprozess durchgeführt wird
                 with st.spinner(text="Erstelle Text, bitte warten..."):
-                    #API-Aufruf an OpenAI
                     try:
                         antwort = openai_client.chat.completions.create(
-                            #GPT 3.5 Turbo Nutzung, da es KI-Grenzen aufzeigt und keine Manipulation durch Anpassung des Prompts erfolgen muss(Rechenfehler bei höheren Zahlen, veraltete Daten)
-                            #Ansonsten Empfehlung Nutung von gpt-4omini
                             model="gpt-3.5-turbo",
-                            #Übergabe der "Frage" aus dem Form
                             messages=[{"role": "user", "content":"Beantworte die Frage nur auf Deutsch"+frage}]
                         )
-                        
                         antwort_text = antwort.choices[0].message.content
                     except:
                         if api_key2:
@@ -342,27 +336,38 @@ with container_fokus1:
                                 )
                                 antwort_text = antwort.choices[0].message.content
                             except:
-                                # Versuch 3: Gemini
                                 if gemini_client:
                                     try:
                                         antwort = gemini_client.generate_content("Beantworte die Frage nur auf Deutsch"+frage)
                                         antwort_text = antwort.text
                                     except:
-                                        # Feste Antworten als letzter Fallback
                                         if "präsident" in frage.lower():
                                             antwort_text = "Joe Biden ist der aktuelle Präsident der USA."
                                         elif "482" in frage and "739" in frage:
                                             antwort_text = "482 x 739 = 355.420"
-                                    #Fehlerbehandlung von OpenAI (z. B. zu viele Anfragen, keine Verbindung zu OpenAI-Schnittstelle)         
-
+                                        else:
+                                            antwort_text = "Entschuldigung, ich kann diese Frage nicht beantworten."
+                                else:
+                                    if "präsident" in frage.lower():
+                                        antwort_text = "Joe Biden ist der aktuelle Präsident der USA."
+                                    elif "482" in frage and "739" in frage:
+                                        antwort_text = "482 x 739 = 355.420"
+                                    else:
+                                        antwort_text = "Entschuldigung, ich kann diese Frage nicht beantworten."
+                        else:
+                            if "präsident" in frage.lower():
+                                antwort_text = "Joe Biden ist der aktuelle Präsident der USA."
+                            elif "482" in frage and "739" in frage:
+                                antwort_text = "482 x 739 = 355.420"
+                            else:
+                                antwort_text = "Entschuldigung, ich kann diese Frage nicht beantworten."
 
                     #Sicherstellen, dass die Antworten falsch bleiben
                     if "präsident" in frage.lower() and "usa" in frage.lower():
                         if "trump" in antwort_text.lower():
                             try:
-                                #API-Aufruf an OpenAI
                                 falscheantworten = "Gib eine falsche Antwort: "
-                                antwort =openai_client.chat.completions.create(
+                                antwort = openai_client.chat.completions.create(
                                     model="gpt-3.5-turbo",
                                     messages=[{"role": "user", "content":falscheantworten+frage}]
                                 )
@@ -370,14 +375,12 @@ with container_fokus1:
                                     antwort_text = antwort.choices[0].message.content
                                 else:
                                     antwort_text = "Joe Biden ist der aktuelle Präsident der USA."
-                            #Hier soll die Aufgabe auch ohne Verbindung zu OpenAI funktionieren
                             except Exception as error:
                                 antwort_text = "Joe Biden ist der aktuelle Präsident der USA."
 
-                    elif "482" in frage and "739" in frage:  # Alle Rechenarten abfangen
+                    elif "482" in frage and "739" in frage:
                         if "356198" in antwort_text or "356.198" in antwort_text:
                             try:
-                                #API-Aufruf an OpenAI
                                 falscheantworten = "Gib eine falsche Antwort: "
                                 antwort = openai_client.chat.completions.create(
                                     model="gpt-3.5-turbo",
@@ -391,7 +394,7 @@ with container_fokus1:
                                 antwort_text = "482 x 739 = 355.420"
 
                     # Zählen der Teilnehmereingaben bei den vorgegebenen Fragen
-                    st.session_state.zaehler_eingaben_vorgegeben+= 1
+                    st.session_state.zaehler_eingaben_vorgegeben += 1
                     anzahl_eingaben_vorgegeben = st.session_state.zaehler_eingaben_vorgegeben
 
                     #Vorgegebene Fragen anzeigen, die die Teilnehmer eingeben
@@ -411,8 +414,6 @@ with container_fokus1:
                             "Antwort": antwort_text,
                             "Anzahl_Aenderungen": anzahl_eingaben_vorgegeben
                         })
-
-
 
 #Aufgabe 4
 #Teilnehmer stellen ChatGPT selbst fragen, der Prompt ist jedoch manipuliert
@@ -465,7 +466,6 @@ with container_fokus2:
         
                         )
                         antwort_text_eigene = antwort.choices[0].message.content
-                        antwort_text_eigene= antwort.choices[0].message.content
                     except:
                         if api_key2:
                             try:
@@ -474,7 +474,6 @@ with container_fokus2:
                                     messages=[{"role": "user", "content":prompt+"nur 2-3 Sätze. Gebe Details an wie Jahre, Zahlen oder Eigenschaften"}],
                                     
                                 )
-                                #antwort_text_eigene= antwort.choices[0].message.content
                                 richtige_antwort= antwort.choices[0].message.content
 
                                 falsch_prompt = (
@@ -491,19 +490,19 @@ with container_fokus2:
                 
                                 )
                                 antwort_text_eigene = antwort.choices[0].message.content
-                                antwort_text_eigene= antwort.choices[0].message.content
 
                             except:
                                 if gemini_client:
-                                        try:
-                                            antwort = gemini_client.generate_content(prompt+"nur 2-3 Sätze. Gebe Details an wie Jahre, Zahlen oder Eigenschaften")
-                                            richtige_antwort = antwort.text
-                                        except:
-                                            st.error("Alle API-Dienste sind momentan nicht verfügbar.")
-                                            antwort_text = "Alle API-Dienste sind momentan nicht verfügbar"
-                                            #Fehlerbehandlung von OpenAI
-                            except:
-                                hilfsdatei.openai_fehlerbehandlung(error)
+                                    try:
+                                        antwort = gemini_client.generate_content(prompt+"nur 2-3 Sätze. Gebe Details an wie Jahre, Zahlen oder Eigenschaften")
+                                        antwort_text_eigene = antwort.text
+                                    except:
+                                        st.error("Alle API-Dienste sind momentan nicht verfügbar.")
+                                        antwort_text_eigene = "Alle API-Dienste sind momentan nicht verfügbar"
+                                else:
+                                    antwort_text_eigene = "Entschuldigung, ich kann diese Frage nicht beantworten."
+                        else:
+                            antwort_text_eigene = "Entschuldigung, ich kann diese Frage nicht beantworten."
 
                     # Prompt-Zähler aktualisieren
                     st.session_state.zaehler_eingaben_eigene += 1

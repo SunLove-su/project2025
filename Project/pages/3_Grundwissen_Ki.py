@@ -15,78 +15,20 @@ openai_client, replicate_client, api_key1, api_key2, replicate_key = hilfsdatei.
 #Sicherstellen, dass ein Zugriff der Seiten nur mit Passwort erfolgt, und dass User keine Navigationsseite sehen
 hilfsdatei.teilnehmer_anmelden()
 
+# Aktueller Status prüfen
+st.write("### Aktuelle API-Token Status:")
+env_replicate = os.getenv("REPLICATE_API_TOKEN")
+st.write(f"Environment Variable: {env_replicate[:10] if env_replicate else 'None'}...")
 
- #1. Environment Variables - KORRIGIERT
-env_replicate = os.getenv("REPLICATE_API_TOKEN")  # ✅ War vorher REPLICATE_API_KEY
-st.write(f"📍 REPLICATE_API_TOKEN: {'Vorhanden' if env_replicate else 'None'}")
-if env_replicate:
-    st.write(f"   Format: {env_replicate[:10]}...")
-
-# 2. Secrets - KORRIGIERT
 try:
-    secret_replicate = st.secrets["replicate"]["replicate_api_token"]  # ✅ War vorher replicate_api_key
-    st.write(f"📍 st.secrets replicate: Vorhanden")
-    st.write(f"   Format: {secret_replicate[:10]}...")
+    secret_replicate = st.secrets["replicate"]["replicate_api_token"] 
+    st.write(f"Secrets: {secret_replicate[:10]}...")
 except:
-    st.write("📍 st.secrets replicate: None")
+    st.write("Secrets: None")
 
-# 3. Test des replicate_client aus hilfsdatei
-st.write("### Test des Replicate-Clients:")
-if replicate_client:
-    st.success("✅ Replicate-Client wurde erfolgreich erstellt!")
-    st.write(f"Client-Typ: {type(replicate_client)}")
-else:
-    st.error("❌ Replicate-Client ist None")
-
-if replicate_key:
-    st.success(f"✅ Replicate-Key gefunden: {replicate_key[:10]}...")
-else:
-    st.error("❌ Kein Replicate-Key gefunden")
-
-
-# 4. Funktionstest von Replicate
-st.write("### Funktionstest von Replicate:")
-if replicate_client:
-    try:
-        st.write("🔄 Teste Replicate mit hello-world Modell...")
-        
-        # Einfacher Test
-        output = replicate_client.run(
-            "replicate/hello-world",
-            input={"text": "python"}
-        )
-        st.success(f"✅ Replicate funktioniert! Output: {output}")
-        
-    except Exception as e:
-        st.error(f"❌ Replicate-Fehler: {str(e)}")
-        st.write("Fehler-Details:", e)
-
-# 5. Test mit dem Llama-Modell (das Sie in Ihrem Code verwenden)
-st.write("### Test mit Llama-2 Modell:")
-if replicate_client:
-    try:
-        st.write("🔄 Teste Llama-2 Modell...")
-        
-        test_prompt = "Hallo, wie geht es dir?"
-        antwort_text = ""
-        
-        stream = replicate_client.stream(
-            "meta/llama-2-13b-chat",
-            input={
-                "prompt": f"Beantworte die Frage auf Deutsch: {test_prompt}",
-                "max_new_tokens": 100,
-                "temperature": 0.75,
-                "top_p": 1
-            }
-        )
-        
-        for token in stream:
-            antwort_text += str(token)
-            
-        st.success(f"✅ Llama-2 funktioniert! Antwort: {antwort_text[:200]}...")
-        
-    except Exception as e:
-        st.error(f"❌ Llama-2 Fehler: {str(e)}")
+# Welcher wird tatsächlich verwendet?
+openai_client, replicate_client, api_key1, api_key2, replicate_key = hilfsdatei.openai_verbindung()
+st.write(f"Verwendeter Key: {replicate_key[:10] if replicate_key else 'None'}...")
 
 # #Überschrift der Seite
 # ueberschrift_seite="Grundwissen über Künstliche Intelligenz (KI)"

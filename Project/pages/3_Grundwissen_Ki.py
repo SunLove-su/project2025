@@ -124,7 +124,7 @@ with container_fokus:
                                 st.write("🔄 **Teste Replicate...**")
                                 antwort_text = ""
                                 stream = replicate_client.stream(
-                                        "mistralai/mistral-7b-instruct-v0.1",
+                                        "meta/meta-llama-3.1-8b-instruct",
                                         input={
                                             "prompt": f"Beantworte die Frage auf Deutsch: {frage}",
                                             "max_new_tokens": 500,

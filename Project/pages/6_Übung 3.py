@@ -182,7 +182,7 @@ with container_fokus:
 
                         if replicate_key and generiertesBild is None:
                             try:
-                                antwort = replicate.run("stability-ai/stable-diffusion",
+                                antwort = replicate.run("stability-ai/sdxl:39ed52f2a78e934b3ba6e2a89f5b1c712de7dfea535525255b1aa35c5565e08b"",
                                 input={
                                     "prompt" : beschreibung,
                                 }

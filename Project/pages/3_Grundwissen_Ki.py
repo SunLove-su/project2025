@@ -16,33 +16,22 @@ openai_client, replicate_client, api_key1, api_key2, replicate_key = hilfsdatei.
 hilfsdatei.teilnehmer_anmelden()
 
 
-openai_client, replicate_client, api_key1, api_key2, replicate_key = hilfsdatei.openai_verbindung()
+if replicate_client:
+    try:
+        st.write("🔄 Teste Replicate-Verbindung...")
+        
+        # Einfacher Test mit einem kleinen Modell
+        output = replicate_client.run(
+            "replicate/hello-world",
+            input={"text": "test"}
+        )
+        st.success(f"✅ Replicate funktioniert! Output: {output}")
+        
+    except Exception as e:
+        st.error(f"❌ Replicate-Fehler: {str(e)}")
+else:
+    st.warning("⚠️ Replicate-Client nicht verfügbar")
 
-# 1. Environment Variables
-env_replicate = os.getenv("REPLICATE_API_KEY")
-st.write(f"📍 REPLICATE_API_KEY: {'Vorhanden' if env_replicate else 'None'}")
-if env_replicate:
-    st.write(f"   Format: {env_replicate[:10]}...")
-
-# 2. Secrets
-try:
-    secret_replicate = st.secrets["replicate"]["replicate_api_key"]
-    st.write(f"📍 st.secrets replicate: Vorhanden")
-    st.write(f"   Format: {secret_replicate[:10]}...")
-except:
-    st.write("📍 st.secrets replicate: None")
-
-# 3. Direkt in hilfsdatei prüfen
-st.write("### Hilfsdatei-Code prüfen:")
-st.code("""
-# In deiner hilfsdatei.py steht wahrscheinlich:
-replicate_key = "dein_replicate_api_token"  # ❌ Das ist das Problem!
-
-# Es sollte stehen:
-replicate_key = os.getenv("REPLICATE_API_KEY")
-# ODER
-replicate_key = st.secrets["replicate"]["replicate_api_key"]
-""")
 
 
 # #Überschrift der Seite

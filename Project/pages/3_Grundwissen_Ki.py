@@ -24,26 +24,33 @@ st.title("🔍 Schritt 1: Basis-Setup Test")
 # Deine Verbindung laden
 openai_client, replicate_client, api_key1, api_key2, replicate_key = hilfsdatei.openai_verbindung()
 
-# Sichere Status-Checks (ohne Keys zu zeigen)
-st.write("### Status-Check:")
-st.write(f"✅ OpenAI Client: {'Vorhanden' if openai_client else 'None'}")
-st.write(f"✅ Replicate Client: {'Vorhanden' if replicate_client else 'None'}")
-st.write(f"✅ API Key 1: {'Vorhanden' if api_key1 else 'None'}")
-st.write(f"✅ API Key 2: {'Vorhanden' if api_key2 else 'None'}")
-st.write(f"✅ Replicate Key: {'Vorhanden' if replicate_key else 'None'}")
+openai_client, replicate_client, api_key1, api_key2, replicate_key = hilfsdatei.openai_verbindung()
 
-# Client-Typ anzeigen (ohne sensitive Daten)
-if replicate_client:
-    st.write(f"✅ Replicate Client Type: `{type(replicate_client)}`")
-else:
-    st.write("❌ Replicate Client ist None")
+st.write("### API-Test:")
 
-# Zusammenfassung
-if replicate_client and replicate_key:
-    st.success("🎉 Replicate Setup scheint vollständig zu sein!")
-else:
-    st.error("⚠️ Replicate Setup ist unvollständig")
-
+if st.button("🚀 Einfachen Replicate-Test starten"):
+    if replicate_client:
+        try:
+            st.write("⏳ Sende Anfrage an Replicate...")
+            
+            # Sehr einfacher Test
+            output = replicate_client.run(
+                "meta/llama-2-7b-chat:8e6975e5ed6174911a6ff3d60540dfd4844201974602551e10e9e87ab143d81e",
+                input={
+                    "prompt": "Hello",
+                    "max_new_tokens": 20
+                }
+            )
+            
+            st.success("✅ API-Aufruf erfolgreich!")
+            st.write(f"**Output Type:** `{type(output)}`")
+            st.write(f"**Raw Output:** `{repr(output)}`")
+            
+        except Exception as e:
+            st.error(f"❌ Fehler aufgetreten:")
+            st.code(str(e))
+    else:
+        st.error("❌ Kein Replicate Client verfügbar")
 # #Überschrift der Seite
 # ueberschrift_seite="Grundwissen über Künstliche Intelligenz (KI)"
 # st.markdown(f"<h4>{ueberschrift_seite}</h4>",unsafe_allow_html=True)

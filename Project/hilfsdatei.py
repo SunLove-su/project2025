@@ -114,7 +114,7 @@ def openai_verbindung():
     gemini_client = None
     if gemini_key:
         genai.configure(api_key=gemini_key)
-        gemini_client = genai.GenerativeModel("gemini-pro")
+        gemini_client = genai.GenerativeModel("gemini-2.0-flash")
         
     return openai_client, gemini_client, api_key1, api_key2
 

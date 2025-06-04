@@ -118,7 +118,7 @@ def openai_verbindung():
         openai_client = openai.OpenAI(api_key=api_key2)
     
     if replicate_key:
-        replicate_client = replicate.Client(api_key=replicate_key)
+        replicate_client = replicate.Client(api_token=replicate_key)
     
     if not openai_client and not replicate_client:
         st.error("Es gibt Probleme mit den API-Keys")

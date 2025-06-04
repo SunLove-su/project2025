@@ -1,367 +1,605 @@
+"""
+Übung 1: Interaktion mit der KI-Schnittstelle
+Aufbau der Seite mit den Übungen
+1. KI-generierter Text
+2. Vokalzählung
+3. Vorgebene Fragen von der KI beantworten lassen
+4. Eigene Fragen an die KI stellen, der Prompt ist manipuliert
+
+Weitere Datenerfassung durch Fragen
+"""
+
 import streamlit as st
 import openai
 import hilfsdatei
 import os
-import google.generativeai as genai 
 
+#Seitentitel
+hilfsdatei.seite("1. Übung")
 
-#Überschrift der Seite 
-titel_seite = "Grundwissen über Künstliche Intelligenz (KI)" 
-hilfsdatei.seite(titel_seite)
 
 #API-Verbindung zu OpenAI und zu Gemini aufbauen
-openai_client, replicate_client, gemini_client, api_key1, api_key2, replicate_key = hilfsdatei.openai_verbindung()
+openai_client, gemini_client, api_key1, api_key2 = hilfsdatei.openai_verbindung()
+    
+
 #Sicherstellen, dass ein Zugriff der Seiten nur mit Passwort erfolgt, und dass User keine Navigationsseite sehen
 hilfsdatei.teilnehmer_anmelden()
 
-
-# DEBUG: API Keys prüfen
-st.write("DEBUG - API Keys Status:")
-st.write(f"OPENAI_API_KEY1: {'✓' if os.getenv('OPENAI_API_KEY1') else '✗'}")
-st.write(f"OPENAI_API_KEY2: {'✓' if os.getenv('OPENAI_API_KEY2') else '✗'}")
-st.write(f"GEMINI_API_KEY: {'✓' if os.getenv('GEMINI_API_KEY') else '✗'}")
-st.write(f"REPLICATE_API_TOKEN: {'✓' if os.getenv('REPLICATE_API_TOKEN') else '✗'}")
-
-# DEBUG: Secrets prüfen
-try:
-    st.write("Verfügbare Secrets:", list(st.secrets.keys()))
-except:
-    st.write("Keine secrets.toml gefunden")
-
-# Dann die ursprüngliche Zeile
-try:
-    openai_client, replicate_client, gemini_client, api_key1, api_key2, replicate_key = hilfsdatei.openai_verbindung()
-    st.write("✓ API-Verbindung erfolgreich")
-except Exception as e:
-    st.write(f"✗ Fehler: {e}")
-    st.stop()
-
-
-
-#Überschrift der Seite
-ueberschrift_seite="Grundwissen über Künstliche Intelligenz (KI)"
-st.markdown(f"<h4>{ueberschrift_seite}</h4>",unsafe_allow_html=True)
+#Überschrift auf der Seite
+ueberschrift_seite ="1. Übung"
+st.markdown(f"<h5>{ueberschrift_seite}</h5>",unsafe_allow_html=True)
+#Einleitung der ersten Übung
 einleitung_text =(
-            """
-            Auf dieser Seite lernst du etwas über die Grundlagen der KI.
-            Es sind neue oder schon für dich bekannte Informationen.
+    """
+            Beginne mit der ersten Übung :)
+
+            Auf der vorherigen Seite hast du gelernt, was KI ist und was sie kann. 
+            Zudem hast du den ersten Kontakt mit einer KI-Anwendung mit der Eingabe deiner Frage gehabt.
+            Die KI-Anwendung war ein texgenerierendes System mit Methoden des Deep Learnings,
+            das auf große Sprachmodelle Large Language Models (LLM) trainiert ist.  Diese KI-Anwendung ist ChatGPT.
             """)
 st.markdown(einleitung_text)
-#Trennungslinie
-st.divider()
-#Expander um Wissen von der Darstellung optimiert für die Teilnehmer zur Verfügung zu stellen
-#Interaktion, der Teilnehmer. Expander müssen aktiv geöffnet werden.
-
-#Expander zum Thema "Was ist KI"
-with st.expander("Was ist KI?",icon=":material/double_arrow:"):
-     st.markdown("""
-                    Stell dir ein Computer Fußballspiel vor:
-                    - Bei normaler Programmierung bekommt der Computer genaue Befehle, z. B. "Steuer den Fußballspieler nach vorne, vorne rechts liegt der Ball. Lass ihn aufs
-                      Tor schießen." Wird eine Möglichkeit nicht in einem Befehl erfasst, z. B. der Ball liegt an einer anderen Position, bleibt das Programm stehen.
-                      
-                    - Bei der KI ist es anders. Sie analysiert mehr als 1.000.000 unterschiedliche Fußballspiele und erfasst dabei Muster und Merkmale.
-                      Liegt der Ball an einer anderen Stelle, trifft sie eine Entscheidung und steuert den Spieler dorthin.
-                    
-                    - Bei neuen Situationen, z. B. wenn der Ball im Zuschauerblock landet, kann sie falsche Entscheidungen treffen und den Spieler dorthin leiten.
-                    
-                    - Während du das Spielprinzip meist nach ein, zwei Versuchen verstehst, braucht die KI dafür tausende Spiele.
-                     Sie lernt durch Auswertung der bereitgestellten Daten und kann dadurch selbst Entscheidungen treffen. Damit ahmt sie die Intelligenz eines Menschen nach.
-                    
-
-                      """
-     )
-
-#Expander zum Thema "Wie funktioniert KI"
-with st.expander("Wie funktioniert KI?",icon=":material/double_arrow:"):
-     st.markdown("""
-                 Beim Fußballspiel hast du gesehen, dass die KI:
-                 1. Viele Daten braucht, um Erfahrungen aus vielen unterschiedlichen Fußballspielen zu sammeln
-                 2. Muster erkennt, sodass der Spieler dem Ball im Feld hinterher läuft.
-                 3. Erlerntes anwendet und daraus Entscheidungen trifft, z. B. der Spieler läuft zum Ball, obwohl er vorne links liegt
-                 4. Fehler machen kann und z. B. der Spieler zum Zuschauerblock läuft
-                """)
-#Expander zum Thema "Definition KI-Begriffe"
-with st.expander("Definition KI-Begriffe",icon=":material/double_arrow:"):
-     st.markdown("""
-                - Algorithmus: Schritt-für-Schritt Anleitung z. B. wie bei einem Computerprogramm
-                - Machine Learning: Teilbereich der KI, der viele Daten nutzt, um Muster zu erkennen.
-                   - Überwachtes Lernen: Unterstützung der KI, indem Daten mit Erklärungen und Informationen zur Verfügung gestellt werden.
-                   - Unüberwachtes Lernen: Keine Unterstützung, die KI analysiert die Daten ohne zusätzliche Informationen.
-                   - Künstliche Neuronale Netze (KNN): Ahmen den Aufbau und die Funktionsweise eines Gehirns nach.
-                                                       Beispiel: Jeder Spieler ist ein Neuron, der Ball ist eine Information.                                                    
-                                                       Der linke Torwart schießt den Ball zum Verteidiger, dieser zum Mittelfeldspieler, dieser zum Stürmer.
-                                                       Jeder Spieler entscheidet, zu wem er den Ball spielt. 
-                                                       Die Spieler und ihre Möglichkeiten den Ball zu spielen stellen ein Netz dar und mit dem Training werden sie besser.
-                                                    
-                   - Deep Learning: Komplexeres Netz, mit mehreren Spielerebenen auf dem Feld und bestimmten Aufgaben:
-                                    Erste Reihe erkennt Ballposition, zweite findet freie Räume, dritte plant Laufwege und die letzte macht den Torschuss.
-                - Prompt: Befehle bzw. Eingaben, die du schriftlich oder gesprochen der  KI-Anwendung übergeben
-                - Generative KI (Gen-KI): KI-Anwendungen, die durch das Gelernte neue Inhalte erzeugen
-                    """)
-
-#Expander zum Thema was kann KI
-with st.expander("Was kann KI?",icon=":material/double_arrow:"):
-     st.markdown("""
-                    KI kann unterschiedliche Aufgaben ausführen:
-                    - Bilder erkennen/erstellen: KI generiert Bilder nach deinen Vorgaben im Prompt, z. B. DALL E, Midjourney etc.
-                    - Text erkennen/erstellen/übersetzen: KI antwortet auf deine Prompts, generiert Texte und übersetzt Texte, z. B. ChatGPT, Perplexity
-                    - Sprache verstehen/antworten: KI empfängt und versteht deine  Sprache und antwortet, z. B. Alexa und Siri
-                    - Muster/Merkmale erkennen: KI analysiert Muster und unterstützt bei Diagnosen oder Vorhersagen, z. B. bei Krankheiten oder zur Gefahrenabwehr
-                      usw...
-               """)
-#Speichern aller Antworten der Teilnehmer für die Seite
-if "grundwissen_ki" not in st.session_state:
-    st.session_state.grundwissen_ki = {}
 
 
-#Speichern der Anzahl der Prompts
-if "zaehler_eingaben_grundwissen" not in st.session_state:
-    st.session_state.zaehler_eingaben_grundwissen = 0
 
-#Einsatz von Container, damit der Fokus bleibt und nicht nach unten auf die Seite gesprungen wird
-container_fokus = st.container()
-with container_fokus:
-    with st.expander("Fragen an die KI", expanded=True):
-        #Nutzung von Form in Kombination mit Textinput weil Textinput Probleme hat. 
-        #"Press Enter" funktioniert nicht bei st.text_input, obwohl es angezeigt wird.
-        with st.form("frage_formular", clear_on_submit=True):
-            frage = st.text_input("Falls du noch mehr Wissen möchtest, frag die KI!", 
-                                placeholder="Du kannst mehrere Fragen stellen")
-            #Button zur besseren Nutzung
-            senden = st.form_submit_button("Fragen")
-            #Anweisung an den Teilnehmer, da es bei Streamlit Probleme mit dem Fokus gibt
-            st.markdown("Wenn du keine Fragen mehr hast, scrolle bitte weiter nach unten")
-
-            #Antwort generierung erst wenn Button geklickt und Eingabe vorhanden
-            try:
-                #Sobald eine Frage im Feld ist, soll diese an die Schnittstelle übermittelt werden.
-                if senden and frage:
-                    #Nutzung eines Spinners, damit die User sehen, dass ein Hintergrundprozess durchgeführt wird
-                    with st.spinner(text="Erstelle Text, bitte warten..."):
-                       
-                        #API-Aufruf an OpenAI (wenn es zu einem RateLimit kommt, soll der 2.te API-Schlüssel zum Einsatz kommen)
-                        try:
-                            antwort = openai_client.chat.completions.create(
-                                    model="gpt-3.5-turbo",
-                                    messages=[{"role": "user", "content": f"Beantworte die Frage nur auf Deutsch: {frage}"}]
-                                )
-                            antwort_text = antwort.choices[0].message.content
-                        except:
-                            # Key2 verwenden z.B. bei Rate Limit oder wenn Key abgelaufen
-                            if api_key2:
-                                try:
-                                    openai_client = openai.OpenAI(api_key=api_key2)
-                                    antwort = openai_client.chat.completions.create(
-                                            model="gpt-3.5-turbo",
-                                            messages=[{"role": "user", "content": f"Beantworte die Frage nur auf Deutsch: {frage}"}]
-                                        )
-                                    antwort_text = antwort.choices[0].message.content
-                                except:
-                                    
-                                    #Alternative wenn OpenAI nicht funktioniert
-                                    if gemini_client:
-                                        try:
-                                            antwort = gemini_client.generate_content(f"Beantworte die Frage nur auf Deutsch: {frage}")
-                                            antwort_text = antwort.text
-                                            
-                                        except Exception:
-                                                st.error("Alle API-Dienste sind momentan nicht verfügbar.")
-                                                antwort_text = "Alle API-Dienste sind momentan nicht verfügbar"
-                                                
-
-                        # Prompt-Zähler aktualisieren
-                        st.session_state.zaehler_eingaben_grundwissen += 1
-                        anzahl_eingaben = st.session_state.zaehler_eingaben_grundwissen
-                        # Frage anzeigen
-                        st.markdown(f"Deine Frage: {frage}")
+st.markdown("Jetzt kannst du sehen, was ChatGPT kann und ob die Anwendung ihre Daten analysiert hat.")
+st.markdown("""
+                Du stellst ChatGPT einige Aufgaben und schaust dir Antworten an.
                
-                        # Antwort anzeigen
-                        st.markdown(f"Antwort: {antwort_text}")
-                     
-                        # Frage und  Antwort speichern
-                        if "ki_interaktion_historie" not in st.session_state.grundwissen_ki:
-                            st.session_state.grundwissen_ki["ki_interaktion_historie"]=[]
-                        ki_interaktion = {
-                            "Bereich": "Grundwissen KI",
-                            "Typ": "Grundwissen-KI-Interaktion",
-                            "Frage": frage,
-                            "Antwort": antwort_text,
-                            "Anzahl Prompts": anzahl_eingaben
-                        }
-                        st.session_state.grundwissen_ki["ki_interaktion_historie"].append(ki_interaktion)
-                        st.session_state.grundwissen_ki["ki_interaktion"]=ki_interaktion
-
-# #Abfangen von anderen Problemen
-            except Exception as error:
-                    hilfsdatei.openai_fehlerbehandlung(error)
-   
-#Überprüfungsfrage: Sicherstellung, dass die Textbausteine gelesen wurden
-st.divider()
-
-st.markdown ("Nachdem du jetzt ein paar Informationen über KI erhalten hast, beantworte bitte die folgende Frage:")
-
-#########################################################################
-
-#Frage: Verständlichkeit der dargestellten Inhalte
-
-frage_verstaendlichkeit_ki= "Wie verständlich waren die Erklärungen über KI?"
-antwort_verstaendlichkeit_ki = st.radio(
-    frage_verstaendlichkeit_ki,
-    (
-        "Sehr verständlich",
-        "Gut verständlich", 
-        "Mittelmäßig verständlich",
-        "Eher unverständlich",
-        "Unverständlich"
-    ),
-    index=None
-)
-# Speichern der Antwort
-if "anzahl_verstaendlichkeit_ki" not in st.session_state:
-    st.session_state.anzahl_verstaendlichkeit_ki = 0
-if "verstaendlichkeit_ki_alt" not in st.session_state:
-    st.session_state.verstaendlichkeit_ki_alt = None 
-if "verstaendlichkeit_ki_historie" not in st.session_state.grundwissen_ki:
-    st.session_state.grundwissen_ki["verstaendlichkeit_ki_historie"] = []
-
-# Speicherung nur bei Änderung der Antwort
-if antwort_verstaendlichkeit_ki is not None and antwort_verstaendlichkeit_ki != st.session_state.verstaendlichkeit_ki_alt:
-    st.session_state.anzahl_verstaendlichkeit_ki += 1
-    
-    verstaendlichkeit_ki = {
-        "Bereich": "Grundwissen KI",
-        "Typ": "Verstaendlichkeit",
-        "Frage": frage_verstaendlichkeit_ki,
-        "Antwort": antwort_verstaendlichkeit_ki,
-        "Anzahl_Aenderungen": st.session_state.anzahl_verstaendlichkeit_ki
-    }
-    
-    st.session_state.grundwissen_ki["verstaendlichkeit_ki_historie"].append(verstaendlichkeit_ki)
-    st.session_state.grundwissen_ki["verstaendlichkeit_ki"] = verstaendlichkeit_ki
-    # Aktuelle Antwort merken
-    st.session_state.verstaendlichkeit_ki_alt = antwort_verstaendlichkeit_ki
-    
-    st.markdown(f"Deine Antwort: {antwort_verstaendlichkeit_ki}.")
-
-###############################################################################
-
-#Frage: Über neue Informationen über das Thema KI
-
-frage_neue_informationen_ki = "Wie viel Neues hast du über KI gelernt?"
-antwort_neue_informationen_ki  = st.radio(
-    frage_neue_informationen_ki ,
-    (
-        "Sehr viel Neues über KI gelernt",
-        "Einiges über KI dazugelernt", 
-        "Wenig Neues über KI gelernt",
-        "Keine neuen Informationen über KI gelernt",
-        "Keine Angabe"
-    ),
-    index=None
-)
-
-# Speichern der Antwort
-if "anzahl_neue_informationen_ki" not in st.session_state:
-    st.session_state.anzahl_neue_informationen_ki = 0
-if "neue_informationen_ki_alt" not in st.session_state: 
-    st.session_state.neue_informationen_ki_alt = None  
-if "neue_informationen_ki_historie" not in st.session_state.grundwissen_ki:
-    st.session_state.grundwissen_ki["neue_informationen_ki_historie"] = []
-
-# Speicherung nur bei Änderung der Antwort
-if antwort_neue_informationen_ki is not None and antwort_neue_informationen_ki != st.session_state.neue_informationen_ki_alt:
-    st.session_state.anzahl_neue_informationen_ki += 1
-    
-    neue_informationen_ki = {
-        "Bereich": "Grundwissen KI",
-        "Typ": "Neue Informationen",
-        "Frage": frage_neue_informationen_ki,
-        "Antwort": antwort_neue_informationen_ki,
-        "Anzahl_Aenderungen": st.session_state.anzahl_neue_informationen_ki
-    }
-    
-    st.session_state.grundwissen_ki["neue_informationen_ki_historie"].append(neue_informationen_ki)
-    st.session_state.grundwissen_ki["neue_informationen_ki"] = neue_informationen_ki
-    # Aktuelle Antwort merken
-    st.session_state.neue_informationen_ki_alt = antwort_neue_informationen_ki
-    
-    st.markdown(f"Deine Antwort: {antwort_neue_informationen_ki}.")
-##############################################################################################################
-
-# Zählen, wie oft der Teilnehmer gebraucht hat, um die Überprüfungsfrage "richtig" zu beantworten
-
-frage_ueberpruefung = "Welche Aussage über KI trifft zu?"
-antwort_ueberpruefung=st.radio(frage_ueberpruefung,
-                            (
-                            "KI braucht Schritt für Schritt-Anweisungen",
-                             "KI kann jede Aufgabe lösen und macht keine Fehler",
-                             "KI braucht sehr viele Daten um zu lernen und macht trotzdem Fehler",
-                             "Keine der dargestellten Aussagen ist richtig"
-                             ),
-                             index=None
-)                          
-
-# Speichern der Antwort
-
-if "anzahl_ueberpruefung" not in st.session_state:
-    st.session_state.anzahl_ueberpruefung = 0
-if "ueberpruefung_alt" not in st.session_state:
-    st.session_state.ueberpruefung_alt = None
-if "ueberpruefung_historie" not in st.session_state.grundwissen_ki:
-    st.session_state.grundwissen_ki["ueberpruefung_historie"] = []
-
-# Speicherung nur bei Änderung der Antwort  
-if antwort_ueberpruefung is not None and antwort_ueberpruefung != st.session_state.ueberpruefung_alt:
-    st.session_state.anzahl_ueberpruefung += 1
-    
-    ueberpruefung = {
-        "Bereich": "Grundwissen KI",
-        "Typ": "Ueberpruefungsfrage",
-        "Frage": frage_ueberpruefung,
-        "Antwort": antwort_ueberpruefung,
-        "Anzahl_Aenderungen": st.session_state.anzahl_ueberpruefung
-    }
-    
-    st.session_state.grundwissen_ki["ueberpruefung_historie"].append(ueberpruefung)
-    st.session_state.grundwissen_ki["ueberpruefung"] = ueberpruefung
-    # Aktuelle Antwort merken 
-    st.session_state.ueberpruefung_alt = antwort_ueberpruefung
-    
-    st.markdown(f"Deine Antwort: {antwort_ueberpruefung}.")
-
-
-#Richtige Antwort für die Überprüfungsfrage 
-richtige_antwort="KI braucht sehr viele Daten um zu lernen und macht trotzdem Fehler"
-
-##############################################################################
+            """)
 #Trennungslinie
-
 st.divider()
+#Lernziele bzw. Aufgaben auf der Seite
+st.markdown("""
+                    Dafür soll ChatGPT dich unterstützen und für dich ein paar Aufgaben erledigen, d. h.:
+                    - einen kurzen Text schreiben
+                    - die Vokale zählen
+                    - eine aktuelle Frage beantworten
+                    - eine Matheaufgabe lösen
+               """)
+
+
+st.markdown("")
+#Trennungslinie
+st.divider()
+
+#Speichern aller Antworten der Teilnehmer für die Seite
+
+if "uebung1" not in st.session_state:
+    st.session_state.uebung1 ={}
+#Speichern der vorgegebenen Fragen & Antworten 
+if "zaehler_eingaben_vorgegeben" not in st.session_state:
+    st.session_state.zaehler_eingaben_vorgegeben = 0
+#Speichern eigener Fragen & Antworten (Prompt ist angepasst, sodass er immer falsche Antworten liefern soll)
+if "zaehler_eingaben_eigene" not in st.session_state:
+    st.session_state.zaehler_eingaben_eigene = 0
+
+#######################################
+#AUFGABE 1 - Vorgegebener Satz von ChatGPT
+####################################
+
+
+st.markdown("<h5>Aufgabe 1</h5>",unsafe_allow_html=True)
+#Prompt in ChatGPT eingegeben wurde
+
+st.markdown("""
+            ***Prompt für ChatGPT:***
+            "Schreibe mir einen oder zwei Sätze über einen Sommertag mit Erdbeereis."
+        """)
+
+#Antwort von ChatGPT auf den Prompt "Schreibe mir einen oder zwei Sätze über einen Sommertag mit Erdbeereis"
+st.markdown("""
+                ***ChatGPT Antwort:***
+                "Die Sonne brannte vom wolkenlosen Himmel, während das süße Erdbeereis langsam in meiner Hand schmolz.
+                Jeder Löffel war
+                ein kleiner, kühler Moment des Glücks an diesem warmen Sommertag."
+            """)
+#Speichern der Antwort von ChatGPT
+textdeutsch="Die Sonne brannte vom wolkenlosen Himmel, während das süße Erdbeereis langsam in meiner Hand schmolz. Jeder Löffel war ein kleiner, kühler Moment des Glücks an diesem warmen Sommertag"
+
+##############################################################################################
+
+#Frage ob die Teilnehmer den Satz ebenfalls so schreiben würden
+frage_text_echt = "Würdest du die 1-2 Sätze über einen Sommertag auch so schreiben?"
+antwort_text_echt=st.radio(frage_text_echt,
+                 ("Sehr wahrscheinlich",
+                  "Eher wahrscheinlich",
+                  "Neutral",
+                  "Eher unwahrscheinlich",
+                  "Sehr unwahrscheinlich"
+                  ),
+                  index=None           
+            
+            )
+# Antwort speichern
+if "anzahl_text_echt" not in st.session_state:
+    st.session_state.anzahl_text_echt = 0
+if "text_echt_alt" not in st.session_state: 
+    st.session_state.text_echt_alt = None  
+if "text_echt_historie" not in st.session_state.uebung1:
+    st.session_state.uebung1["text_echt_historie"] = []
+
+# Speicherung nur bei Änderung der Antwort
+if antwort_text_echt is not None and antwort_text_echt != st.session_state.text_echt_alt:
+    st.session_state.anzahl_text_echt += 1
+    
+    text_echt = {
+        "Bereich": "Übung1",
+        "Typ": "Texteinschätzung",
+        "Frage": frage_text_echt,
+        "Antwort": antwort_text_echt,
+        "Anzahl_Aenderungen": st.session_state.anzahl_text_echt
+    }
+    
+    st.session_state.uebung1["text_echt_historie"].append(text_echt)
+    st.session_state.uebung1["text_echt"] = text_echt
+    # Aktuelle Antwort merken 
+    st.session_state.text_echt_alt = antwort_text_echt
+    
+    st.markdown(f"Deine Antwort: {antwort_text_echt}.")
+
+    st.markdown("Die Sätze klingen gut und als würden sie von einem Menschen stammen, aber sie wurden von einer KI geschrieben")
 
 ################################################################################
+#Trennungslinie
+st.divider()
 
+#################################################################################
+#AUFGABE 2: Vokale zählen
+################################################################################
+
+st.markdown("<h5>Aufgabe 2</h5>",unsafe_allow_html=True)
+
+#Vokale zählen Teil integrieren
+#Aufgabenstellung für die Teilnehmer
+st.markdown("""
+            In der nächsten Übung nutzt du den Satz: ***"An einem schönen Sommertag genieße ich ein kühles Erdbeereis."***
+            Diesmal sollst du den Satz etwas genauer untersuchen.
+            Zähle die Anzahl von mindestens 2 Vokalen (a ,e ,i ,o ,u ,ä ,ö  und ü).
+            """)
+#Speichern des Beispielsatzes für das Vokale zählen
+beispielsatz = "An einem schönen Sommertag genieße ich ein kühles Erdbeereis."
+st.markdown(beispielsatz)
+
+#Bei Benutzung des Buttons, werden die Vokale des Satzes gezählt
+if st.button("Vokale selbst zählen"):
+    #Zählen wie oft der Button zum selbst zählen geklickt wird
+    if "anzahl_vokale_selbst" not in st.session_state:
+        st.session_state.anzahl_vokale_selbst = 0
+    st.session_state.anzahl_vokale_selbst += 1
+
+    #Alle Wörter werden klein geschrieben
+    satzklein = beispielsatz.lower()
+    #Vokale
+    vokale ="aeiouäöü"
+    ausgabe = ""
+    gesamtvokale = 0
+    
+    #Durchlaufen der Vokale, wenn ein Vokal vorkommt wird dieser aufaddiert
+    for vokal in vokale:
+        anzahl = satzklein.count(vokal)
+        if anzahl > 0:
+            #Ausgabe z. B: a: 2
+            ausgabe += f"{vokal}: {anzahl} "
+            #Zählen der gesamten Vokale im Satz
+            gesamtvokale += anzahl
+    
+    # Die gesamte Ausgabe in einer Zeile anzeigen
+    ausgabe += f"Gesamt: {gesamtvokale}"
+    st.markdown(f"Selbstgezählte Antwort: {ausgabe}")
+
+    # Speichern der Vokale für den Satz
+    vokale_selbst = {
+        "Bereich": "Übung1",
+        "Typ": "Vokale selbst zählen",
+        "Frage": beispielsatz,
+        "Antwort": ausgabe,
+        "Anzahl_Aenderungen": st.session_state.anzahl_vokale_selbst
+    }
+    #Speichern der Anzahl der Überprüfung
+    st.session_state.uebung1["vokale_selbst"] = vokale_selbst
+
+
+#ChatGPT zählen lassen
+if st.button("ChatGPT nach Vokalen fragen"):
+    #Speichern der Vokale, die ChatGPT zählt
+    if "anzahl_vokalabfrage_chatgpt" not in st.session_state:
+        #Speichern, wie oft Teilnehmer das Ergebnis des Vokale zählens von ChatGPT ausführen
+        st.session_state.anzahl_vokalabfrage_chatgpt = 0
+
+    #Bei erneuten ausführen des Buttons, wird die Anzahl hochgezählt
+    st.session_state.anzahl_vokalabfrage_chatgpt += 1
+    anzahl_vokal_versuch=st.session_state.anzahl_vokalabfrage_chatgpt
+    
+    #Alle gezählten Versuche von ChatGPT speichern, für jedes Aussführen
+    if "vokale_chatgpt_historie" not in st.session_state.uebung1:
+        st.session_state.uebung1["vokale_chatgpt_historie"] = []
+    prompt_vokale=("Zähle alle Vokale (a,e,i,o,u,ä,ö,ü) in dem Satz."+
+                  "Liefer die Antwort genau in dem Format wie in dem Beispiel: 'a: 4 e: 6 i: 2 o: 3 u: 1 ä: 2 ö: 1 ü: 1 Gesamt: 20'"+
+                  "In einer Zeile und ohne Kommentar."
+                )
+                  
+    try:
+        #Nutzung eines Spinners, damit die User sehen, dass ein Hintergrundprozess durchgeführt wird
+        with st.spinner(text="Erstelle Text, bitte warten..."):
+            #API-Aufruf an OpenAI
+            try:
+                antwort = openai_client.chat.completions.create(
+                model="gpt-3.5-turbo",
+                messages=[
+                        {"role": "user", "content": prompt_vokale+beispielsatz}
+                        ]  )
+        
+                #Antwort in der Variable speichern
+                antwort_text=antwort.choices[0].message.content
+            except:
+
+                if api_key2:
+                    try:
+                        antwort = openai_client.chat.completions.create(
+                         model="gpt-3.5-turbo",
+                         messages=[
+                            {"role": "user", "content": prompt_vokale+beispielsatz}
+                            ])
+                        antwort_text=antwort.choices[0].message.content
+                    except:
+                        if gemini_client:
+                            try:
+                                antwort = gemini_client.generate_content(prompt_vokale+beispielsatz)
+                                antwort_text = antwort.text
+                            except:
+                                st.error("Alle API-Dienste sind momentan nicht verfügbar.")
+                                antwort_text = "Alle API-Dienste sind momentan nicht verfügbar"
+                                                
+
+
+        #Falls ChatGPT 3.5 Turbo doch richtig Vokale zählt, soll trotzdem eine falsche Antwort ausgegeben werden
+        if "Gesamt: 23" in antwort_text.lower() and "a: 2" in antwort_text.lower():
+            antwort_text = "a: 4 e: 6 i: 2 o: 3 u: 1 ä: 2 ö: 1 ü: 1 Gesamt: 20"
+            
+    except Exception as error:
+        # Fallback bei Verbindungsproblemen
+        antwort_text = "a: 4 e: 6 i: 2 o: 3 u: 1 ä: 2 ö: 1 ü: 1 Gesamt: 20"
+
+    #Antwort für die Teilnehmer anzeigen
+    st.markdown(f"Antwort von ChatGPT: {antwort_text}")
+
+
+    vokale_chatgpt = {
+
+        "Bereich": "Übung1",
+        "Typ": "Vokale zählen ChatGPT",
+        "Frage": beispielsatz,
+        "Antwort": antwort_text,
+        "Anzahl_Aenderungen": anzahl_vokal_versuch
+    }
+    #Speichern aller Vokal-Zählung
+    st.session_state.uebung1["vokale_chatgpt_historie"].append(vokale_chatgpt)
+
+    #Speichern der letzten Vokal-Zählung zur Ausgabe des Vergleichs
+    st.session_state.uebung1["vokale_chatgpt"] = vokale_chatgpt
+    
+    #Den Teilenhmern das Ergebnis der Übung 2 "Vokale zählen" anzeigen, da in Streamlit beim nächsten Widget, dass darüber schließt
+
+    with st.expander("***VERGLEICH DER ERGEBNISSE:***",icon=":material/double_arrow:"):
+        #Sicherstellen, dass der Vergleich die Übung durchgeführt wurde und anzeigen der letzten Ergebnisse
+        if "vokale_chatgpt" in st.session_state.uebung1 and "vokale_selbst" in st.session_state.uebung1:
+            st.markdown(f"""
+                        ***Selbstgezählte Antwort:*** {st.session_state.uebung1["vokale_selbst"]["Antwort"]}\n
+                        ***ChatGPT´s Antwort:*** {st.session_state.uebung1["vokale_chatgpt"]["Antwort"]}
+                    """)
+            #Hinweis, dass die KI Fehler machen kann
+            st.markdown("""
+                        Wie du siehst macht die KI-Anwendung auch Fehler. Sie kann gut Texte erzeugen, Fragen beantworten
+                        aber nicht alles ist richtig! Sie kann sich auch vertun, deshalb ist es wichtig, dass Ergebnis immer zu prüfen!
+                       """)
+        #Fall der Vergleich nicht durchgeführt wird, dann den Teilnehmer darauf hinweisen
+        else:
+            st.info("Bitte klicke zuerst auf 'ChatGPT nach Vokalen fragen', um die Ergebnisse vergleichen zu können.")
+
+        
+#Trennungslinie
+st.divider()
+
+#############################
+#AUFGABE 3 - Interaktion KI - vorgegebene Fragen stellen
+###############################
+st.markdown("<h5>Aufgabe 3</h5>",unsafe_allow_html=True)
+
+#Prompt enthält mehrfach die Anweisung das die Antwort falsch sein soll,
+#weil sonst bei der Frage: Was ist die Hauptstadt der Niederlande die Antwort Amsterdam wiedergibt.
+
+
+#Expander im Container, da sonst nach Betätigung des Buttons der Fokus ans Ende der Seite springt
+#Fokusverlust vorwiegend bei Interaktion mit KI, d.h. bei Eingabe von Prompts und Ausgabe der Antworten
+
+container_fokus1 = st.container()
+with container_fokus1:
+    #Expander soll offen sein, damit die Teilnehmer die Aufgabe direkt sehen
+    with st.expander("Vorgegebene Fragen", expanded=True):
+        textzuaufgaben=st.markdown("""
+                    Wähle eine der beiden folgenden Fragen aus und gib sie in das untenstehende Textfeld ein:
+                    1. Wer ist der aktuelle Präsident der USA
+                    2. Was das Ergebnis der Aufgabe 482 * 739 (Gerne kannst du den Taschenrechner benutzen und die Ergebnisse zu prüfen)
+                """)
+        #Clear_on_submit damit die Teilnehmer direkt dazu verleitet werden in das Textfeld neue Fragen zu stellen
+        with st.form("frage_formular_vorgegeben", clear_on_submit=True):
+            frage = st.text_input("Stelle eine der oben vorgegebenen Fragen")
+            senden = st.form_submit_button("Fragen")
+            #Hinweis an den Teilnehmer, damit er weiterscrollt.
+            #Fokus sollte auf dieser Übung verbleiben, bis der Teilnehmer alle Fragen gestellt hat
+            st.markdown("Wenn du fertig bist, dann scrolle bitte weiter nach unten")
+            # Antwort generierung erst wenn Button geklickt und Eingabe vorhanden
+            
+            if senden and frage:
+                try:
+                        #Nutzung eines Spinners, damit die User sehen, dass ein Hintergrundprozess durchgeführt wird
+                        with st.spinner(text="Erstelle Text, bitte warten..."):
+                            #API-Aufruf an OpenAI
+                            antwort = openai_client.chat.completions.create(
+                                #GPT 3.5 Turbo Nutzung, da es KI-Grenzen aufzeigt und keine Manipulation durch Anpassung des Prompts erfolgen muss(Rechenfehler bei höheren Zahlen, veraltete Daten)
+                                #Ansonsten Empfehlung Nutung von gpt-4omini
+                                model="gpt-3.5-turbo",
+                                #Übergabe der "Frage" aus dem Form
+                                messages=[{"role": "user", "content":"Beantworte die Frage nur auf Deutsch"+frage}]
+                            )
+                            if antwort and antwort.choices:
+                                antwort_text = antwort.choices[0].message.content
+                            else:
+                                antwort_text = "Keine Antwort erhalten."
+                            falscheantworten=("Antworte nur auf Deutsch. Gib bitte falsche Antworten für die Frage:")
+
+                            #Sicherstellen, dass die Antworten falsch bleiben
+                            if "präsident" in frage.lower() and "usa" in frage.lower():
+                                if "trump" in antwort_text.lower():
+                                    try:
+                                        #API-Aufruf an OpenAI
+                                        antwort =openai_client.chat.completions.create(
+                                            model="gpt-3.5-turbo",
+                                            messages=[{"role": "user", "content":falscheantworten+frage}]
+                                        )
+                                        if antwort and antwort.choices:
+                                            antwort_text = antwort.choices[0].message.content
+                                        else:
+                                            antwort_text = "Joe Biden ist der aktuelle Präsident der USA."
+                                    #Hier soll die Aufgabe auch ohne Verbindung zu OpenAI funktionieren
+                                    except Exception as error:
+                                        antwort_text = "Joe Biden ist der aktuelle Präsident der USA."
+
+                            elif "482" in frage and "739" in frage:  # Alle Rechenarten abfangen
+                                if "356198" in antwort_text or "356.198" in antwort_text:
+                                    try:
+                                        #API-Aufruf an OpenAI
+                                        antwort = openai_client.chat.completions.create(
+                                            model="gpt-3.5-turbo",
+                                            messages=[{"role": "user", "content":falscheantworten+frage}]
+                                        )
+                                        if antwort and antwort.choices:
+                                            antwort_text = antwort.choices[0].message.content
+                                        else:
+                                            antwort_text = "482 x 739 = 355.420"
+                                    except Exception as error:
+                                        antwort_text = "482 x 739 = 355.420"
+
+
+                            # Zählen der Teilnehmereingaben bei den vorgegebenen Fragen
+                            st.session_state.zaehler_eingaben_vorgegeben+= 1
+                            anzahl_eingaben_vorgegeben = st.session_state.zaehler_eingaben_vorgegeben
+
+
+                            #Vorgegebene Fragen anzeigen, die die Teilnehmer eingeben
+                            st.markdown(f"Deine Frage: {frage}")
+                            
+                            
+                            #ChatGPTs Antworten anzeigen
+                            st.markdown(f"Antwort: {antwort_text}")
+                            
+
+                        #Speicherung der vorgegebenen Fragen + Antworten 
+                        if "vorgegebene_fragen" not in st.session_state.uebung1:
+                            st.session_state.uebung1["vorgegebene_fragen"] = []
+                        
+                        st.session_state.uebung1["vorgegebene_fragen"].append({
+                                "Bereich": "Übung1",
+                                "Typ": "Vorgegebene Frage - KI-Interaktion",
+                                "Frage": frage,
+                                "Antwort": antwort_text,
+                                "Anzahl_Aenderungen": anzahl_eingaben_vorgegeben
+                            })
+
+                #Fehlerbehandlung von OpenAI (z. B. zu viele Anfragen, keine Verbindung zu OpenAI-Schnittstelle)         
+                except Exception as error:
+                    hilfsdatei.openai_fehlerbehandlung(error)
+#Aufgabe 4
+#Teilnehmer stellen ChatGPT selbst fragen, der Prompt ist jedoch manipuliert
+container_fokus2 = st.container()
+with container_fokus2:
+    textzuaufgaben=st.markdown("""
+                                    Jetzt bist du dran!
+                                    Stelle ChatGPT eine Frage, die dich interessiert
+            
+                        	        """)
+
+    with st.expander("Eigene Fragen", expanded=True):
+        with st.form("frage_formular_eigene", clear_on_submit=True):
+            frage_eigene = st.text_input("Stelle hier deine eigenen Fragen")
+
+            falsch = "Antworte richtig, aber füge ein direkt kleines falsches Detail hinzu."
+            prompt = (f"{frage_eigene}")
+            senden = st.form_submit_button("Fragen")
+
+            st.markdown("Wenn du fertig bist, dann scrolle bitte weiter nach unten")
+            # Antwort generierung erst wenn Button geklickt und Eingabe vorhanden
+            if senden and frage_eigene:
+                try:
+                    #Verwendung von gpt-4-turbo, weil es im gegensatz zu gpt-3.5-turbo nicht so auffällige Fehler liefert.
+                    #Auch wenn gpt-4-turbo "teurer ist" ist es besser für diese Aufgabe
+                    #Frage: Was ist die Hauptstadt von Deutschland
+                    #GPT 3.5 Turbo = Antwort: Die Hauptstadt von Deutschland ist Frankfurt....
+                    #GPT 4 Turbo = Die Hauptstadt von Deutschland ist Berlin. Berlin wurde im Jahr 1237 gegründet und ist seit der Wiedervereinigung Deutschlands im Jahr 1991..."
+                    with st.spinner(text="Erstelle Text, bitte warten..."):
+                        antwort = openai_client.chat.completions.create(
+                            model="gpt-4-turbo",
+                            messages=[{"role": "user", "content":prompt+"nur 2-3 Sätze. Gebe Details an wie Jahre, Zahlen oder Eigenschaften"}],
+                            
+                        )
+                        #antwort_text_eigene= antwort.choices[0].message.content
+                        richtige_antwort= antwort.choices[0].message.content
+
+                        falsch_prompt = (
+                            "Du bist Teil eines Schulmoduls, zum kritischen Umgang mit KI. "+
+                            "Ändere diese Antwort so, dass sie auf den ersten Blick korrekt klingt, "+
+                            "aber einen Fehler enthält z. B. ein leicht falsches Datum, "+
+                            "eine falsche Zahl oder ein falsches Detail, das nicht sofort auffällt. Die ANtwort muss einen Fehler enthalten. "+
+                            "Die Antwort soll glaubwürdig klingen."
+                        )
+
+
+                        antwort = openai_client.chat.completions.create(
+                        model="gpt-3.5-turbo",
+                        messages=[{"role": "user", "content": f"{falsch_prompt} {richtige_antwort}:nur 2-3 Sätze. Nur Deutsch"}]
+        
+                        )
+                        antwort_text_eigene = antwort.choices[0].message.content
+                        antwort_text_eigene= antwort.choices[0].message.content
+
+                    # Prompt-Zähler aktualisieren
+                    st.session_state.zaehler_eingaben_eigene += 1
+                    anzahl_eingaben_eigene = st.session_state.zaehler_eingaben_eigene
+                    
+
+
+                    # Frage anzeigen
+                    st.markdown(f"Deine Frage: {frage_eigene}")
+                
+                    
+                    # Antwort anzeigen
+                    st.markdown(f"Antwort: {antwort_text_eigene}")
+                    
+
+
+
+                    # Erzeugen einer Speicherliste, sofern keine Vorhanden ist
+                    if "eigene_fragen" not in st.session_state.uebung1:
+                        st.session_state.uebung1["eigene_fragen"] = []
+                    
+                    # Eigene Fragen & KI-Antworten speichern
+                    st.session_state.uebung1["eigene_fragen"].append({
+                        "Bereich": "Übung1",
+                        "Typ": "Eigene Frage - KI-Interaktion",
+                        "Frage": frage_eigene,
+                        "Antwort": antwort_text_eigene,
+                        "Anzahl_Aenderungen": anzahl_eingaben_eigene
+                    })
+                #Fehlerbehandlung von OpenAI
+                except Exception as error:
+                    hilfsdatei.openai_fehlerbehandlung(error)
+                
+########################################################################
+#Trennungslinie
+st.divider()
+########################################################################
+
+#Frage ob die gestellten Antworten richtig sind
+frage_vertrauen="Glaubst du, dass diese Antworten richtig sind?"
+antwort_vertrauen = st.radio(frage_vertrauen,
+        ( "Sehr wahrscheinlich",
+          "Eher wahrscheinlich",
+          "Mittelmäßig wahrscheinlich",
+          "Eher unwahrscheinlich", 
+          "Sehr unwahrscheinlich"
+         
+        ),
+        index=None,
+    )
+#Speichern der Antworten
+if "anzahl_vertrauen" not in st.session_state:
+    st.session_state.anzahl_vertrauen = 0
+if "vertrauen_alt" not in st.session_state:
+    st.session_state.vertrauen_alt = None 
+if "vertrauen_historie" not in st.session_state.uebung1:
+    st.session_state.uebung1["vertrauen_historie"] = []
+
+# Speicherung nur bei Änderung der Antwort
+if antwort_vertrauen is not None and antwort_vertrauen != st.session_state.vertrauen_alt:
+    st.session_state.anzahl_vertrauen += 1
+    
+    vertrauen = {
+        "Bereich": "Übung1",
+        "Typ": "VertrauenKIAntworten",
+        "Frage": frage_vertrauen,
+        "Antwort": antwort_vertrauen,
+        "Anzahl_Aenderungen": st.session_state.anzahl_vertrauen
+    }
+    
+    st.session_state.uebung1["vertrauen_historie"].append(vertrauen)
+    st.session_state.uebung1["vertrauen"] = vertrauen
+    # Aktuelle Antwort merken
+    st.session_state.vertrauen_alt = antwort_vertrauen
+    st.markdown(f"Deine Antwort ist: {antwort_vertrauen}")
+
+#######################################################################################
+#Frage wie zufrieden man mit den Antworten von ChatGPT ist
+frage_zufrieden = "Wie zufrieden warst du mit ChatGPTs Antworten?"
+antwort_zufrieden = st.radio(frage_zufrieden,
+                         (  "Sehr zufrieden",
+                            "Eher zufrieden",
+                            "Neutral",
+                            "Eher unzufrieden", 
+                            "Sehr unzufrieden"
+                         ), index=None, 
+                        )
+
+# Speichern der Antwort
+if "anzahl_zufrieden" not in st.session_state:
+    st.session_state.anzahl_zufrieden = 0
+if "zufrieden_alt" not in st.session_state:
+    st.session_state.zufrieden_alt = None 
+if "zufrieden_historie" not in st.session_state.uebung1:
+    st.session_state.uebung1["zufrieden_historie"] = []
+
+# Speicherung nur bei Änderung der Antwort
+if antwort_zufrieden is not None and antwort_zufrieden != st.session_state.zufrieden_alt:
+    st.session_state.anzahl_zufrieden += 1
+    
+    zufrieden = {
+        "Bereich": "Übung1",
+        "Typ": "ChatGPT Antworten Zufriedenheit",
+        "Frage": frage_zufrieden,
+        "Antwort": antwort_zufrieden,
+        "Anzahl_Aenderungen": st.session_state.anzahl_zufrieden
+    }
+    
+    st.session_state.uebung1["zufrieden_historie"].append(zufrieden)
+    st.session_state.uebung1["zufrieden"] = zufrieden
+    # Aktuelle Antwort merken
+    st.session_state.zufrieden_alt = antwort_zufrieden
+    
+    st.markdown(f"Deine Antwort: {antwort_zufrieden}")
+
+####################
+#ENDE DER ÜBUNG
+###################
+
+#Trennungslinie
+st.divider()
+#Anweisung für den Teilnehmer, sobald er mit der Übung fertig ist
 st.markdown("Um fortzufahren, klicke auf \"Weiter\"")
-st.markdown("Aktueller Fortschritt in der gesamten Lerneinheit: 2 von 8")
-st.progress (2/8)
+#Anzeigen wie weit der Teilnehmer in der gesamten Lerneinheit ist
+st.markdown("Aktueller Fortschritt in der gesamten Lerneinheit: 3 von 8")
+st.progress (3/8)
 
-#Überprüfung, ob alle Antworten vom Teilnehmer vorhanden sind, danach erfolgt die Möglichkeit auf die nächste Seite zu gelangen
 if st.button("Weiter"):
     unbeantwortet = False
-    
-    if antwort_verstaendlichkeit_ki is None:
-        st.error("Bitte bewerte die Verständlichkeit der Informationen.")
+    if antwort_text_echt is None:
+        st.error ("Bitte beantworte die Frage, ob der Text echt ist.")
         unbeantwortet = True
-    if antwort_neue_informationen_ki is None:
-        st.error("Bitte beantworte, ob du neue Informationen erhalten hast.")
+    if antwort_vertrauen is None:
+        st.error ("Bitte gebe an, ob du den Antworten der KI vertraust.")
         unbeantwortet = True
-    if antwort_ueberpruefung is None:
-        st.error("Bitte beantworte die Überprüfungsfrage.")
+    if antwort_zufrieden is None:
+        st.error ("Bitte gebe an, ob die Antworten von ChatGPT in Ordnung waren.")
         unbeantwortet = True 
-    elif antwort_ueberpruefung != richtige_antwort:
-        st.error("Deine Antwort ist leider falsch. Bitte lies den Inhalt nochmal und versuche es erneut.")
-        unbeantwortet = True
-
-    # Weiterleitung auf die nächste Seite nur bei richtiger Beantwortung der Frage und Ausfüllen aller Fragen
-    if not unbeantwortet and antwort_ueberpruefung==richtige_antwort:    
-        st.info("Deine Antwort ist richtig!")
-        st.switch_page("pages/4_Übung 1.py")
+    if not unbeantwortet:
+        naechste_seite="pages/5_Übung 2.py"
+        st.switch_page(naechste_seite)

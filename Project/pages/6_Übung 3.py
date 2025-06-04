@@ -193,7 +193,7 @@ with container_fokus:
                                 }
                                 )
                                 
-                                generiertesBild = antwort[0]
+                                generiertesBild = str(antwort[0])
                                 st.image(antwort)
                             except:
                                 pass

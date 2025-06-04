@@ -16,7 +16,7 @@ openai_client, replicate_client, api_key1, api_key2, replicate_key = hilfsdatei.
 hilfsdatei.teilnehmer_anmelden()
 
 
- 1. Environment Variables - KORRIGIERT
+ #1. Environment Variables - KORRIGIERT
 env_replicate = os.getenv("REPLICATE_API_TOKEN")  # ✅ War vorher REPLICATE_API_KEY
 st.write(f"📍 REPLICATE_API_TOKEN: {'Vorhanden' if env_replicate else 'None'}")
 if env_replicate:

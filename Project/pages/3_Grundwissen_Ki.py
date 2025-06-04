@@ -18,43 +18,31 @@ hilfsdatei.teilnehmer_anmelden()
 
 openai_client, replicate_client, api_key1, api_key2, replicate_key = hilfsdatei.openai_verbindung()
 
-st.write("### Token-Analyse:")
+# 1. Environment Variables
+env_replicate = os.getenv("REPLICATE_API_KEY")
+st.write(f"📍 REPLICATE_API_KEY: {'Vorhanden' if env_replicate else 'None'}")
+if env_replicate:
+    st.write(f"   Format: {env_replicate[:10]}...")
 
-if replicate_key:
-    # Token-Format prüfen (ohne den Token zu zeigen)
-    st.write(f"📍 Token-Länge: {len(replicate_key)} Zeichen")
-    st.write(f"📍 Token-Format: {replicate_key[:3]}{'*' * (len(replicate_key)-6)}{replicate_key[-3:]}")
-    
-    # Prüfen ob es wie ein Replicate Token aussieht
-    if replicate_key.startswith('r8_'):
-        st.write("✅ Token hat korrektes Format (beginnt mit r8_)")
-    else:
-        st.error("❌ Token hat falsches Format (sollte mit r8_ beginnen)")
-    
-    # Token-Quelle anzeigen
-    st.write("### Woher kommt der Token?")
-    
-    # Environment Variable Check
-    env_key = os.getenv("REPLICATE_API_KEY")
-    if env_key:
-        st.write("📍 Quelle: Environment Variable")
-        st.write(f"📍 Env Token Format: {env_key[:3]}{'*' * max(0, len(env_key)-6)}{env_key[-3:] if len(env_key) > 3 else ''}")
-    else:
-        # Secrets Check
-        try:
-            secret_key = st.secrets["replicate"]["replicate_api_key"]
-            st.write("📍 Quelle: Streamlit Secrets")
-            st.write(f"📍 Secret Token Format: {secret_key[:3]}{'*' * max(0, len(secret_key)-6)}{secret_key[-3:] if len(secret_key) > 3 else ''}")
-        except:
-            st.write("📍 Quelle: Unbekannt (weder env noch secrets)")
-    
-    # Warnung ausgeben
-    st.warning("🔧 **Nächster Schritt:** Prüfe ob dein Replicate API Token korrekt und aktiv ist!")
-    st.info("💡 **Tipp:** Gehe zu https://replicate.com/account/api-tokens und erstelle einen neuen Token")
+# 2. Secrets
+try:
+    secret_replicate = st.secrets["replicate"]["replicate_api_key"]
+    st.write(f"📍 st.secrets replicate: Vorhanden")
+    st.write(f"   Format: {secret_replicate[:10]}...")
+except:
+    st.write("📍 st.secrets replicate: None")
 
-else:
-    st.error("❌ Kein Token gefunden!")
+# 3. Direkt in hilfsdatei prüfen
+st.write("### Hilfsdatei-Code prüfen:")
+st.code("""
+# In deiner hilfsdatei.py steht wahrscheinlich:
+replicate_key = "dein_replicate_api_token"  # ❌ Das ist das Problem!
 
+# Es sollte stehen:
+replicate_key = os.getenv("REPLICATE_API_KEY")
+# ODER
+replicate_key = st.secrets["replicate"]["replicate_api_key"]
+""")
 
 
 # #Überschrift der Seite

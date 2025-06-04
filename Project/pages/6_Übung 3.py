@@ -17,8 +17,21 @@ import replicate
 titel_seite = "3. Übung"
 hilfsdatei.seite(titel_seite)
 
+
+
 #API-Verbindung zu OpenAI und zu Gemini aufbauen
 openai_client1, openai_client2, gemini_client, api_key1, api_key2 = hilfsdatei.openai_verbindung()
+
+replicate_key=os.getenv("REPLICATE_API_TOKEN")
+
+replicate_key = os.getenv("REPLICATE_API_TOKEN")
+if not replicate_key:
+    try:
+        replicate_key = st.secrets["replicate"]["replicate_api_token"]
+    except:
+        pass
+if replicate_key:
+    os.environ["REPLICATE_API_TOKEN"] = replicate_key
 
 #Sicherstellen, dass ein Zugriff der Seiten nur mit Passwort erfolgt, und dass User keine Navigationsseite sehen
 hilfsdatei.teilnehmer_anmelden() 

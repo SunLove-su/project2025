@@ -58,13 +58,6 @@ if replicate_key:
     except Exception as e:
         st.error(f"❌ Manueller Client-Test fehlgeschlagen: {e}")
 
-Führe das aus und sag mir:
-
-    Welche Token-Quellen sind "Vorhanden"?
-    Funktioniert der manuelle Client-Test?
-    Gibt es weitere Fehlermeldungen?
-
-So finden wir heraus, wo der Token-Fehler liegt! 🔍
 
 
 

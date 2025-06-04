@@ -156,6 +156,24 @@ with container_fokus:
                         aktuelle_anzahl = st.session_state.zaehler_bildgenerierung
                         
                         generiertesBild = None
+
+                        if replicate_key and generiertesBild is None:
+                            try:
+                                antwort = replicate.run("black-forest-labs/flux-schnell",
+                                input={
+                                    "prompt" : beschreibung,
+                                    "width": 1024,
+                                    "height": 1024
+                                }
+                                )
+                                
+                                generiertesBild = str(antwort[0])
+                                st.image(antwort)
+                            except:
+                                pass
+                        
+                        if openai_client and generiertesBild is None:
+                            st.error("Leider konnte kein Bild generiert werden")
                         #DALL-E API Aufruf
                         if openai_client1:
                             try:
@@ -183,23 +201,7 @@ with container_fokus:
                             except:
                                 pass
 
-                        if replicate_key and generiertesBild is None:
-                            try:
-                                antwort = replicate.run("black-forest-labs/flux-schnell",
-                                input={
-                                    "prompt" : beschreibung,
-                                    "width": 1024,
-                                    "height": 1024
-                                }
-                                )
-                                
-                                generiertesBild = str(antwort[0])
-                                st.image(antwort)
-                            except:
-                                pass
-                        
-                        if generiertesBild is None:
-                            st.error("Leider konnte kein Bild generiert werden")
+
 
                     
                         # Generiertes Bild

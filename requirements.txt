@@ -3,3 +3,4 @@ google-cloud-firestore==2.20.2
 supabase==2.15.1
 openai==1.62.0
 google-generativeai== 0.8.5
+replicate==1.0.7

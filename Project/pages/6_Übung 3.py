@@ -174,7 +174,7 @@ with container_fokus:
                                     model="dall-e-3",
                                     prompt=beschreibung,
                                     n=1,
-                                    size="1024x
+                                    size="1024x1024"
                                 )
                                 generiertesBild = antwort.data[0].url
                             except:

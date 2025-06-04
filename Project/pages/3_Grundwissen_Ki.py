@@ -13,25 +13,6 @@ hilfsdatei.seite(titel_seite)
 openai_client, gemini_client, api_key1, api_key2 = hilfsdatei.openai_verbindung()
 
 
-
-# API-Key einfügen oder über Umgebungsvariable/st.secrets holen
-GEMINI_KEY = os.getenv("GEMINI_API_KEY") or st.secrets["googleapigemini"]["gemini_api_key"]
-
-# Konfiguration
-genai.configure(api_key=GEMINI_KEY)
-model = genai.GenerativeModel("gemini-1.5-flash")
-
-# UI
-st.title("Test: Gemini antwortet auf deine Frage")
-frage = st.text_input("Stelle eine Frage an Gemini:")
-
-if frage:
-    antwort = model.generate_content([frage])
-    st.markdown("### Antwort von Gemini:")
-    st.markdown(antwort.text)
-
-
-
 st.divider()
 #Sicherstellen, dass ein Zugriff der Seiten nur mit Passwort erfolgt, und dass User keine Navigationsseite sehen
 hilfsdatei.teilnehmer_anmelden()
@@ -166,7 +147,7 @@ with container_fokus:
                                     #Alternative wenn OpenAI nicht funktioniert
                                     if gemini_client:
                                                 
-                                        antwort = gemini_client.generate_content(f"Beantworte die Frage nur auf Deutsch: {frage}")
+                                        antwort = gemini_client.generate_content(frage)
                                         antwort_text = antwort.text
                                                     
                                 except Exception:

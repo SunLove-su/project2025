@@ -132,7 +132,7 @@ with container_fokus:
                             )
                     
                             # Antwort zusammenfügen
-                            antwort_text = "".join(output)
+                            antwort_text = output
                             
                         except Exception as e:
                             st.error(f"Replicate Fehler: {str(e)}")

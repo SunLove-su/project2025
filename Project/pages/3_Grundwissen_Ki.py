@@ -123,7 +123,7 @@ with container_fokus:
                     
                             # Einfach replicate.run() verwenden
                             output = replicate.run(
-                                "google-deepmind/gemma-7b-it",
+                                "meta/llama-2-7b-chat",
                                 input={
                                     "prompt": f"Beantworte die Frage auf Deutsch: {frage}"
                                     

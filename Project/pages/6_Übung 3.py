@@ -190,8 +190,8 @@ with container_fokus:
                                     "prompt" : beschreibung,
                                 }
                                 )
-                                if antwort len(antwort)>0:
-                                    generiertesBild = antwort[0]
+                                
+                                generiertesBild = antwort[0]
                                 st.image(antwort)
                             except:
                                 pass

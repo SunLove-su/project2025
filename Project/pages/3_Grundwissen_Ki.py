@@ -135,19 +135,24 @@ with container_fokus:
                                             model="gpt-3.5-turbo",
                                             messages=[{"role": "user", "content": f"Beantworte die Frage nur auf Deutsch: {frage}"}]
                                         )
+                                    
+                                    
                                     antwort_text = antwort.choices[0].message.content
-                        if not api_key1 and not api_key2:
-                            try:
-                                    #Alternative wenn OpenAI nicht funktioniert
-                                if gemini_client:
-                                    
-                                        antwort = gemini_client.generate_content(f"Beantworte die Frage nur auf Deutsch: {frage}")
-                                        antwort_text = antwort.text
-                                        
-                            except Exception:
-                                    st.error("Alle API-Dienste sind momentan nicht verfügbar.")
-                                    antwort_text = "Alle API-Dienste sind momentan nicht verfügbar"
-                                    
+                                except:
+
+                       
+                                    if not api_key1 and not api_key2:
+                                            try:
+                                                    #Alternative wenn OpenAI nicht funktioniert
+                                                if gemini_client:
+                                                    
+                                                        antwort = gemini_client.generate_content(f"Beantworte die Frage nur auf Deutsch: {frage}")
+                                                        antwort_text = antwort.text
+                                                        
+                                            except Exception:
+                                                    st.error("Alle API-Dienste sind momentan nicht verfügbar.")
+                                                    antwort_text = "Alle API-Dienste sind momentan nicht verfügbar"
+                                                    
 
                         # Prompt-Zähler aktualisieren
                         st.session_state.zaehler_eingaben_grundwissen += 1

@@ -155,7 +155,7 @@ with container_fokus:
                         st.markdown(f"Deine Frage: {frage}")
                
                         # Antwort anzeigen
-                        st.markdown(f"Antwort: {antwort_text}")
+                        st.markdown(f"Antwort: {replicate_text}")
                      
                         # Frage und  Antwort speichern
                         if "ki_interaktion_historie" not in st.session_state.grundwissen_ki:

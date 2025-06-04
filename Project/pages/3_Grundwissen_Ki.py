@@ -16,23 +16,33 @@ openai_client, replicate_client, api_key1, api_key2, replicate_key = hilfsdatei.
 hilfsdatei.teilnehmer_anmelden()
 
 
+import streamlit as st
+import hilfsdatei
 
-try:
-    output = replicate.run(
-        "meta/llama-2-13b-chat:f4e2de70d66816a838a89eeeb621910adffb0dd0baba3976c96980970978018d", 
-        input={
-            "prompt": "Was ist Künstliche Intelligenz?",
-            "max_new_tokens": 200,
-            "temperature": 0.7,
-            "top_p": 1
-        }
-    )
+st.title("🔍 Schritt 1: Basis-Setup Test")
 
-    st.write("Antwort von Replicate:")
-    st.write("".join(output))
-    
-except Exception as e:
-    st.error(f"Fehler bei Replicate: {e}")
+# Deine Verbindung laden
+openai_client, replicate_client, api_key1, api_key2, replicate_key = hilfsdatei.openai_verbindung()
+
+# Sichere Status-Checks (ohne Keys zu zeigen)
+st.write("### Status-Check:")
+st.write(f"✅ OpenAI Client: {'Vorhanden' if openai_client else 'None'}")
+st.write(f"✅ Replicate Client: {'Vorhanden' if replicate_client else 'None'}")
+st.write(f"✅ API Key 1: {'Vorhanden' if api_key1 else 'None'}")
+st.write(f"✅ API Key 2: {'Vorhanden' if api_key2 else 'None'}")
+st.write(f"✅ Replicate Key: {'Vorhanden' if replicate_key else 'None'}")
+
+# Client-Typ anzeigen (ohne sensitive Daten)
+if replicate_client:
+    st.write(f"✅ Replicate Client Type: `{type(replicate_client)}`")
+else:
+    st.write("❌ Replicate Client ist None")
+
+# Zusammenfassung
+if replicate_client and replicate_key:
+    st.success("🎉 Replicate Setup scheint vollständig zu sein!")
+else:
+    st.error("⚠️ Replicate Setup ist unvollständig")
 
 # #Überschrift der Seite
 # ueberschrift_seite="Grundwissen über Künstliche Intelligenz (KI)"

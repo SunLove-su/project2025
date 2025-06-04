@@ -510,7 +510,7 @@ with container_fokus2:
                         #Alternative wenn OpenAI nicht funktioniert, z. B. wenn beide Open-AI Keys nicht funktionieren
                         if antwort_text_eigene is None and gemini_client:
                             try:
-                                antwort = gemini_client.generate_content(prompt+"nur 2-3 Sätze. Gebe Details an wie Jahre, Zahlen oder Eigenschaften. Gebe leicht falsche Informationen wieder")
+                                antwort = gemini_client.generate_content(prompt+"nur 2-3 Sätze. Gebe Details an wie Jahre, Zahlen oder Eigenschaften, veränder diese ganz leicht")
                                 antwort_text_eigene = antwort.text
                             except:
                                 pass

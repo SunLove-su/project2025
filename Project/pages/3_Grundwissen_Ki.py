@@ -16,22 +16,32 @@ openai_client, replicate_client, api_key1, api_key2, replicate_key = hilfsdatei.
 hilfsdatei.teilnehmer_anmelden()
 
 
-if replicate_client:
-    try:
-        st.write("🔄 Teste Replicate-Verbindung...")
-        
-        # Einfacher Test mit einem kleinen Modell
-        output = replicate_client.run(
-            "replicate/hello-world",
-            input={"text": "test"}
-        )
-        st.success(f"✅ Replicate funktioniert! Output: {output}")
-        
-    except Exception as e:
-        st.error(f"❌ Replicate-Fehler: {str(e)}")
-else:
-    st.warning("⚠️ Replicate-Client nicht verfügbar")
+ 1. Environment Variables - KORRIGIERT
+env_replicate = os.getenv("REPLICATE_API_TOKEN")  # ✅ War vorher REPLICATE_API_KEY
+st.write(f"📍 REPLICATE_API_TOKEN: {'Vorhanden' if env_replicate else 'None'}")
+if env_replicate:
+    st.write(f"   Format: {env_replicate[:10]}...")
 
+# 2. Secrets - KORRIGIERT
+try:
+    secret_replicate = st.secrets["replicate"]["replicate_api_token"]  # ✅ War vorher replicate_api_key
+    st.write(f"📍 st.secrets replicate: Vorhanden")
+    st.write(f"   Format: {secret_replicate[:10]}...")
+except:
+    st.write("📍 st.secrets replicate: None")
+
+# 3. Test des replicate_client aus hilfsdatei
+st.write("### Test des Replicate-Clients:")
+if replicate_client:
+    st.success("✅ Replicate-Client wurde erfolgreich erstellt!")
+    st.write(f"Client-Typ: {type(replicate_client)}")
+else:
+    st.error("❌ Replicate-Client ist None")
+
+if replicate_key:
+    st.success(f"✅ Replicate-Key gefunden: {replicate_key[:10]}...")
+else:
+    st.error("❌ Kein Replicate-Key gefunden")
 
 
 # #Überschrift der Seite

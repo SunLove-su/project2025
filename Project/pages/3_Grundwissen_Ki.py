@@ -138,7 +138,7 @@ with container_fokus:
                                      if replicate_client:
                                         try:
                                             antwort_text = ""
-                                            stream = replicate_client.stream(
+                                            stream = replicate.stream(
                                                 "meta/llama-2-13b-chat",
                                                 input={
                                                     "prompt": f"Beantworte die Frage auf Deutsch: {frage}",

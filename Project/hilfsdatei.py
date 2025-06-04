@@ -80,7 +80,7 @@ def openai_verbindung():
     #Damit auf Render keine Fehlermeldung kommt, dass die st.secrets toml fehlt
     api_key1 = os.getenv("OPENAI_API_KEY1")
     api_key2 = os.getenv("OPENAI_API_KEY2")
-    replicate_key=os.getenv("REPLICATE_API_KEY")
+    replicate_key=os.getenv("REPLICATE_API_TOKEN")
 
     # st.secrets für das Deployment in StreamlitCloud
     if not api_key1:
@@ -98,7 +98,7 @@ def openai_verbindung():
 
     if not replicate_key:
         try:
-            replicate_key = st.secrets["replicate"]["replicate_api_key"]
+            replicate_key = st.secrets["replicate"]["replicate_api_token"]
         except:
             pass
         

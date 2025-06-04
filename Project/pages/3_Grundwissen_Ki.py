@@ -136,11 +136,11 @@ with container_fokus:
                             except:
                                 pass
                         
-                        #Alternative wenn OpenAI nicht funktioniert - Gemini als Fallback
+                        #Alternative wenn OpenAI nicht funktioniert, z. B. wenn beide Open-AI Keys nicht funktionieren
                         if antwort_text is None:
                             try:
                                 if gemini_client:
-                                    antwort = gemini_client.generate_content(frage)
+                                    antwort = gemini_client.generate_content(f"Beantworte die Frage nur auf Deutsch: {frage}")
                                     antwort_text = antwort.text
                             except:
                                 st.error("Alle API-Dienste sind momentan nicht verfügbar.")

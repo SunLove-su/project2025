@@ -17,21 +17,42 @@ hilfsdatei.teilnehmer_anmelden()
 
 
 
-st.write("### Funktionstest von Replicate:")
+st.write("### Test mit stabilem Modell:")
 if replicate_client:
     try:
-        st.write("🔄 Teste Replicate mit hello-world Modell...")
+        st.write("🔄 Teste mit einem einfachen Text-Modell...")
         
+        # Verwenden Sie ein aktuelles, stabiles Modell
         output = replicate_client.run(
-            "replicate/hello-world",
-            input={"text": "python"}
+            "meta/llama-2-7b-chat",
+            input={
+                "prompt": "Hello, please respond with 'Test successful' in German.",
+                "max_new_tokens": 50
+            }
         )
-        st.success(f"✅ Replicate funktioniert! Output: {output}")
+        st.success(f"✅ Test erfolgreich! Output: {output}")
         
     except Exception as e:
-        st.error(f"❌ Replicate-Fehler: {str(e)}")
+        st.error(f"❌ Fehler: {str(e)}")
 
-
+# Alternative: Testen Sie direkt Ihr Llama-Modell
+st.write("### Direkter Test mit Ihrem Llama-Modell:")
+if replicate_client:
+    try:
+        st.write("🔄 Teste meta/llama-2-13b-chat...")
+        
+        output = replicate_client.run(
+            "meta/llama-2-13b-chat",
+            input={
+                "prompt": "Antworte auf Deutsch: Hallo, wie geht es dir?",
+                "max_new_tokens": 100,
+                "temperature": 0.75
+            }
+        )
+        st.success(f"✅ Llama-2-13b-chat funktioniert! Output: {output}")
+        
+    except Exception as e:
+        st.error(f"❌ Llama-Fehler: {str(e)}")
 # #Überschrift der Seite
 # ueberschrift_seite="Grundwissen über Künstliche Intelligenz (KI)"
 # st.markdown(f"<h4>{ueberschrift_seite}</h4>",unsafe_allow_html=True)

@@ -22,7 +22,7 @@ hilfsdatei.seite(titel_seite)
 #API-Verbindung zu OpenAI und zu Gemini aufbauen
 openai_client1, openai_client2, gemini_client, api_key1, api_key2 = hilfsdatei.openai_verbindung()
 
-replicate_key=os.getenv("REPLICATE_API_TOKEN")
+
 
 replicate_key = os.getenv("REPLICATE_API_TOKEN")
 if not replicate_key:
@@ -190,6 +190,8 @@ with container_fokus:
                                     "prompt" : beschreibung,
                                 }
                                 )
+                                if antwort len(antwort)>0:
+                                    generiertesBild = antwort[0]
                                 st.image(antwort)
                             except:
                                 pass
@@ -201,10 +203,11 @@ with container_fokus:
                         # Generiertes Bild
                         st.markdown("Bild:")
                         # Bild anzeigen
-                        generiertesBild = antwort.data[0].url
-                        #Anpassung des Bildes mit width, da size im API Aufruf nicht verkleindert werden kann
-                        st.image(generiertesBild, width=200)
-                        
+                        if generiertesBild is not None:
+                            
+                            #Anpassung des Bildes mit width, da size im API Aufruf nicht verkleindert werden kann
+                            st.image(generiertesBild, width=200)
+                            
                         #Speichern der Daten
                         if "bild_generierung_ki_historie" not in st.session_state.uebung3:
                             st.session_state.uebung3["bild_generierung_ki_historie"] = []

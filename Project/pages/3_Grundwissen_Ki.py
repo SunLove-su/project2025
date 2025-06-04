@@ -3,14 +3,14 @@ import openai
 import hilfsdatei
 import os
 import google.generativeai as genai
-import replicate
+
 
 #Überschrift der Seite
 titel_seite = "Grundwissen über Künstliche Intelligenz (KI)"
 hilfsdatei.seite(titel_seite)
 
 #API-Verbindung zu OpenAI und zu Gemini aufbauen
-openai_client1, openai_client2, gemini_client, api_key1, api_key2, replicate_key = hilfsdatei.openai_verbindung()
+openai_client1, openai_client2, gemini_client, api_key1, api_key2 = hilfsdatei.openai_verbindung()
 
 
 st.divider()

@@ -81,7 +81,7 @@ def openai_verbindung():
     api_key1 = os.getenv("OPENAI_API_KEY1")
     api_key2 = os.getenv("OPENAI_API_KEY2")
     gemini_key = os.getenv("GEMINI_API_KEY")
-    replicate_key=os.getenv("REPLICATE_API_TOKEN")
+
 
     # st.secrets für das Deployment in StreamlitCloud
     if not api_key1:
@@ -102,20 +102,14 @@ def openai_verbindung():
         except:
             pass
 
-    if not replicate_key:
-        try:
-            replicate_key = st.secrets["replicate"]["replicate_api_token"]
-        except:
-            pass
+
         
         
     if not api_key1 and not api_key2 and not gemini_key:
         st.error("Es gibt zur Zeit Probleme mit den API-Keys!")
         st.stop()
 
-    if not api_key1 and not api_key2 and not replicate_key:
-        st.error("Es gibt zur Zeit Probleme mit den API-Keys!")
-        st.stop()
+
             
     openai_client1 = None
     if api_key1:
@@ -125,9 +119,6 @@ def openai_verbindung():
     if api_key2:
         openai_client2 = openai.OpenAI(api_key=api_key2)
 
-    replicate_client = None
-    if replicate_key:
-        replicate_client = replicate.Client(api_token=replicate_key)
     
    #https://www.linkedin.com/pulse/how-create-gemini-pro-chatbot-using-python-streamlit-hafiz-m-ahmed-pxscf 
     gemini_client = None
@@ -135,7 +126,7 @@ def openai_verbindung():
         genai.configure(api_key=gemini_key)
         gemini_client = genai.GenerativeModel("gemini-1.5-flash")
         
-    return openai_client1, openai_client2, gemini_client, api_key1, api_key2, replicate_key
+    return openai_client1, openai_client2, gemini_client, api_key1, api_key2
 
 
 

@@ -119,18 +119,6 @@ with container_fokus:
                     #Nutzung eines Spinners, damit die User sehen, dass ein Hintergrundprozess durchgeführt wird
                     with st.spinner(text="Erstelle Text, bitte warten..."):
                         antwort_text= None
-
-
-
-
-                                # DEBUG: Zeige was verfügbar ist
-                        st.write(f"🔍 OpenAI verfügbar: {openai_client is not None}")
-                        st.write(f"🔍 Gemini verfügbar: {gemini_client is not None}")
-                        
-                        # Dein bestehender API-Code hier...
-                        
-                        # DEBUG: Zeige finales Resultat
-                        st.write(f"🔍 Finale antwort_text: {antwort_text}")
                         
                         #API-Aufruf an OpenAI (wenn es zu einem RateLimit kommt, soll der 2.te API-Schlüssel zum Einsatz kommen)
                         try:
@@ -154,7 +142,7 @@ with container_fokus:
                                     antwort_text = antwort.choices[0].message.content
                             except:
 
-                    
+                                if antwort_text = None
                                 try:
                                     #Alternative wenn OpenAI nicht funktioniert
                                     if gemini_client:

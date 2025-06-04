@@ -142,7 +142,7 @@ with container_fokus:
                                                 "meta/llama-2-13b-chat",
                                                 input={"prompt": f"Beantworte die Frage nur auf Deutsch: {frage}"}
                                                 )
-                                            replicate_text = str(antwort)
+                                            antwort_text = str(antwort).strip()
                                             
                                         except Exception:
                                  
@@ -155,7 +155,7 @@ with container_fokus:
                         st.markdown(f"Deine Frage: {frage}")
                
                         # Antwort anzeigen
-                        st.markdown(f"Antwort: {replicate_text}")
+                        st.markdown(f"Antwort: {antwort_text}")
                      
                         # Frage und  Antwort speichern
                         if "ki_interaktion_historie" not in st.session_state.grundwissen_ki:

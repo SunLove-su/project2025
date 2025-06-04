@@ -123,7 +123,7 @@ with container_fokus:
                     
                             # Einfach replicate.run() verwenden
                             output = replicate.run(
-                                "mistralai/mistral-7b-instruct-v0.1",
+                                "google-deepmind/gemma-7b-it",
                                 input={
                                     "prompt": f"Beantworte die Frage auf Deutsch: {frage}"
                                     

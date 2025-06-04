@@ -123,11 +123,10 @@ with container_fokus:
                     
                             # Einfach replicate.run() verwenden
                             output = replicate.run(
-                                "meta/meta-llama-3-8b",
+                                "mistralai/mistral-7b-instruct-v0.1",
                                 input={
-                                    "prompt": f"Beantworte die Frage auf Deutsch: {frage}",
-                                    "max_new_tokens": 400,
-                                    "temperature": 0.7
+                                    "prompt": f"Beantworte die Frage auf Deutsch: {frage}"
+                                    
                                 }
                             )
                     

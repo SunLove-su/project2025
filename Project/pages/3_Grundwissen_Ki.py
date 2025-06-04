@@ -149,7 +149,7 @@ with container_fokus:
                                     if gemini_client:
                                         antwort = gemini_client.generate_content(frage)
                                         antwort_text = antwort.text
-                                except Exception:
+                                except:
                                     st.error("Alle API-Dienste sind momentan nicht verfügbar.")
                                     antwort_text = "Alle API-Dienste sind momentan nicht verfügbar"
 

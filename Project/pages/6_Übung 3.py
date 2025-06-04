@@ -172,7 +172,7 @@ with container_fokus:
                             except:
                                 pass
                         
-                        if openai_client and generiertesBild is None:
+                        if openai_client1 and generiertesBild is None:
                             st.error("Leider konnte kein Bild generiert werden")
                         #DALL-E API Aufruf
                         if openai_client1:

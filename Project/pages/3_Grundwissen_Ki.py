@@ -142,7 +142,7 @@ with container_fokus:
                                                 "meta/llama-2-13b-chat",
                                                 input={"prompt": f"Beantworte die Frage nur auf Deutsch: {frage}"}
                                                 )
-                                            antwort_text = "".join(antwort)
+                                            antwort_text = str(antwort)
                                             
                                         except Exception:
                                  

@@ -184,7 +184,7 @@ with container_fokus:
                             try:
                                 antwort = replicate.run("stability-ai/stable-diffusion",
                                 input={
-                                    prompt = beschreibung,
+                                    "prompt" = beschreibung,
                                 }
                                 )
                                 st.image(antwort)

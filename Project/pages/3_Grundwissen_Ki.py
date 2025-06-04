@@ -13,39 +13,59 @@ hilfsdatei.seite(titel_seite)
 openai_client, gemini_client, api_key1, api_key2 = hilfsdatei.openai_verbindung()
 
 
+if openai_client:
+    st.write("1️⃣ Versuche OpenAI...")
+    try:
+        antwort = openai_client.chat.completions.create(
+            model="gpt-3.5-turbo",
+            messages=[{"role": "user", "content": f"Beantworte die Frage nur auf Deutsch: {frage}"}]
+        )
+        antwort_text = antwort.choices[0].message.content
+        st.success("✅ OpenAI erfolgreich!")
+        
+    except Exception as e:
+        st.warning(f"❌ OpenAI fehlgeschlagen: {str(e)}")
+        
+        # Schritt 2: Fallback zu Gemini
+        if gemini_client:
+            st.write("2️⃣ Fallback zu Gemini...")
+            try:
+                antwort = gemini_client.generate_content(f"Beantworte die Frage nur auf Deutsch: {frage}")
+                antwort_text = antwort.text
+                st.success("✅ Gemini Fallback erfolgreich!")
+                
+            except Exception as e2:
+                st.error(f"❌ Gemini auch fehlgeschlagen: {str(e2)}")
+                antwort_text = "Beide APIs fehlgeschlagen."
+        else:
+            st.error("❌ Kein Gemini Fallback verfügbar.")
+            antwort_text = "OpenAI fehlgeschlagen, kein Gemini verfügbar."
 
-#DEBUG: Problem-Diagnose
-st.write("🔍 **PROBLEM-DIAGNOSE:**")
-st.write("=" * 50)
+else:
+    # OpenAI Client ist None - direkter Gemini-Einsatz
+    st.write("1️⃣ OpenAI Client nicht verfügbar (None)")
+    
+    if gemini_client:
+        st.write("2️⃣ Verwende Gemini direkt...")
+        try:
+            antwort = gemini_client.generate_content(f"Beantworte die Frage nur auf Deutsch: {frage}")
+            antwort_text = antwort.text
+            st.success("✅ Gemini direkt erfolgreich!")
+            
+        except Exception as e:
+            st.error(f"❌ Gemini fehlgeschlagen: {str(e)}")
+            antwort_text = "Gemini API fehlgeschlagen."
+    else:
+        st.error("❌ Keine APIs verfügbar.")
+        antwort_text = "Keine API-Dienste verfügbar."
 
-# 1. Prüfe was von openai_verbindung() zurückkommt
-st.write(f"OpenAI Client: {type(openai_client)} - {openai_client}")
-st.write(f"Gemini Client: {type(gemini_client)} - {gemini_client}")
-st.write(f"API Key 1: {type(api_key1)} - {'Vorhanden' if api_key1 else 'FEHLT'}")
-st.write(f"API Key 2: {type(api_key2)} - {'Vorhanden' if api_key2 else 'FEHLT'}")
+# Sicherheitscheck
+if not antwort_text:
+    antwort_text = "Keine Antwort erhalten."
+    st.error("⚠️ antwort_text war None!")
 
-# 2. Prüfe Umgebungsvariablen direkt
-import os
-st.write(f"ENV GEMINI_API_KEY: {'✅' if os.getenv('GEMINI_API_KEY') else '❌'}")
-st.write(f"ENV OPENAI_API_KEY1: {'✅' if os.getenv('OPENAI_API_KEY1') else '❌'}")
-
-# 3. Prüfe Streamlit Secrets
-try:
-    test_secret = st.secrets["googleapigemini"]["gemini_api_key"]
-    st.write(f"✅ Gemini Secret vorhanden: {test_secret[:10]}...")
-except Exception as e:
-    st.write(f"❌ Gemini Secret fehlt: {e}")
-
-try:
-    test_pw = st.secrets["umfrage_passwort"]
-    st.write(f"✅ Umfrage Passwort vorhanden")
-except Exception as e:
-    st.write(f"❌ Umfrage Passwort fehlt: {e}")
-
-st.write("=" * 50)
-
-
-
+st.write("🏁 **TEST BEENDET**")
+st.divider()
 #Sicherstellen, dass ein Zugriff der Seiten nur mit Passwort erfolgt, und dass User keine Navigationsseite sehen
 hilfsdatei.teilnehmer_anmelden()
 

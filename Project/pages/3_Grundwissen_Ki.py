@@ -3,6 +3,7 @@ import openai
 import hilfsdatei
 import os
 import google.generativeai as genai
+import replicate
 
 #Überschrift der Seite
 titel_seite = "Grundwissen über Künstliche Intelligenz (KI)"

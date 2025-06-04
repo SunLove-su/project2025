@@ -15,15 +15,11 @@ openai_client, replicate_client, api_key1, api_key2, replicate_key = hilfsdatei.
 #Sicherstellen, dass ein Zugriff der Seiten nur mit Passwort erfolgt, und dass User keine Navigationsseite sehen
 hilfsdatei.teilnehmer_anmelden()
 
-import os
-import replicate
 
-# Setze den API-Token manuell
-os.environ["REPLICATE_API_TOKEN"] = "dein_replicate_api_token"
 
 try:
     output = replicate.run(
-        "meta/llama-2-13b-chat",
+        "meta/llama-2-13b-chat:f4e2de70d66816a838a89eeeb621910adffb0dd0baba3976c96980970978018d", 
         input={
             "prompt": "Was ist Künstliche Intelligenz?",
             "max_new_tokens": 200,
@@ -32,11 +28,11 @@ try:
         }
     )
 
-    print("Antwort von Replicate:")
-    print("".join(output))
+    st.write("Antwort von Replicate:")
+    st.write("".join(output))
+    
 except Exception as e:
-    print("Fehler bei Replicate:")
-    print(e)
+    st.error(f"Fehler bei Replicate: {e}")
 
 # #Überschrift der Seite
 # ueberschrift_seite="Grundwissen über Künstliche Intelligenz (KI)"

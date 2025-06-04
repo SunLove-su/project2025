@@ -14,6 +14,30 @@ openai_client, replicate_client, gemini_client, api_key1, api_key2, replicate_ke
 #Sicherstellen, dass ein Zugriff der Seiten nur mit Passwort erfolgt, und dass User keine Navigationsseite sehen
 hilfsdatei.teilnehmer_anmelden()
 
+
+# DEBUG: API Keys prüfen
+st.write("DEBUG - API Keys Status:")
+st.write(f"OPENAI_API_KEY1: {'✓' if os.getenv('OPENAI_API_KEY1') else '✗'}")
+st.write(f"OPENAI_API_KEY2: {'✓' if os.getenv('OPENAI_API_KEY2') else '✗'}")
+st.write(f"GEMINI_API_KEY: {'✓' if os.getenv('GEMINI_API_KEY') else '✗'}")
+st.write(f"REPLICATE_API_TOKEN: {'✓' if os.getenv('REPLICATE_API_TOKEN') else '✗'}")
+
+# DEBUG: Secrets prüfen
+try:
+    st.write("Verfügbare Secrets:", list(st.secrets.keys()))
+except:
+    st.write("Keine secrets.toml gefunden")
+
+# Dann die ursprüngliche Zeile
+try:
+    openai_client, replicate_client, gemini_client, api_key1, api_key2, replicate_key = hilfsdatei.openai_verbindung()
+    st.write("✓ API-Verbindung erfolgreich")
+except Exception as e:
+    st.write(f"✗ Fehler: {e}")
+    st.stop()
+
+
+
 #Überschrift der Seite
 ueberschrift_seite="Grundwissen über Künstliche Intelligenz (KI)"
 st.markdown(f"<h4>{ueberschrift_seite}</h4>",unsafe_allow_html=True)

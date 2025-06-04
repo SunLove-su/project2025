@@ -135,18 +135,35 @@ with container_fokus:
                                     antwort_text = antwort.choices[0].message.content
                                 except:
                                     
-                                    #Alternative wenn OpenAI nicht funktioniert
-                                    if replicate_client:
+                                     if replicate_client:
                                         try:
-                                            antwort = replicate_client.run(
+                                            antwort_text = ""
+                                            stream = replicate_client.stream(
                                                 "meta/llama-2-13b-chat",
-                                                input={"prompt": f"Beantworte die Frage nur auf Deutsch: {frage}"}
-                                                )
-                                            antwort_text = str(antwort).strip()
+                                                input={
+                                                    "prompt": f"Beantworte die Frage auf Deutsch: {frage}",
+                                                    "max_new_tokens": 500,
+                                                    "temperature": 0.75,
+                                                    "top_p": 1
+                                                }
+                                            )
+                                            for token in stream:
+                                                antwort_text += str(token)
+                                        except Exception as e:
+                                            st.error("Fehler bei Replicate.")
+                                            antwort_text = "Die Antwort konnte nicht generiert werden."
+                                    #Alternative wenn OpenAI nicht funktioniert
+                                    # if replicate_client:
+                                    #     try:
+                                    #         antwort = replicate_client.run(
+                                    #             "meta/llama-2-13b-chat",
+                                    #             input={"prompt": f"Beantworte die Frage nur auf Deutsch: {frage}"}
+                                    #             )
+                                    #         antwort_text = str(antwort).strip()
                                             
-                                        except Exception:
+                                    #     except Exception:
                                  
-                                                st.error("Alle API-Dienste sind momentan nicht verfügbar.")
+                                    #             st.error("Alle API-Dienste sind momentan nicht verfügbar.")
   
                         # Prompt-Zähler aktualisieren
                         st.session_state.zaehler_eingaben_grundwissen += 1

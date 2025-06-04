@@ -15,20 +15,22 @@ openai_client, replicate_client, api_key1, api_key2, replicate_key = hilfsdatei.
 #Sicherstellen, dass ein Zugriff der Seiten nur mit Passwort erfolgt, und dass User keine Navigationsseite sehen
 hilfsdatei.teilnehmer_anmelden()
 
-# Aktueller Status prüfen
-st.write("### Aktuelle API-Token Status:")
-env_replicate = os.getenv("REPLICATE_API_TOKEN")
-st.write(f"Environment Variable: {env_replicate[:10] if env_replicate else 'None'}...")
 
-try:
-    secret_replicate = st.secrets["replicate"]["replicate_api_token"] 
-    st.write(f"Secrets: {secret_replicate[:10]}...")
-except:
-    st.write("Secrets: None")
 
-# Welcher wird tatsächlich verwendet?
-openai_client, replicate_client, api_key1, api_key2, replicate_key = hilfsdatei.openai_verbindung()
-st.write(f"Verwendeter Key: {replicate_key[:10] if replicate_key else 'None'}...")
+st.write("### Funktionstest von Replicate:")
+if replicate_client:
+    try:
+        st.write("🔄 Teste Replicate mit hello-world Modell...")
+        
+        output = replicate_client.run(
+            "replicate/hello-world",
+            input={"text": "python"}
+        )
+        st.success(f"✅ Replicate funktioniert! Output: {output}")
+        
+    except Exception as e:
+        st.error(f"❌ Replicate-Fehler: {str(e)}")
+
 
 # #Überschrift der Seite
 # ueberschrift_seite="Grundwissen über Künstliche Intelligenz (KI)"

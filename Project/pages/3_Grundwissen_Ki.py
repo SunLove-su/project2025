@@ -44,6 +44,50 @@ else:
     st.error("❌ Kein Replicate-Key gefunden")
 
 
+# 4. Funktionstest von Replicate
+st.write("### Funktionstest von Replicate:")
+if replicate_client:
+    try:
+        st.write("🔄 Teste Replicate mit hello-world Modell...")
+        
+        # Einfacher Test
+        output = replicate_client.run(
+            "replicate/hello-world",
+            input={"text": "python"}
+        )
+        st.success(f"✅ Replicate funktioniert! Output: {output}")
+        
+    except Exception as e:
+        st.error(f"❌ Replicate-Fehler: {str(e)}")
+        st.write("Fehler-Details:", e)
+
+# 5. Test mit dem Llama-Modell (das Sie in Ihrem Code verwenden)
+st.write("### Test mit Llama-2 Modell:")
+if replicate_client:
+    try:
+        st.write("🔄 Teste Llama-2 Modell...")
+        
+        test_prompt = "Hallo, wie geht es dir?"
+        antwort_text = ""
+        
+        stream = replicate_client.stream(
+            "meta/llama-2-13b-chat",
+            input={
+                "prompt": f"Beantworte die Frage auf Deutsch: {test_prompt}",
+                "max_new_tokens": 100,
+                "temperature": 0.75,
+                "top_p": 1
+            }
+        )
+        
+        for token in stream:
+            antwort_text += str(token)
+            
+        st.success(f"✅ Llama-2 funktioniert! Antwort: {antwort_text[:200]}...")
+        
+    except Exception as e:
+        st.error(f"❌ Llama-2 Fehler: {str(e)}")
+
 # #Überschrift der Seite
 # ueberschrift_seite="Grundwissen über Künstliche Intelligenz (KI)"
 # st.markdown(f"<h4>{ueberschrift_seite}</h4>",unsafe_allow_html=True)

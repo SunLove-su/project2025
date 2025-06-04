@@ -124,14 +124,14 @@ with container_fokus:
                                 st.write("🔄 **Teste Replicate...**")
                                 antwort_text = ""
                                 stream = replicate_client.stream(
-                                    "meta/llama-2-13b-chat",
-                                    input={
-                                        "prompt": f"Beantworte die Frage auf Deutsch: {frage}",
-                                        "max_new_tokens": 500,
-                                        "temperature": 0.75,
-                                        "top_p": 1
-                                    }
-                                )
+                                        "mistralai/mistral-7b-instruct-v0.1",
+                                        input={
+                                            "prompt": f"Beantworte die Frage auf Deutsch: {frage}",
+                                            "max_new_tokens": 500,
+                                            "temperature": 0.7
+                                        }
+                                    )
+                                
                                 for token in stream:
                                     antwort_text += str(token)
                                 st.write("✅ **Replicate erfolgreich!**")

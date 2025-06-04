@@ -37,7 +37,7 @@ st.markdown(einleitung_text)
 st.divider()
 ##Aufgabenstellung
 st.markdown("""
-            Schaue dir das Bild genau an! Hat die Person auf dem Foto an dem schönen Sommertag ein Erdbeereis gegessen?
+                Schaue dir das Bild genau an! Hat die Person auf dem Foto an dem schönen Sommertag ein Erdbeereis gegessen?
             """)
 
 # st.image("https://thispersondoesnotexist.com/",width=200)
@@ -50,7 +50,7 @@ except FileNotFoundError:
 
 #Speichern der Antworten in Übung 2
 if "uebung2" not in st.session_state:
-    st.session_state.uebung2 ={}
+    st.session_state.uebung2 = {}
 
 #######################################################################
 #Frage ob die Teilnehmer glauben, dass die Person auf dem Bild echt ist

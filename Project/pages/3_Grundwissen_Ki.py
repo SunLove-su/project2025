@@ -123,7 +123,7 @@ with container_fokus:
                     
                             # Einfach replicate.run() verwenden
                             output = replicate.run(
-                                "meta/llama-2-7b-chat",
+                                "anthropic/claude-3-haiku",
                                 input={
                                     "prompt": f"Beantworte die Frage auf Deutsch: {frage}"
                                     

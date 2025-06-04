@@ -4,7 +4,6 @@ import hilfsdatei
 import os
 import google.generativeai as genai 
 
-
 #Überschrift der Seite 
 titel_seite = "Grundwissen über Künstliche Intelligenz (KI)" 
 hilfsdatei.seite(titel_seite)
@@ -12,60 +11,6 @@ hilfsdatei.seite(titel_seite)
 #API-Verbindung zu OpenAI und zu Gemini aufbauen
 openai_client, gemini_client, api_key1, api_key2 = hilfsdatei.openai_verbindung()
 
-
-if openai_client:
-    st.write("1️⃣ Versuche OpenAI...")
-    try:
-        antwort = openai_client.chat.completions.create(
-            model="gpt-3.5-turbo",
-            messages=[{"role": "user", "content": f"Beantworte die Frage nur auf Deutsch: {frage}"}]
-        )
-        antwort_text = antwort.choices[0].message.content
-        st.success("✅ OpenAI erfolgreich!")
-        
-    except Exception as e:
-        st.warning(f"❌ OpenAI fehlgeschlagen: {str(e)}")
-        
-        # Schritt 2: Fallback zu Gemini
-        if gemini_client:
-            st.write("2️⃣ Fallback zu Gemini...")
-            try:
-                antwort = gemini_client.generate_content(f"Beantworte die Frage nur auf Deutsch: {frage}")
-                antwort_text = antwort.text
-                st.success("✅ Gemini Fallback erfolgreich!")
-                
-            except Exception as e2:
-                st.error(f"❌ Gemini auch fehlgeschlagen: {str(e2)}")
-                antwort_text = "Beide APIs fehlgeschlagen."
-        else:
-            st.error("❌ Kein Gemini Fallback verfügbar.")
-            antwort_text = "OpenAI fehlgeschlagen, kein Gemini verfügbar."
-
-else:
-    # OpenAI Client ist None - direkter Gemini-Einsatz
-    st.write("1️⃣ OpenAI Client nicht verfügbar (None)")
-    
-    if gemini_client:
-        st.write("2️⃣ Verwende Gemini direkt...")
-        try:
-            antwort = gemini_client.generate_content(f"Beantworte die Frage nur auf Deutsch: {frage}")
-            antwort_text = antwort.text
-            st.success("✅ Gemini direkt erfolgreich!")
-            
-        except Exception as e:
-            st.error(f"❌ Gemini fehlgeschlagen: {str(e)}")
-            antwort_text = "Gemini API fehlgeschlagen."
-    else:
-        st.error("❌ Keine APIs verfügbar.")
-        antwort_text = "Keine API-Dienste verfügbar."
-
-# Sicherheitscheck
-if not antwort_text:
-    antwort_text = "Keine Antwort erhalten."
-    st.error("⚠️ antwort_text war None!")
-
-st.write("🏁 **TEST BEENDET**")
-st.divider()
 #Sicherstellen, dass ein Zugriff der Seiten nur mit Passwort erfolgt, und dass User keine Navigationsseite sehen
 hilfsdatei.teilnehmer_anmelden()
 
@@ -140,10 +85,10 @@ with st.expander("Was kann KI?",icon=":material/double_arrow:"):
                     - Muster/Merkmale erkennen: KI analysiert Muster und unterstützt bei Diagnosen oder Vorhersagen, z. B. bei Krankheiten oder zur Gefahrenabwehr
                       usw...
                """)
+
 #Speichern aller Antworten der Teilnehmer für die Seite
 if "grundwissen_ki" not in st.session_state:
     st.session_state.grundwissen_ki = {}
-
 
 #Speichern der Anzahl der Prompts
 if "zaehler_eingaben_grundwissen" not in st.session_state:
@@ -164,45 +109,75 @@ with container_fokus:
             st.markdown("Wenn du keine Fragen mehr hast, scrolle bitte weiter nach unten")
 
             #Antwort generierung erst wenn Button geklickt und Eingabe vorhanden
-            try:
-                #Sobald eine Frage im Feld ist, soll diese an die Schnittstelle übermittelt werden.
-                if senden and frage:
+            if senden and frage:
+                try:
                     #Nutzung eines Spinners, damit die User sehen, dass ein Hintergrundprozess durchgeführt wird
                     with st.spinner(text="Erstelle Text, bitte warten..."):
                        
-                        #API-Aufruf an OpenAI (wenn es zu einem RateLimit kommt, soll der 2.te API-Schlüssel zum Einsatz kommen)
-                        try:
-                            antwort = openai_client.chat.completions.create(
+                        # TEST: OpenAI → Gemini Fallback mit Debug-Ausgaben
+                        antwort_text = None
+                        
+                        st.write("🧪 **FALLBACK-TEST STARTET:**")
+                        
+                        # Schritt 1: Versuche OpenAI
+                        if openai_client:
+                            st.write("1️⃣ Versuche OpenAI...")
+                            try:
+                                antwort = openai_client.chat.completions.create(
                                     model="gpt-3.5-turbo",
                                     messages=[{"role": "user", "content": f"Beantworte die Frage nur auf Deutsch: {frage}"}]
                                 )
-                            antwort_text = antwort.choices[0].message.content
-                        except:
-                            # Key2 verwenden z.B. bei Rate Limit oder wenn Key abgelaufen
-                            if api_key2:
+                                antwort_text = antwort.choices[0].message.content
+                                st.success("✅ OpenAI erfolgreich!")
+                                
+                            except Exception as e:
+                                st.warning(f"❌ OpenAI fehlgeschlagen: {str(e)}")
+                                
+                                # Schritt 2: Fallback zu Gemini
+                                if gemini_client:
+                                    st.write("2️⃣ Fallback zu Gemini...")
+                                    try:
+                                        antwort = gemini_client.generate_content(f"Beantworte die Frage nur auf Deutsch: {frage}")
+                                        antwort_text = antwort.text
+                                        st.success("✅ Gemini Fallback erfolgreich!")
+                                        
+                                    except Exception as e2:
+                                        st.error(f"❌ Gemini auch fehlgeschlagen: {str(e2)}")
+                                        antwort_text = "Beide APIs fehlgeschlagen."
+                                else:
+                                    st.error("❌ Kein Gemini Fallback verfügbar.")
+                                    antwort_text = "OpenAI fehlgeschlagen, kein Gemini verfügbar."
+
+                        else:
+                            # OpenAI Client ist None - direkter Gemini-Einsatz
+                            st.write("1️⃣ OpenAI Client nicht verfügbar (None)")
+                            
+                            if gemini_client:
+                                st.write("2️⃣ Verwende Gemini direkt...")
                                 try:
-                                    #openai_client = openai.OpenAI(api_key=api_key2)
-                                    antwort = openai_client.chat.completions.create(
-                                            model="gpt-3.5-turbo",
-                                            messages=[{"role": "user", "content": f"Beantworte die Frage nur auf Deutsch: {frage}"}]
-                                        )
-                                    antwort_text = antwort.choices[0].message.content
-                                except:
+                                    antwort = gemini_client.generate_content(f"Beantworte die Frage nur auf Deutsch: {frage}")
+                                    antwort_text = antwort.text
+                                    st.success("✅ Gemini direkt erfolgreich!")
                                     
-                                    #Alternative wenn OpenAI nicht funktioniert
-                                    if gemini_client:
-                                        try:
-                                            antwort = gemini_client.generate_content(f"Beantworte die Frage nur auf Deutsch: {frage}")
-                                            antwort_text = antwort.text
-                                            
-                                        except Exception:
-                                                st.error("Alle API-Dienste sind momentan nicht verfügbar.")
-                                                antwort_text = "Alle API-Dienste sind momentan nicht verfügbar"
-                                                
+                                except Exception as e:
+                                    st.error(f"❌ Gemini fehlgeschlagen: {str(e)}")
+                                    antwort_text = "Gemini API fehlgeschlagen."
+                            else:
+                                st.error("❌ Keine APIs verfügbar.")
+                                antwort_text = "Keine API-Dienste verfügbar."
+
+                        # Sicherheitscheck
+                        if not antwort_text:
+                            antwort_text = "Keine Antwort erhalten."
+                            st.error("⚠️ antwort_text war None!")
+
+                        st.write("🏁 **TEST BEENDET**")
+                        st.divider()
 
                         # Prompt-Zähler aktualisieren
                         st.session_state.zaehler_eingaben_grundwissen += 1
                         anzahl_eingaben = st.session_state.zaehler_eingaben_grundwissen
+                        
                         # Frage anzeigen
                         st.markdown(f"Deine Frage: {frage}")
                
@@ -222,8 +197,8 @@ with container_fokus:
                         st.session_state.grundwissen_ki["ki_interaktion_historie"].append(ki_interaktion)
                         st.session_state.grundwissen_ki["ki_interaktion"]=ki_interaktion
 
-# #Abfangen von anderen Problemen
-            except Exception as error:
+                # Abfangen von anderen Problemen
+                except Exception as error:
                     hilfsdatei.openai_fehlerbehandlung(error)
    
 #Überprüfungsfrage: Sicherstellung, dass die Textbausteine gelesen wurden
@@ -359,7 +334,6 @@ if antwort_ueberpruefung is not None and antwort_ueberpruefung != st.session_sta
     st.session_state.ueberpruefung_alt = antwort_ueberpruefung
     
     st.markdown(f"Deine Antwort: {antwort_ueberpruefung}.")
-
 
 #Richtige Antwort für die Überprüfungsfrage 
 richtige_antwort="KI braucht sehr viele Daten um zu lernen und macht trotzdem Fehler"

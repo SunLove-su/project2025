@@ -2,7 +2,7 @@ import streamlit as st
 import openai
 import hilfsdatei
 import os
-import google.generativeai as genai 
+import replicate
 
 
 #Überschrift der Seite 
@@ -10,7 +10,7 @@ titel_seite = "Grundwissen über Künstliche Intelligenz (KI)"
 hilfsdatei.seite(titel_seite)
 
 #API-Verbindung zu OpenAI und zu Gemini aufbauen
-openai_client, gemini_client, api_key1, api_key2 = hilfsdatei.openai_verbindung()
+openai_client, replicate_client, api_key1, api_key2, replicate_key = hilfsdatei.openai_verbindung()
 
 #Sicherstellen, dass ein Zugriff der Seiten nur mit Passwort erfolgt, und dass User keine Navigationsseite sehen
 hilfsdatei.teilnehmer_anmelden()
@@ -136,16 +136,18 @@ with container_fokus:
                                 except:
                                     
                                     #Alternative wenn OpenAI nicht funktioniert
-                                    if gemini_client:
+                                    if replicate_client:
                                         try:
-                                            antwort = gemini_client.generate_content(f"Beantworte die Frage nur auf Deutsch: {frage}")
-                                            antwort_text = antwort.text
+                                            antwort = replicate_client.run(
+                                                "meta/llama-2-13b-chat",
+                                                input={"prompt": f"Beantworte die Frage nur auf Deutsch: {frage}"}
+                                                )
+                                            antwort_text = antwort
                                             
                                         except Exception:
+                                 
                                                 st.error("Alle API-Dienste sind momentan nicht verfügbar.")
-                                                antwort_text = "Alle API-Dienste sind momentan nicht verfügbar"
-                                                
-
+  
                         # Prompt-Zähler aktualisieren
                         st.session_state.zaehler_eingaben_grundwissen += 1
                         anzahl_eingaben = st.session_state.zaehler_eingaben_grundwissen

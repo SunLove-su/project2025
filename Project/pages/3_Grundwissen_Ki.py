@@ -156,6 +156,9 @@ with container_fokus:
                             #Sicherheitscheck falls immer noch None
                             if antwort_text is None:
                                 antwort_text = "Keine Antwort erhalten"
+                        # #Abfangen von anderen Problemen
+                        except Exception as error:
+                         hilfsdatei.openai_fehlerbehandlung(error)
                                         
 
                         # Prompt-Zähler aktualisieren
@@ -180,9 +183,7 @@ with container_fokus:
                         st.session_state.grundwissen_ki["ki_interaktion_historie"].append(ki_interaktion)
                         st.session_state.grundwissen_ki["ki_interaktion"]=ki_interaktion
 
-# #Abfangen von anderen Problemen
-            except Exception as error:
-                    hilfsdatei.openai_fehlerbehandlung(error)
+
    
 #Überprüfungsfrage: Sicherstellung, dass die Textbausteine gelesen wurden
 st.divider()

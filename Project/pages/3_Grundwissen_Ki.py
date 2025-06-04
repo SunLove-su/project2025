@@ -142,7 +142,7 @@ with container_fokus:
                                     antwort_text = antwort.choices[0].message.content
                             except:
 
-                                if antwort_text = None
+                                if antwort_text is None
                                 try:
                                     #Alternative wenn OpenAI nicht funktioniert
                                     if gemini_client:

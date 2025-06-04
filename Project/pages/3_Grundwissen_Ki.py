@@ -2,7 +2,7 @@ import streamlit as st
 import openai
 import hilfsdatei
 import os
-import replicate
+import google.generativeai as genai 
 
 
 #Überschrift der Seite 
@@ -10,8 +10,7 @@ titel_seite = "Grundwissen über Künstliche Intelligenz (KI)"
 hilfsdatei.seite(titel_seite)
 
 #API-Verbindung zu OpenAI und zu Gemini aufbauen
-openai_client, replicate_client, api_key1, api_key2, replicate_key = hilfsdatei.openai_verbindung()
-
+openai_client, replicate_client, gemini_client, api_key1, api_key2, replicate_key = hilfsdatei.openai_verbindung()
 #Sicherstellen, dass ein Zugriff der Seiten nur mit Passwort erfolgt, und dass User keine Navigationsseite sehen
 hilfsdatei.teilnehmer_anmelden()
 
@@ -43,6 +42,8 @@ with st.expander("Was ist KI?",icon=":material/double_arrow:"):
                     
                     - Während du das Spielprinzip meist nach ein, zwei Versuchen verstehst, braucht die KI dafür tausende Spiele.
                      Sie lernt durch Auswertung der bereitgestellten Daten und kann dadurch selbst Entscheidungen treffen. Damit ahmt sie die Intelligenz eines Menschen nach.
+                    
+
                       """
      )
 
@@ -88,6 +89,7 @@ with st.expander("Was kann KI?",icon=":material/double_arrow:"):
 if "grundwissen_ki" not in st.session_state:
     st.session_state.grundwissen_ki = {}
 
+
 #Speichern der Anzahl der Prompts
 if "zaehler_eingaben_grundwissen" not in st.session_state:
     st.session_state.zaehler_eingaben_grundwissen = 0
@@ -112,42 +114,47 @@ with container_fokus:
                 if senden and frage:
                     #Nutzung eines Spinners, damit die User sehen, dass ein Hintergrundprozess durchgeführt wird
                     with st.spinner(text="Erstelle Text, bitte warten..."):
-                        
-                        # Standard-Antwort falls alles fehlschlägt
-                        antwort_text = "Die Antwort konnte nicht generiert werden."
-                        
-                        # Replicate verwenden
+                       
+                        #API-Aufruf an OpenAI (wenn es zu einem RateLimit kommt, soll der 2.te API-Schlüssel zum Einsatz kommen)
                         try:
-                            # API Token setzen
-                            os.environ["REPLICATE_API_TOKEN"] = replicate_key
-                    
-                            # Einfach replicate.run() verwenden
-                            output = replicate.run(
-                                "meta/llama-2-7b-chat",
-                                input={
-                                    "prompt": f"Beantworte die Frage nur auf Deutsch: {frage}"
+                            antwort = openai_client.chat.completions.create(
+                                    model="gpt-3.5-turbo",
+                                    messages=[{"role": "user", "content": f"Beantworte die Frage nur auf Deutsch: {frage}"}]
+                                )
+                            antwort_text = antwort.choices[0].message.content
+                        except:
+                            # Key2 verwenden z.B. bei Rate Limit oder wenn Key abgelaufen
+                            if api_key2:
+                                try:
+                                    openai_client = openai.OpenAI(api_key=api_key2)
+                                    antwort = openai_client.chat.completions.create(
+                                            model="gpt-3.5-turbo",
+                                            messages=[{"role": "user", "content": f"Beantworte die Frage nur auf Deutsch: {frage}"}]
+                                        )
+                                    antwort_text = antwort.choices[0].message.content
+                                except:
                                     
-                                }
-                            )
-                    
-                            # Antwort zusammenfügen
-                            antwort_text = "".join(output)
-                            
-                        except Exception as e:
-                            st.error(f"Replicate Fehler: {str(e)}")
-                            antwort_text = "Die Antwort konnte nicht generiert werden."
+                                    #Alternative wenn OpenAI nicht funktioniert
+                                    if gemini_client:
+                                        try:
+                                            antwort = gemini_client.generate_content(f"Beantworte die Frage nur auf Deutsch: {frage}")
+                                            antwort_text = antwort.text
+                                            
+                                        except Exception:
+                                                st.error("Alle API-Dienste sind momentan nicht verfügbar.")
+                                                antwort_text = "Alle API-Dienste sind momentan nicht verfügbar"
+                                                
 
-                        # Anzeige und Speicherung
+                        # Prompt-Zähler aktualisieren
                         st.session_state.zaehler_eingaben_grundwissen += 1
                         anzahl_eingaben = st.session_state.zaehler_eingaben_grundwissen
-                        
                         # Frage anzeigen
                         st.markdown(f"Deine Frage: {frage}")
-                
+               
                         # Antwort anzeigen
                         st.markdown(f"Antwort: {antwort_text}")
                      
-                        # Frage und Antwort speichern
+                        # Frage und  Antwort speichern
                         if "ki_interaktion_historie" not in st.session_state.grundwissen_ki:
                             st.session_state.grundwissen_ki["ki_interaktion_historie"]=[]
                         ki_interaktion = {
@@ -160,8 +167,9 @@ with container_fokus:
                         st.session_state.grundwissen_ki["ki_interaktion_historie"].append(ki_interaktion)
                         st.session_state.grundwissen_ki["ki_interaktion"]=ki_interaktion
 
+# #Abfangen von anderen Problemen
             except Exception as error:
-                hilfsdatei.openai_fehlerbehandlung(error)
+                    hilfsdatei.openai_fehlerbehandlung(error)
    
 #Überprüfungsfrage: Sicherstellung, dass die Textbausteine gelesen wurden
 st.divider()

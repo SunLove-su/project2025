@@ -2,6 +2,7 @@ import streamlit as st
 import os
 import openai
 import replicate
+import google.generativeai as genai
 
 
 def seite(titel):
@@ -81,6 +82,7 @@ def openai_verbindung():
     api_key1 = os.getenv("OPENAI_API_KEY1")
     api_key2 = os.getenv("OPENAI_API_KEY2")
     replicate_key=os.getenv("REPLICATE_API_TOKEN")
+    gemini_key = os.getenv("GEMINI_API_KEY")
 
     # st.secrets für das Deployment in StreamlitCloud
     if not api_key1:
@@ -101,15 +103,22 @@ def openai_verbindung():
             replicate_key = st.secrets["replicate"]["replicate_api_token"]
         except:
             pass
+
+    if not gemini_key:
+        try:
+            gemini_key = st.secrets["gemini"]["api_key"]
+        except:
+            pass
         
 
-    if not api_key1 and not api_key2 and not replicate_key:
+    if not api_key1 and not api_key2 and not replicate_key and not gemini_key:
         st.error("Es gibt zur Zeit Probleme mit den API-Keys!")
         st.stop()
 
           
     openai_client = None
     replicate_client = None
+    gemini_client = None
 
     #Nutzt immer erst api_key1, falls dieser nicht da ist, dann api_key2
     if api_key1:
@@ -117,14 +126,18 @@ def openai_verbindung():
     elif api_key2:
         openai_client = openai.OpenAI(api_key=api_key2)
     
+    if gemini_key:
+        genai.configure(api_key=gemini_key)
+        gemini_client = genai.GenerativeModel('gemini-1.5-flash')
+    
     if replicate_key:
         replicate_client = replicate.Client(api_token=replicate_key)
     
-    if not openai_client and not replicate_client:
+    if not openai_client and not replicate_client and not gemini_client:
         st.error("Es gibt Probleme mit den API-Keys")
         st.stop()
 
-    return openai_client, replicate_client, api_key1, api_key2, replicate_key
+    return openai_client, replicate_client, gemini_client, api_key1, api_key2, replicate_key
 
 
     

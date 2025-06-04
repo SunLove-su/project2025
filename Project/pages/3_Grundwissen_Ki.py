@@ -9,8 +9,7 @@ titel_seite = "Grundwissen über Künstliche Intelligenz (KI)"
 hilfsdatei.seite(titel_seite)
 
 #API-Verbindung zu OpenAI und zu Gemini aufbauen
-openai_client, gemini_client, api_key1, api_key2 = hilfsdatei.openai_verbindung()
-
+openai_client1, openai_client2, gemini_client, api_key1, api_key2 = hilfsdatei.openai_verbindung()
 st.divider()
 #Sicherstellen, dass ein Zugriff der Seiten nur mit Passwort erfolgt, und dass User keine Navigationsseite sehen
 hilfsdatei.teilnehmer_anmelden()
@@ -116,35 +115,37 @@ with container_fokus:
                         antwort_text = None
                        
                         #API-Aufruf an OpenAI (wenn es zu einem RateLimit kommt, soll der 2.te API-Schlüssel zum Einsatz kommen)
-                        try:
-                            if openai_client and api_key1:
-                                antwort = openai_client.chat.completions.create(
+                        if openai_client1:
+                            try:
+                                antwort = openai_client1.chat.completions.create(
                                         model="gpt-3.5-turbo",
                                         messages=[{"role": "user", "content": f"Beantworte die Frage nur auf Deutsch: {frage}"}]
                                     )
                                 antwort_text = antwort.choices[0].message.content
-                        except:
+                            except:
+                                pass
                             # Key2 verwenden z.B. bei Rate Limit oder wenn Key abgelaufen
+                        if antwort_text is None and openai_client2:
                             try:
-                                if api_key2:
-                                    backup_client = openai.OpenAI(api_key=api_key2)
-                                    antwort = backup_client.chat.completions.create(
-                                            model="gpt-3.5-turbo",
-                                            messages=[{"role": "user", "content": f"Beantworte die Frage nur auf Deutsch: {frage}"}]
-                                        )
-                                    antwort_text = antwort.choices[0].message.content
+                                
+                                antwort = openai_client2.chat.completions.create(
+                                        model="gpt-3.5-turbo",
+                                        messages=[{"role": "user", "content": f"Beantworte die Frage nur auf Deutsch: {frage}"}]
+                                    )
+                                antwort_text = antwort.choices[0].message.content
                             except:
                                 pass
                         
                         #Alternative wenn OpenAI nicht funktioniert, z. B. wenn beide Open-AI Keys nicht funktionieren
-                        if antwort_text is None:
+                        if antwort_text is None and gemini_client:
                             try:
-                                if gemini_client:
-                                    antwort = gemini_client.generate_content(f"Beantworte die Frage nur auf Deutsch: {frage}")
-                                    antwort_text = antwort.text
+                                
+                                antwort = gemini_client.generate_content(f"Beantworte die Frage nur auf Deutsch: {frage}")
+                                antwort_text = antwort.text
                             except:
-                                st.error("Alle API-Dienste sind momentan nicht verfügbar.")
-                                antwort_text = "Alle API-Dienste sind momentan nicht verfügbar"
+                                pass
+
+                    
                         
                         #Sicherheitscheck falls immer noch None
                         if antwort_text is None:

@@ -104,11 +104,13 @@ def openai_verbindung():
         st.error("Es gibt zur Zeit Probleme mit den API-Keys!")
         st.stop()
             
-    openai_client = None
+    openai_client1 = None
     if api_key1:
-        openai_client = openai.OpenAI(api_key=api_key1)
-    elif api_key2:
-        openai_client = openai.OpenAI(api_key=api_key2)
+        openai_client1 = openai.OpenAI(api_key=api_key1)
+    
+    openai_client2 = None
+    if api_key2:
+        openai_client2 = openai.OpenAI(api_key=api_key2)
     
    #https://www.linkedin.com/pulse/how-create-gemini-pro-chatbot-using-python-streamlit-hafiz-m-ahmed-pxscf 
     gemini_client = None
@@ -116,7 +118,7 @@ def openai_verbindung():
         genai.configure(api_key=gemini_key)
         gemini_client = genai.GenerativeModel("gemini-1.5-flash")
         
-    return openai_client, gemini_client, api_key1, api_key2
+    return openai_client1, openai_client2, gemini_client, api_key1, api_key2
 
 
 
@@ -139,3 +141,8 @@ def openai_fehlerbehandlung(error):
         st.error("Es ist ein Fehler bei der Kommunikation mit OpenAI aufgetreten. Bitte melde dich, wenn du die Fehlermeldung bekommst.")
 
     st.info(f"OpenAI-Fehlermeldung: {str(error)}")
+
+#https://ai.google.dev/gemini-api/docs/troubleshooting?hl=de
+
+def gemini_fehlerbehandlung(error):
+    error_text = str(error).lower()

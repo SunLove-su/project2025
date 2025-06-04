@@ -125,13 +125,13 @@ with container_fokus:
                             output = replicate.run(
                                 "meta/llama-2-7b-chat",
                                 input={
-                                    "prompt": f"Beantworte die Frage auf Deutsch: {frage}"
+                                    "prompt": f"Beantworte die Frage nur auf Deutsch: {frage}"
                                     
                                 }
                             )
                     
                             # Antwort zusammenfügen
-                            antwort_text = output
+                            antwort_text = "".join(output)
                             
                         except Exception as e:
                             st.error(f"Replicate Fehler: {str(e)}")

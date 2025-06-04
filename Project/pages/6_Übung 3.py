@@ -180,7 +180,7 @@ with container_fokus:
                             except:
                                 pass
 
-                        if replicate_client and generiertesBild is None:
+                        if replicate_key and generiertesBild is None:
                             try:
                                 antwort = replicate.run("stability-ai/stable-diffusion",
                                 input={

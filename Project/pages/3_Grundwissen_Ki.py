@@ -16,48 +16,29 @@ openai_client, replicate_client, api_key1, api_key2, replicate_key = hilfsdatei.
 hilfsdatei.teilnehmer_anmelden()
 
 
-import streamlit as st
-import hilfsdatei
+st.write("### Korrigierte Client-Erstellung:")
 
-st.title("🔍 Schritt 1: Basis-Setup Test")
-
-# Deine Verbindung laden
-st.write("### Token-Quellen-Check:")
-
-# Environment Variable
-env_token = os.getenv("REPLICATE_API_KEY")
-st.write(f"📍 REPLICATE_API_KEY (env): {'Vorhanden' if env_token else 'None'}")
-
-# Secrets check
-try:
-    secret_token = st.secrets["replicate"]["replicate_api_key"]
-    st.write(f"📍 st.secrets replicate: {'Vorhanden' if secret_token else 'None'}")
-except:
-    st.write("📍 st.secrets replicate: None (Fehler beim Zugriff)")
-
-# Deine Hilfsdatei
-openai_client, replicate_client, api_key1, api_key2, replicate_key = hilfsdatei.openai_verbindung()
-st.write(f"📍 hilfsdatei replicate_key: {'Vorhanden' if replicate_key else 'None'}")
-
-# Client-Erstellung testen
-st.write("### Client-Test:")
 if replicate_key:
     try:
-        import replicate
-        # Manueller Client mit deinem Token
-        test_client = replicate.Client(api_key=replicate_key)
-        st.write("✅ Manueller Client erstellt")
+        # KORRIGIERT: api_token statt api_key
+        test_client = replicate.Client(api_token=replicate_key)
+        st.write("✅ Korrigierter Client erstellt")
         
-        # Token-Validität testen
-        test_output = test_client.run(
-            "meta/llama-2-7b-chat:8e6975e5ed6174911a6ff3d60540dfd4844201974602551e10e9e87ab143d81e",
-            input={"prompt": "Hi", "max_new_tokens": 10}
-        )
-        st.success("🎉 Token ist gültig!")
-        
+        # API-Test
+        if st.button("🚀 Test mit korrigiertem Client"):
+            try:
+                output = test_client.run(
+                    "meta/llama-2-7b-chat:8e6975e5ed6174911a6ff3d60540dfd4844201974602551e10e9e87ab143d81e",
+                    input={"prompt": "Hello", "max_new_tokens": 10}
+                )
+                st.success("🎉 API funktioniert!")
+                st.write(f"Output: {output}")
+                
+            except Exception as e:
+                st.error(f"❌ API-Fehler: {e}")
+                
     except Exception as e:
-        st.error(f"❌ Manueller Client-Test fehlgeschlagen: {e}")
-
+        st.error(f"❌ Client-Erstellung fehlgeschlagen: {e}")
 
 
 

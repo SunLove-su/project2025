@@ -16,29 +16,44 @@ openai_client, replicate_client, api_key1, api_key2, replicate_key = hilfsdatei.
 hilfsdatei.teilnehmer_anmelden()
 
 
-st.write("### Korrigierte Client-Erstellung:")
+openai_client, replicate_client, api_key1, api_key2, replicate_key = hilfsdatei.openai_verbindung()
+
+st.write("### Token-Analyse:")
 
 if replicate_key:
-    try:
-        # KORRIGIERT: api_token statt api_key
-        test_client = replicate.Client(api_token=replicate_key)
-        st.write("✅ Korrigierter Client erstellt")
-        
-        # API-Test
-        if st.button("🚀 Test mit korrigiertem Client"):
-            try:
-                output = test_client.run(
-                    "meta/llama-2-7b-chat:8e6975e5ed6174911a6ff3d60540dfd4844201974602551e10e9e87ab143d81e",
-                    input={"prompt": "Hello", "max_new_tokens": 10}
-                )
-                st.success("🎉 API funktioniert!")
-                st.write(f"Output: {output}")
-                
-            except Exception as e:
-                st.error(f"❌ API-Fehler: {e}")
-                
-    except Exception as e:
-        st.error(f"❌ Client-Erstellung fehlgeschlagen: {e}")
+    # Token-Format prüfen (ohne den Token zu zeigen)
+    st.write(f"📍 Token-Länge: {len(replicate_key)} Zeichen")
+    st.write(f"📍 Token-Format: {replicate_key[:3]}{'*' * (len(replicate_key)-6)}{replicate_key[-3:]}")
+    
+    # Prüfen ob es wie ein Replicate Token aussieht
+    if replicate_key.startswith('r8_'):
+        st.write("✅ Token hat korrektes Format (beginnt mit r8_)")
+    else:
+        st.error("❌ Token hat falsches Format (sollte mit r8_ beginnen)")
+    
+    # Token-Quelle anzeigen
+    st.write("### Woher kommt der Token?")
+    
+    # Environment Variable Check
+    env_key = os.getenv("REPLICATE_API_KEY")
+    if env_key:
+        st.write("📍 Quelle: Environment Variable")
+        st.write(f"📍 Env Token Format: {env_key[:3]}{'*' * max(0, len(env_key)-6)}{env_key[-3:] if len(env_key) > 3 else ''}")
+    else:
+        # Secrets Check
+        try:
+            secret_key = st.secrets["replicate"]["replicate_api_key"]
+            st.write("📍 Quelle: Streamlit Secrets")
+            st.write(f"📍 Secret Token Format: {secret_key[:3]}{'*' * max(0, len(secret_key)-6)}{secret_key[-3:] if len(secret_key) > 3 else ''}")
+        except:
+            st.write("📍 Quelle: Unbekannt (weder env noch secrets)")
+    
+    # Warnung ausgeben
+    st.warning("🔧 **Nächster Schritt:** Prüfe ob dein Replicate API Token korrekt und aktiv ist!")
+    st.info("💡 **Tipp:** Gehe zu https://replicate.com/account/api-tokens und erstelle einen neuen Token")
+
+else:
+    st.error("❌ Kein Token gefunden!")
 
 
 

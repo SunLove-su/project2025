@@ -11,31 +11,14 @@ import streamlit as st
 import openai
 import hilfsdatei
 import os
-
-import pathlib
-
-
-# CURRENT_DIR = pathlib.Path(__file__).parent
-# bild_cinderella = CURRENT_DIR.joinpath("..","Cinderella.png")
+import replicate
 
 #Überschrift der Seite
 titel_seite = "3. Übung"
 hilfsdatei.seite(titel_seite)
 
-#Damit auf Render keine Fehlermeldung kommt, dass die st.secrets toml fehlt
-api_key = os.getenv("OPENAI_API_KEY")
-
-if not api_key:
-    try:
-        # st.secrets für das Deployment in StreamlitCloud
-        api_key=st.secrets["openai"]["api_key"]
-    except Exception:
-        st.error("Kein OpenAI Key vorhanden")
-        st.stop()
-        
-client = openai.OpenAI(api_key=api_key)
-
-
+#API-Verbindung zu OpenAI und zu Gemini aufbauen
+openai_client1, openai_client2, gemini_client, api_key1, api_key2, replicate_key = hilfsdatei.openai_verbindung()
 
 #Sicherstellen, dass ein Zugriff der Seiten nur mit Passwort erfolgt, und dass User keine Navigationsseite sehen
 hilfsdatei.teilnehmer_anmelden() 
@@ -136,7 +119,7 @@ with container_fokus:
                 was du erstellen lassen möchtest.
             """)
 
-            eingabe = st.text_input("Bitte beschreibe, wie dein Bild generiert werden soll",placeholder="z. B. Erstelle mir ein Bild von einer jungen Frau mit braunen Haaren in einem Kleid im Disney-Stil")
+            eingabe = st.text_input("Bitte beschreibe, wie dein Bild generiert werden soll",placeholder="z. B. Junge Frau mit blonden Haaren im Disney-Stil.")
             einePerson=("Stelle nur eine Person oder nur ein Tier dar. Stelle keine weiteren Tiere oder Personen dar.")
             beschreibung=(einePerson+eingabe)
             senden = st.form_submit_button("Erstellen")
@@ -156,14 +139,49 @@ with container_fokus:
                         st.session_state.zaehler_bildgenerierung += 1
                         aktuelle_anzahl = st.session_state.zaehler_bildgenerierung
                         
+                        generiertesBild = None
                         #DALL-E API Aufruf
-                        antwort = client.images.generate(
-                            model="dall-e-3",
-                            prompt=beschreibung,
-                            n=1,
-                            size="1024x1024"
-                        )
+                        if openai_client1:
+                            try:
+                                antwort = openai_client1.images.generate(
+                                    model="dall-e-3",
+                                    prompt=beschreibung,
+                                    n=1,
+                                    size="1024x1024"
+                                )
+                                generiertesBild = antwort.data[0].url
+                            except:
+                                pass
 
+                        #2 Key falls erster Key nicht funktioniert
+
+                        if openai_client2 and generiertesBild is None:
+                            try:
+                                antwort = openai_client2.images.generate(
+                                    model="dall-e-3",
+                                    prompt=beschreibung,
+                                    n=1,
+                                    size="1024x
+                                )
+                                generiertesBild = antwort.data[0].url
+                            except:
+                                pass
+
+                        if replicate_client and generiertesBild is None:
+                            try:
+                                antwort = replicate.run("stability-ai/stable-diffusion",
+                                input={
+                                    prompt = beschreibung,
+                                }
+                                )
+                                st.image(antwort)
+                            except:
+                                pass
+                        
+                        if generiertesBild is None:
+                            st.error("Leider konnte kein Bild generiert werden")
+
+                    
                         # Generiertes Bild
                         st.markdown("Bild:")
                         # Bild anzeigen

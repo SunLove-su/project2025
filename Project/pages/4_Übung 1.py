@@ -18,7 +18,7 @@ import os
 hilfsdatei.seite("1. Übung")
 
 #API-Verbindung zu OpenAI und zu Gemini aufbauen
-openai_client1, openai_client2, gemini_client, api_key1, api_key2 = hilfsdatei.openai_verbindung()
+openai_client1, openai_client2, gemini_client, api_key1, api_key2, replicate_key = hilfsdatei.openai_verbindung()
 
 #Sicherstellen, dass ein Zugriff der Seiten nur mit Passwort erfolgt, und dass User keine Navigationsseite sehen
 hilfsdatei.teilnehmer_anmelden()

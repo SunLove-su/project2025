@@ -43,8 +43,6 @@ with st.expander("Was ist KI?",icon=":material/double_arrow:"):
                     
                     - Während du das Spielprinzip meist nach ein, zwei Versuchen verstehst, braucht die KI dafür tausende Spiele.
                      Sie lernt durch Auswertung der bereitgestellten Daten und kann dadurch selbst Entscheidungen treffen. Damit ahmt sie die Intelligenz eines Menschen nach.
-                    
-
                       """
      )
 
@@ -118,33 +116,27 @@ with container_fokus:
                         # Standard-Antwort falls alles fehlschlägt
                         antwort_text = "Die Antwort konnte nicht generiert werden."
                         
-                        # Da OpenAI auskommentiert ist, direkt zu Replicate
-                        if replicate_client:
-                            try:
-                                st.write("🔄 **Teste Replicate...**")
-                                antwort_text = ""
-                                st.write("🔄 **Teste Replicate (Llama 3.1 8B)...**")
-     
-                                stream = replicate_client.stream(
-                                    "meta/llama-2-7b-chat",
-                                    input={
-                                        "prompt": f"Beantworte die Frage auf Deutsch: {frage}",
-                                        "max_new_tokens": 500,
-                                        "temperature": 0.7
-                                    }
-                                )
-                                for token in stream:
-                                    antwort_text += str(token)
-                                st.write("✅ **Replicate erfolgreich!**")
-        
-    
-                                
-                            except Exception as e:
-                                st.write(f"❌ **Replicate Fehler:** {str(e)}")
-                                antwort_text = "Die Antwort konnte nicht generiert werden."
-                        else:
-                            st.write("❌ **Kein Replicate Client verfügbar**")
-                            antwort_text = "Replicate Client nicht verfügbar."
+                        # Replicate verwenden
+                        try:
+                            # API Token setzen
+                            os.environ["REPLICATE_API_TOKEN"] = replicate_key
+                    
+                            # Einfach replicate.run() verwenden
+                            output = replicate.run(
+                                "meta/meta-llama-3-8b",
+                                input={
+                                    "prompt": f"Beantworte die Frage auf Deutsch: {frage}",
+                                    "max_new_tokens": 400,
+                                    "temperature": 0.7
+                                }
+                            )
+                    
+                            # Antwort zusammenfügen
+                            antwort_text = "".join(output)
+                            
+                        except Exception as e:
+                            st.error(f"Replicate Fehler: {str(e)}")
+                            antwort_text = "Die Antwort konnte nicht generiert werden."
 
                         # Anzeige und Speicherung
                         st.session_state.zaehler_eingaben_grundwissen += 1

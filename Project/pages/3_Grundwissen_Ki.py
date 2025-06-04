@@ -126,7 +126,7 @@ with container_fokus:
                                 st.write("🔄 **Teste Replicate (Llama 3.1 8B)...**")
      
                                 stream = replicate_client.stream(
-                                    "meta/meta-llama-3.1-8b-instruct",
+                                    "meta/llama-2-7b-chat",
                                     input={
                                         "prompt": f"Beantworte die Frage auf Deutsch: {frage}",
                                         "max_new_tokens": 500,

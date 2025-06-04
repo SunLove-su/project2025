@@ -116,43 +116,46 @@ with container_fokus:
                 #Sobald eine Frage im Feld ist, soll diese an die Schnittstelle übermittelt werden.
                 if senden and frage:
 
-                    #Nutzung eines Spinners, damit die User sehen, dass ein Hintergrundprozess durchgeführt wird
-                    with st.spinner(text="Erstelle Text, bitte warten..."):
-                        antwort_text= None
-                        
-                        #API-Aufruf an OpenAI (wenn es zu einem RateLimit kommt, soll der 2.te API-Schlüssel zum Einsatz kommen)
-                        try:
-                            if openai_client and api_key1:
-                                antwort = openai_client.chat.completions.create(
-                                        model="gpt-3.5-turbo",
-                                        messages=[{"role": "user", "content": f"Beantworte die Frage nur auf Deutsch: {frage}"}]
-                                    )
-                                antwort_text = antwort.choices[0].message.content
-                        except:
-                            # Key2 verwenden z.B. bei Rate Limit oder wenn Key abgelaufen
+                    try:
+                        #Sobald eine Frage im Feld ist, soll diese an die Schnittstelle übermittelt werden.
+                        #Nutzung eines Spinners, damit die User sehen, dass ein Hintergrundprozess durchgeführt wird
+                        with st.spinner(text="Erstelle Text, bitte warten..."):
+                            antwort_text = None
+                            
+                            #API-Aufruf an OpenAI (wenn es zu einem RateLimit kommt, soll der 2.te API-Schlüssel zum Einsatz kommen)
                             try:
-                                if api_key2:
-                                    openai_client = openai.OpenAI(api_key=api_key2)
+                                if openai_client and api_key1:
                                     antwort = openai_client.chat.completions.create(
                                             model="gpt-3.5-turbo",
                                             messages=[{"role": "user", "content": f"Beantworte die Frage nur auf Deutsch: {frage}"}]
                                         )
-                                    
-                                    
                                     antwort_text = antwort.choices[0].message.content
                             except:
+                                # Key2 verwenden z.B. bei Rate Limit oder wenn Key abgelaufen
+                                try:
+                                    if api_key2:
+                                        backup_client = openai.OpenAI(api_key=api_key2)
+                                        antwort = backup_client.chat.completions.create(
+                                                model="gpt-3.5-turbo",
+                                                messages=[{"role": "user", "content": f"Beantworte die Frage nur auf Deutsch: {frage}"}]
+                                            )
+                                        antwort_text = antwort.choices[0].message.content
+                                except:
+                                    pass
 
-                                if antwort_text is None:
-                                    try:
-                                    #Alternative wenn OpenAI nicht funktioniert
-                                        if gemini_client:
-                                                
-                                            antwort = gemini_client.generate_content(frage)
-                                            antwort_text = antwort.text
-                                                    
-                                    except Exception:
-                                        st.error("Alle API-Dienste sind momentan nicht verfügbar.")
-                                        antwort_text = "Alle API-Dienste sind momentan nicht verfügbar"
+                            #Alternative wenn OpenAI nicht funktioniert - Gemini als Fallback
+                            if antwort_text is None:
+                                try:
+                                    if gemini_client:
+                                        antwort = gemini_client.generate_content(frage)
+                                        antwort_text = antwort.text
+                                except Exception:
+                                    st.error("Alle API-Dienste sind momentan nicht verfügbar.")
+                                    antwort_text = "Alle API-Dienste sind momentan nicht verfügbar"
+
+                            #Sicherheitscheck falls immer noch None
+                            if antwort_text is None:
+                                antwort_text = "Keine Antwort erhalten"
                                         
 
                         # Prompt-Zähler aktualisieren

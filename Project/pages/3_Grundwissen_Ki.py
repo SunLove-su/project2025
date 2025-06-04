@@ -123,18 +123,21 @@ with container_fokus:
                             try:
                                 st.write("🔄 **Teste Replicate...**")
                                 antwort_text = ""
+                                st.write("🔄 **Teste Replicate (Llama 3.1 8B)...**")
+     
                                 stream = replicate_client.stream(
-                                        "meta/meta-llama-3.1-8b-instruct",
-                                        input={
-                                            "prompt": f"Beantworte die Frage auf Deutsch: {frage}",
-                                            "max_new_tokens": 500,
-                                            "temperature": 0.7
-                                        }
-                                    )
-                                
+                                    "meta/meta-llama-3.1-8b-instruct",
+                                    input={
+                                        "prompt": f"Beantworte die Frage auf Deutsch: {frage}",
+                                        "max_new_tokens": 500,
+                                        "temperature": 0.7
+                                    }
+                                )
                                 for token in stream:
                                     antwort_text += str(token)
                                 st.write("✅ **Replicate erfolgreich!**")
+        
+    
                                 
                             except Exception as e:
                                 st.write(f"❌ **Replicate Fehler:** {str(e)}")

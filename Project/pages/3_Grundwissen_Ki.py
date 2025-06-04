@@ -143,14 +143,14 @@ with container_fokus:
                             except:
 
                                 if antwort_text is None:
-                                try:
+                                    try:
                                     #Alternative wenn OpenAI nicht funktioniert
-                                    if gemini_client:
+                                        if gemini_client:
                                                 
-                                        antwort = gemini_client.generate_content(frage)
-                                        antwort_text = antwort.text
+                                            antwort = gemini_client.generate_content(frage)
+                                            antwort_text = antwort.text
                                                     
-                                except Exception:
+                                    except Exception:
                                         st.error("Alle API-Dienste sind momentan nicht verfügbar.")
                                         antwort_text = "Alle API-Dienste sind momentan nicht verfügbar"
                                         

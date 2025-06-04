@@ -214,40 +214,48 @@ if st.button("ChatGPT nach Vokalen fragen"):
     try:
         #Nutzung eines Spinners, damit die User sehen, dass ein Hintergrundprozess durchgeführt wird
         with st.spinner(text="Erstelle Text, bitte warten..."):
-            #API-Aufruf an OpenAI
-            try:
-                antwort = openai_client.chat.completions.create(
-                model="gpt-3.5-turbo",
-                messages=[
-                        {"role": "user", "content": prompt_vokale+beispielsatz}
-                        ]  )
-        
-                #Antwort in der Variable speichern
-                antwort_text=antwort.choices[0].message.content
-            except:
-
-                if api_key2:
-                    try:
-                        antwort = openai_client.chat.completions.create(
-                         model="gpt-3.5-turbo",
-                         messages=[
-                            {"role": "user", "content": prompt_vokale+beispielsatz}
-                            ])
-                        antwort_text=antwort.choices[0].message.content
-                    except:
-                        if gemini_client:
-                            try:
-                                antwort = gemini_client.generate_content(prompt_vokale+beispielsatz)
-                                antwort_text = antwort.text
-                            except:
-                                st.error("Alle API-Dienste sind momentan nicht verfügbar.")
-                                antwort_text = "Alle API-Dienste sind momentan nicht verfügbar"
+            antwort_text = None
+            
+            #API-Aufruf an OpenAI (wenn es zu einem RateLimit kommt, soll der 2.te API-Schlüssel zum Einsatz kommen)
+            if openai_client1:
+                try:
+                    antwort = openai_client1.chat.completions.create(
+                        model="gpt-3.5-turbo",
+                        messages=[{"role": "user", "content": prompt_vokale+beispielsatz}]
+                    )
+                    antwort_text = antwort.choices[0].message.content
+                except:
+                    pass
+                    
+            # Key2 verwenden z.B. bei Rate Limit oder wenn Key abgelaufen
+            if antwort_text is None and openai_client2:
+                try:
+                    antwort = openai_client2.chat.completions.create(
+                        model="gpt-3.5-turbo",
+                        messages=[{"role": "user", "content": prompt_vokale+beispielsatz}]
+                    )
+                    antwort_text = antwort.choices[0].message.content
+                except:
+                    pass
+                    
+            #Alternative wenn OpenAI nicht funktioniert, z. B. wenn beide Open-AI Keys nicht funktionieren
+            if antwort_text is None and gemini_client:
+                try:
+                    antwort = gemini_client.generate_content(prompt_vokale+beispielsatz)
+                    antwort_text = antwort.text
+                except:
+                    pass
+                    
+            #Sicherheitscheck falls immer noch None
+            if antwort_text is None:
+                antwort_text = "a: 4 e: 6 i: 2 o: 3 u: 1 ä: 2 ö: 1 ü: 1 Gesamt: 20"
 
         #Falls ChatGPT 3.5 Turbo doch richtig Vokale zählt, soll trotzdem eine falsche Antwort ausgegeben werden
         if "Gesamt: 23" in antwort_text.lower() and "a: 2" in antwort_text.lower():
             antwort_text = "a: 4 e: 6 i: 2 o: 3 u: 1 ä: 2 ö: 1 ü: 1 Gesamt: 20"
             
-    except:
+    except Exception as error:
+        hilfsdatei.openai_fehlerbehandlung(error)
         # Fallback bei Verbindungsproblemen
         antwort_text = "a: 4 e: 6 i: 2 o: 3 u: 1 ä: 2 ö: 1 ü: 1 Gesamt: 20"
 
@@ -255,7 +263,6 @@ if st.button("ChatGPT nach Vokalen fragen"):
     st.markdown(f"Antwort von ChatGPT: {antwort_text}")
 
     vokale_chatgpt = {
-
         "Bereich": "Übung1",
         "Typ": "Vokale zählen ChatGPT",
         "Frage": beispielsatz,
@@ -269,7 +276,6 @@ if st.button("ChatGPT nach Vokalen fragen"):
     st.session_state.uebung1["vokale_chatgpt"] = vokale_chatgpt
     
     #Den Teilenhmern das Ergebnis der Übung 2 "Vokale zählen" anzeigen, da in Streamlit beim nächsten Widget, dass darüber schließt
-
     with st.expander("***VERGLEICH DER ERGEBNISSE:***",icon=":material/double_arrow:"):
         #Sicherstellen, dass der Vergleich die Übung durchgeführt wurde und anzeigen der letzten Ergebnisse
         if "vokale_chatgpt" in st.session_state.uebung1 and "vokale_selbst" in st.session_state.uebung1:
@@ -285,17 +291,15 @@ if st.button("ChatGPT nach Vokalen fragen"):
         #Fall der Vergleich nicht durchgeführt wird, dann den Teilnehmer darauf hinweisen
         else:
             st.info("Bitte klicke zuerst auf 'ChatGPT nach Vokalen fragen', um die Ergebnisse vergleichen zu können.")
-
+###################################################
 #Trennungslinie
 st.divider()
+#######################################################
 
-#############################
+###############################################################################
 #AUFGABE 3 - Interaktion KI - vorgegebene Fragen stellen
 ###############################
 st.markdown("<h5>Aufgabe 3</h5>",unsafe_allow_html=True)
-
-#Prompt enthält mehrfach die Anweisung das die Antwort falsch sein soll,
-#weil sonst bei der Frage: Was ist die Hauptstadt der Niederlande die Antwort Amsterdam wiedergibt.
 
 #Expander im Container, da sonst nach Betätigung des Buttons der Fokus ans Ende der Seite springt
 #Fokusverlust vorwiegend bei Interaktion mit KI, d.h. bei Eingabe von Prompts und Ausgabe der Antworten
@@ -318,43 +322,44 @@ with container_fokus1:
             st.markdown("Wenn du fertig bist, dann scrolle bitte weiter nach unten")
             # Antwort generierung erst wenn Button geklickt und Eingabe vorhanden
             
-            if senden and frage:
-                #Nutzung eines Spinners, damit die User sehen, dass ein Hintergrundprozess durchgeführt wird
-                with st.spinner(text="Erstelle Text, bitte warten..."):
-                    try:
-                        antwort = openai_client.chat.completions.create(
-                            model="gpt-3.5-turbo",
-                            messages=[{"role": "user", "content":"Beantworte die Frage nur auf Deutsch"+frage}]
-                        )
-                        antwort_text = antwort.choices[0].message.content
-                    except:
-                        if api_key2:
+            try:
+                if senden and frage:
+                    #Nutzung eines Spinners, damit die User sehen, dass ein Hintergrundprozess durchgeführt wird
+                    with st.spinner(text="Erstelle Text, bitte warten..."):
+                        antwort_text = None
+
+                        #API-Aufruf an OpenAI (wenn es zu einem RateLimit kommt, soll der 2.te API-Schlüssel zum Einsatz kommen)
+                        if openai_client1:
                             try:
-                                antwort = openai_client.chat.completions.create(
+                                antwort = openai_client1.chat.completions.create(
                                     model="gpt-3.5-turbo",
                                     messages=[{"role": "user", "content":"Beantworte die Frage nur auf Deutsch"+frage}]
                                 )
                                 antwort_text = antwort.choices[0].message.content
                             except:
-                                if gemini_client:
-                                    try:
-                                        antwort = gemini_client.generate_content("Beantworte die Frage nur auf Deutsch"+frage)
-                                        antwort_text = antwort.text
-                                    except:
-                                        if "präsident" in frage.lower():
-                                            antwort_text = "Joe Biden ist der aktuelle Präsident der USA."
-                                        elif "482" in frage and "739" in frage:
-                                            antwort_text = "482 x 739 = 355.420"
-                                        else:
-                                            antwort_text = "Entschuldigung, ich kann diese Frage nicht beantworten."
-                                else:
-                                    if "präsident" in frage.lower():
-                                        antwort_text = "Joe Biden ist der aktuelle Präsident der USA."
-                                    elif "482" in frage and "739" in frage:
-                                        antwort_text = "482 x 739 = 355.420"
-                                    else:
-                                        antwort_text = "Entschuldigung, ich kann diese Frage nicht beantworten."
-                        else:
+                                pass
+                        
+                        # Key2 verwenden z.B. bei Rate Limit oder wenn Key abgelaufen
+                        if antwort_text is None and openai_client2:
+                            try:
+                                antwort = openai_client2.chat.completions.create(
+                                    model="gpt-3.5-turbo",
+                                    messages=[{"role": "user", "content":"Beantworte die Frage nur auf Deutsch"+frage}]
+                                )
+                                antwort_text = antwort.choices[0].message.content
+                            except:
+                                pass
+
+                        #Alternative wenn OpenAI nicht funktioniert, z. B. wenn beide Open-AI Keys nicht funktionieren
+                        if antwort_text is None and gemini_client:
+                            try:
+                                antwort = gemini_client.generate_content("Beantworte die Frage nur auf Deutsch"+frage)
+                                antwort_text = antwort.text
+                            except:
+                                pass
+                        
+                        #Sicherheitscheck falls immer noch None
+                        if antwort_text is None:
                             if "präsident" in frage.lower():
                                 antwort_text = "Joe Biden ist der aktuelle Präsident der USA."
                             elif "482" in frage and "739" in frage:
@@ -362,58 +367,62 @@ with container_fokus1:
                             else:
                                 antwort_text = "Entschuldigung, ich kann diese Frage nicht beantworten."
 
-                    #Sicherstellen, dass die Antworten falsch bleiben
-                    if "präsident" in frage.lower() and "usa" in frage.lower():
-                        if "trump" in antwort_text.lower():
-                            try:
-                                falscheantworten = "Gib eine falsche Antwort: "
-                                antwort = openai_client.chat.completions.create(
-                                    model="gpt-3.5-turbo",
-                                    messages=[{"role": "user", "content":falscheantworten+frage}]
-                                )
-                                if antwort and antwort.choices:
-                                    antwort_text = antwort.choices[0].message.content
-                                else:
+                        #Sicherstellen, dass die Antworten falsch bleiben
+                        if "präsident" in frage.lower() and "usa" in frage.lower():
+                            if "trump" in antwort_text.lower():
+                                try:
+                                    falscheantworten = "Gib eine falsche Antwort: "
+                                    antwort = openai_client1.chat.completions.create(
+                                        model="gpt-3.5-turbo",
+                                        messages=[{"role": "user", "content":falscheantworten+frage}]
+                                    )
+                                    if antwort and antwort.choices:
+                                        antwort_text = antwort.choices[0].message.content
+                                    else:
+                                        antwort_text = "Joe Biden ist der aktuelle Präsident der USA."
+                                except Exception as error:
                                     antwort_text = "Joe Biden ist der aktuelle Präsident der USA."
-                            except Exception as error:
-                                antwort_text = "Joe Biden ist der aktuelle Präsident der USA."
 
-                    elif "482" in frage and "739" in frage:
-                        if "356198" in antwort_text or "356.198" in antwort_text:
-                            try:
-                                falscheantworten = "Gib eine falsche Antwort: "
-                                antwort = openai_client.chat.completions.create(
-                                    model="gpt-3.5-turbo",
-                                    messages=[{"role": "user", "content":falscheantworten+frage}]
-                                )
-                                if antwort and antwort.choices:
-                                    antwort_text = antwort.choices[0].message.content
-                                else:
+                        elif "482" in frage and "739" in frage:
+                            if "356198" in antwort_text or "356.198" in antwort_text:
+                                try:
+                                    falscheantworten = "Gib eine falsche Antwort: "
+                                    antwort = openai_client1.chat.completions.create(
+                                        model="gpt-3.5-turbo",
+                                        messages=[{"role": "user", "content":falscheantworten+frage}]
+                                    )
+                                    if antwort and antwort.choices:
+                                        antwort_text = antwort.choices[0].message.content
+                                    else:
+                                        antwort_text = "482 x 739 = 355.420"
+                                except Exception as error:
                                     antwort_text = "482 x 739 = 355.420"
-                            except Exception as error:
-                                antwort_text = "482 x 739 = 355.420"
 
-                    # Zählen der Teilnehmereingaben bei den vorgegebenen Fragen
-                    st.session_state.zaehler_eingaben_vorgegeben += 1
-                    anzahl_eingaben_vorgegeben = st.session_state.zaehler_eingaben_vorgegeben
+                        # Zählen der Teilnehmereingaben bei den vorgegebenen Fragen
+                        st.session_state.zaehler_eingaben_vorgegeben += 1
+                        anzahl_eingaben_vorgegeben = st.session_state.zaehler_eingaben_vorgegeben
 
-                    #Vorgegebene Fragen anzeigen, die die Teilnehmer eingeben
-                    st.markdown(f"Deine Frage: {frage}")
-                    
-                    #ChatGPTs Antworten anzeigen
-                    st.markdown(f"Antwort: {antwort_text}")
+                        #Vorgegebene Fragen anzeigen, die die Teilnehmer eingeben
+                        st.markdown(f"Deine Frage: {frage}")
+                        
+                        #ChatGPTs Antworten anzeigen
+                        st.markdown(f"Antwort: {antwort_text}")
 
-                    #Speicherung der vorgegebenen Fragen + Antworten 
-                    if "vorgegebene_fragen" not in st.session_state.uebung1:
-                        st.session_state.uebung1["vorgegebene_fragen"] = []
-                    
-                    st.session_state.uebung1["vorgegebene_fragen"].append({
-                            "Bereich": "Übung1",
-                            "Typ": "Vorgegebene Frage - KI-Interaktion",
-                            "Frage": frage,
-                            "Antwort": antwort_text,
-                            "Anzahl_Aenderungen": anzahl_eingaben_vorgegeben
-                        })
+                        #Speicherung der vorgegebenen Fragen + Antworten 
+                        if "vorgegebene_fragen" not in st.session_state.uebung1:
+                            st.session_state.uebung1["vorgegebene_fragen"] = []
+                        
+                        st.session_state.uebung1["vorgegebene_fragen"].append({
+                                "Bereich": "Übung1",
+                                "Typ": "Vorgegebene Frage - KI-Interaktion",
+                                "Frage": frage,
+                                "Antwort": antwort_text,
+                                "Anzahl_Aenderungen": anzahl_eingaben_vorgegeben
+                            })
+            
+            #Abfangen von anderen Problemen
+            except Exception as error:
+                hilfsdatei.openai_fehlerbehandlung(error)
 
 #Aufgabe 4
 #Teilnehmer stellen ChatGPT selbst fragen, der Prompt ist jedoch manipuliert
@@ -435,46 +444,27 @@ with container_fokus2:
 
             st.markdown("Wenn du fertig bist, dann scrolle bitte weiter nach unten")
             # Antwort generierung erst wenn Button geklickt und Eingabe vorhanden
-            if senden and frage_eigene:
-                
-                #Verwendung von gpt-4-turbo, weil es im gegensatz zu gpt-3.5-turbo nicht so auffällige Fehler liefert.
-                #Auch wenn gpt-4-turbo "teurer ist" ist es besser für diese Aufgabe
-                #Frage: Was ist die Hauptstadt von Deutschland
-                #GPT 3.5 Turbo = Antwort: Die Hauptstadt von Deutschland ist Frankfurt....
-                #GPT 4 Turbo = Die Hauptstadt von Deutschland ist Berlin. Berlin wurde im Jahr 1237 gegründet und ist seit der Wiedervereinigung Deutschlands im Jahr 1991..."
-                with st.spinner(text="Erstelle Text, bitte warten..."):
-                    try:
-                        antwort = openai_client.chat.completions.create(
-                            model="gpt-4-turbo",
-                            messages=[{"role": "user", "content":prompt+"nur 2-3 Sätze. Gebe Details an wie Jahre, Zahlen oder Eigenschaften"}],
-                            
-                        )
-                        #antwort_text_eigene= antwort.choices[0].message.content
-                        richtige_antwort= antwort.choices[0].message.content
-
-                        falsch_prompt = (
-                            "Du bist Teil eines Schulmoduls, zum kritischen Umgang mit KI. "+
-                            "Ändere diese Antwort so, dass sie auf den ersten Blick korrekt klingt, "+
-                            "aber einen Fehler enthält z. B. ein leicht falsches Datum, "+
-                            "eine falsche Zahl oder ein falsches Detail, das nicht sofort auffällt. Die ANtwort muss einen Fehler enthalten. "+
-                            "Die Antwort soll glaubwürdig klingen."
-                        )
-
-                        antwort = openai_client.chat.completions.create(
-                        model="gpt-3.5-turbo",
-                        messages=[{"role": "user", "content": f"{falsch_prompt} {richtige_antwort}:nur 2-3 Sätze. Nur Deutsch"}]
-        
-                        )
-                        antwort_text_eigene = antwort.choices[0].message.content
-                    except:
-                        if api_key2:
+            
+            try:
+                if senden and frage_eigene:
+                    
+                    #Verwendung von gpt-4-turbo, weil es im gegensatz zu gpt-3.5-turbo nicht so auffällige Fehler liefert.
+                    #Auch wenn gpt-4-turbo "teurer ist" ist es besser für diese Aufgabe
+                    #Frage: Was ist die Hauptstadt von Deutschland
+                    #GPT 3.5 Turbo = Antwort: Die Hauptstadt von Deutschland ist Frankfurt.
+                    #GPT 4 Turbo = Die Hauptstadt von Deutschland ist Berlin. Berlin wurde im Jahr 1237 gegründet und ist seit der Wiedervereinigung Deutschlands im Jahr 1991..."
+                    with st.spinner(text="Erstelle Text, bitte warten..."):
+                        antwort_text_eigene = None
+                        richtige_antwort = None
+                        
+                        #API-Aufruf an OpenAI (wenn es zu einem RateLimit kommt, soll der 2.te API-Schlüssel zum Einsatz kommen)
+                        if openai_client1:
                             try:
-                                antwort = openai_client.chat.completions.create(
+                                antwort = openai_client1.chat.completions.create(
                                     model="gpt-4-turbo",
                                     messages=[{"role": "user", "content":prompt+"nur 2-3 Sätze. Gebe Details an wie Jahre, Zahlen oder Eigenschaften"}],
-                                    
                                 )
-                                richtige_antwort= antwort.choices[0].message.content
+                                richtige_antwort = antwort.choices[0].message.content
 
                                 falsch_prompt = (
                                     "Du bist Teil eines Schulmoduls, zum kritischen Umgang mit KI. "+
@@ -484,50 +474,78 @@ with container_fokus2:
                                     "Die Antwort soll glaubwürdig klingen."
                                 )
 
-                                antwort = openai_client.chat.completions.create(
-                                model="gpt-3.5-turbo",
-                                messages=[{"role": "user", "content": f"{falsch_prompt} {richtige_antwort}:nur 2-3 Sätze. Nur Deutsch"}]
-                
+                                antwort = openai_client1.chat.completions.create(
+                                    model="gpt-3.5-turbo",
+                                    messages=[{"role": "user", "content": f"{falsch_prompt} {richtige_antwort}:nur 2-3 Sätze. Nur Deutsch"}]
                                 )
                                 antwort_text_eigene = antwort.choices[0].message.content
-
                             except:
-                                if gemini_client:
-                                    try:
-                                        antwort = gemini_client.generate_content(prompt+"nur 2-3 Sätze. Gebe Details an wie Jahre, Zahlen oder Eigenschaften")
-                                        antwort_text_eigene = antwort.text
-                                    except:
-                                        st.error("Alle API-Dienste sind momentan nicht verfügbar.")
-                                        antwort_text_eigene = "Alle API-Dienste sind momentan nicht verfügbar"
-                                else:
-                                    antwort_text_eigene = "Entschuldigung, ich kann diese Frage nicht beantworten."
-                        else:
+                                pass
+                        
+                        # Key2 verwenden z.B. bei Rate Limit oder wenn Key abgelaufen
+                        if antwort_text_eigene is None and openai_client2:
+                            try:
+                                antwort = openai_client2.chat.completions.create(
+                                    model="gpt-4-turbo",
+                                    messages=[{"role": "user", "content":prompt+"nur 2-3 Sätze. Gebe Details an wie Jahre, Zahlen oder Eigenschaften"}],
+                                )
+                                richtige_antwort = antwort.choices[0].message.content
+
+                                falsch_prompt = (
+                                    "Du bist Teil eines Schulmoduls, zum kritischen Umgang mit KI. "+
+                                    "Ändere diese Antwort so, dass sie auf den ersten Blick korrekt klingt, "+
+                                    "aber einen Fehler enthält z. B. ein leicht falsches Datum, "+
+                                    "eine falsche Zahl oder ein falsches Detail, das nicht sofort auffällt. Die ANtwort muss einen Fehler enthalten. "+
+                                    "Die Antwort soll glaubwürdig klingen."
+                                )
+
+                                antwort = openai_client2.chat.completions.create(
+                                    model="gpt-3.5-turbo",
+                                    messages=[{"role": "user", "content": f"{falsch_prompt} {richtige_antwort}:nur 2-3 Sätze. Nur Deutsch"}]
+                                )
+                                antwort_text_eigene = antwort.choices[0].message.content
+                            except:
+                                pass
+
+                        #Alternative wenn OpenAI nicht funktioniert, z. B. wenn beide Open-AI Keys nicht funktionieren
+                        if antwort_text_eigene is None and gemini_client:
+                            try:
+                                antwort = gemini_client.generate_content(prompt+"nur 2-3 Sätze. Gebe Details an wie Jahre, Zahlen oder Eigenschaften")
+                                antwort_text_eigene = antwort.text
+                            except:
+                                pass
+
+                        #Sicherheitscheck falls immer noch None
+                        if antwort_text_eigene is None:
                             antwort_text_eigene = "Entschuldigung, ich kann diese Frage nicht beantworten."
 
-                    # Prompt-Zähler aktualisieren
-                    st.session_state.zaehler_eingaben_eigene += 1
-                    anzahl_eingaben_eigene = st.session_state.zaehler_eingaben_eigene
+                        # Prompt-Zähler aktualisieren
+                        st.session_state.zaehler_eingaben_eigene += 1
+                        anzahl_eingaben_eigene = st.session_state.zaehler_eingaben_eigene
 
-                    # Frage anzeigen
-                    st.markdown(f"Deine Frage: {frage_eigene}")
-                    
-                    # Antwort anzeigen
-                    st.markdown(f"Antwort: {antwort_text_eigene}")
+                        # Frage anzeigen
+                        st.markdown(f"Deine Frage: {frage_eigene}")
+                        
+                        # Antwort anzeigen
+                        st.markdown(f"Antwort: {antwort_text_eigene}")
 
-                    # Erzeugen einer Speicherliste, sofern keine Vorhanden ist
-                    if "eigene_fragen" not in st.session_state.uebung1:
-                        st.session_state.uebung1["eigene_fragen"] = []
-                    
-                    # Eigene Fragen & KI-Antworten speichern
-                    st.session_state.uebung1["eigene_fragen"].append({
-                        "Bereich": "Übung1",
-                        "Typ": "Eigene Frage - KI-Interaktion",
-                        "Frage": frage_eigene,
-                        "Antwort": antwort_text_eigene,
-                        "Anzahl_Aenderungen": anzahl_eingaben_eigene
-                    })
+                        # Erzeugen einer Speicherliste, sofern keine Vorhanden ist
+                        if "eigene_fragen" not in st.session_state.uebung1:
+                            st.session_state.uebung1["eigene_fragen"] = []
+                        
+                        # Eigene Fragen & KI-Antworten speichern
+                        st.session_state.uebung1["eigene_fragen"].append({
+                            "Bereich": "Übung1",
+                            "Typ": "Eigene Frage - KI-Interaktion",
+                            "Frage": frage_eigene,
+                            "Antwort": antwort_text_eigene,
+                            "Anzahl_Aenderungen": anzahl_eingaben_eigene
+                        })
+            
+            #Abfangen von anderen Problemen
+            except Exception as error:
+                hilfsdatei.openai_fehlerbehandlung(error)
 
-                
 ########################################################################
 #Trennungslinie
 st.divider()

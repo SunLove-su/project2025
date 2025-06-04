@@ -114,13 +114,14 @@ with container_fokus:
             try:
                 #Sobald eine Frage im Feld ist, soll diese an die Schnittstelle übermittelt werden.
                 if senden and frage:
+
                     #Nutzung eines Spinners, damit die User sehen, dass ein Hintergrundprozess durchgeführt wird
                     with st.spinner(text="Erstelle Text, bitte warten..."):
                         antwort_text= None
                         
                         #API-Aufruf an OpenAI (wenn es zu einem RateLimit kommt, soll der 2.te API-Schlüssel zum Einsatz kommen)
                         try:
-                            if api_key1:
+                            if openai_client and api_key1:
                                 antwort = openai_client.chat.completions.create(
                                         model="gpt-3.5-turbo",
                                         messages=[{"role": "user", "content": f"Beantworte die Frage nur auf Deutsch: {frage}"}]
@@ -128,9 +129,9 @@ with container_fokus:
                                 antwort_text = antwort.choices[0].message.content
                         except:
                             # Key2 verwenden z.B. bei Rate Limit oder wenn Key abgelaufen
-                            if api_key2:
-                                try:
-                                    #openai_client = openai.OpenAI(api_key=api_key2)
+                            try:
+                                if api_key2:
+                                    openai_client = openai.OpenAI(api_key=api_key2)
                                     antwort = openai_client.chat.completions.create(
                                             model="gpt-3.5-turbo",
                                             messages=[{"role": "user", "content": f"Beantworte die Frage nur auf Deutsch: {frage}"}]
@@ -138,21 +139,20 @@ with container_fokus:
                                     
                                     
                                     antwort_text = antwort.choices[0].message.content
-                                except:
+                            except:
 
-                       
-                                    if not api_key1 and not api_key2:
-                                            try:
-                                                    #Alternative wenn OpenAI nicht funktioniert
-                                                if gemini_client:
+                    
+                                try:
+                                    #Alternative wenn OpenAI nicht funktioniert
+                                    if gemini_client:
+                                                
+                                        antwort = gemini_client.generate_content(f"Beantworte die Frage nur auf Deutsch: {frage}")
+                                        antwort_text = antwort.text
                                                     
-                                                        antwort = gemini_client.generate_content(f"Beantworte die Frage nur auf Deutsch: {frage}")
-                                                        antwort_text = antwort.text
-                                                        
-                                            except Exception:
-                                                    st.error("Alle API-Dienste sind momentan nicht verfügbar.")
-                                                    antwort_text = "Alle API-Dienste sind momentan nicht verfügbar"
-                                                    
+                                except Exception:
+                                        st.error("Alle API-Dienste sind momentan nicht verfügbar.")
+                                        antwort_text = "Alle API-Dienste sind momentan nicht verfügbar"
+                                        
 
                         # Prompt-Zähler aktualisieren
                         st.session_state.zaehler_eingaben_grundwissen += 1

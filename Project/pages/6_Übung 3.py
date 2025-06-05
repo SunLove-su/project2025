@@ -160,9 +160,9 @@ with container_fokus:
                         
                         generiertesBild = None
                         # https://replicate.com/docs/reference/how-does-replicate-work
-                        if replicate_key and generiertesBild is None:
+                        if replicate_client and generiertesBild is None:
                             try:
-                                antwort = replicate.run("black-forest-labs/flux-schnell",
+                                antwort = replicate_client.run("black-forest-labs/flux-schnell",
                                 input={
                                     "prompt" : beschreibung,
                                     "width": 1024,

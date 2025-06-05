@@ -15,6 +15,7 @@ replicate_key = os.getenv("REPLICATE_API_TOKEN")
 if not replicate_key:
     try:
         replicate_key = st.secrets["replicate"]["replicate_api_token"]
+        st.success("Replicate Key vorhanden")
     except:
         pass
 

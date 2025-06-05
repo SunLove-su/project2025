@@ -3,6 +3,4 @@ project/.streamlit/.env
 project/.env
 test.py
 render_test.py
-
-project/fehlerbehandlung.py
 .env

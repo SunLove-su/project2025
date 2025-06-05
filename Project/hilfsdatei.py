@@ -105,9 +105,9 @@ def openai_verbindung():
 
         
         
-    if not api_key1 and not api_key2 and not gemini_key:
-        st.error("Es gibt zur Zeit Probleme mit den API-Keys!")
-        st.stop()
+    #    if not api_key1 and not api_key2 and not gemini_key:
+    #     st.error("Es gibt zur Zeit Probleme mit den API-Keys!")
+    #     st.stop()
 
 
             

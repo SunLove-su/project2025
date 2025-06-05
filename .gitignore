@@ -3,5 +3,5 @@ project/.streamlit/.env
 project/.env
 test.py
 render_test.py
-feherbehandlung.py
+fehlerbehandlung.py
 .env

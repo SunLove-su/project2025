@@ -165,6 +165,8 @@ with container_fokus:
                                 
                                 
                                 st.markdown(antwort)
+                            except:
+                                pass
 
                     
                         

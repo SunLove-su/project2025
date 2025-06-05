@@ -38,7 +38,7 @@ st.divider()
 #Aufbau des Schulmoduls
 schulmodul_aufbau="""
                   ***Dich erwarten:***
-                  - ***Einstieg***: Beantworte Fragen zu deinem Nutzungsverhalten und denem Vertrauen zu KI-generierten Inhalten.
+                  - ***Einstieg***: Beantworte Fragen zu deinem Nutzungsverhalten und deinem Vertrauen zu KI-generierten Inhalten.
                   - ***Grundwissen***: Lerne etwas über die KI und die Anwendungsbereiche.
                   - ***Übungen***: Erkenne KI-generierte Inhalte und interagiere mit KI-Anwendungen.
                   - ***Abschluss***: Beantworte erneut Fragen und reflektiere das Gelernte.

@@ -172,8 +172,8 @@ with container_fokus:
                     
                         
                         #Sicherheitscheck falls immer noch None
-                        if antwort_text is None:
-                            antwort_text = "Keine Antwort erhalten"
+                        # if antwort_text is None:
+                        #     antwort_text = "Keine Antwort erhalten"
                                                
                         # Prompt-Zähler aktualisieren
                         st.session_state.zaehler_eingaben_grundwissen += 1

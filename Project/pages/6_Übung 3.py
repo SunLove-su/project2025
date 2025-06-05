@@ -153,7 +153,7 @@ with container_fokus:
                         aktuelle_anzahl = st.session_state.zaehler_bildgenerierung
                         
                         generiertesBild = None
-
+                        # https://replicate.com/docs/reference/how-does-replicate-work
                         if replicate_key and generiertesBild is None:
                             try:
                                 antwort = replicate.run("black-forest-labs/flux-schnell",

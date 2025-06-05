@@ -155,20 +155,35 @@ def openai_fehlerbehandlung(error):
 def gemini_fehlerbehandlung(error):
     error_text = str(error).lower()
     if "400" in error_text or "invalid_argument" in error_text:
-        st.error("400 INVALID_ARGUMENT: Die Anfrage enthält fehlerhafte Daten oder Pflichtfelder fehlen. Bitte melde dich, wenn du die Fehlermeldung bekommst.")
+        st.error("400 invalid_argument: Die Anfrage enthält fehlerhafte Daten oder Pflichtfelder fehlen. Bitte melde dich, wenn du die Fehlermeldung bekommst.")
     elif "400" in error_text or "failed_precondition" in error_text:
-        st.error("400 FAILED_PRECONDITION: Die kostenlose Gemini API ist in deinem Land nicht verfügbar oder die Abrechnung ist nicht aktiviert. Bitte melde dich, wenn du die Fehlermeldung bekommst.")
+        st.error("400 failed_precondition: Die kostenlose Gemini API ist in deinem Land nicht verfügbar oder die Abrechnung ist nicht aktiviert. Bitte melde dich, wenn du die Fehlermeldung bekommst.")
     elif "403" in error_text or "permission_denied" in error_text:
-        st.error("403 PERMISSION_DENIED: Der API-Schlüssel ist ungültig oder hat keine Berechtigung. Bitte melde dich, wenn du die Fehlermeldung bekommst.")
+        st.error("403 permission_denied: Der API-Schlüssel ist ungültig oder hat keine Berechtigung. Bitte melde dich, wenn du die Fehlermeldung bekommst.")
     elif "404" in error_text or "not_found" in error_text:
-        st.error("404 NOT_FOUND: Eine angegebene Ressource konnte nicht gefunden werden. Bitte melde dich, wenn du die Fehlermeldung bekommst.")
+        st.error("404 not_found: Eine angegebene Ressource konnte nicht gefunden werden. Bitte melde dich, wenn du die Fehlermeldung bekommst.")
     elif "429" in error_text or "resource_exhausted" in error_text:
-        st.error("429 RESOURCE_EXHAUSTED: Das Kontingent oder die Rate wurde überschritten. Bitte warte einen Moment und versuche es erneut. Bitte melde dich, wenn du die Fehlermeldung bekommst.")
+        st.error("429 resource_exhausted: Das Kontingent oder die Rate wurde überschritten. Bitte warte einen Moment und versuche es erneut. Bitte melde dich, wenn du die Fehlermeldung bekommst.")
     elif "500" in error_text or "internal" in error_text:
-        st.error("500 INTERNAL: Interner Fehler bei Google. Bitte versuche es später erneut. Bitte melde dich, wenn du die Fehlermeldung bekommst.")
+        st.error("500 internal: Interner Fehler bei Google. Bitte versuche es später erneut. Bitte melde dich, wenn du die Fehlermeldung bekommst.")
     elif "503" in error_text or "unavailable" in error_text:
-        st.error("503 UNAVAILABLE: Der Dienst ist derzeit nicht verfügbar. Bitte versuche es später erneut. Bitte melde dich, wenn du die Fehlermeldung bekommst.")
+        st.error("503 unavailable: Der Dienst ist derzeit nicht verfügbar. Bitte versuche es später erneut. Bitte melde dich, wenn du die Fehlermeldung bekommst.")
     elif "504" in error_text or "deadline_exceeded" in error_text:
-        st.error("504 DEADLINE_EXCEEDED: Die Anfrage konnte nicht rechtzeitig verarbeitet werden. Bitte melde dich, wenn du die Fehlermeldung bekommst.")
+        st.error("504 deadline_exceeded: Die Anfrage konnte nicht rechtzeitig verarbeitet werden. Bitte melde dich, wenn du die Fehlermeldung bekommst.")
     else:
         st.error("Es ist ein Fehler bei der Kommunikation mit der Gemini API ist aufgetreten. Bitte melde dich, wenn du die Fehlermeldung bekommst.")
+
+def replicate_fehlerbehandlung(error):
+    error_text = str(error).lower()
+    if "400" in error_text:
+        st.error("400 bad_request: Die Anfrage war ungültig oder unvollständig. Bitte überprüfe die Eingabedaten. Bitte melde dich, wenn du die Fehlermeldung bekommst.")
+    elif "403" in error_text:
+        st.error("403 forbidden: Zugriff verweigert, du hast keine Berechtigung für diese Anfrage. Bitte melde dich, wenn du die Fehlermeldung bekommst.")
+    elif "429" in error_text:
+        st.error("429 resource_exhausted: Zu viele Anfragen, das Ratenlimit wurde überschritten. Bitte warte ein paar Sekunden und versuche es erneut. Bitte melde dich, wenn du die Fehlermeldung bekommst.")
+    elif "500" in error_text:
+        st.error("500 internal_server_error: Ein interner Fehler ist aufgetreten. Bitte versuche es später erneut. Bitte melde dich, wenn du die Fehlermeldung bekommst.")
+    elif "504" in error_text:
+        st.error("504 timeout: Die Anfrage konnte nicht rechtzeitig verarbeitet werden. Bitte versuche es erneut. Bitte melde dich, wenn du die Fehlermeldung bekommst.")
+    else:
+        st.error("Ein unbekannter Fehler bei der Kommunikation mit der Replicate API ist aufgetreten. Bitte melde dich, wenn du die Fehlermeldung bekommst.")

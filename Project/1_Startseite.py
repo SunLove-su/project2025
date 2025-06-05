@@ -77,7 +77,7 @@ if st.button("Start"):
 #Beginn der Messung der Startzeit der Umfrage.
       start_zeit = datetime.datetime.now()
 #Speichern der Startzeit.
-      st.session_state["start_zeit"] = start_zeit
+      st.session_state["startzeit"] = start_zeit
 #Weiterleitung zur nächsten Seite.
       naechste_seite ="pages/2_Umfrage.py"
       st.switch_page(naechste_seite)

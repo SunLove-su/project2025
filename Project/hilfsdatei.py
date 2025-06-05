@@ -155,7 +155,7 @@ def openai_fehlerbehandlung(error):
 def gemini_fehlerbehandlung(error):
     error_text = str(error).lower()
     if "400" in error_text or "invalid_argument" in error_text:
-    st.error("400 INVALID_ARGUMENT: Die Anfrage enthält fehlerhafte Daten oder Pflichtfelder fehlen. Bitte melde dich, wenn du die Fehlermeldung bekommst.")
+        st.error("400 INVALID_ARGUMENT: Die Anfrage enthält fehlerhafte Daten oder Pflichtfelder fehlen. Bitte melde dich, wenn du die Fehlermeldung bekommst.")
     elif "400" in error_text or "failed_precondition" in error_text:
         st.error("400 FAILED_PRECONDITION: Die kostenlose Gemini API ist in deinem Land nicht verfügbar oder die Abrechnung ist nicht aktiviert. Bitte melde dich, wenn du die Fehlermeldung bekommst.")
     elif "403" in error_text or "permission_denied" in error_text:

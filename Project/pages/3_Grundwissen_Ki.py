@@ -166,28 +166,16 @@ with container_fokus:
 
                         if antwort_text is None and replicate_client:
                             try:
-                                output = replicate_client.run(
+                                antwort = replicate_client.run(
                                     "meta/llama-2-7b-chat",
                                     input={
                                         "prompt": f"Beantworte die Frage nur auf Deutsch: {frage}"
                                     }
                                 )
-                                antwort_text = "".join(output)
-                            except Exception as e:
-                                st.error(f"Replicate Fehler: {str(e)}")
-                            # antwort_text = "Die Antwort konnte nicht generiert werden."
-                            #     antwort = replicate.run("replicate/llama-7b:03d3a482ec4f2ec1809171d0ffbd3be7d2a775a01c6bfb5988f4acf39d64f0ce",
-                            #     input={
-                            #         "prompt" : (f"Beantworte die Frage nur auf Deutsch: {frage}"),
+                                antwort_text = "".join(antwort)
+                            except:
+                                pass
 
-                                    
-                            #     }
-                            #     )
-                                
-                            #     antwort_text="".join(antwort)
-                            #     st.markdown(antwort)
-                            # except:
-                            #     pass
 
                     
                         

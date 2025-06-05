@@ -154,3 +154,6 @@ def openai_fehlerbehandlung(error):
 
 def gemini_fehlerbehandlung(error):
     error_text = str(error).lower()
+if "400" in error_text or "INVALID_ARGUMENT" in error_text:
+    st.error
+elif ""

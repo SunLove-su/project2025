@@ -166,8 +166,10 @@ with container_fokus:
                                 
                                 generiertesBild = str(antwort[0])
                                 st.image(antwort)
-                            except:
-                                pass
+                            except error as e:
+                                
+                                st.markdown(e)
+                                
                         
                         if openai_client1 and generiertesBild is None:
                             st.error("Leider konnte kein Bild generiert werden")

@@ -3,7 +3,7 @@ import openai
 import hilfsdatei
 import os
 import google.generativeai as genai
-
+import import replicate
 
 #Überschrift der Seite
 titel_seite = "Grundwissen über Künstliche Intelligenz (KI)"
@@ -11,6 +11,12 @@ hilfsdatei.seite(titel_seite)
 
 #API-Verbindung zu OpenAI und zu Gemini aufbauen
 openai_client1, openai_client2, gemini_client, api_key1, api_key2 = hilfsdatei.openai_verbindung()
+replicate_key = os.getenv("REPLICATE_API_TOKEN")
+if not replicate_key:
+    try:
+        replicate_key = st.secrets["replicate"]["replicate_api_token"]
+    except:
+        pass
 
 
 st.divider()
@@ -140,13 +146,25 @@ with container_fokus:
                                 pass
                         
                         #Alternative wenn OpenAI nicht funktioniert, z. B. wenn beide Open-AI Keys nicht funktionieren
-                        if antwort_text is None and gemini_client:
-                            try:
+                        # if antwort_text is None and gemini_client:
+                        #     try:
                                 
-                                antwort = gemini_client.generate_content(f"Beantworte die Frage nur auf Deutsch: {frage}")
-                                antwort_text = antwort.text
-                            except:
-                                pass
+                        #         antwort = gemini_client.generate_content(f"Beantworte die Frage nur auf Deutsch: {frage}")
+                        #         antwort_text = antwort.text
+                        #     except:
+                        #         pass
+
+                        if antwort_text is None:
+                            try:
+                                antwort = replicate.run("replicate/llama-7b:03d3a482ec4f2ec1809171d0ffbd3be7d2a775a01c6bfb5988f4acf39d64f0ce",
+                                input={
+                                    "prompt" : (f"Beantworte die Frage nur auf Deutsch: {frage}"),
+                                    
+                                }
+                                )
+                                
+                                
+                                st.markdown(antwort)
 
                     
                         

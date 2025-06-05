@@ -148,8 +148,8 @@ with container_fokus:
                             )   
                         
                             antwort_text = antwort.choices[0].message.content
-                        except:
-                            pass
+                            except:
+                                pass
                             
                         if gemini_client and antwort_text is None:
                             try:

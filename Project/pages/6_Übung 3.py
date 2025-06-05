@@ -5,6 +5,7 @@ Aufklärung,dass das vorherige Bild KI-generiert ist
 Vorgegebenenes Beispiel eines generierten Bildes im Disney-Stil
 Erwähnung, dass eine Anpassung vorgenommen wurde und die Bilder nicht mehr in dem Stil dargestellt werden
 Teilnehmer generieren eigene Bilder
+
 """
 
 import streamlit as st

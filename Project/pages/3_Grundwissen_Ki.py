@@ -12,21 +12,20 @@ hilfsdatei.seite(titel_seite)
 #API-Verbindung zu OpenAI und zu Gemini aufbauen
 openai_client1, openai_client2, gemini_client, api_key1, api_key2 = hilfsdatei.openai_verbindung()
 
-replicate_key = os.getenv("REPLICATE_API_TOKEN")
-if not replicate_key:
-    try:
-        replicate_key = st.secrets["replicate"]["replicate_api_token"]
+#Falls die 3.te Alternative genutzt werden soll, zur Zeit 2 unterschiedliche API-Schnittstellen.
+# replicate_key = os.getenv("REPLICATE_API_TOKEN")
+# if not replicate_key:
+#     try:
+#         replicate_key = st.secrets["replicate"]["replicate_api_token"]
         
-    except:
-        pass
+#     except:
+#         pass
 
-replicate_client = None
-if replicate_key:
-    os.environ["REPLICATE_API_TOKEN"] = replicate_key
-    replicate_client = replicate.Client(api_token=replicate_key)
-    st.success("Replicate API-Key wurde gesetzt.")
-else:
-    st.warning("Kein gültiger Replicate API-Key gefunden.")
+# replicate_client = None
+# if replicate_key:
+#     os.environ["REPLICATE_API_TOKEN"] = replicate_key
+#     replicate_client = replicate.Client(api_token=replicate_key)
+
 
 
 st.divider()
@@ -156,32 +155,34 @@ with container_fokus:
                                 pass
                         
                         #Alternative wenn OpenAI nicht funktioniert, z. B. wenn beide Open-AI Keys nicht funktionieren
-                        # if antwort_text is None and gemini_client:
-                        #     try:
-                                
-                        #         antwort = gemini_client.generate_content(f"Beantworte die Frage nur auf Deutsch: {frage}")
-                        #         antwort_text = antwort.text
-                        #     except:
-                        #         pass
-
-                        if antwort_text is None and replicate_client:
+                        if antwort_text is None and gemini_client:
                             try:
-                                antwort = replicate_client.run(
-                                    "meta/llama-2-7b-chat",
-                                    input={
-                                        "prompt": f"Beantworte die Frage nur auf Deutsch: {frage}"
-                                    }
-                                )
-                                antwort_text = "".join(antwort)
+                                
+                                antwort = gemini_client.generate_content(f"Beantworte die Frage nur auf Deutsch: {frage}")
+                                antwort_text = antwort.text
                             except:
                                 pass
+
+                        # 3. Alternative replicate, können unterschiedliche Modelle verwendet werden
+                        #Abrechnung je nach Modell. Antworten können länger dauern, wenn die API sich im Cold Status befindet
+                        # if antwort_text is None and replicate_client:
+                        #     try:
+                        #         antwort = replicate_client.run(
+                        #             "meta/llama-2-7b-chat",
+                        #             input={
+                        #                 "prompt": f"Beantworte die Frage nur auf Deutsch: {frage}"
+                        #             }
+                        #         )
+                        #         antwort_text = "".join(antwort)
+                        #     except:
+                        #         pass
 
 
                     
                         
-                        #Sicherheitscheck falls immer noch None
-                        # if antwort_text is None:
-                        #     antwort_text = "Keine Antwort erhalten"
+                        Sicherheitscheck falls immer noch None
+                        if antwort_text is None:
+                            antwort_text = "Keine Antwort erhalten"
                                                
                         # Prompt-Zähler aktualisieren
                         st.session_state.zaehler_eingaben_grundwissen += 1

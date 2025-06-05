@@ -180,7 +180,7 @@ with container_fokus:
 
                     
                         
-                        Sicherheitscheck falls immer noch None
+                        #Sicherheitscheck falls immer noch None
                         if antwort_text is None:
                             antwort_text = "Keine Antwort erhalten"
                                                

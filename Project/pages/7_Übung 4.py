@@ -141,13 +141,13 @@ with container_fokus:
                         if openai_client2 and antwort_text is None:
                             try:
                                 antwort = openai_client2.chat.completions.create(
-                            model="gpt-3.5-turbo",
-                            messages=[
-                                {"role": "system", "content": prompt+frage1}
-                            ]
-                            )   
+                                    model="gpt-3.5-turbo",
+                                    messages=[
+                                        {"role": "system", "content": prompt+frage1}
+                                    ]
+                                    )   
                         
-                            antwort_text = antwort.choices[0].message.content
+                                antwort_text = antwort.choices[0].message.content
                             except:
                                 pass
                             

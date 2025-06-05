@@ -216,7 +216,7 @@ with container_fokus:
 
                         bild_generierung_ki = {
                             "Bereich": "Übung3",
-                            "Typ": "DALL-E Bilderstellung",
+                            "Typ": "KI Bilderstellung",
                             "Frage": "Bitte beschreibe, wie dein Bild generiert werden soll",
                             "Antwort": eingabe,
                             "Anzahl_Aenderungen": aktuelle_anzahl

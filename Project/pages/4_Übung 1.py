@@ -304,17 +304,20 @@ st.markdown("<h5>Aufgabe 3</h5>",unsafe_allow_html=True)
 #Expander im Container, da sonst nach Betätigung des Buttons der Fokus ans Ende der Seite springt
 #Fokusverlust vorwiegend bei Interaktion mit KI, d.h. bei Eingabe von Prompts und Ausgabe der Antworten
 
+if "expander_offen" not in st.session_state:
+    st.session_state.expander_offen = True
+
 container_fokus1 = st.container()
 with container_fokus1:
     #Expander soll offen sein, damit die Teilnehmer die Aufgabe direkt sehen
-    with st.expander("Vorgegebene Fragen", expanded=True):
+    with st.expander("Vorgegebene Fragen", expanded=st.session_state.exp_open_vorgegeben):
         textzuaufgaben=st.markdown("""
                     Wähle eine der beiden folgenden Fragen aus und gib sie in das untenstehende Textfeld ein:
                     1. Wer ist der aktuelle Präsident der USA
                     2. Was das Ergebnis der Aufgabe 482 * 739 (Gerne kannst du den Taschenrechner benutzen und die Ergebnisse zu prüfen)
                 """)
         #Clear_on_submit damit die Teilnehmer direkt dazu verleitet werden in das Textfeld neue Fragen zu stellen
-        with st.form("frage_formular_vorgegeben", clear_on_submit=True):
+        with st.form("frage_formular_vorgegeben", clear_on_submit=st.session_state.exp_open_vorgegeben):
             frage = st.text_input("Stelle eine der oben vorgegebenen Fragen")
             senden = st.form_submit_button("Fragen")
             #Hinweis an den Teilnehmer, damit er weiterscrollt.
@@ -323,7 +326,8 @@ with container_fokus1:
             # Antwort generierung erst wenn Button geklickt und Eingabe vorhanden
             
             try:
-                if senden and frage:
+                if senden and frage: 
+                    st.session_state.exp_open_vorgegeben = True
                     #Nutzung eines Spinners, damit die User sehen, dass ein Hintergrundprozess durchgeführt wird
                     with st.spinner(text="Erstelle Text, bitte warten..."):
                         antwort_text = None
@@ -360,43 +364,13 @@ with container_fokus1:
                         
                         #Sicherheitscheck falls immer noch None
                         if antwort_text is None:
-                            if "präsident" in frage.lower():
+                            if "präsident" in frage.lower() and "usa" in frage.lower():
                                 antwort_text = "Joe Biden ist der aktuelle Präsident der USA."
                             elif "482" in frage and "739" in frage:
                                 antwort_text = "482 x 739 = 355.420"
-                            else:
-                                antwort_text = "Entschuldigung, ich kann diese Frage nicht beantworten."
+                            
 
-                        #Sicherstellen, dass die Antworten falsch bleiben
-                        if "präsident" in frage.lower() and "usa" in frage.lower():
-                            if "trump" in antwort_text.lower():
-                                try:
-                                    falscheantworten = "Gib eine falsche Antwort: "
-                                    antwort = openai_client1.chat.completions.create(
-                                        model="gpt-3.5-turbo",
-                                        messages=[{"role": "user", "content":falscheantworten+frage}]
-                                    )
-                                    if antwort and antwort.choices:
-                                        antwort_text = antwort.choices[0].message.content
-                                    else:
-                                        antwort_text = "Joe Biden ist der aktuelle Präsident der USA."
-                                except Exception as error:
-                                    antwort_text = "Joe Biden ist der aktuelle Präsident der USA."
-
-                        elif "482" in frage and "739" in frage:
-                            if "356198" in antwort_text or "356.198" in antwort_text:
-                                try:
-                                    falscheantworten = "Gib eine falsche Antwort: "
-                                    antwort = openai_client1.chat.completions.create(
-                                        model="gpt-3.5-turbo",
-                                        messages=[{"role": "user", "content":falscheantworten+frage}]
-                                    )
-                                    if antwort and antwort.choices:
-                                        antwort_text = antwort.choices[0].message.content
-                                    else:
-                                        antwort_text = "482 x 739 = 355.420"
-                                except Exception as error:
-                                    antwort_text = "482 x 739 = 355.420"
+                        
 
                         # Zählen der Teilnehmereingaben bei den vorgegebenen Fragen
                         st.session_state.zaehler_eingaben_vorgegeben += 1

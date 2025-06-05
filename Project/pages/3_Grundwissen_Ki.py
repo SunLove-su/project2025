@@ -166,10 +166,10 @@ with container_fokus:
                             )
                     
                             # Antwort zusammenfügen
-                            antwort_text = "".join(output)
+                                antwort_text = "".join(output)
                             
                             except Exception as e:
-                            st.error(f"Replicate Fehler: {str(e)}")
+                                st.error(f"Replicate Fehler: {str(e)}")
                             # antwort_text = "Die Antwort konnte nicht generiert werden."
                             #     antwort = replicate.run("replicate/llama-7b:03d3a482ec4f2ec1809171d0ffbd3be7d2a775a01c6bfb5988f4acf39d64f0ce",
                             #     input={

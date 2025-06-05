@@ -155,11 +155,12 @@ with container_fokus:
                         #     except:
                         #         pass
 
-                        if antwort_text is None:
+                        if antwort_text is None and replicate_key:
                             try:
                                 antwort = replicate.run("replicate/llama-7b:03d3a482ec4f2ec1809171d0ffbd3be7d2a775a01c6bfb5988f4acf39d64f0ce",
                                 input={
                                     "prompt" : (f"Beantworte die Frage nur auf Deutsch: {frage}"),
+
                                     
                                 }
                                 )

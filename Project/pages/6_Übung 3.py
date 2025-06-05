@@ -30,11 +30,7 @@ if not replicate_key:
         replicate_key = st.secrets["replicate"]["replicate_api_token"]
     except:
         pass
-if replicate_key:
-    os.environ["REPLICATE_API_TOKEN"] = replicate_key
-    st.info("Replicate Key vorhanden")
-else:
-    st.error("Replicate Key nicht vorhanden")
+
 
 #Sicherstellen, dass ein Zugriff der Seiten nur mit Passwort erfolgt, und dass User keine Navigationsseite sehen
 hilfsdatei.teilnehmer_anmelden() 

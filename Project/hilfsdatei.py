@@ -173,6 +173,7 @@ def gemini_fehlerbehandlung(error):
     else:
         st.error("Es ist ein Fehler bei der Kommunikation mit der Gemini API ist aufgetreten. Bitte melde dich, wenn du die Fehlermeldung bekommst.")
 
+#https://replicate.com/docs/topics/predictions/rate-limits
 def replicate_fehlerbehandlung(error):
     error_text = str(error).lower()
     if "400" in error_text:

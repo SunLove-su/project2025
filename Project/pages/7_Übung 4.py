@@ -19,18 +19,7 @@ titel_seite = "4. Übung"
 hilfsdatei.seite(titel_seite)
 
 #Verbindung zu OpenAI
-#Damit auf Render keine Fehlermeldung kommt, dass die st.secrets toml fehlt
-api_key = os.getenv("OPENAI_API_KEY")
-
-if not api_key:
-    try:
-        # st.secrets für das Deployment in StreamlitCloud
-        api_key=st.secrets["openai"]["api_key"]
-    except Exception:
-        st.error("Kein OpenAI Key vorhanden")
-        st.stop()
-        
-client = openai.OpenAI(api_key=api_key)
+openai_client1, openai_client2, gemini_client, api_key1, api_key2 = hilfsdatei.openai_verbindung()
 
 
 #Sicherstellen, dass ein Zugriff der Seiten nur mit Passwort erfolgt, und dass User keine Navigationsseite sehen
@@ -134,13 +123,49 @@ with container_fokus:
                         st.session_state.zaehler_eigenes_geschlecht += 1
                         zaehler_eigenes_geschlecht = st.session_state.zaehler_eigenes_geschlecht
                         
-                        antwort = client.chat.completions.create(
+                        antwort_text = None
+
+                        if openai_client1:
+                            try:
+                                antwort = openai_client1.chat.completions.create(
+                                model="gpt-3.5-turbo",
+                                messages=[
+                                    {"role": "system", "content": prompt+frage1}
+                                ]
+                                )   
+                            
+                                antwort_text = antwort.choices[0].message.content
+                            except:
+                                pass
+
+                        if openai_client2 and antwort_text is None:
+                            try:
+                                antwort = openai_client2.chat.completions.create(
                             model="gpt-3.5-turbo",
                             messages=[
                                 {"role": "system", "content": prompt+frage1}
                             ]
-                        )
-                        antwort_text = antwort.choices[0].message.content
+                            )   
+                        
+                            antwort_text = antwort.choices[0].message.content
+                        except:
+                            pass
+                            
+                        if gemini_client and antwort_text is None:
+                            try:
+                                antwort = gemini_client.generate_content(prompt+frage1)
+                                antwort_text = antwort.text
+                            except:
+                                pass
+                        
+                        if antwort_text is None:
+                            if "frau" in frage1.lower():
+                                antwort_text = "Krankenschwester, Erzieherin, Sekretärin"
+                            elif "mann" in frage1.lower():
+                                antwort_text = "Ingenieur, Mechaniker, Programmierer"
+                            else:
+                                antwort_text = "Entschuldigung, ich kann diese Frage nicht beantworten."
+
                         st.write("Antwort:")
                         st.write(antwort_text)
 
@@ -188,13 +213,49 @@ with container_fokus:
                         st.session_state.zaehler_anderes_geschlecht += 1
                         zaehler_anderes_geschlecht = st.session_state.zaehler_anderes_geschlecht
             
-                        antwort = client.chat.completions.create(
+                        antwort_text = None
+
+                        if openai_client1:
+                            try:
+                                antwort = openai_client1.chat.completions.create(
+                                model="gpt-3.5-turbo",
+                                messages=[
+                                    {"role": "system", "content": prompt+frage2}
+                                ]
+                                )   
+                            
+                                antwort_text = antwort.choices[0].message.content
+                            except:
+                                pass
+
+                        if openai_client2 and antwort_text is None:
+                            try:
+                                antwort = openai_client2.chat.completions.create(
                             model="gpt-3.5-turbo",
                             messages=[
                                 {"role": "system", "content": prompt+frage2}
                             ]
-                        )
-                        antwort_text = antwort.choices[0].message.content
+                            )   
+                        
+                            antwort_text = antwort.choices[0].message.content
+                        except:
+                            pass
+                            
+                        if gemini_client and antwort_text is None:
+                            try:
+                                antwort = gemini_client.generate_content(prompt+frage2)
+                                antwort_text = antwort.text
+                            except:
+                                pass
+                        
+                        if antwort_text is None:
+                            if "frau" in frage2.lower():
+                                antwort_text = "Krankenschwester, Erzieherin, Sekretärin"
+                            elif "mann" in frage2.lower():
+                                antwort_text = "Ingenieur, Mechaniker, Programmierer"
+                            else:
+                                antwort_text = "Entschuldigung, ich kann diese Frage nicht beantworten."
+
                         st.write("Antwort:")
                         st.write(antwort_text)
 

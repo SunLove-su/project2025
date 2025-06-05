@@ -166,7 +166,7 @@ with container_fokus:
                                 
                                 generiertesBild = str(antwort[0])
                                 st.image(antwort)
-                            except
+                            except:
                                 pass
                                 
                         

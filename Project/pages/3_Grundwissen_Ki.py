@@ -11,6 +11,7 @@ hilfsdatei.seite(titel_seite)
 
 #API-Verbindung zu OpenAI und zu Gemini aufbauen
 openai_client1, openai_client2, gemini_client, api_key1, api_key2 = hilfsdatei.openai_verbindung()
+
 replicate_key = os.getenv("REPLICATE_API_TOKEN")
 if not replicate_key:
     try:
@@ -19,8 +20,10 @@ if not replicate_key:
     except:
         pass
 
+replicate_client = None
 if replicate_key:
-    replicate.api_token = replicate_key
+    os.environ["REPLICATE_API_TOKEN"] = replicate_key
+    replicate_client = replicate.Client(api_token=replicate_key)
     st.success("Replicate API-Key wurde gesetzt.")
 else:
     st.warning("Kein gültiger Replicate API-Key gefunden.")
@@ -161,19 +164,15 @@ with container_fokus:
                         #     except:
                         #         pass
 
-                        if antwort_text is None and replicate_key:
+                        if antwort_text is None and replicate_client:
                             try:
-                                output = replicate.run(
-                                "meta/llama-2-7b-chat",
-                                input={
-                                    "prompt": f"Beantworte die Frage nur auf Deutsch: {frage}"
-                                    
-                                }
-                            )
-                    
-                            # Antwort zusammenfügen
+                                output = replicate_client.run(
+                                    "meta/llama-2-7b-chat",
+                                    input={
+                                        "prompt": f"Beantworte die Frage nur auf Deutsch: {frage}"
+                                    }
+                                )
                                 antwort_text = "".join(output)
-                            
                             except Exception as e:
                                 st.error(f"Replicate Fehler: {str(e)}")
                             # antwort_text = "Die Antwort konnte nicht generiert werden."

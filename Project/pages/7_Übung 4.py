@@ -124,6 +124,7 @@ with container_fokus:
                         zaehler_eigenes_geschlecht = st.session_state.zaehler_eigenes_geschlecht
                         
                         antwort_text = None
+                        verwendete_api = None
 
                         if openai_client1:
                             try:
@@ -135,6 +136,7 @@ with container_fokus:
                                 )   
                             
                                 antwort_text = antwort.choices[0].message.content
+                                verwendete_api = "OpenAI_Key1"
                             except:
                                 pass
 
@@ -148,6 +150,7 @@ with container_fokus:
                                     )   
                         
                                 antwort_text = antwort.choices[0].message.content
+                                verwendete_api = "OpenAI_Key2"
                             except:
                                 pass
                             
@@ -155,6 +158,7 @@ with container_fokus:
                             try:
                                 antwort = gemini_client.generate_content(prompt+frage1)
                                 antwort_text = antwort.text
+                                verwendete_api = "Gemini"
                             except:
                                 pass
                         
@@ -165,6 +169,7 @@ with container_fokus:
                                 antwort_text = "Ingenieur, Mechaniker, Programmierer"
                             else:
                                 antwort_text = "Entschuldigung, ich kann diese Frage nicht beantworten."
+                            verwendete_api = "Keine API"
 
                         st.write("Antwort:")
                         st.write(antwort_text)
@@ -177,7 +182,8 @@ with container_fokus:
                             "Typ": "Berufsvorschlag_Eigenes_Geschlecht_KI_Interaktion_1",
                             "Frage": frage1,
                             "Antwort": antwort_text,
-                            "Anzahl_Aenderungen": zaehler_eigenes_geschlecht
+                            "Anzahl_Aenderungen": zaehler_eigenes_geschlecht,
+                            "Verwendete API": verwendete_api
                         }
 
                         # Füge zur Historie hinzu
@@ -214,6 +220,7 @@ with container_fokus:
                         zaehler_anderes_geschlecht = st.session_state.zaehler_anderes_geschlecht
             
                         antwort_text = None
+                        verwendete_api = None
 
                         if openai_client1:
                             try:
@@ -225,6 +232,7 @@ with container_fokus:
                                 )   
                             
                                 antwort_text = antwort.choices[0].message.content
+                                verwendete_api = "OpenAI_Key1"
                             except:
                                 pass
 
@@ -238,6 +246,7 @@ with container_fokus:
                                 )   
                             
                                 antwort_text = antwort.choices[0].message.content
+                                verwendete_api = "OpenAI_Key2"
                             except:
                                 pass
                             
@@ -245,6 +254,7 @@ with container_fokus:
                             try:
                                 antwort = gemini_client.generate_content(prompt+frage2)
                                 antwort_text = antwort.text
+                                verwendete_api = "Gemini"
                             except:
                                 pass
                         
@@ -255,6 +265,7 @@ with container_fokus:
                                 antwort_text = "Ingenieur, Mechaniker, Programmierer"
                             else:
                                 antwort_text = "Entschuldigung, ich kann diese Frage nicht beantworten."
+                            verwendete_api = "Keine API"
 
                         st.markdown("Antwort:")
                         st.markdown(antwort_text)
@@ -269,7 +280,8 @@ with container_fokus:
                             "Typ":"Berufsvorschlag_Anderes_Geschlecht_KI_Interaktion_2",
                             "Frage": frage2,
                             "Antwort": antwort_text,
-                            "Anzahl_Aenderungen": zaehler_anderes_geschlecht
+                            "Anzahl_Aenderungen": zaehler_anderes_geschlecht,
+                            "Verwendete API": verwendete_api
                         }
                         # Füge zur Historie hinzu
                         st.session_state.uebung4["antwort_ki_2_historie"].append(antwort_ki_2)

@@ -10,10 +10,6 @@ import pathlib
 import os
 
 
-# CURRENT_DIR = pathlib.Path(__file__).parent
-# bild_erdbeereismann = CURRENT_DIR.joinpath("..","ErdbeereisMann.png")
-
-
 #Überschrift der Seite 
 titel_seite = "2. Übung"
 hilfsdatei.seite(titel_seite)

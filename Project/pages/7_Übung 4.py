@@ -256,8 +256,8 @@ with container_fokus:
                             else:
                                 antwort_text = "Entschuldigung, ich kann diese Frage nicht beantworten."
 
-                        st.write("Antwort:")
-                        st.write(antwort_text)
+                        st.markdown("Antwort:")
+                        st.markdown(antwort_text)
 
 
                         # Initialisiere die Historie-Liste, falls sie nicht existiert

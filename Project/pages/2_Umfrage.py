@@ -343,7 +343,7 @@ if antwort_pruefung_ki is not None and antwort_pruefung_ki != st.session_state.p
 ####################################################################################################
 
 #Anzeigen der gespeicherten Eingaben, zur Überprüfung
-st.session_state.einstiegsumfrage
+# st.session_state.einstiegsumfrage
 #####################################################################################################
 #Trennungslinie
 st.divider()

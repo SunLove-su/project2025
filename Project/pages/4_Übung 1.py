@@ -310,14 +310,14 @@ if "expander_offen" not in st.session_state:
 container_fokus1 = st.container()
 with container_fokus1:
     #Expander soll offen sein, damit die Teilnehmer die Aufgabe direkt sehen
-    with st.expander("Vorgegebene Fragen", expanded=st.session_state.exp_open_vorgegeben):
+    with st.expander("Vorgegebene Fragen", st.session_state.expander_offen):
         textzuaufgaben=st.markdown("""
                     Wähle eine der beiden folgenden Fragen aus und gib sie in das untenstehende Textfeld ein:
                     1. Wer ist der aktuelle Präsident der USA
                     2. Was das Ergebnis der Aufgabe 482 * 739 (Gerne kannst du den Taschenrechner benutzen und die Ergebnisse zu prüfen)
                 """)
         #Clear_on_submit damit die Teilnehmer direkt dazu verleitet werden in das Textfeld neue Fragen zu stellen
-        with st.form("frage_formular_vorgegeben", clear_on_submit=st.session_state.exp_open_vorgegeben):
+        with st.form("frage_formular_vorgegeben", clear_on_submit=st.session_state.expander_offen.):
             frage = st.text_input("Stelle eine der oben vorgegebenen Fragen")
             senden = st.form_submit_button("Fragen")
             #Hinweis an den Teilnehmer, damit er weiterscrollt.
@@ -327,7 +327,7 @@ with container_fokus1:
             
             try:
                 if senden and frage: 
-                    st.session_state.exp_open_vorgegeben = True
+                    st.session_state.expander_offen = True
                     #Nutzung eines Spinners, damit die User sehen, dass ein Hintergrundprozess durchgeführt wird
                     with st.spinner(text="Erstelle Text, bitte warten..."):
                         antwort_text = None
@@ -408,8 +408,8 @@ with container_fokus2:
             
                         	        """)
 
-    with st.expander("Eigene Fragen", expanded=True):
-        with st.form("frage_formular_eigene", clear_on_submit=True):
+    with st.expander("Eigene Fragen", expanded=st.session_state.expander_offen):
+        with st.form("frage_formular_eigene", clear_on_submit=st.session_state.expander_offen):
             frage_eigene = st.text_input("Stelle hier deine eigenen Fragen")
 
             falsch = "Antworte richtig, aber füge ein direkt kleines falsches Detail hinzu."
@@ -421,6 +421,7 @@ with container_fokus2:
             
             try:
                 if senden and frage_eigene:
+                    st.session_state.expander_offen= True
                     
                     #Verwendung von gpt-4-turbo, weil es im gegensatz zu gpt-3.5-turbo nicht so auffällige Fehler liefert.
                     #Auch wenn gpt-4-turbo "teurer ist" ist es besser für diese Aufgabe

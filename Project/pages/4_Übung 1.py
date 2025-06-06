@@ -337,6 +337,7 @@ with container_fokus1:
                     #Nutzung eines Spinners, damit die User sehen, dass ein Hintergrundprozess durchgeführt wird
                     with st.spinner(text="Erstelle Text, bitte warten..."):
                         antwort_text = None
+                        verwendete_api = None
 
                         #API-Aufruf an OpenAI (wenn es zu einem RateLimit kommt, soll der 2.te API-Schlüssel zum Einsatz kommen)
                         if openai_client1:
@@ -446,6 +447,7 @@ with container_fokus2:
                     with st.spinner(text="Erstelle Text, bitte warten..."):
                         antwort_text_eigene = None
                         richtige_antwort = None
+                        verwendete_api = None
 
                         falsch_prompt = (
                                     "Du bist Teil eines Schulmoduls, zum kritischen Umgang mit KI. "+

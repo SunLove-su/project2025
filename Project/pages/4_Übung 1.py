@@ -362,8 +362,8 @@ with container_fokus1:
                             except:
                                 pass
                         
-                        #Sicherheitscheck falls immer noch None
-                        if antwort_text is None:
+                        #Sicherheitscheck falls immer noch None oder Trump als Antwort ausgegeben wird
+                        if antwort_text is None or ("präsident" in frage.lower() and "usa" in frage.lower()):
                             if "präsident" in frage.lower() and "usa" in frage.lower():
                                 antwort_text = "Joe Biden ist der aktuelle Präsident der USA."
                             elif "482" in frage and "739" in frage:

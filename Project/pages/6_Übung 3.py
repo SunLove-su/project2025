@@ -173,6 +173,7 @@ with container_fokus:
                         aktuelle_anzahl = st.session_state.zaehler_bildgenerierung
                         
                         generiertesBild = None
+                        verwendete_api = None 
                         # https://replicate.com/docs/reference/how-does-replicate-work
                         if replicate_client and generiertesBild is None:
                             try:
@@ -185,7 +186,7 @@ with container_fokus:
                                 )
                                 
                                 generiertesBild = str(antwort[0])
-                                
+                                verwendete_api = "Replicate"
                             except:
                                 pass
                                 
@@ -200,6 +201,7 @@ with container_fokus:
                                     size="1024x1024"
                                 )
                                 generiertesBild = antwort.data[0].url
+                                verwendete_api = "OpenAI_Key1"
                             except:
                                 pass
 
@@ -214,6 +216,7 @@ with container_fokus:
                                     size="1024x1024"
                                 )
                                 generiertesBild = antwort.data[0].url
+                                verwendete_api = "OpenAI_Key2"
                             except:
                                 pass
 
@@ -230,6 +233,7 @@ with container_fokus:
                         
                         if generiertesBild is None:
                             st.error("Es konnte kein Bild erstellt werden, bitte setze die Übung fort.")
+                            verwendete_api = "Keine API"
                             
                         #Speichern der Daten
                         if "bild_generierung_ki_historie" not in st.session_state.uebung3:
@@ -240,7 +244,8 @@ with container_fokus:
                             "Typ": "KI Bilderstellung",
                             "Frage": "Bitte beschreibe, wie dein Bild generiert werden soll",
                             "Antwort": eingabe,
-                            "Anzahl_Aenderungen": aktuelle_anzahl
+                            "Anzahl_Aenderungen": aktuelle_anzahl,
+                            "Verwendete API": verwendete_api
 
                         }
                         

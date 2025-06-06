@@ -118,6 +118,8 @@ try:
     #Das Bild muss im Root Folder des Git-Repositories liegen, damit das so funktioniert         
     st.image("Cinderella.png",width=200)
 except FileNotFoundError:
+    try:
+        st.image("https://github.com/SunLove-su/project2025/raw/main/Cinderella.png", width=200)
     st.error("Das Bild ist nicht verfügbar, bitte mach weiter mit der Übung.")
 
 st.markdown("Versuche es selbst, kriegst du kein Bild, dann musst du deinen Prompt anpassen.")
@@ -216,11 +218,6 @@ with container_fokus:
                             st.image(generiertesBild, width=200)
                         
                         if generiertesBild is None:
-                            try:
-                                st.image("https://github.com/SunLove-su/project2025/raw/main/ErdbeereisMann.png", width=200)
-                            except:
-                                pass
-                        else:
                             st.error("Es konnte kein Bild erstellt werden, bitte setze die Übung fort.")
                             
                         #Speichern der Daten

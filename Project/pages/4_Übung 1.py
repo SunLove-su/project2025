@@ -215,6 +215,7 @@ if st.button("ChatGPT nach Vokalen fragen"):
         #Nutzung eines Spinners, damit die User sehen, dass ein Hintergrundprozess durchgeführt wird
         with st.spinner(text="Erstelle Text, bitte warten..."):
             antwort_text = None
+            verwendete_api = None
             
             #API-Aufruf an OpenAI (wenn es zu einem RateLimit kommt, soll der 2.te API-Schlüssel zum Einsatz kommen)
             if openai_client1:
@@ -224,6 +225,7 @@ if st.button("ChatGPT nach Vokalen fragen"):
                         messages=[{"role": "user", "content": prompt_vokale+beispielsatz}]
                     )
                     antwort_text = antwort.choices[0].message.content
+                    verwendete_api = "OpenAI_Key1"
                 except:
                     pass
                     
@@ -235,6 +237,7 @@ if st.button("ChatGPT nach Vokalen fragen"):
                         messages=[{"role": "user", "content": prompt_vokale+beispielsatz}]
                     )
                     antwort_text = antwort.choices[0].message.content
+                    verwendete_api = "OpenAI_Key2"
                 except:
                     pass
                     
@@ -243,12 +246,14 @@ if st.button("ChatGPT nach Vokalen fragen"):
                 try:
                     antwort = gemini_client.generate_content(prompt_vokale+beispielsatz)
                     antwort_text = antwort.text
+                    verwendete_api = "Gemini"
                 except:
                     pass
                     
             #Sicherheitscheck falls immer noch None
             if antwort_text is None:
                 antwort_text = "a: 4 e: 6 i: 2 o: 3 u: 1 ä: 2 ö: 1 ü: 1 Gesamt: 20"
+                verwendete_api = "Keine API"
 
         #Falls ChatGPT 3.5 Turbo doch richtig Vokale zählt, soll trotzdem eine falsche Antwort ausgegeben werden
         if "Gesamt: 23" in antwort_text.lower() and "a: 2" in antwort_text.lower():
@@ -267,7 +272,8 @@ if st.button("ChatGPT nach Vokalen fragen"):
         "Typ": "Vokale zählen ChatGPT",
         "Frage": beispielsatz,
         "Antwort": antwort_text,
-        "Anzahl_Aenderungen": anzahl_vokal_versuch
+        "Anzahl_Aenderungen": anzahl_vokal_versuch,
+        "Verwendete API" :verwendete_api
     }
     #Speichern aller Vokal-Zählung
     st.session_state.uebung1["vokale_chatgpt_historie"].append(vokale_chatgpt)
@@ -340,6 +346,7 @@ with container_fokus1:
                                     messages=[{"role": "user", "content":"Beantworte die Frage nur auf Deutsch"+frage}]
                                 )
                                 antwort_text = antwort.choices[0].message.content
+                                verwendete_api = "OpenAI_Key1"
                             except:
                                 pass
                         
@@ -351,6 +358,7 @@ with container_fokus1:
                                     messages=[{"role": "user", "content":"Beantworte die Frage nur auf Deutsch"+frage}]
                                 )
                                 antwort_text = antwort.choices[0].message.content
+                                verwendete_api = "OpenAI_Key2"
                             except:
                                 pass
 
@@ -359,16 +367,22 @@ with container_fokus1:
                             try:
                                 antwort = gemini_client.generate_content("Beantworte die Frage nur auf Deutsch"+frage)
                                 antwort_text = antwort.text
+                                verwendete_api = "Gemini"
                             except:
                                 pass
                         
                         #Sicherheitscheck falls immer noch None oder Trump als Antwort ausgegeben wird
-                        if antwort_text is None or ("präsident" in frage.lower() and "usa" in frage.lower()):
+                        if antwort_text is None:
+                            
                             if "präsident" in frage.lower() and "usa" in frage.lower():
                                 antwort_text = "Joe Biden ist der aktuelle Präsident der USA."
+                                
                             elif "482" in frage and "739" in frage:
                                 antwort_text = "482 x 739 = 355.420"
-                            
+                               
+                            else:
+                                antwort_text ="Die Frage kann zur Zeit nicht beantwortet werden, bitte fahre mit der nächsten Übung fort."
+                        verwendete_api = "Keine API"
 
                         
 
@@ -391,7 +405,8 @@ with container_fokus1:
                                 "Typ": "Vorgegebene Frage - KI-Interaktion",
                                 "Frage": frage,
                                 "Antwort": antwort_text,
-                                "Anzahl_Aenderungen": anzahl_eingaben_vorgegeben
+                                "Anzahl_Aenderungen": anzahl_eingaben_vorgegeben,
+                                "Verwendete API" :verwendete_api
                             })
             
             #Abfangen von anderen Problemen
@@ -431,6 +446,14 @@ with container_fokus2:
                     with st.spinner(text="Erstelle Text, bitte warten..."):
                         antwort_text_eigene = None
                         richtige_antwort = None
+
+                        falsch_prompt = (
+                                    "Du bist Teil eines Schulmoduls, zum kritischen Umgang mit KI. "+
+                                    "Ändere diese Antwort so, dass sie auf den ersten Blick korrekt klingt, "+
+                                    "aber einen Fehler enthält z. B. ein leicht falsches Datum, "+
+                                    "eine falsche Zahl oder ein falsches Detail, das nicht sofort auffällt. Die ANtwort muss einen Fehler enthalten. "+
+                                    "Die Antwort soll glaubwürdig klingen."
+                                )
                         
                         #API-Aufruf an OpenAI (wenn es zu einem RateLimit kommt, soll der 2.te API-Schlüssel zum Einsatz kommen)
                         if openai_client1:
@@ -441,19 +464,12 @@ with container_fokus2:
                                 )
                                 richtige_antwort = antwort.choices[0].message.content
 
-                                falsch_prompt = (
-                                    "Du bist Teil eines Schulmoduls, zum kritischen Umgang mit KI. "+
-                                    "Ändere diese Antwort so, dass sie auf den ersten Blick korrekt klingt, "+
-                                    "aber einen Fehler enthält z. B. ein leicht falsches Datum, "+
-                                    "eine falsche Zahl oder ein falsches Detail, das nicht sofort auffällt. Die ANtwort muss einen Fehler enthalten. "+
-                                    "Die Antwort soll glaubwürdig klingen."
-                                )
-
                                 antwort = openai_client1.chat.completions.create(
                                     model="gpt-3.5-turbo",
                                     messages=[{"role": "user", "content": f"{falsch_prompt} {richtige_antwort}:nur 2-3 Sätze. Nur Deutsch"}]
                                 )
                                 antwort_text_eigene = antwort.choices[0].message.content
+                                verwendete_api = "OpenAI_Key1"
                             except:
                                 pass
                         
@@ -465,20 +481,14 @@ with container_fokus2:
                                     messages=[{"role": "user", "content":prompt+"nur 2-3 Sätze. Gebe Details an wie Jahre, Zahlen oder Eigenschaften"}],
                                 )
                                 richtige_antwort = antwort.choices[0].message.content
-
-                                falsch_prompt = (
-                                    "Du bist Teil eines Schulmoduls, zum kritischen Umgang mit KI. "+
-                                    "Ändere diese Antwort so, dass sie auf den ersten Blick korrekt klingt, "+
-                                    "aber einen Fehler enthält z. B. ein leicht falsches Datum, "+
-                                    "eine falsche Zahl oder ein falsches Detail, das nicht sofort auffällt. Die ANtwort muss einen Fehler enthalten. "+
-                                    "Die Antwort soll glaubwürdig klingen."
-                                )
+                            
 
                                 antwort = openai_client2.chat.completions.create(
                                     model="gpt-3.5-turbo",
                                     messages=[{"role": "user", "content": f"{falsch_prompt} {richtige_antwort}:nur 2-3 Sätze. Nur Deutsch"}]
                                 )
                                 antwort_text_eigene = antwort.choices[0].message.content
+                                verwendete_api = "OpenAI_Key2"
                             except:
                                 pass
 
@@ -487,16 +497,19 @@ with container_fokus2:
                             try:
                                 antwort = gemini_client.generate_content(prompt+"nur 2-3 Sätze. Gebe Details an wie Jahre, Zahlen oder Eigenschaften. Füge Fehler ein, die nicht sofort auffallen. ")
                                 antwort_text_eigene = antwort.text
+                                verwendete_api="Gemini"
                             except:
                                 pass
 
                         #Sicherheitscheck falls immer noch None
                         if antwort_text_eigene is None:
                             antwort_text_eigene = "Entschuldigung, ich kann diese Frage nicht beantworten."
+                            verwendete_api = "Keine API"
 
                         # Prompt-Zähler aktualisieren
                         st.session_state.zaehler_eingaben_eigene += 1
                         anzahl_eingaben_eigene = st.session_state.zaehler_eingaben_eigene
+                        
 
                         # Frage anzeigen
                         st.markdown(f"Deine Frage: {frage_eigene}")
@@ -514,7 +527,8 @@ with container_fokus2:
                             "Typ": "Eigene Frage - KI-Interaktion",
                             "Frage": frage_eigene,
                             "Antwort": antwort_text_eigene,
-                            "Anzahl_Aenderungen": anzahl_eingaben_eigene
+                            "Anzahl_Aenderungen": anzahl_eingaben_eigene,
+                            "Verwendete API" :verwendete_api
                         })
             
             #Abfangen von anderen Problemen

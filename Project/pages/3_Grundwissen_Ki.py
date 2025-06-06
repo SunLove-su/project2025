@@ -136,6 +136,7 @@ with container_fokus:
                     #Nutzung eines Spinners, damit die User sehen, dass ein Hintergrundprozess durchgeführt wird
                     with st.spinner(text="Erstelle Text, bitte warten..."):
                         antwort_text = None
+                        verwendete_api = None 
                        
                         #API-Aufruf an OpenAI (wenn es zu einem RateLimit kommt, soll der 2.te API-Schlüssel zum Einsatz kommen)
                         if openai_client1:
@@ -145,6 +146,7 @@ with container_fokus:
                                         messages=[{"role": "user", "content": f"Beantworte die Frage nur auf Deutsch: {frage}"}]
                                     )
                                 antwort_text = antwort.choices[0].message.content
+                                verwendete_api = "OpenAI_Key1"
                             except:
                                 pass
                             # Key2 verwenden z.B. bei Rate Limit oder wenn Key abgelaufen
@@ -156,6 +158,7 @@ with container_fokus:
                                         messages=[{"role": "user", "content": f"Beantworte die Frage nur auf Deutsch: {frage}"}]
                                     )
                                 antwort_text = antwort.choices[0].message.content
+                                verwendete_api = "OpenAI_Key2"
                             except:
                                 pass
                         
@@ -165,6 +168,7 @@ with container_fokus:
                                 
                                 antwort = gemini_client.generate_content(f"Beantworte die Frage nur auf Deutsch: {frage}")
                                 antwort_text = antwort.text
+                                verwendete_api = "Gemini"
                             except:
                                 pass
 
@@ -179,6 +183,7 @@ with container_fokus:
                         #             }
                         #         )
                         #         antwort_text = "".join(antwort)
+                        #         verwendete_api = "Replicate"
                         #     except:
                         #         pass
 
@@ -188,6 +193,7 @@ with container_fokus:
                         #Sicherheitscheck falls immer noch None
                         if antwort_text is None:
                             antwort_text = "Keine Antwort erhalten"
+                            verwendete_api = "Keine API"
                                                
                         # Prompt-Zähler aktualisieren
                         st.session_state.zaehler_eingaben_grundwissen += 1
@@ -207,7 +213,8 @@ with container_fokus:
                             "Typ": "Grundwissen-KI-Interaktion",
                             "Frage": frage,
                             "Antwort": antwort_text,
-                            "Anzahl Prompts": anzahl_eingaben
+                            "Anzahl Prompts": anzahl_eingaben,
+                            "Verwendete API" :verwendete_api
                         }
                         st.session_state.grundwissen_ki["ki_interaktion_historie"].append(ki_interaktion)
                         st.session_state.grundwissen_ki["ki_interaktion"]=ki_interaktion

@@ -317,7 +317,7 @@ with container_fokus1:
                     2. Was das Ergebnis der Aufgabe 482 * 739 (Gerne kannst du den Taschenrechner benutzen und die Ergebnisse zu prüfen)
                 """)
         #Clear_on_submit damit die Teilnehmer direkt dazu verleitet werden in das Textfeld neue Fragen zu stellen
-        with st.form("frage_formular_vorgegeben", clear_on_submit=st.session_state.expander_offen.):
+        with st.form("frage_formular_vorgegeben", clear_on_submit=st.session_state.expander_offen):
             frage = st.text_input("Stelle eine der oben vorgegebenen Fragen")
             senden = st.form_submit_button("Fragen")
             #Hinweis an den Teilnehmer, damit er weiterscrollt.

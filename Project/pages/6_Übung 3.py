@@ -114,7 +114,7 @@ st.markdown("""
                 
             """)
 #Anzeigen des generierten Bildes im Disney-Stil            
-try:
+#try:
     #Das Bild muss im Root Folder des Git-Repositories liegen, damit das so funktioniert         
     #st.image("Cinderella.png",width=200)
 #except FileNotFoundError:

@@ -216,6 +216,11 @@ with container_fokus:
                             st.image(generiertesBild, width=200)
                         
                         if generiertesBild is None:
+                            try:
+                                st.image("https://github.com/SunLove-su/project2025/raw/main/ErdbeereisMann.png", width=200)
+                            except:
+                                pass
+                        else:
                             st.error("Es konnte kein Bild erstellt werden, bitte setze die Übung fort.")
                             
                         #Speichern der Daten

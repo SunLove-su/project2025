@@ -40,13 +40,26 @@ st.markdown("""
                 Schaue dir das Bild genau an! Hat die Person auf dem Foto an dem schönen Sommertag ein Erdbeereis gegessen?
             """)
 
-# st.image("https://thispersondoesnotexist.com/",width=200)
 #Sicherstellen, dass das Bild zur Verfügung steht
+
+bilduebung_vorhanden = False
+#Anzeigen des generierten Bildes im Disney-Stil            
 try:
-    #st.image(bild_erdbeereismann, width=200)
-    st.image("ErdbeereisMann.png", width=200)
-except FileNotFoundError:
-    st.error("Das Bild konnte nicht gefunden werden, die Übung kannst du trotzdem fortsetzen")
+    #Das Bild muss im Root Folder des Git-Repositories liegen, damit das so funktioniert         
+    st.image("ErdbeereisMann.png",width=200)
+    bilduebung_vorhanden = True
+except:
+    pass
+
+#Nur wenn das Bild nicht vorhanden ist, dann wird es aus der URL geladen.
+if not bilduebung_vorhanden:
+    try:
+        #Alternativ wenn das Bild nicht im Root-Verzeichnis gefunden wird
+        st.image("https://github.com/SunLove-su/project2025/raw/main/ErdbeereisMann.png", width=200) 
+    except:
+        #Falls kein Bild verfügbar sit
+        st.error("Das Bild ist nicht verfügbar, bitte mach weiter mit der Übung.")
+
 
 #Speichern der Antworten in Übung 2
 if "uebung2" not in st.session_state:

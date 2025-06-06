@@ -113,17 +113,25 @@ st.markdown("""
             
                 
             """)
+
+bilduebung_vorhanden = False
 #Anzeigen des generierten Bildes im Disney-Stil            
-#try:
-    #Das Bild muss im Root Folder des Git-Repositories liegen, damit das so funktioniert         
-    #st.image("Cinderella.png",width=200)
-#except FileNotFoundError:
 try:
-    st.image("https://github.com/SunLove-su/project2025/raw/main/Cinderella.png", width=200)
-    st.success("Bild aus github")
-   
+    #Das Bild muss im Root Folder des Git-Repositories liegen, damit das so funktioniert         
+    st.image("Cinderella.png",width=200)
+    bilduebung_vorhanden = True
 except:
-    st.error("Das Bild ist nicht verfügbar, bitte mach weiter mit der Übung.")
+    pass
+
+#Nur wenn das Bild nicht vorhanden ist, dann wird es aus der URL geladen.
+if not bilduebung_vorhanden:
+    try:
+        #Alternativ wenn das Bild nicht im Root-Verzeichnis gefunden wird
+        st.image("https://github.com/SunLove-su/project2025/raw/main/Cinderella.png", width=200) 
+    except:
+        #Falls kein Bild verfügbar sit
+        st.error("Das Bild ist nicht verfügbar, bitte mach weiter mit der Übung.")
+
 
 st.markdown("Versuche es selbst, kriegst du kein Bild, dann musst du deinen Prompt anpassen.")
 

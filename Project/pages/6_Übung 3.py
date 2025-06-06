@@ -172,15 +172,13 @@ with container_fokus:
                                 )
                                 
                                 generiertesBild = str(antwort[0])
-                                st.image(antwort)
+                                
                             except:
                                 pass
                                 
-                        
-                        if openai_client1 and generiertesBild is None:
-                            st.error("Leider konnte kein Bild generiert werden")
                         #DALL-E API Aufruf
-                        if openai_client1:
+                        if openai_client1 and generiertesBild is None:
+                                               
                             try:
                                 antwort = openai_client1.images.generate(
                                     model="dall-e-3",
@@ -216,6 +214,9 @@ with container_fokus:
                             
                             #Anpassung des Bildes mit width, da size im API Aufruf nicht verkleindert werden kann
                             st.image(generiertesBild, width=200)
+                        
+                        if generiertesBild is None:
+                            st.error("Es konnte kein Bild erstellt werden, bitte setze die Übung fort.")
                             
                         #Speichern der Daten
                         if "bild_generierung_ki_historie" not in st.session_state.uebung3:

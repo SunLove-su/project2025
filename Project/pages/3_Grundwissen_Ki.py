@@ -104,8 +104,7 @@ with st.expander("Was kann KI?",icon=":material/double_arrow:"):
                """)
 
 #Zur Sicherstellung des Fokus für die KI-Antworten, damit man bei den Antworten bleibt
-if "expander_offen" not in st.session_state:
-    st.session_state.expander_offen = True
+
 #Speichern aller Antworten der Teilnehmer für die Seite
 if "grundwissen_ki" not in st.session_state:
     st.session_state.grundwissen_ki = {}
@@ -117,10 +116,10 @@ if "zaehler_eingaben_grundwissen" not in st.session_state:
 #Einsatz von Container, damit der Fokus bleibt und nicht nach unten auf die Seite gesprungen wird
 container_fokus = st.container()
 with container_fokus:
-    with st.expander("Fragen an die KI", expanded=st.session_state.expander_offen):
+    with st.expander("Fragen an die KI", expanded=True):
         #Nutzung von Form in Kombination mit Textinput weil Textinput Probleme hat.
         #"Press Enter" funktioniert nicht bei st.text_input, obwohl es angezeigt wird.
-        with st.form("frage_formular", clear_on_submit=st.session_state.expander_offen):
+        with st.form("frage_formular", clear_on_submit=True):
             frage = st.text_input("Falls du noch mehr Wissen möchtest, frag die KI!",
                                 placeholder="Du kannst mehrere Fragen stellen")
             #Button zur besseren Nutzung
@@ -131,7 +130,7 @@ with container_fokus:
             #Antwort generierung erst wenn Button geklickt und Eingabe vorhanden
             try:
                 if senden and frage:
-                    st.session_state.expander_offen = True
+                    
                     #Sobald eine Frage im Feld ist, soll diese an die Schnittstelle übermittelt werden.
                     #Nutzung eines Spinners, damit die User sehen, dass ein Hintergrundprozess durchgeführt wird
                     with st.spinner(text="Erstelle Text, bitte warten..."):
